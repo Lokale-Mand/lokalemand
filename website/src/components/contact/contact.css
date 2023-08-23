@@ -1,0 +1,148 @@
+.contact-us{
+    padding-bottom: 30px;
+    min-height: 75rem;
+}
+
+.contact-wrapper {
+    /* min-height: 100vw; */
+    padding: 30px;
+    margin: 30px 0;
+    background: var(--second-cards-color);
+    border-radius: 8px;
+
+}
+
+.contact-wrapper .up-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.contact-wrapper .heading {
+    font-size: 4rem;
+    font-weight: bolder;
+    
+}
+
+.contact-wrapper .up-section .contact-card {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    /* max-width: 470px;
+    min-width: 470px; */
+}
+.contact-wrapper .up-section .left-section{
+    width: 50%;
+}
+.contact-wrapper .up-section .contact-card .icon {
+    height: 50px;
+    width: 50px;
+    background-color: var(--secondary-color-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.contact-wrapper .up-section .contact-card .content h3 {
+    font-size: 2.485rem;
+    font-weight: 700;
+    
+}
+
+.contact-wrapper .up-section .contact-card .content p,
+.contact-wrapper .up-section .contact-card .content span {
+    font-size: 2.055rem;
+    font-weight: 500;
+}
+
+.contact-wrapper .up-section .contact-card .content span {
+    color: var(--secondary-color);
+}
+
+.contact-wrapper .up-section .right-section{
+    flex-grow: 1;
+}
+
+.contact-wrapper .bottom-section{
+    border-radius: 8px;
+    background-color:var(--secondary-color-light);
+    margin-top: 20px;
+    padding: 30px;
+}
+
+.contact-wrapper .bottom-section p{
+    color: var(--sub-text-color);
+    font-size: 2.355rem;
+    
+    margin-top: 10px;
+}
+
+.contact-wrapper .bottom-section form{
+    margin-top: 10px;
+}
+
+.contact-wrapper .bottom-section form label{
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.contact-wrapper .bottom-section form input{
+    padding: 5px;
+    font-size: 2.055rem;
+}
+
+.contact-wrapper .bottom-section form span.checkbox-container{
+    align-items: baseline;
+    font-weight: 700;
+    display: flex;
+    font-size: 2.055rem;
+    margin-top: 20px;
+    
+}
+
+.contact-wrapper .bottom-section form span.checkbox-container a{
+    color: var(--primary-color);
+    text-decoration: none;
+    
+}
+
+.contact-wrapper .bottom-section form button[type=submit]{
+    padding: 8px 20px;
+    background: var(--secondary-color);
+    font-size: 2.055rem;
+    color: var(--text-field-color);
+    margin-top: 5px;
+    border-radius: 8px;
+}
+
+@media screen and (max-width: 75rem) {
+    .contact-wrapper .up-section .left-section{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .contact-wrapper .up-section .right-section{
+        display: flex;
+        justify-content: center;
+    }
+
+    .contact-wrapper .up-section .contact-card{
+        width: 90%;
+        justify-content: flex-start;
+    }
+
+    .contact-wrapper .up-section .contact-card .icon{
+        width: 50px;
+        height: 50px;
+    }
+}

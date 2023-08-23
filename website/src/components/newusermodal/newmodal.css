@@ -1,0 +1,44 @@
+.modal.user_data_modal.show{
+    display: flex !important;
+    width: 100% !important;
+}
+
+.user_data_modal .modal-dialog {
+    width: 100% !important;
+    align-items: center !important;
+    display: flex !important;
+}
+.user_data_modal .modal-dialog .modal-content {
+    border-radius: 10px !important;
+
+}
+.modal-header.web_logo {
+    border: 0 !important;
+    justify-content: center !important;
+    
+}
+.modal-body.user_data_modal_body{
+    text-align: center;
+}
+.modal-header img{
+    width: 100px;
+}
+.modal-body.user_data_modal_body button{
+    margin: 20px 0;
+    padding: 15px;
+    font-size: 17px;
+    background-color: var(--secondary-color);
+    color: var(--second-cards-color);
+    
+    font-weight: 800;
+}
+
+.modal-body.user_data_modal_body span {
+    font-size: 11px;
+    color: var(--bs-gray-500);
+}
+
+.modal-body p.user_data_form_error {
+    font-size: 14px;
+    color: var(--bs-danger);
+}

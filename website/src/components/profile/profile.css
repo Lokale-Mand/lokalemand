@@ -1,0 +1,259 @@
+#profile {
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh
+}
+
+#profile .cover {
+    height: 200px;
+}
+
+#profile .cover img {
+    content: "";
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    /* Resize the background image to cover the entire container */
+    width: 100% !important;
+    top: 100px;
+    left: 0;
+    filter: brightness(50%)
+}
+
+#profile .content-container {
+    margin-top: -70px;
+    position: relative;
+    font-size: 1.8rem;
+    display: flex;
+    flex-wrap: nowrap !important;
+    gap: 20px;
+    min-width: 100%;
+}
+
+#profile .sidebar .basicInfo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#profile .sidebar .navigation-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: transparent;
+}
+
+#profile .sidebar .navigation-container-button {
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.3px solid #ddd;
+    padding: 20px;
+
+}
+
+#profile .sidebar .navigation-container-button:hover, #profile .sidebar .navigation-container-button:hover img {
+    background-color: var(--secondary-color);
+}
+#profile .sidebar .no-hover:hover {
+    fill: var(--secondary-color);
+}
+
+#profile .sidebar .navigation-container-button:hover span {
+    color: #fff;
+
+}
+
+#profile .sidebar .navigation-container-button:hover span svg path {
+    fill: #fff;
+}
+
+#profile .sidebar .navigation-container-button span {
+    font-size: 14px;
+    color: #000;
+    
+}
+
+#profile .sidebar {
+    background: #fff;
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 250px;
+}
+
+#profile .bar {
+    display: none;
+}
+
+#profile .sidebar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 30px;
+}
+#profile .sidebar .logout-img {
+    height: 30px ;
+    width: 30px;
+    margin: 0 15px 0 7px!important;
+    /* filter: brightness(25) ; */
+    
+}
+#profile .sidebar h5 {
+    font-size: 2.2rem;
+    font-weight: bolder;
+    
+}
+
+#profile .sidebar span {
+    font-size: 1.5rem;
+    color: var(--sub-text-color);
+    text-align: center;
+}
+
+#profile .sidebar button:hover {
+    background: rgba(155, 151, 151, 0.205);
+
+}
+
+#profile .sidebar button:nth-last-child(1) {
+    border-bottom: none;
+}
+
+#profile .table-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+#profile .table-content h4 {
+    font-size: 3rem;
+    color: #fff;
+    height: 60px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    font-weight: bolder;
+}
+
+#profile .table-content .heading {
+    background: #fff;
+    
+    font-size: 2.5rem;
+    font-weight: bolder;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+#profile .table-content .actual-content {
+    padding-top: 20px;
+    background: #fff;
+    border-radius: 8px;
+}
+
+#profile .table-content .actual-content .inputs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-bottom: 1px solid rgba(155, 151, 151, 0.205);
+    padding-bottom: 50px;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.button-container-badge {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background-color: transparent;
+}
+#profile .table-content h4 {
+    font-size: 36px;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 1px;
+    width: 100%;
+    display: inline-block;
+    padding: 0;
+    margin-bottom: 30px;
+}
+.badge-img {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    background: #fff;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
+    padding: 0;
+    position: relative;
+}
+
+/* Hide the file input */
+input[type="file"] {
+    display: none;
+}
+
+#profile .table-content .actual-content .inputs-container input {
+    padding: 10px;
+    background: rgba(155, 151, 151, 0.205);
+    border-radius: 10px;
+    margin: 0 15px;
+    
+    background-color: #F8F8F8;
+    height: 56px;
+    transition: all 0.3s;
+}
+
+#profile .table-content .actual-content .inputs-container input[type='file'] {
+    border: 0;
+
+}
+
+#profile .table-content .actual-content .inputs-container input:focus {
+    border: 1px solid #51bd88;
+    background-color: white;
+
+}
+
+#profile .table-content .actual-content .inputs-container input::placeholder {
+    font-size: 1.5rem;
+    
+}
+
+#profile .table-content .actual-content form button {
+    background: var(--secondary-color);
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 10px;
+    
+    color: #fff;
+    font-size: 2rem;
+    float: right;
+}
+
+
+@media(max-width:48rem) {
+    #profile .bar {
+        display: block;
+    }
+
+    #profile .content-container {
+        display: block;
+    }
+
+}
+
+[dir='rtl'] .profile-navigate-arrow {
+    transform: rotate(180deg);
+}

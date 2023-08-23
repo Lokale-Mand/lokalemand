@@ -1,0 +1,5 @@
+{
+    "version": "1.9.0",
+    "archive": "RELEASE-1.9.zip",
+    "description": "[Added] FTP deployment feature has been added to the website. <br>[Added] Resend OTP functionality has been incorporated into the website. <br>[Added] Multi-language functionality has been implemented on the website. <br>[Added] A language management option has been added to both the app and website, allowing for easy language customisation from the panel side. <br>[Added] Clear cache, config, route, view in admin panel. <br>[Improve] Various bug fixes have been applied, resulting in improved performance and stability."
+}

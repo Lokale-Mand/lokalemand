@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap');
+
+:root {
+  --green: #27ae60;
+  --black: #2c2c54;
+  --blue: #0047AB;
+  --orange: #ff7800;
+  --yellow: #FFFF2E;
+  --light-color: #666;
+  --red: #D22B2B;
+  --color: #009c8e;
+  --boxSize: 8px;
+  --gutter: 8px;
+
+  --body-background: #F2F3F9;
+  --primary-color:#141A1F;
+  --secondary-color:#51BD88;
+  --sub-text-color:#8B8B8B;
+  --second-cards-color:#FFFFFF;
+  --text-field-color:#F8F8F8;
+}
+
+* {
+  font-family: 'Nunito', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  transition: all .2s linear;
+  color:var(--primary-color);
+}
+
+*::selection {
+  background: var(--green);
+  color: #fff;
+}
+
+html {
+  font-size: 50%;
+  width: 100vw;
+  overflow-x: hidden;
+  scroll-padding-top: 6.5rem;
+  scroll-behavior: smooth;
+}
+
+button{
+  cursor: pointer;
+}
+
+.main-app{
+  color: var(--primary-color);
+  background: var(--body-background);
+}
+
+
+
+/* media queries */
+
+@media(max-width:1200px) {
+  html {
+    font-size: 40%;
+  }
+}
+
+@media(max-width:450px) {
+  html {
+    font-size: 35%;
+  }
+}

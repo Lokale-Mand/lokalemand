@@ -1,0 +1,31 @@
+.not-found{
+    padding: 30px;
+    min-height: 80vh;
+}
+.not-found-container{
+    background: var(--body-background);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border-radius: 8px;
+}
+
+.not-found-container img{
+    width: 30vw;
+}
+
+.not-found-container p{
+    font-size: 2.455rem;
+    font-weight: bolder;
+    margin-top: 20px
+}
+
+.not-found-container button{
+    padding: 8px 20px;
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    border-radius: 8px;
+    font-size: 2.455rem;
+}

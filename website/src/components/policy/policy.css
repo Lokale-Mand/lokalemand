@@ -1,0 +1,33 @@
+.policy{
+    min-height: 75vh;
+}
+
+.policy-container{
+    padding: 30px;
+    border-radius: 8px;
+    background-color: var(--second-cards-color);
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 2.155rem;
+}
+
+.policy-container h1 {
+    font-size: 4rem;
+    font-weight: bolder;
+    text-align: center;
+    background-color: var(--secondary-color);
+    padding: 5px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.policy-container h1 strong{
+    color: var(--text-field-color);
+
+}
+
+.policy-container h2{
+    font-size: 3rem;
+    font-weight: bold;
+    margin-top: 30px;
+}
