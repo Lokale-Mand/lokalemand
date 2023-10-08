@@ -1,6 +1,0 @@
-Header always set Access-Control-Allow-Origin *
-Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
-Options -MultiViews
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.html [QSA,L]
