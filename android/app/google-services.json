@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "590735145409",
+    "project_id": "lokalemand-f1c71",
+    "storage_bucket": "lokalemand-f1c71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590735145409:android:0465489fa218f45d809740",
+        "android_client_info": {
+          "package_name": "com.lokalemand.nl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590735145409-ejqus43etn6e3kh3dq4i4ec9j1p8d9or.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1xIIl35Q0yCeSL1BPUrbZ7LTVM80zGvI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590735145409-ejqus43etn6e3kh3dq4i4ec9j1p8d9or.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
