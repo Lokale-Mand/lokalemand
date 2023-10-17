@@ -1,4 +1,3 @@
-```markdown
 # Lokale Mand Customer App Maintenance
 
 ## Generate Keystore
@@ -163,7 +162,4 @@ rm -rf ios/build
 rm -rf ios/Podfile.lock
 rm -rf pubspec.lock
 rm -rf lib/firebase_options.dart
-```
-
-This structured format should make it easier for you and your team to manage your Flutter project.
 ```
