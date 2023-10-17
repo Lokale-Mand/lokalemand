@@ -1,24 +1,36 @@
-# Lokale Mand Customer App
+```markdown
+# Lokale Mand Customer App Maintenance
 
-//
+## Generate Keystore
+
+Create a keystore for the app:
+
 ```shell
 keytool -genkey -v -keystore keystore-lokale-mand.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
 ```
 
-// to clear flutter
+## Flutter Clean
+
+### Clear Flutter Temp Files
+
+To clear temporary files and clean the project:
 
 ```shell
 flutter clean
 ```
 
-//To clean and get
+### Clean and Get Dependencies
+
+To clean the project and fetch dependencies:
 
 ```shell
 flutter clean
 flutter pub get
 ```
 
-//To repair the pub cache
+### Repair Pub Cache
+
+To repair the pub cache:
 
 ```shell
 flutter clean
@@ -26,7 +38,9 @@ flutter pub cache repair
 flutter pub get
 ```
 
-//to generate android application
+## Build Android Application
+
+To build the Android application:
 
 ```shell
 flutter clean
@@ -34,7 +48,9 @@ flutter pub get
 flutter build apk --split-per-abi
 ```
 
-//to generate android app bundle
+## Build Android App Bundle
+
+To build the Android app bundle:
 
 ```shell
 flutter clean
@@ -42,7 +58,9 @@ flutter pub get
 flutter build appbundle
 ```
 
-//To update iOS pods
+## Update iOS Pods
+
+Update iOS dependencies:
 
 ```shell
 cd ios
@@ -52,29 +70,19 @@ pod update
 cd ..
 ```
 
-// to clear derived cache data in ios
+## Clear Derived Cache Data in iOS
+
+To clear derived cache data in iOS:
 
 ```shell
 sudo rm -rf ~/Library/Developer/Xcode/DerivedData
-````
-
-// to clean all temp files
-
-```shell
-rm -rf ios/.symlinks
-rm -rf ios/Pods
-rm -rf ios/build
-rm -rf ios/Podfile.lock
-rm -rf android/.gradle
-rm -rf build
-rm -rf .dart_tool
-rm -rf .idea
-rm -rf pubspec.lock
-rm -rf .flutter-plugins
-rm -rf .flutter-plugins-dependencies
 ```
 
-// to publish ios app without changing version
+## Publish iOS App
+
+### Publish Without Changing Version
+
+To publish the iOS app without changing the version:
 
 ```shell
 flutter clean
@@ -90,24 +98,9 @@ pod update
 xed .
 ```
 
-// to clear only ios folder
+### Publish With Changing Version
 
-```shell
-rm -rf ios/.symlinks
-rm -rf ios/Pods
-rm -rf ios/build
-rm -rf ios/Podfile.lock
-rm -rf build
-rm -rf .dart_tool
-rm -rf .idea
-rm -rf pubspec.lock
-rm -rf .flutter-plugins
-rm -rf .flutter-plugins-dependencies
-flutter clean
-flutter pub get
-```
-
-// to publish ios app with changing version
+To publish the iOS app with a version change:
 
 ```shell
 flutter clean
@@ -126,7 +119,9 @@ pod update
 xed .
 ```
 
-// to solve most common iOS errors
+## Solve Common iOS Errors
+
+To resolve common iOS errors:
 
 ```shell
 flutter clean
@@ -147,7 +142,9 @@ pod update
 xed .
 ```
 
-// to clean old firebase data and cache from code
+## Clean Firebase Data and Cache
+
+To clean old Firebase data and cache from the code:
 
 ```shell
 rm -rf .metadata
@@ -166,4 +163,7 @@ rm -rf ios/build
 rm -rf ios/Podfile.lock
 rm -rf pubspec.lock
 rm -rf lib/firebase_options.dart
+```
+
+This structured format should make it easier for you and your team to manage your Flutter project.
 ```
