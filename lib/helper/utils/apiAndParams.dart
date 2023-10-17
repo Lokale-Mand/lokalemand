@@ -16,6 +16,7 @@ class ApiAndParams {
   static String apiRemoveProductFromFavorite = "favorites/remove";
   static String apiProductDetail = "product_by_id";
   static String apiFaq = "faqs";
+  static String apiSellers = "sellers";
   static String apiNotification = "notifications";
   static String apiUpdateProfile = "edit_profile";
   static String apiUserDetails = "user_details";

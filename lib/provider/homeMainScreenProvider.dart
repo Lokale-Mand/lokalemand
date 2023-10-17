@@ -1,4 +1,5 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/provider/sellersListProvider.dart';
 
 class HomeMainScreenProvider extends ChangeNotifier {
   int currentPage = 0;
@@ -15,10 +16,19 @@ class HomeMainScreenProvider extends ChangeNotifier {
 
   setPages() {
     pages = [
-      ChangeNotifierProvider<ProductListProvider>(
-        create: (context) {
-          return ProductListProvider();
-        },
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ProductListProvider>(
+            create: (context) {
+              return ProductListProvider();
+            },
+          ),
+          ChangeNotifierProvider<SellerListProvider>(
+            create: (context) {
+              return SellerListProvider();
+            },
+          ),
+        ],
         child: HomeScreen(
           scrollController: scrollController[0],
         ),

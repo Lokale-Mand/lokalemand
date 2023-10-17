@@ -42,7 +42,7 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
   }
 
   setMarkerIcon() async {
-    MarkerGenerator(const MapDeliveredMarker(), (bitmaps) {
+    MarkerGenerator(const MaptLocationMarker(), (bitmaps) {
       setState(() {
         bitmaps.asMap().forEach((i, bmp) {
           customMarkers.add(Marker(

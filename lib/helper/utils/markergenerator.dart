@@ -8,7 +8,7 @@ class MarkerGenerator {
   final Function(List<Uint8List>) callback;
   final Widget markerWidgets;
 
-  MarkerGenerator(this.markerWidgets, this.callback);
+    MarkerGenerator(this.markerWidgets, this.callback);
 
   void generate(BuildContext context) {
     WidgetsBinding.instance

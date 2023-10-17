@@ -5,6 +5,8 @@ export 'dart:math';
 export 'dart:typed_data';
 
 export 'package:awesome_notifications/awesome_notifications.dart';
+export 'package:lokale_mand/repositories/sellersApi.dart';
+export 'package:lokale_mand/models/sellerList.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:country_code_picker/country_code_picker.dart';
 export 'package:lokale_mand/firebase_options.dart';
@@ -37,7 +39,7 @@ export 'package:lokale_mand/helper/utils/apiAndParams.dart';
 export 'package:lokale_mand/helper/utils/awsomeNotification.dart';
 export 'package:lokale_mand/helper/utils/constant.dart';
 export 'package:lokale_mand/helper/utils/generalMethods.dart';
-export 'package:lokale_mand/helper/utils/mapDeliveredMarker.dart';
+export 'package:lokale_mand/helper/utils/mapLocationMarker.dart';
 export 'package:lokale_mand/helper/utils/markergenerator.dart';
 export 'package:lokale_mand/helper/utils/routeGenerator.dart';
 export 'package:lokale_mand/helper/utils/stripeService.dart';

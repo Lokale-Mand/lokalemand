@@ -1,8 +1,8 @@
 import 'package:lokale_mand/helper/styles/colorsRes.dart';
 import 'package:flutter/material.dart';
 
-class MapDeliveredMarker extends StatefulWidget {
-  const MapDeliveredMarker({Key? key}) : super(key: key);
+class MaptLocationMarker extends StatefulWidget {
+  const MaptLocationMarker({Key? key}) : super(key: key);
 
   //MapMarker();
 
@@ -10,7 +10,7 @@ class MapDeliveredMarker extends StatefulWidget {
   MapDeliveredMarkerState createState() => MapDeliveredMarkerState();
 }
 
-class MapDeliveredMarkerState extends State<MapDeliveredMarker> {
+class MapDeliveredMarkerState extends State<MaptLocationMarker> {
   @override
   Widget build(BuildContext context) {
     return Padding(

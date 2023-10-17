@@ -12,8 +12,8 @@ class LoginAccount extends StatefulWidget {
 class _LoginAccountState extends State<LoginAccount> {
   bool isLoading = false, isAcceptedTerms = false, isPasswordVisible = false;
 
-  TextEditingController edtEmail = TextEditingController();
-  TextEditingController edtPassword = TextEditingController();
+  TextEditingController edtEmail = TextEditingController(text: "wrteam.vimal@gmail.com");
+  TextEditingController edtPassword = TextEditingController(text: "123123");
   bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -38,7 +38,13 @@ class _LoginAccountState extends State<LoginAccount> {
         padding: EdgeInsetsDirectional.all(20),
         alignment: Alignment.center,
         child: Center(
-          child: loginWidgets(),
+          child: ListView(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            children: [
+              loginWidgets(),
+            ],
+          ),
         ),
       ),
     );
@@ -163,7 +169,6 @@ class _LoginAccountState extends State<LoginAccount> {
           height: Constant.size20,
         ),
         skipLoginText(),
-        Spacer(),
         CustomTextLabel(
           jsonKey: "login_account",
           style: TextStyle(
@@ -390,7 +395,6 @@ class _LoginAccountState extends State<LoginAccount> {
           height: Constant.size20,
         ),
         proceedButtonWidget(),
-        Spacer(),
         Container(
           alignment: AlignmentDirectional.centerEnd,
           child: RichText(
