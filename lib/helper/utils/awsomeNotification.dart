@@ -62,7 +62,8 @@ class LocalAwesomeNotification {
                         "category",
                         notificationTypeId.toString(),
                         getTranslatedValue(
-                            Constant.navigatorKay.currentContext!, "app_name")
+                            Constant.navigatorKay.currentContext!, "app_name"),
+                        null,
                       ]);
                 } else if (notificationType == "product") {
                   Navigator.pushNamed(Constant.navigatorKay.currentContext!,

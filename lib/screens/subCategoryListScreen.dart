@@ -114,7 +114,8 @@ class _SubCategoryListScreenState extends State<SubCategoryListScreen> {
                                   arguments: [
                                     "category",
                                     category.id.toString(),
-                                    category.name
+                                    category.name,
+                                    null,
                                   ]);
                             }
                           },

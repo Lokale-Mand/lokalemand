@@ -36,6 +36,7 @@ class SellerListData {
   String? storeName;
   String? latitude;
   String? longitude;
+  String? categories;
   String? distance;
   String? maxDeliverableDistance;
   String? logoUrl;
@@ -46,6 +47,7 @@ class SellerListData {
         this.storeName,
         this.latitude,
         this.longitude,
+        this.categories,
         this.distance,
         this.maxDeliverableDistance,
         this.logoUrl});
@@ -56,6 +58,7 @@ class SellerListData {
     storeName = json['store_name'].toString();
     latitude = json['latitude'].toString();
     longitude = json['longitude'].toString();
+    categories = json['categories'].toString();
     distance = json['distance'].toString();
     maxDeliverableDistance = json['max_deliverable_distance'].toString();
     logoUrl = json['logo_url'].toString();
@@ -68,6 +71,7 @@ class SellerListData {
     data['store_name'] = this.storeName;
     data['latitude'] = this.latitude;
     data['longitude'] = this.longitude;
+    data['categories'] = this.categories;
     data['distance'] = this.distance;
     data['max_deliverable_distance'] = this.maxDeliverableDistance;
     data['logo_url'] = this.logoUrl;

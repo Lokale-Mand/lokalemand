@@ -97,7 +97,8 @@ class _SliderImageWidgetState extends State<SliderImageWidget> {
                                         widget
                                             .sliders[sliderImagesProvider
                                                 .currentSliderImageIndex]
-                                            .typeName
+                                            .typeName,
+                                        null,
                                       ]);
                                 } else if (widget
                                         .sliders[sliderImagesProvider

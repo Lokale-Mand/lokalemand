@@ -373,15 +373,17 @@ class _ProductVariantDropDownMenuGridState
                                   ),
                                 ),
                               if (widget.variants!.length == 1)
-                                CustomTextLabel(
-                                  text:
-                                      "${widget.variants![0].measurement} ${widget.variants![0].stockUnitName}",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: ColorsRes.mainTextColor,
+                                Expanded(
+                                  child: CustomTextLabel(
+                                    text:
+                                        "${widget.variants![0].measurement} ${widget.variants![0].stockUnitName}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: ColorsRes.mainTextColor,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
                               if (widget.variants!.length > 1)
                                 Expanded(

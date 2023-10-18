@@ -192,6 +192,7 @@ class RouteGenerator {
               title: GeneralMethods.setFirstLetterUppercase(
                 productListArguments[2],
               ),
+              categories: productListArguments[3],
             ),
           ),
         );

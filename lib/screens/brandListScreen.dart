@@ -83,12 +83,15 @@ class _BrandListScreenState extends State<BrandListScreen> {
                         return BrandItemContainer(
                           brand: brand,
                           voidCallBack: () {
-                            Navigator.pushNamed(context, productListScreen,
-                                arguments: [
-                                  "brand",
-                                  brand.id.toString(),
-                                  brand.name
-                                ]);
+                            Navigator.pushNamed(
+                              context,
+                              productListScreen,
+                              arguments: [
+                                "brand",
+                                brand.id.toString(),
+                                brand.name,null,
+                              ],
+                            );
                           },
                         );
                       },

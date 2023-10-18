@@ -94,11 +94,15 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                   Navigator.pushNamed(context, productListScreen, arguments: [
                     "category",
                     notification.typeId.toString(),
-                    ""
+                    "",
+                    null,
                   ]);
                 } else if (notification.type == "product") {
-                  Navigator.pushNamed(context, productDetailScreen,
-                      arguments: [notification.typeId.toString(), "", null]);
+                  Navigator.pushNamed(context, productDetailScreen, arguments: [
+                    notification.typeId.toString(),
+                    "",
+                    null,
+                  ]);
                 }
               },
               child: Container(

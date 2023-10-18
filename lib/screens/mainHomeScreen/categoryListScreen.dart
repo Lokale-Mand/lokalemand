@@ -110,7 +110,8 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
                                   arguments: [
                                     "category",
                                     category.id.toString(),
-                                    category.name
+                                    category.name,
+                                    null
                                   ]);
                             }
                           },

@@ -4,9 +4,14 @@ class ProductListScreen extends StatefulWidget {
   final String? title;
   final String from;
   final String id;
+  final categories;
 
   const ProductListScreen(
-      {Key? key, this.title, required this.from, required this.id})
+      {Key? key,
+      this.title,
+      required this.from,
+      required this.id,
+      this.categories})
       : super(key: key);
 
   @override
@@ -47,6 +52,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
           context.read<ProductListProvider>().currentSortByOrderIndex];
       if (widget.from == "category") {
         params[ApiAndParams.categoryId] = widget.id.toString();
+      } else if (widget.from == "seller") {
+        params[ApiAndParams.sellerId] = widget.id.toString();
+        params[ApiAndParams.categoryId] = widget.categories.toString();
       } else if (widget.from == "brand") {
         params[ApiAndParams.brandId] = widget.id.toString();
       } else {
@@ -54,6 +62,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
       }
 
       params = await setFilterParams(params);
+
+      print(">>>>>>> $params");
 
       await context
           .read<ProductListProvider>()
@@ -92,17 +102,52 @@ class _ProductListScreenState extends State<ProductListScreen> {
     ];
     return Scaffold(
       appBar: getAppBar(
-          context: context,
-          title: CustomTextLabel(
-            text: widget.title ??
-                getTranslatedValue(
-                  context,
-                  "products",
-                ),
-            softWrap: true,
-            style: TextStyle(color: ColorsRes.mainTextColor),
-          ),
-          actions: [setCartCounter(context: context)]),
+        context: context,
+        title: CustomTextLabel(
+          text: widget.title ??
+              getTranslatedValue(
+                context,
+                "products",
+              ),
+          softWrap: true,
+          style: TextStyle(color: ColorsRes.mainTextColor),
+        ),
+        actions: [
+          setCartCounter(context: context),
+        ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomTextLabel(
+              jsonKey: "do_you_have_any_questions",
+            ),
+            Container(
+              height: 50,
+              alignment: Alignment.center,
+              padding: EdgeInsetsDirectional.all(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: ColorsRes.appColor, width: 2)),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.chat_bubble_outline_rounded,
+                    color: ColorsRes.appColor,
+                  ),
+                  Widgets.getSizedBox(width: 10),
+                  CustomTextLabel(
+                    text:
+                        "${getTranslatedValue(context, "chat_with")} ${widget.title}",
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           getSearchWidget(

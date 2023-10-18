@@ -1,3 +1,4 @@
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/provider/sellersListProvider.dart';
 
@@ -23,13 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
         GeneralMethods.determinePosition().then((value) {
           updateMap(value.latitude, value.longitude);
-          context.read<SellerListProvider>().getSellerListProvider(
-            params: {
-              ApiAndParams.latitude: value.latitude,
-              ApiAndParams.longitude: value.longitude,
-            },
-            context: context,
-          );
         });
       },
     );
@@ -41,7 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Marker> customMarkers = [];
 
-  Future<void> updateMap(double latitude, double longitude) async{
+  Future<void> updateMap(double latitude, double longitude) async {
+    Constant.session
+        .setData(SessionManager.keyLatitude, latitude.toString(), false);
+    Constant.session
+        .setData(SessionManager.keyLongitude, longitude.toString(), false);
+
     kMapCenter = LatLng(latitude, longitude);
     setMarkerIcon();
     kGooglePlex = CameraPosition(
@@ -50,6 +49,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     controller.animateCamera(CameraUpdate.newCameraPosition(kGooglePlex));
+    context.read<SellerListProvider>().getSellerListProvider(
+      params: {
+        ApiAndParams.latitude: latitude,
+        ApiAndParams.longitude: longitude,
+      },
+      context: context,
+    );
   }
 
   setMarkerIcon() async {
@@ -107,36 +113,108 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       itemCount: sellerListProvider.sellerListData.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsetsDirectional.symmetric(
-                            horizontal: 10,
-                          ),
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          height: 130,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(
-                              10,
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Widgets.getSizedBox(width: 10),
-                              ClipRRect(
-                                child: Widgets.setNetworkImg(
-                                  image: sellerListProvider.sellerListData[index].logoUrl??"",
-                                  height: 80,
-                                  width: 80,
-                                ),
-                                borderRadius: BorderRadius.circular(7),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              productListScreen,
+                              arguments: [
+                                getTranslatedValue(context, "seller"),
+                                sellerListProvider
+                                    .sellerListData[index].id
+                                    .toString(),
+                                "seller",
+                                sellerListProvider.sellerListData[index].categories.toString(),
+                              ],
+                            );
+                          },
+                          child: Container(
+                              margin: EdgeInsetsDirectional.symmetric(
+                                horizontal: 10,
                               ),
-                              Expanded(
-                                child: CustomTextLabel(
-                                  text: sellerListProvider.sellerListData[index].name,
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              height: 130,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.circular(
+                                  10,
                                 ),
                               ),
-                            ],
-                          )
+                              child: Row(
+                                children: [
+                                  Widgets.getSizedBox(width: 10),
+                                  ClipRRect(
+                                    child: Widgets.setNetworkImg(
+                                      image: sellerListProvider
+                                              .sellerListData[index].logoUrl ??
+                                          "",
+                                      height: 80,
+                                      width: 80,
+                                    ),
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CustomTextLabel(
+                                            text: sellerListProvider
+                                                .sellerListData[index].name,
+                                            softWrap: true,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                          CustomTextLabel(
+                                            text:
+                                                "${sellerListProvider.sellerListData[index].distance} KM away",
+                                            softWrap: true,
+                                            style: TextStyle(
+                                              color: ColorsRes
+                                                  .subTitleMainTextColor,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              CustomTextLabel(
+                                                text: "4.5",
+                                                softWrap: true,
+                                                style: TextStyle(
+                                                  color: ColorsRes
+                                                      .subTitleMainTextColor,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              Widgets.getSizedBox(
+                                                width: 5,
+                                              ),
+                                              RatingBarIndicator(
+                                                rating: 4.5,
+                                                itemCount: 5,
+                                                itemSize: 20.0,
+                                                physics:
+                                                    BouncingScrollPhysics(),
+                                                itemBuilder: (context, _) =>
+                                                    Icon(
+                                                  Icons.star,
+                                                  color: Colors.amber,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )),
                         );
                       },
                     ),

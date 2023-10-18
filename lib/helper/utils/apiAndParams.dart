@@ -83,6 +83,7 @@ class ApiAndParams {
   static String categoryId = "category_id";
   static String sectionId = "section_id";
   static String brandId = "brand_id";
+  static String sellerId = "seller_id";
   static String cartItemsCount = "cart_items_count";
   static String productId = "product_id";
   static String productVariantId = "product_variant_id";

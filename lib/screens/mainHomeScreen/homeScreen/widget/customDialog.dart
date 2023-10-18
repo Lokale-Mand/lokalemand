@@ -28,7 +28,7 @@ class CustomDialog extends StatelessWidget {
                 Navigator.pushNamed(context, productListScreen, arguments: [
                   "category",
                   Constant.popupBannerTypeId,
-                  getTranslatedValue(context, "app_name")
+                  getTranslatedValue(context, "app_name"),null,
                 ]);
               } else if (Constant.popupBannerType == "popup_url") {
                 launchUrl(Uri.parse(Constant.popupBannerUrl),
