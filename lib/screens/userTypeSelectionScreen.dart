@@ -39,7 +39,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
                     style: TextStyle(
                       color: ColorsRes.appColorWhite,
                       fontWeight: FontWeight.bold,
-                      fontSize: 35,
+                      fontSize: 30,
                       wordSpacing: 3,
                       height: 1.1,
                     ),
@@ -74,10 +74,10 @@ class UserTypeSelectionScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Widgets.defaultImg(
-                            image: 'food_producer',
-                            height: 25,
-                            width: 25,
+                          Icon(
+                            Icons.storefront_outlined,
+                            color: ColorsRes.appColorWhite,
+                            size: 30,
                           ),
                           Widgets.getSizedBox(
                             width: 25,
@@ -91,7 +91,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
                               style: TextStyle(
                                 color: ColorsRes.appColorWhite,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 25,
+                                fontSize: 20,
                                 wordSpacing: 3,
                                 height: 1.1,
                               ),
@@ -118,10 +118,10 @@ class UserTypeSelectionScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Widgets.defaultImg(
-                            image: 'buyer',
-                            height: 25,
-                            width: 25,
+                          Icon(
+                            Icons.man_rounded,
+                            color: ColorsRes.appColorWhite,
+                            size: 30,
                           ),
                           Widgets.getSizedBox(
                             width: 25,
@@ -135,7 +135,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
                               style: TextStyle(
                                 color: ColorsRes.appColorWhite,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 25,
+                                fontSize: 20,
                                 wordSpacing: 3,
                                 height: 1.1,
                               ),

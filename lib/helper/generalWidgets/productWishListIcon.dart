@@ -34,16 +34,16 @@ class ProductWishListIcon extends StatelessWidget {
                 }
               });
             } else {
-              Widgets.loginUserAccount(context,"wishlist");
+              Widgets.loginUserAccount(context, "wishlist");
             }
           },
           child: Container(
             height: 30,
             width: 30,
             decoration: isListing == false
-                ? BoxDecoration(color: Theme.of(context).cardColor)
+                ? BoxDecoration(color: Colors.transparent)
                 : BoxDecoration(
-                    color: Theme.of(context).cardColor,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.circular(50),
                     boxShadow: [
                       BoxShadow(

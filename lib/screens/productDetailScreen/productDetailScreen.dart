@@ -1,4 +1,5 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/screens/productDetailScreen/widget/sliderImageWidget.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String? title;
@@ -40,167 +41,159 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: getAppBar(
-        context: context,
-        title: CustomTextLabel(
-          text: widget.title ?? getTranslatedValue(context, "products"),
-          softWrap: true,
-          style: TextStyle(color: ColorsRes.mainTextColor),
-        ),
-      ),
-      body: Consumer<ProductDetailProvider>(
-        builder: (context, productDetailProvider, child) {
-          return SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: CustomScrollView(
+        shrinkWrap: true,
+        slivers: [
+          SliverAppBar(
+            leadingWidth: MediaQuery.sizeOf(context).width,
+            leading: Row(
               children: [
-                productDetailProvider.productDetailState ==
-                        ProductDetailState.loaded
-                    ? ChangeNotifierProvider<SelectedVariantItemProvider>(
-                        create: (context) => SelectedVariantItemProvider(),
-                        child: productDetailWidget(
-                            productDetailProvider.productDetail.data),
-                      )
-                    : productDetailProvider.productDetailState ==
-                            ProductDetailState.loading
-                        ? getProductDetailShimmer(context: context)
-                        : const SizedBox.shrink(),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  productDetailWidget(ProductData product) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-              vertical: Constant.size10, horizontal: Constant.size10),
-          child: GestureDetector(
-            onTap: () {
-              Navigator
-                  .pushNamed(context, fullScreenProductImageScreen, arguments: [
-                context.read<ProductDetailProvider>().currentImage,
-                context.read<ProductDetailProvider>().productData.images.isEmpty
-                    ? [
-                        context
-                            .read<ProductDetailProvider>()
-                            .productData
-                            .imageUrl
-                      ]
-                    : context.read<ProductDetailProvider>().productData.images
-              ]);
-            },
-            child: Consumer<SelectedVariantItemProvider>(
-              builder: (context, selectedVariantItemProvider, child) {
-                return Stack(
-                  children: [
-                    ClipRRect(
-                        borderRadius: Constant.borderRadius10,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        child: Widgets.setNetworkImg(
-                          boxFit: BoxFit.fill,
-                          image: context.read<ProductDetailProvider>().images[
-                              context
-                                  .read<ProductDetailProvider>()
-                                  .currentImage],
-                          height: MediaQuery.sizeOf(context).width,
-                          width: MediaQuery.sizeOf(context).width,
-                        )),
-                    if (product
-                            .variants[
-                                selectedVariantItemProvider.getSelectedIndex()]
-                            .status ==
-                        "0")
-                      PositionedDirectional(
-                        top: 0,
-                        end: 0,
-                        start: 0,
-                        bottom: 0,
-                        child: getOutOfStockWidget(
-                            height: MediaQuery.sizeOf(context).width,
-                            width: MediaQuery.sizeOf(context).width,
-                            context: context),
-                      ),
-                    PositionedDirectional(
-                      bottom: 5,
-                      end: 5,
-                      child: Column(
-                        children: [
-                          if (product.indicator == 1)
-                            Widgets.defaultImg(
-                                height: 35, width: 35, image: "veg_indicator"),
-                          if (product.indicator == 2)
-                            Widgets.defaultImg(
-                                height: 35,
-                                width: 35,
-                                image: "non_veg_indicator"),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(
-                context
-                            .read<ProductDetailProvider>()
-                            .productData
-                            .images
-                            .length >
-                        1
-                    ? context
-                        .read<ProductDetailProvider>()
-                        .productData
-                        .images
-                        .length
-                    : 0, (index) {
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    context.read<ProductDetailProvider>().currentImage = index;
-                  });
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                   child: Container(
-                    decoration: getOtherImagesBoxDecoration(
-                        isActive: context
-                                .read<ProductDetailProvider>()
-                                .currentImage ==
-                            index),
-                    child: ClipRRect(
-                      borderRadius: Constant.borderRadius13,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      child: Widgets.setNetworkImg(
-                        height: 60,
-                        width: 60,
-                        image: context
-                            .read<ProductDetailProvider>()
-                            .productData
-                            .images[index],
-                        boxFit: BoxFit.fill,
+                    height: 50,
+                    width: 50,
+                    child: Card(
+                      elevation: 5,
+                      color: Theme.of(context).cardColor,
+                      shape: DesignConfig.setRoundedBorder(100),
+                      child: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: ColorsRes.mainTextColor,
                       ),
                     ),
                   ),
                 ),
-              );
-            }),
+                Spacer(),
+                Container(
+                  height: 50,
+                  width: 50,
+                  child: Consumer<ProductDetailProvider>(
+                      builder: (context, productDetailProvider, _) {
+                    ProductData product = productDetailProvider.productData;
+                    return GestureDetector(
+                      onTap: () async {
+                        await GeneralMethods.createDynamicLink(
+                          context: context,
+                          shareUrl: "${Constant.hostUrl}product/${product.id}",
+                          imageUrl: product.imageUrl,
+                          title: product.name,
+                          description:
+                              "<h1>${product.name}</h1><br><br><h2>${product.variants[0].measurement} ${product.variants[0].stockUnitName}</h2>",
+                        ).then(
+                          (value) async => await Share.share(
+                              "${product.name}\n\n$value",
+                              subject: "Share app"),
+                        );
+                      },
+                      child: Card(
+                        elevation: 5,
+                        color: Theme.of(context).cardColor,
+                        shape: DesignConfig.setRoundedBorder(100),
+                        child: Icon(
+                          Icons.share,
+                          color: ColorsRes.mainTextColor,
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+                Container(
+                  height: 50,
+                  width: 50,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Card(
+                      elevation: 5,
+                      color: Theme.of(context).cardColor,
+                      shape: DesignConfig.setRoundedBorder(100),
+                      child: ProductWishListIcon(
+                        product: Constant.session.isUserLoggedIn()
+                            ? widget.productListItem
+                            : null,
+                        isListing: false,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            expandedHeight: 250.0,
+            floating: false,
+            pinned: true,
+            centerTitle: false,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.parallax,
+              background: Consumer<ProductDetailProvider>(
+                builder: (context, productDetailProvider, child) {
+                  return Column(
+                    children: [
+                      productDetailProvider.productDetailState ==
+                              ProductDetailState.loaded
+                          ? ChangeNotifierProvider<SelectedVariantItemProvider>(
+                              create: (context) =>
+                                  SelectedVariantItemProvider(),
+                              child:
+                                  ChangeNotifierProvider<SliderImagesProvider>(
+                                create: (context) => SliderImagesProvider(),
+                                child: ProductSliderImagesWidgets(
+                                  sliders: context
+                                      .read<ProductDetailProvider>()
+                                      .images,
+                                ),
+                              ),
+                            )
+                          : productDetailProvider.productDetailState ==
+                                  ProductDetailState.loading
+                              ? getSliderShimmer(context: context)
+                              : const SizedBox.shrink(),
+                    ],
+                  );
+                },
+              ),
+            ),
           ),
-        ),
-        Widgets.getSizedBox(
-          height: Constant.size5,
-        ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              return Consumer<ProductDetailProvider>(
+                builder: (context, productDetailProvider, child) {
+                  return Column(
+                    children: [
+                      productDetailProvider.productDetailState ==
+                              ProductDetailState.loaded
+                          ? ChangeNotifierProvider<SelectedVariantItemProvider>(
+                              create: (context) =>
+                                  SelectedVariantItemProvider(),
+                              child: productDetailWidget(
+                                  productDetailProvider.productDetail.data),
+                            )
+                          : productDetailProvider.productDetailState ==
+                                  ProductDetailState.loading
+                              ? getProductDetailShimmer(context: context)
+                              : const SizedBox.shrink(),
+                    ],
+                  );
+                },
+              );
+            }, childCount: 1),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget productDetailWidget(ProductData product) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Row(
@@ -779,6 +772,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   getProductDetailShimmer({required BuildContext context}) {
     return CustomShimmer(
       height: MediaQuery.sizeOf(context).height,
+      width: MediaQuery.sizeOf(context).width,
+    );
+  }
+
+  getSliderShimmer({required BuildContext context}) {
+    return CustomShimmer(
+      height: 250,
       width: MediaQuery.sizeOf(context).width,
     );
   }

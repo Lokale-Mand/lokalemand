@@ -69,16 +69,17 @@ class Widgets {
     EdgeInsetsDirectional? padding,
     bool? isActive,
   }) {
+    String active = (isActive ??= false) == true ? "_active" : "";
+
     String dark =
         (Constant.session.getBoolData(SessionManager.isDarkTheme)) == true
             ? "_dark"
             : "";
-    String active = (isActive ??= false) == true ? "_active" : "";
 
     return defaultImg(
         height: height,
         width: width,
-        image: "$image$active${dark}_icon",
+        image: "${image}${active}${dark}_icon",
         iconColor: iconColor,
         boxFit: boxFit,
         padding: padding);
@@ -86,22 +87,10 @@ class Widgets {
 
   static List getHomeBottomNavigationBarIcons({required bool isActive}) {
     return [
-      Widgets.getDarkLightIcon(
-          image: "home",
-          isActive: isActive,
-          padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0)),
-      Widgets.getDarkLightIcon(
-          image: "category",
-          isActive: isActive,
-          padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0)),
-      Widgets.getDarkLightIcon(
-          image: "wishlist",
-          isActive: isActive,
-          padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0)),
-      Widgets.getDarkLightIcon(
-          image: "profile",
-          isActive: isActive,
-          padding: EdgeInsetsDirectional.zero),
+      Icon(Icons.map_rounded),
+      Icon(Icons.chat_bubble_outline_rounded),
+      Icon(Icons.person_outline),
+      Icon(Icons.storefront_rounded),
     ];
   }
 
@@ -525,7 +514,8 @@ AppBar getAppBar(
     elevation: 0,
     title: title,
     centerTitle: centerTitle ?? true,
-    backgroundColor: backgroundColor ?? Theme.of(context).cardColor,
+    backgroundColor:
+        backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
     actions: actions ?? [],
   );
 }
@@ -593,7 +583,7 @@ Widget getProductItemShimmer(
             );
           },
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 0.7,
+              childAspectRatio: 1,
               crossAxisCount: 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10),
@@ -610,49 +600,53 @@ Widget getProductItemShimmer(
 //Search widgets for the multiple screen
 Widget getSearchWidget({
   required BuildContext context,
+  Function? trailingCallBack,
+  Function? leadingCallBack,
 }) {
   return GestureDetector(
     onTap: () {
       Navigator.pushNamed(context, productSearchScreen);
     },
     child: Container(
-      color: Theme.of(context).cardColor,
-      padding: const EdgeInsetsDirectional.only(
-          start: 10, end: 10, bottom: 10, top: 10),
-      child: Row(children: [
-        Expanded(
-            child: Container(
-          decoration: DesignConfig.boxDecoration(
-              Theme.of(context).scaffoldBackgroundColor, 10),
-          child: ListTile(
-            title: TextField(
-              enabled: false,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: context
-                    .read<LanguageProvider>()
-                    .currentLanguage["product_search_hint"],
-              ),
-            ),
-            contentPadding: EdgeInsetsDirectional.only(start: Constant.size12),
-            trailing: IconButton(
-              padding: EdgeInsets.zero,
-              icon: const Icon(Icons.search),
-              onPressed: () {},
-            ),
-          ),
-        )),
-        SizedBox(width: Constant.size10),
-        Container(
-          decoration: DesignConfig.boxGradient(10),
-          padding: EdgeInsets.symmetric(
-              horizontal: Constant.size14, vertical: Constant.size14),
-          child: Widgets.defaultImg(
-            image: "voice_search_icon",
-            iconColor: ColorsRes.mainIconColor,
+      margin: EdgeInsetsDirectional.all(10),
+      decoration: DesignConfig.boxDecoration(
+        Theme.of(context).scaffoldBackgroundColor,
+        bordercolor: const Color(0xffe3e0e0),
+        borderwidth: 2,
+        isboarder: true,
+        15,
+      ),
+      child: ListTile(
+        title: TextField(
+          enabled: false,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintStyle: TextStyle(color: const Color(0xffe3e0e0)),
+            hintText: context
+                .read<LanguageProvider>()
+                .currentLanguage["product_search_hint"],
           ),
         ),
-      ]),
+        contentPadding: EdgeInsetsDirectional.only(start: Constant.size5),
+        leading: IconButton(
+          padding: EdgeInsets.zero,
+          icon: const Icon(
+            Icons.search,
+            color: Color(0xff323232),
+            size: 30,
+          ),
+          onPressed: () {},
+        ),
+        trailing: IconButton(
+          padding: EdgeInsets.zero,
+          icon: const Icon(
+            Icons.sort_rounded,
+            color: Color(0xff323232),
+            size: 30,
+          ),
+          onPressed: () {},
+        ),
+      ),
     ),
   );
 }

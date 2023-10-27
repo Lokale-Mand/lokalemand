@@ -6,7 +6,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
   try {
-
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -119,6 +118,8 @@ class MyAppState extends State<MyApp> {
           Constant.searchedItemsHistoryList = Constant.session.prefs
                   .getStringList(SessionManager.keySearchHistory) ??
               [];
+
+          Constant.session.setBoolData(SessionManager.keyIsGrid, true, false);
 
           if (Constant.session
               .getData(SessionManager.appThemeName)

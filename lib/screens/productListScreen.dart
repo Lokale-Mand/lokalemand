@@ -113,39 +113,71 @@ class _ProductListScreenState extends State<ProductListScreen> {
           style: TextStyle(color: ColorsRes.mainTextColor),
         ),
         actions: [
-          setCartCounter(context: context),
+          // setCartCounter(context: context),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomTextLabel(
-              jsonKey: "do_you_have_any_questions",
-            ),
-            Container(
-              height: 50,
-              alignment: Alignment.center,
-              padding: EdgeInsetsDirectional.all(10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: ColorsRes.appColor, width: 2)),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.chat_bubble_outline_rounded,
-                    color: ColorsRes.appColor,
-                  ),
-                  Widgets.getSizedBox(width: 10),
-                  CustomTextLabel(
-                    text:
-                        "${getTranslatedValue(context, "chat_with")} ${widget.title}",
-                  ),
-                ],
+      bottomNavigationBar: PhysicalModel(
+        elevation: 10,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(
+            15,
+          ),
+          topRight: Radius.circular(
+            15,
+          ),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(
+                15,
+              ),
+              topRight: Radius.circular(
+                15,
               ),
             ),
-          ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: CustomTextLabel(
+                  jsonKey: "do_you_have_any_questions",
+                ),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  height: 50,
+                  alignment: Alignment.center,
+                  padding: EdgeInsetsDirectional.all(10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: ColorsRes.appColor,
+                      width: 2,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.chat_bubble_outline_rounded,
+                        color: ColorsRes.appColor,
+                      ),
+                      Widgets.getSizedBox(width: 10),
+                      CustomTextLabel(
+                        text:
+                            "${getTranslatedValue(context, "chat_with")} ${widget.title}",
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: Column(
@@ -153,10 +185,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
           getSearchWidget(
             context: context,
           ),
-          Widgets.getSizedBox(
-            height: Constant.size5,
-          ),
-          Container(
+          // Widgets.getSizedBox(
+          //   height: Constant.size5,
+          // ),
+/*          Container(
             margin: EdgeInsets.symmetric(horizontal: Constant.size5),
             child: Row(
               children: [
@@ -440,20 +472,22 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 ),
               ],
             ),
-          ),
+          ),*/
           Expanded(
-              child: setRefreshIndicator(
-                  refreshCallback: () async {
-                    context.read<ProductListProvider>().offset = 0;
-                    context.read<ProductListProvider>().products = [];
+            child: setRefreshIndicator(
+              refreshCallback: () async {
+                context.read<ProductListProvider>().offset = 0;
+                context.read<ProductListProvider>().products = [];
 
-                    callApi(isReset: true);
-                  },
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    child: productWidget(),
-                  )))
+                callApi(isReset: true);
+              },
+              child: SingleChildScrollView(
+                controller: scrollController,
+                physics: AlwaysScrollableScrollPhysics(),
+                child: productWidget(),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -493,7 +527,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       },
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.8,
+                        childAspectRatio: 1,
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,

@@ -24,10 +24,10 @@ class HomeMainScreenState extends State<HomeMainScreen> {
         .read<HomeMainScreenProvider>()
         .scrollController[2]
         .removeListener(() {});
-    context
-        .read<HomeMainScreenProvider>()
-        .scrollController[3]
-        .removeListener(() {});
+    // context
+    //     .read<HomeMainScreenProvider>()
+    //     .scrollController[3]
+    //     .removeListener(() {});
     super.dispose();
   }
 
@@ -153,38 +153,54 @@ class HomeMainScreenState extends State<HomeMainScreen> {
     List lblHomeBottomMenu = [
       getTranslatedValue(
         context,
-        "home_bottom_menu_home",
+        "home_bottom_menu_search",
       ),
       getTranslatedValue(
         context,
-        "home_bottom_menu_category",
+        "home_bottom_menu_report",
       ),
       getTranslatedValue(
         context,
-        "home_bottom_menu_wishlist",
+        "home_bottom_menu_account",
       ),
-      getTranslatedValue(
-        context,
-        "home_bottom_menu_profile",
-      ),
+      // getTranslatedValue(
+      //   context,
+      //   "home_bottom_menu_product",
+      // ),
     ];
+
     return BottomNavigationBar(
-        items: List.generate(
-          totalPage,
-          (index) => BottomNavigationBarItem(
-            backgroundColor: Theme.of(context).cardColor,
-            icon: Widgets.getHomeBottomNavigationBarIcons(
-                isActive: selectedIndex == index)[index],
-            label: lblHomeBottomMenu[index],
-          ),
+      items: List.generate(
+        totalPage,
+        (index) => BottomNavigationBarItem(
+          backgroundColor: Theme.of(context).cardColor,
+          icon: Widgets.getHomeBottomNavigationBarIcons(
+              isActive: selectedIndex == index)[index],
+          label: lblHomeBottomMenu[index],
         ),
-        type: BottomNavigationBarType.shifting,
-        currentIndex: selectedIndex,
-        selectedItemColor: ColorsRes.mainTextColor,
-        unselectedItemColor: Colors.transparent,
-        onTap: (int ind) {
-          selectBottomMenu(ind);
-        },
-        elevation: 5);
+      ),
+      type: BottomNavigationBarType.fixed,
+      currentIndex: selectedIndex,
+      enableFeedback: true,
+      selectedFontSize: 13,
+      unselectedFontSize: 13,
+      selectedItemColor: ColorsRes.appColor,
+      unselectedItemColor: ColorsRes.mainTextColor,
+      showUnselectedLabels: true,
+      showSelectedLabels: true,
+      selectedLabelStyle: TextStyle(
+        color: ColorsRes.appColor,
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedLabelStyle: TextStyle(
+        color: ColorsRes.mainTextColor,
+        fontWeight: FontWeight.bold,
+      ),
+      iconSize: 25,
+      onTap: (int ind) {
+        selectBottomMenu(ind);
+      },
+      elevation: 5,
+    );
   }
 }

@@ -34,7 +34,6 @@ class ProductDetailProvider extends ChangeNotifier {
 
         productDetailState = ProductDetailState.loaded;
 
-
         notifyListeners();
       } else {
         message = Constant.somethingWentWrong;
@@ -53,9 +52,7 @@ class ProductDetailProvider extends ChangeNotifier {
     currentImage = 0;
     images = [];
     images.add(product.imageUrl);
-    if (product.variants[currentIndex].images.isNotEmpty) {
-      images.addAll(product.variants[currentIndex].images);
-    } else if(product.images.isNotEmpty){
+    if (product.images.isNotEmpty) {
       images.addAll(product.images);
     }
     notifyListeners();

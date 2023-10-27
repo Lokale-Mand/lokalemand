@@ -28,25 +28,25 @@ class ColorsRes {
   static Color defaultPageOuterCircle = const Color(0x0d999999);
 
   static Color mainTextColor = const Color(0xde000000);
-  static Color subTitleMainTextColor = const Color(0x94000000);
+  static Color subTitleMainTextColor = const Color(0xff333333);
 
   static Color mainIconColor = Colors.white;
 
-  static Color bgColorLight = const Color(0xffffffff);
-  static Color bgColorDark = const Color(0xff141A1F);
+  static Color bgColorLight = const Color(0xfff4f4f7);
+  static Color bgColorDark = const Color(0xff1b2228);
 
   static Color cardColorLight = const Color(0xffffffff);
   static Color cardColorDark = const Color(0xff141A1F);
 
-  static Color textFieldBorderColor = const Color(0xffCCCCCC);
+  static Color textFieldBorderColor = const Color(0xffc4c2c2);
 
   static Color lightThemeTextColor = const Color(0xde000000);
   static Color darkThemeTextColor = const Color(0xdeffffff);
 
-  static Color subTitleTextColorLight = const Color(0x94000000);
+  static Color subTitleTextColorLight = const Color(0xff333333);
   static Color subTitleTextColorDark = const Color(0x94ffffff);
 
-  static Color grey = Colors.grey;
+  static Color grey = const Color(0x00323232);
   static Color appColorWhite = Colors.white;
   static Color appColorBlack = Colors.black;
   static Color appColorRed = Colors.red;

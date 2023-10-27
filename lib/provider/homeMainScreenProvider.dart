@@ -36,11 +36,11 @@ class HomeMainScreenProvider extends ChangeNotifier {
       CategoryListScreen(
         scrollController: scrollController[1],
       ),
-      WishListScreen(
-        scrollController: scrollController[2],
-      ),
+      // WishListScreen(
+      //   scrollController: scrollController[2],
+      // ),
       ProfileScreen(
-        scrollController: scrollController[3],
+        scrollController: scrollController[2],
       )
     ];
   }

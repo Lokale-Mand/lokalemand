@@ -168,16 +168,19 @@ class _SplashScreenState extends State<SplashScreen> {
                   (Version.parse(Constant.currentRequiredAppVersion) >
                       Version.parse(currentAppVersion))) {
                 if (Constant.requiredForceUpdate == "1") {
-                  Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+                  Navigator.pushReplacementNamed(
+                      context, userTypeSelectionScreen);
                   Navigator.pushReplacementNamed(context, appUpdateScreen,
                       arguments: true);
                 } else {
-                  Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+                  Navigator.pushReplacementNamed(
+                      context, userTypeSelectionScreen);
                   Navigator.pushNamed(context, appUpdateScreen,
                       arguments: false);
                 }
               } else {
-                Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+                Navigator.pushReplacementNamed(
+                    context, userTypeSelectionScreen);
               }
             }
           }
@@ -258,16 +261,19 @@ class _SplashScreenState extends State<SplashScreen> {
             } else {
               if (await versionInformationAvailable()) {
                 if (Constant.requiredIosForceUpdate == "1") {
-                  Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+                  Navigator.pushReplacementNamed(
+                      context, userTypeSelectionScreen);
                   Navigator.pushReplacementNamed(context, appUpdateScreen,
                       arguments: true);
                 } else {
-                  Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+                  Navigator.pushReplacementNamed(
+                      context, userTypeSelectionScreen);
                   Navigator.pushNamed(context, appUpdateScreen,
                       arguments: false);
                 }
               } else {
-                Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+                Navigator.pushReplacementNamed(
+                    context, userTypeSelectionScreen);
               }
             }
           }
