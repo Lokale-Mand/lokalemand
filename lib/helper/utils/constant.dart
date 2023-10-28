@@ -16,11 +16,11 @@ class Constant {
 
   static String appStoreId = "com.lokalemand.nl";
 
-  static String deepLinkPrefix = "https://egrocerapp.page.link";
+  static String deepLinkPrefix = "https://lokalemandapp.page.link";
 
   static String notificationChannel = "My Notifications";
 
-  static String deepLinkName = "lokale_mand";
+  static String deepLinkName = "Lokale Mand";
 
   //authenticationScreen with phone constants
   static int otpTimeOutSecond = 60; //otp time out

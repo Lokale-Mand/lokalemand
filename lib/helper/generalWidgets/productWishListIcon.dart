@@ -37,47 +37,58 @@ class ProductWishListIcon extends StatelessWidget {
               Widgets.loginUserAccount(context, "wishlist");
             }
           },
-          child: Container(
-            height: 30,
-            width: 30,
-            decoration: isListing == false
-                ? BoxDecoration(color: Colors.transparent)
-                : BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(50),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
-                      )
-                    ],
+          child: (providerContext
+                          .read<ProductAddOrRemoveFavoriteProvider>()
+                          .productAddRemoveFavoriteState ==
+                      ProductAddRemoveFavoriteState.loading &&
+                  providerContext
+                          .read<ProductAddOrRemoveFavoriteProvider>()
+                          .stateId ==
+                      (int.parse(product?.id ?? "0")))
+              ? Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Widgets.getLoadingIndicator(),
+                )
+              : Container(
+                  height: 50,
+                  width: 50,
+                  child: Card(
+                    elevation: 0,
+                    color: Theme.of(context).cardColor,
+                    shape: DesignConfig.setRoundedBorder(100),
+                    child: Icon(
+                      (Constant.session.isUserLoggedIn() &&
+                              providerContext
+                                  .read<ProductAddOrRemoveFavoriteProvider>()
+                                  .favoriteList
+                                  .contains(
+                                      int.parse(product?.id.toString() ?? "0")))
+                          ? Icons.favorite
+                          : Icons.favorite_border_outlined,
+                      color: (Constant.session.isUserLoggedIn() &&
+                              providerContext
+                                  .read<ProductAddOrRemoveFavoriteProvider>()
+                                  .favoriteList
+                                  .contains(
+                                      int.parse(product?.id.toString() ?? "0")))
+                          ? ColorsRes.activeWishListColor
+                          : ColorsRes.mainTextColor,
+                    ),
                   ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: Constant.size7, horizontal: Constant.size7),
-              child: (providerContext
-                              .read<ProductAddOrRemoveFavoriteProvider>()
-                              .productAddRemoveFavoriteState ==
-                          ProductAddRemoveFavoriteState.loading &&
-                      providerContext
-                              .read<ProductAddOrRemoveFavoriteProvider>()
-                              .stateId ==
-                          (int.parse(product?.id ?? "0")))
-                  ? Widgets.getLoadingIndicator()
-                  : Widgets.getDarkLightIcon(
-                      iconColor: ColorsRes.appColor,
+                ), /*Container(
+                  height: 24,
+                  width: 24,
+                  child: Widgets.getDarkLightIcon(
+                    iconColor: ColorsRes.appColor,
                       isActive: Constant.session.isUserLoggedIn()
                           ? providerContext
                               .read<ProductAddOrRemoveFavoriteProvider>()
                               .favoriteList
-                              .contains(
-                                  int.parse(product?.id.toString() ?? "0"))
+                              .contains(int.parse(product?.id.toString() ?? "0"))
                           : false,
-                      image: "wishlist",
-                    ),
-            ),
-          ),
+                    image: "wishlist",
+                  ),
+                ),*/
         );
       },
     );

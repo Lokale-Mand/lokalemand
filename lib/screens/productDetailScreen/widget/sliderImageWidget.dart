@@ -52,27 +52,30 @@ class _ProductSliderImagesWidgetsState
                 children: [
                   Stack(
                     children: [
-                      SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.28,
-                        width: MediaQuery.sizeOf(context).width,
-                        child: PageView.builder(
-                          controller: _pageController,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget.sliders.length,
-                          itemBuilder: (context, index) {
-                            return ClipRRect(
-                              borderRadius: Constant.borderRadius10,
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              child: Widgets.setNetworkImg(
-                                image: widget.sliders[index],
-                                boxFit: BoxFit.cover,
-                              ),
-                            );
-                          },
-                          onPageChanged: (value) {
-                            sliderImagesProvider
-                                .setSliderCurrentIndexImage(value);
-                          },
+                      Padding(
+                        padding: EdgeInsets.only(top: 40),
+                        child: SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.34,
+                          width: MediaQuery.sizeOf(context).width,
+                          child: PageView.builder(
+                            controller: _pageController,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: widget.sliders.length,
+                            itemBuilder: (context, index) {
+                              return ClipRRect(
+                                borderRadius: Constant.borderRadius10,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                child: Widgets.setNetworkImg(
+                                  image: widget.sliders[index],
+                                  boxFit: BoxFit.fitHeight,
+                                ),
+                              );
+                            },
+                            onPageChanged: (value) {
+                              sliderImagesProvider
+                                  .setSliderCurrentIndexImage(value);
+                            },
+                          ),
                         ),
                       ),
                       PositionedDirectional(

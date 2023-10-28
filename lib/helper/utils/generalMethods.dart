@@ -503,6 +503,7 @@ class GeneralMethods {
     final ShortDynamicLink shortLink =
         await FirebaseDynamicLinks.instance.buildShortLink(parameters);
     Uri uri = shortLink.shortUrl;
+    print(">>>>>> ${uri.toString()}");
     return uri.toString();
   }
 

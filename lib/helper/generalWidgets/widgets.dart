@@ -60,7 +60,7 @@ class Widgets {
     );
   }
 
-  static getDarkLightIcon({
+  static Widget getDarkLightIcon({
     double? height,
     double? width,
     required String image,
@@ -355,7 +355,7 @@ class Widgets {
     );
   }
 
-  static getLoadingIndicator() {
+  static Widget getLoadingIndicator() {
     return CircularProgressIndicator(
       backgroundColor: Colors.transparent,
       color: ColorsRes.appColor,

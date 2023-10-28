@@ -30,6 +30,8 @@ class ColorsRes {
   static Color mainTextColor = const Color(0xde000000);
   static Color subTitleMainTextColor = const Color(0xff333333);
 
+  static Color activeWishListColor = const Color(0xffF31E6B);
+
   static Color mainIconColor = Colors.white;
 
   static Color bgColorLight = const Color(0xfff4f4f7);
