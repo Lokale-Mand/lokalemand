@@ -52,6 +52,7 @@ class ProductData {
     required this.totalAllowedQuantity,
     required this.taxIncludedInPrice,
     required this.fssaiLicNo,
+    required this.storeHours,
     required this.fssaiLicImg,
     required this.dType,
     required this.sellerName,
@@ -83,6 +84,7 @@ class ProductData {
   late final String totalAllowedQuantity;
   late final String taxIncludedInPrice;
   late final String fssaiLicNo;
+  late final String storeHours;
   late final String fssaiLicImg;
   late final String dType;
   late final String sellerName;
@@ -114,6 +116,7 @@ class ProductData {
     totalAllowedQuantity = json['total_allowed_quantity'].toString();
     taxIncludedInPrice = json['tax_included_in_price'].toString();
     fssaiLicNo = json['fssai_lic_no'].toString();
+    storeHours = json['store_hours'].toString();
     fssaiLicImg = json['fssai_lic_img'].toString();
     dType = json['d_type'].toString();
     sellerName = json['seller_name'].toString();
@@ -149,6 +152,7 @@ class ProductData {
     itemData['total_allowed_quantity'] = totalAllowedQuantity;
     itemData['tax_included_in_price'] = taxIncludedInPrice;
     itemData['fssai_lic_no'] = fssaiLicNo;
+    itemData['store_hours'] = storeHours;
     itemData['fssai_lic_img'] = fssaiLicImg;
     itemData['d_type'] = dType;
     itemData['seller_name'] = sellerName;

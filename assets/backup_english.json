@@ -46,7 +46,7 @@
   "country": "Country",
   "invoice": "Invoice",
   "not_now": "Not Now",
-  "profile": "Profile",
+  "profile": "Account",
   "rate_us": "Rate Us",
   "return1": "Return",
   "see_all": "View All",
@@ -99,7 +99,7 @@
   "promo_codes": "Promo Codes",
   "tap_to_copy": "Tap To Copy",
   "address_type": "Address Type",
-  "change_theme": "Change Theme",
+  "change_theme": "Dark Theme",
   "edit_profile": "Edit Profile",
   "fssai_lic_no": "Fssai Lic. No:",
   "hide_details": "Hide",
@@ -299,6 +299,7 @@
   "sorting_display_list_oldest_first": "Oldest First",
   "order_status_display_names_shipped": "Shipped",
   "something_went_wrong_message_title": "Oops! Error",
+  "something_went_wrong_message_description": "Unexpected Error Encountered, Apologies.",
   "theme_display_names_system_default": "System Default",
   "empty_notification_list_description": "You have no notification right now come back later.",
   "order_status_display_names_received": "Received",
@@ -336,5 +337,10 @@
   "verification_mail_expired": "Verification mail expired?",
   "chat_with": "Chat with ",
   "do_you_have_any_questions": "Do you have any questions?",
-  "seller": "Seller"
+  "seller": "Seller",
+  "store": "Store",
+  "personal_data": "Personal Data",
+  "legal": "Legal",
+  "open_a_shop": "Open a shop",
+  "try_again": "Open a shop"
 }

@@ -34,7 +34,7 @@ class ColorsRes {
 
   static Color mainIconColor = Colors.white;
 
-  static Color bgColorLight = const Color(0xfff4f4f7);
+  static Color bgColorLight = const Color(0xffffffff);
   static Color bgColorDark = const Color(0xff1b2228);
 
   static Color cardColorLight = const Color(0xffffffff);
@@ -44,6 +44,8 @@ class ColorsRes {
 
   static Color lightThemeTextColor = const Color(0xde000000);
   static Color darkThemeTextColor = const Color(0xdeffffff);
+
+  static Color menuTitleColor = const Color(0xffBDBDBD);
 
   static Color subTitleTextColorLight = const Color(0xff333333);
   static Color subTitleTextColorDark = const Color(0x94ffffff);

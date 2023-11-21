@@ -287,7 +287,6 @@ rm -rf .vscode/
 rm -rf android/.gradle/
 rm -rf ios/.symlinks/
 rm -rf ios/Pods/
-rm -rf ios/Flutter/
 rm -rf ios/build/
 rm -rf ios/Podfile.lock
 rm -rf ios/Pods/

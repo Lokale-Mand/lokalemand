@@ -1,4 +1,5 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/models/storeTime.dart';
 
 enum ProductDetailState {
   initial,
@@ -14,6 +15,7 @@ class ProductDetailProvider extends ChangeNotifier {
   late ProductDetail productDetail;
   late int currentImage = 0;
   late List<String> images = [];
+  late List<StoreTime> storeTime = [];
 
   Future getProductDetailProvider(
       {required Map<String, dynamic> params,
@@ -29,6 +31,10 @@ class ProductDetailProvider extends ChangeNotifier {
         productDetail = ProductDetail.fromJson(data);
 
         productData = productDetail.data;
+
+        // storeTime = (jsonDecode(productDetail.data.storeHours) as List)
+        //     .map((e) => StoreTime.fromJson(Map.from(e)))
+        //     .toList();
 
         setOtherImages(0, productDetail.data);
 

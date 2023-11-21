@@ -119,11 +119,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               context,
                               productListScreen,
                               arguments: [
-                                getTranslatedValue(context, "seller"),
+                                "seller",
                                 sellerListProvider
                                     .sellerListData[index].id
                                     .toString(),
-                                "seller",
+                                getTranslatedValue(context, "seller"),
                                 sellerListProvider.sellerListData[index].categories.toString(),
                               ],
                             );
