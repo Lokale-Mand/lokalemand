@@ -67,7 +67,7 @@ dependencies:
   paytm: ^3.0.1
   version: ^3.0.2
   package_info_plus: ^4.0.2
-  awesome_notifications: ^0.7.4+1
+  awesome_notifications: ^0.8.2
   permission_handler: ^10.2.0
   flutter_swipe_button: ^2.1.1+1
   webview_flutter: ^4.0.7

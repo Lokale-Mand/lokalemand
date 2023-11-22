@@ -59,10 +59,9 @@ class _ProductListFilterScreenState extends State<ProductListFilterScreen> {
           style: TextStyle(color: ColorsRes.mainTextColor),
         ),
       ),
-      body: WillPopScope(
-        onWillPop: () async {
+      body: PopScope(
+        onPopInvoked: (didPop) {
           Navigator.pop(context, false);
-          return true;
         },
         child: Stack(
           children: [

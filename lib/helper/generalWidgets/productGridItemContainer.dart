@@ -93,11 +93,13 @@ class _State extends State<ProductGridItemContainer> {
                                   ),
                                 ),
                                 if (product.variants!.isNotEmpty)
-                                  ProductVariantDropDownMenuGrid(
-                                    from: "",
-                                    product: product,
-                                    variants: product.variants,
-                                    isGrid: true,
+                                  Expanded(
+                                    child: ProductVariantDropDownMenuGrid(
+                                      from: "",
+                                      product: product,
+                                      variants: product.variants,
+                                      isGrid: true,
+                                    ),
                                   ),
                               ],
                             ),

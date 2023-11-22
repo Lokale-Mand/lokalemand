@@ -204,7 +204,7 @@ rm ios/podfile.lock
 cd ios 
 pod install 
 pod update 
-xed .
+#xed .
 ```
 
 ### Publish With Changing Version

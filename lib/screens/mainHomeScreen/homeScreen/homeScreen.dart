@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late CameraPosition kGooglePlex;
   late LatLng kMapCenter;
 
-  List<Marker> customMarkers = [];
+  List<Marker> markers = [];
 
   Future<void> updateMap(double latitude, double longitude) async {
     Constant.session
@@ -42,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
         .setData(SessionManager.keyLongitude, longitude.toString(), false);
 
     kMapCenter = LatLng(latitude, longitude);
-    setMarkerIcon();
     kGooglePlex = CameraPosition(
       target: kMapCenter,
       zoom: 14.4746,
@@ -56,24 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       context: context,
     );
-  }
-
-  setMarkerIcon() async {
-    MarkerGenerator(const MaptLocationMarker(), (bitmaps) {
-      setState(() {
-        bitmaps.asMap().forEach((i, bmp) {
-          customMarkers.add(
-            Marker(
-              markerId: MarkerId("$i"),
-              position: kMapCenter,
-              icon: BitmapDescriptor.fromBytes(bmp),
-            ),
-          );
-        });
-      });
-    }).generate(context);
-
-    setState(() {});
   }
 
   @override
@@ -100,9 +81,9 @@ class _HomeScreenState extends State<HomeScreen> {
             end: 0,
             child: mapWidget(),
           ),
-          Positioned(
-            left: 0,
-            right: 0,
+          PositionedDirectional(
+            start: 0,
+            end: 0,
             bottom: 20,
             child: Consumer<SellerListProvider>(
               builder: (_, sellerListProvider, __) {
@@ -120,101 +101,101 @@ class _HomeScreenState extends State<HomeScreen> {
                               productListScreen,
                               arguments: [
                                 "seller",
-                                sellerListProvider
-                                    .sellerListData[index].id
+                                sellerListProvider.sellerListData[index].id
                                     .toString(),
                                 getTranslatedValue(context, "seller"),
-                                sellerListProvider.sellerListData[index].categories.toString(),
+                                sellerListProvider
+                                    .sellerListData[index].categories
+                                    .toString(),
                               ],
                             );
                           },
                           child: Container(
-                              margin: EdgeInsetsDirectional.symmetric(
-                                horizontal: 10,
+                            margin: EdgeInsetsDirectional.symmetric(
+                              horizontal: 10,
+                            ),
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            height: 130,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius: BorderRadius.circular(
+                                10,
                               ),
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              height: 130,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).cardColor,
-                                borderRadius: BorderRadius.circular(
-                                  10,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Widgets.getSizedBox(width: 10),
-                                  ClipRRect(
-                                    child: Widgets.setNetworkImg(
-                                      image: sellerListProvider
-                                              .sellerListData[index].logoUrl ??
-                                          "",
-                                      height: 80,
-                                      width: 80,
-                                    ),
-                                    borderRadius: BorderRadius.circular(7),
+                            ),
+                            child: Row(
+                              children: [
+                                Widgets.getSizedBox(width: 10),
+                                ClipRRect(
+                                  child: Widgets.setNetworkImg(
+                                    image: sellerListProvider
+                                            .sellerListData[index].logoUrl ??
+                                        "",
+                                    height: 80,
+                                    width: 80,
                                   ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CustomTextLabel(
-                                            text: sellerListProvider
-                                                .sellerListData[index].name,
-                                            softWrap: true,
-                                            style: TextStyle(
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomTextLabel(
+                                          text: sellerListProvider
+                                              .sellerListData[index].name,
+                                          softWrap: true,
+                                          style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
+                                              color: ColorsRes.mainTextColor),
+                                        ),
+                                        CustomTextLabel(
+                                          text:
+                                              "${sellerListProvider.sellerListData[index].distance} KM away",
+                                          softWrap: true,
+                                          style: TextStyle(
+                                            color:
+                                                ColorsRes.subTitleMainTextColor,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            CustomTextLabel(
+                                              text: "4.5",
+                                              softWrap: true,
+                                              style: TextStyle(
+                                                color: ColorsRes
+                                                    .subTitleMainTextColor,
+                                                fontSize: 12,
+                                              ),
                                             ),
-                                          ),
-                                          CustomTextLabel(
-                                            text:
-                                                "${sellerListProvider.sellerListData[index].distance} KM away",
-                                            softWrap: true,
-                                            style: TextStyle(
-                                              color: ColorsRes
-                                                  .subTitleMainTextColor,
-                                              fontSize: 12,
+                                            Widgets.getSizedBox(
+                                              width: 5,
                                             ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              CustomTextLabel(
-                                                text: "4.5",
-                                                softWrap: true,
-                                                style: TextStyle(
-                                                  color: ColorsRes
-                                                      .subTitleMainTextColor,
-                                                  fontSize: 12,
-                                                ),
+                                            RatingBarIndicator(
+                                              rating: 4.5,
+                                              itemCount: 5,
+                                              itemSize: 20.0,
+                                              physics: BouncingScrollPhysics(),
+                                              itemBuilder: (context, _) => Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
                                               ),
-                                              Widgets.getSizedBox(
-                                                width: 5,
-                                              ),
-                                              RatingBarIndicator(
-                                                rating: 4.5,
-                                                itemCount: 5,
-                                                itemSize: 20.0,
-                                                physics:
-                                                    BouncingScrollPhysics(),
-                                                itemBuilder: (context, _) =>
-                                                    Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              )),
+                                ),
+                              ],
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -269,10 +250,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ApiAndParams.longitude: value.longitude.toString(),
           },
           context: context,
-        );
+        ).then((value) {
+          markers.addAll(context.read<SellerListProvider>().storeMarkers);
+          setState(() {});
+        });
       },
       onMapCreated: _onMapCreated,
-      markers: customMarkers.toSet(),
+      markers: markers.toSet(),
 
       // markers: markers,
     );

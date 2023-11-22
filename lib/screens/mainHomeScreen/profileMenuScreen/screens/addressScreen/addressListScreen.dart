@@ -49,8 +49,8 @@ class _AddressListScreenState extends State<AddressListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
+    return PopScope(
+      onPopInvoked: (didPop) {
         if (widget.from == "checkout" &&
             context.read<AddressProvider>().addresses.isEmpty) {
           Navigator.pop(context, null);
@@ -60,14 +60,12 @@ class _AddressListScreenState extends State<AddressListScreen> {
         } else {
           Navigator.pop(context, "");
         }
-
-        return Future.value(true);
       },
       child: Scaffold(
         appBar: getAppBar(
           context: context,
           title: CustomTextLabel(
-            jsonKey:"address",
+            jsonKey: "address",
             style: TextStyle(color: ColorsRes.mainTextColor),
           ),
           onTap: () {
@@ -174,9 +172,10 @@ class _AddressListScreenState extends State<AddressListScreen> {
                                                                     "",
                                                                 softWrap: true,
                                                                 style:
-                                                                TextStyle(
+                                                                    TextStyle(
                                                                   fontSize: 18,
-                                                                  color: ColorsRes.mainTextColor,
+                                                                  color: ColorsRes
+                                                                      .mainTextColor,
                                                                 ),
                                                               ),
                                                               GestureDetector(
@@ -199,7 +198,8 @@ class _AddressListScreenState extends State<AddressListScreen> {
                                                                               5),
                                                                   padding:
                                                                       const EdgeInsets
-                                                                          .all(5),
+                                                                          .all(
+                                                                          5),
                                                                   margin:
                                                                       EdgeInsets
                                                                           .zero,
@@ -314,7 +314,8 @@ class _AddressListScreenState extends State<AddressListScreen> {
                                         ? DefaultBlankItemMessageScreen(
                                             image: "no_address_icon",
                                             title: "no_address_found_title",
-                                            description: "no_address_found_description",
+                                            description:
+                                                "no_address_found_description",
                                           )
                                         : const SizedBox.shrink()),
                         Padding(
@@ -324,7 +325,6 @@ class _AddressListScreenState extends State<AddressListScreen> {
                           child: Widgets.gradientBtnWidget(
                             context,
                             10,
-                           
                             callback: () {
                               Navigator.pushNamed(context, addressDetailScreen,
                                   arguments: [null, context]);

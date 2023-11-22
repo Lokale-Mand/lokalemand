@@ -45,10 +45,9 @@ class _GetLocationState extends State<GetLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
+    return PopScope(
+      onPopInvoked: (didPop) {
         Navigator.pop(context, true);
-        return Future.value(true);
       },
       child: Scaffold(
         appBar: getAppBar(

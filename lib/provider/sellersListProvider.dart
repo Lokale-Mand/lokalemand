@@ -16,8 +16,9 @@ class SellerListProvider extends ChangeNotifier {
   bool hasMoreData = false;
   int totalData = 0;
   int offset = 0;
+  List<Marker> storeMarkers = [];
 
-  getSellerListProvider({
+  Future getSellerListProvider({
     required Map<String, dynamic> params,
     required BuildContext context,
   }) async {
@@ -40,6 +41,26 @@ class SellerListProvider extends ChangeNotifier {
         sellerLists = SellerList.fromJson(getData);
         sellerListData = sellerLists.data ?? [];
         hasMoreData = totalData > sellerListData.length;
+        for (SellerListData sellers in sellerListData) {
+          storeMarkers.add(
+            Marker(
+              infoWindow: InfoWindow(title: sellers.storeName.toString(),snippet: sellers.name),
+              visible: true,
+              zIndex: -1,
+              markerId: MarkerId(sellers.storeName.toString()),
+              position: LatLng(
+                double.parse(
+                  sellers.longitude.toString(),
+                ),
+                double.parse(
+                  sellers.longitude.toString(),
+                ),
+              ),
+              // Replace with your latitude and longitude
+              icon: BitmapDescriptor.defaultMarker, // Custom icon for marker 1
+            ),
+          );
+        }
         if (hasMoreData) {
           offset += Constant.defaultDataLoadLimitAtOnce;
         }

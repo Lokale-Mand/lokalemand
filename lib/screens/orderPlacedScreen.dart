@@ -19,10 +19,8 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
+      body: PopScope(
+        onPopInvoked: (didPop) {},
         child: Container(
           alignment: Alignment.center,
           padding: EdgeInsets.all(Constant.size10),

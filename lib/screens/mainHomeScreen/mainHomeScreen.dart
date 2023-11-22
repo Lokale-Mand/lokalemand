@@ -108,10 +108,10 @@ class HomeMainScreenState extends State<HomeMainScreen> {
               homeMainScreenProvider.getPages().length,
               context),
           body: networkStatus == NetworkStatus.online
-              ? WillPopScope(
-                  onWillPop: () {
+              ? PopScope(
+                  onPopInvoked: (didPop) {
                     if (currentPage == 0) {
-                      return Future.value(true);
+                      Navigator.pop(context);
                     } else {
                       if (mounted) {
                         if (currentPage == 1) {
@@ -130,7 +130,6 @@ class HomeMainScreenState extends State<HomeMainScreen> {
                           );
                         }
                       }
-                      return Future.value(false);
                     }
                   },
                   child: IndexedStack(

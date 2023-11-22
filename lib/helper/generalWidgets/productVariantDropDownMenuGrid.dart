@@ -33,74 +33,78 @@ class _ProductVariantDropDownMenuGridState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Widgets.getSizedBox(height: 5),
-                CustomTextLabel(
-                  text:
-                      "${widget.variants![0].measurement} ${widget.variants![0].stockUnitName}",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: ColorsRes.mainTextColor,
+                Expanded(
+                  child: CustomTextLabel(
+                    text:
+                        "${widget.variants![0].measurement} ${widget.variants![0].stockUnitName}",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: ColorsRes.mainTextColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
                 Widgets.getSizedBox(height: 5),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    CustomTextLabel(
-                      text: double.parse(widget
-                                  .variants![selectedVariantItemProvider
-                                      .getSelectedIndex()]
-                                  .discountedPrice
-                                  .toString()) !=
-                              0
-                          ? GeneralMethods.getCurrencyFormat(
-                              double.parse(widget
-                                  .variants![selectedVariantItemProvider
-                                      .getSelectedIndex()]
-                                  .discountedPrice
-                                  .toString()),
-                            )
-                          : GeneralMethods.getCurrencyFormat(
-                              double.parse(widget
-                                  .variants![selectedVariantItemProvider
-                                      .getSelectedIndex()]
-                                  .price
-                                  .toString()),
-                            ),
-                      softWrap: true,
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: ColorsRes.subTitleMainTextColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Widgets.getSizedBox(width: 5),
-                    RichText(
-                      maxLines: 2,
-                      softWrap: true,
-                      overflow: TextOverflow.clip,
-                      text: TextSpan(children: [
-                        TextSpan(
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: ColorsRes.grey,
-                            decoration: TextDecoration.lineThrough,
-                            decorationThickness: 2,
-                          ),
-                          text: (double.parse(widget
-                                      .variants![0].discountedPrice
-                                      .toString())) !=
-                                  0
-                              ? GeneralMethods.getCurrencyFormat(double.parse(
-                                  widget.variants![0].price.toString()))
-                              : "",
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CustomTextLabel(
+                        text: double.parse(widget
+                                    .variants![selectedVariantItemProvider
+                                        .getSelectedIndex()]
+                                    .discountedPrice
+                                    .toString()) !=
+                                0
+                            ? GeneralMethods.getCurrencyFormat(
+                                double.parse(widget
+                                    .variants![selectedVariantItemProvider
+                                        .getSelectedIndex()]
+                                    .discountedPrice
+                                    .toString()),
+                              )
+                            : GeneralMethods.getCurrencyFormat(
+                                double.parse(widget
+                                    .variants![selectedVariantItemProvider
+                                        .getSelectedIndex()]
+                                    .price
+                                    .toString()),
+                              ),
+                        softWrap: true,
+                        overflow: TextOverflow.clip,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: ColorsRes.subTitleMainTextColor,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ]),
-                    ),
-                  ],
+                      ),
+                      Widgets.getSizedBox(width: 5),
+                      RichText(
+                        maxLines: 2,
+                        softWrap: true,
+                        overflow: TextOverflow.clip,
+                        text: TextSpan(children: [
+                          TextSpan(
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: ColorsRes.grey,
+                              decoration: TextDecoration.lineThrough,
+                              decorationThickness: 2,
+                            ),
+                            text: (double.parse(widget
+                                        .variants![0].discountedPrice
+                                        .toString())) !=
+                                    0
+                                ? GeneralMethods.getCurrencyFormat(double.parse(
+                                    widget.variants![0].price.toString()))
+                                : "",
+                          ),
+                        ]),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

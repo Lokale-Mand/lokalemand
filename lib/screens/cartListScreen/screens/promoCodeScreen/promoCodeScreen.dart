@@ -38,10 +38,9 @@ class _PromoCodeListScreenState extends State<PromoCodeListScreen> {
           style: TextStyle(color: ColorsRes.mainTextColor),
         ),
       ),
-      body: WillPopScope(
-        onWillPop: () async {
+      body: PopScope(
+        onPopInvoked: (didPop) {
           Navigator.pop(context, false);
-          return true;
         },
         child: setRefreshIndicator(
           refreshCallback: () async {

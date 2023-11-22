@@ -29,10 +29,8 @@ class _CustomPromoCodeDialogState extends State<CustomPromoCodeDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        return Future.value(false);
-      },
+    return PopScope(
+      onPopInvoked: (didPop) {},
       child: Dialog(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),

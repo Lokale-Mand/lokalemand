@@ -10,17 +10,16 @@ class CancelProductDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        if (context.read<UpdateOrderStatusProvider>().getUpdateOrderStatus() ==
+    return PopScope(
+      onPopInvoked: (didPop) {
+        if (context.read<UpdateOrderStatusProvider>().getUpdateOrderStatus() !=
             UpdateOrderStatus.inProgress) {
-          return Future.value(false);
+          Navigator.pop(context);
         }
-        return Future.value(true);
       },
       child: AlertDialog(
         title: CustomTextLabel(
-            jsonKey:"sure_to_cancel_product",
+          jsonKey: "sure_to_cancel_product",
         ),
         actions: [
           Consumer<UpdateOrderStatusProvider>(builder: (context, provider, _) {
@@ -44,14 +43,17 @@ class CancelProductDialog extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    context.read<UpdateOrderStatusProvider>().updateStatus(
-                        order: order,
-                        orderItemId: orderItemId,
-                        status: Constant.orderStatusCode[6],
-                        context: context).then((value) => Navigator.pop(context,value));
+                    context
+                        .read<UpdateOrderStatusProvider>()
+                        .updateStatus(
+                            order: order,
+                            orderItemId: orderItemId,
+                            status: Constant.orderStatusCode[6],
+                            context: context)
+                        .then((value) => Navigator.pop(context, value));
                   },
                   child: CustomTextLabel(
-                    jsonKey:"yes",
+                    jsonKey: "yes",
                     style: TextStyle(color: ColorsRes.appColor),
                   ),
                 ),

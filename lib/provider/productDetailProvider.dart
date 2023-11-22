@@ -32,9 +32,9 @@ class ProductDetailProvider extends ChangeNotifier {
 
         productData = productDetail.data;
 
-        // storeTime = (jsonDecode(productDetail.data.storeHours) as List)
-        //     .map((e) => StoreTime.fromJson(Map.from(e)))
-        //     .toList();
+        storeTime = (jsonDecode(productDetail.data.storeHours) as List)
+            .map((e) => StoreTime.fromJson(Map.from(e)))
+            .toList();
 
         setOtherImages(0, productDetail.data);
 

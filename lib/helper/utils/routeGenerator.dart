@@ -113,16 +113,6 @@ class RouteGenerator {
           builder: (_) => GetLocation(from: settings.arguments as String),
         );
 
-      case confirmLocationScreen:
-        List<dynamic> confirmLocationArguments =
-            settings.arguments as List<dynamic>;
-        return CupertinoPageRoute(
-          builder: (_) => ConfirmLocation(
-            address: confirmLocationArguments[0],
-            from: confirmLocationArguments[1] as String,
-          ),
-        );
-
       case mainHomeScreen:
         return CupertinoPageRoute(
           builder: (_) => HomeMainScreen(/*key: Constant.navigatorKay*/),

@@ -17,13 +17,12 @@ class ReturnOrderDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        if (context.read<UpdateOrderStatusProvider>().getUpdateOrderStatus() ==
+    return PopScope(
+      onPopInvoked: (didPop) {
+        if (context.read<UpdateOrderStatusProvider>().getUpdateOrderStatus() !=
             UpdateOrderStatus.inProgress) {
-          return Future.value(false);
+          Navigator.pop(context);
         }
-        return Future.value(true);
       },
       child: AlertDialog(
         title: CustomTextLabel(

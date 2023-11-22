@@ -30,9 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        return Future.value(true);
+    return PopScope(
+      onPopInvoked: (didPop) {
+        Future.value(true);
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               controller: widget.scrollController,
               children: [
                 ProfileHeader(),
-                Divider(),
+                Divider(color: ColorsRes.menuTitleColor),
                 Widgets.getSizedBox(height: 5),
                 CustomTextLabel(
                   jsonKey: "store",
@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 MenuListItems(storeDataMenu),
                 Widgets.getSizedBox(height: 5),
-                Divider(),
+                Divider(color: ColorsRes.menuTitleColor),
                 Widgets.getSizedBox(height: 5),
                 CustomTextLabel(
                   jsonKey: "personal_data",
@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 Widgets.getSizedBox(height: 15),
                 MenuListItems(personalDataMenu),
-                Divider(),
+                Divider(color: ColorsRes.menuTitleColor),
                 Widgets.getSizedBox(height: 15),
                 CustomTextLabel(
                   jsonKey: "legal",
@@ -98,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 MenuListItems(legalDataMenu),
                 Widgets.getSizedBox(height: 15),
-                Divider(),
+                Divider(color: ColorsRes.menuTitleColor),
                 Widgets.getSizedBox(height: 15),
                 CustomTextLabel(
                   jsonKey: "settings",
@@ -147,8 +147,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   true);
                             }
                           },
-                          activeColor: ColorsRes.appColor,
-                          activeTrackColor: ColorsRes.appColorLight,
+                          activeThumbImage:
+                              AssetImage(Constant.getAssetsPath(0, "dark.png")),
+                          inactiveThumbImage: AssetImage(
+                              Constant.getAssetsPath(0, "light.png")),
                         ),
                       ),
                     ],
@@ -170,9 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       {
         "icon": "notification_icon",
         "label": "open_a_shop",
-        "clickFunction": (context) {
-
-        },
+        "clickFunction": (context) {},
         "isResetLabel": false
       },
     ];

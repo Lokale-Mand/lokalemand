@@ -702,10 +702,9 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
+    return PopScope(
+      onPopInvoked: (didPop) {
         Navigator.of(context).pop(context.read<CurrentOrderProvider>().order);
-        return Future.value(false);
       },
       child: Scaffold(
         appBar: getAppBar(

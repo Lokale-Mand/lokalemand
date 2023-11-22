@@ -1,4 +1,5 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/models/storeTime.dart';
 import 'package:lokale_mand/screens/productDetailScreen/widget/sliderImageWidget.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -139,14 +140,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       builder: (context, productDetailProvider, _) {
                     return GestureDetector(
                       onTap: () async {
-                        print(
-                            ">>>>>>>>>>> 123 ${productDetailProvider.productDetailState}");
                         if (productDetailProvider.productDetailState ==
                             ProductDetailState.loaded) {
                           ProductData product =
                               productDetailProvider.productData;
-                          print(
-                              ">>>>>>>>>>> ${productDetailProvider.productDetailState}");
                           await GeneralMethods.createDynamicLink(
                             context: context,
                             shareUrl:
@@ -272,12 +269,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   Widget productDetailWidget(ProductData product) {
+    DateTime dateTime = DateTime.now();
+
+    StoreTime storeTime =
+        context.read<ProductDetailProvider>().storeTime[dateTime.weekday];
+
+    print("${storeTime.openTime}");
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           padding: EdgeInsets.symmetric(
-              horizontal: Constant.size10, vertical: Constant.size10),
+            horizontal: Constant.size10,
+            vertical: Constant.size10,
+          ),
           child: Consumer<SelectedVariantItemProvider>(
             builder: (context, selectedVariantItemProvider, _) {
               return product.variants.isNotEmpty
@@ -337,22 +343,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 maxLines: 2,
                                 softWrap: true,
                                 overflow: TextOverflow.clip,
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: ColorsRes.grey,
-                                        decoration: TextDecoration.lineThrough,
-                                        decorationThickness: 2),
-                                    text: double.parse(product
-                                                .variants[0].discountedPrice) !=
-                                            0
-                                        ? GeneralMethods.getCurrencyFormat(
-                                            double.parse(
-                                                product.variants[0].price))
-                                        : "",
-                                  ),
-                                ]),
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: ColorsRes.grey,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                          decorationThickness: 2),
+                                      text: double.parse(product.variants[0]
+                                                  .discountedPrice) !=
+                                              0
+                                          ? GeneralMethods.getCurrencyFormat(
+                                              double.parse(
+                                                  product.variants[0].price))
+                                          : "",
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -444,63 +453,66 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                                       .clip,
                                                               // maxLines: 1,
                                                               text: TextSpan(
-                                                                  children: [
-                                                                    TextSpan(
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              15,
-                                                                          color: ColorsRes
-                                                                              .mainTextColor,
-                                                                          decorationThickness:
-                                                                              2),
-                                                                      text:
-                                                                          "${product.variants[index].measurement} ",
-                                                                    ),
-                                                                    WidgetSpan(
-                                                                      child:
-                                                                          CustomTextLabel(
-                                                                        text: product
-                                                                            .variants[index]
-                                                                            .stockUnitName,
-                                                                        softWrap:
-                                                                            true,
-                                                                        //superscript is usually smaller in size
-                                                                        // textScaleFactor: 0.7,
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              ColorsRes.mainTextColor,
-                                                                        ),
+                                                                children: [
+                                                                  TextSpan(
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            15,
+                                                                        color: ColorsRes
+                                                                            .mainTextColor,
+                                                                        decorationThickness:
+                                                                            2),
+                                                                    text:
+                                                                        "${product.variants[index].measurement} ",
+                                                                  ),
+                                                                  WidgetSpan(
+                                                                    child:
+                                                                        CustomTextLabel(
+                                                                      text: product
+                                                                          .variants[
+                                                                              index]
+                                                                          .stockUnitName,
+                                                                      softWrap:
+                                                                          true,
+                                                                      //superscript is usually smaller in size
+                                                                      // textScaleFactor: 0.7,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            14,
+                                                                        color: ColorsRes
+                                                                            .mainTextColor,
                                                                       ),
                                                                     ),
-                                                                    TextSpan(
-                                                                        text: double.parse(product.variants[index].discountedPrice) !=
-                                                                                0
-                                                                            ? " | "
-                                                                            : "",
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                ColorsRes.mainTextColor)),
-                                                                    TextSpan(
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color: ColorsRes
-                                                                              .grey,
-                                                                          decoration: TextDecoration
-                                                                              .lineThrough,
-                                                                          decorationThickness:
-                                                                              2),
+                                                                  ),
+                                                                  TextSpan(
                                                                       text: double.parse(product.variants[index].discountedPrice) !=
                                                                               0
-                                                                          ? GeneralMethods.getCurrencyFormat(double.parse(product
-                                                                              .variants[index]
-                                                                              .price))
+                                                                          ? " | "
                                                                           : "",
-                                                                    ),
-                                                                  ]),
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              ColorsRes.mainTextColor)),
+                                                                  TextSpan(
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: ColorsRes
+                                                                            .grey,
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .lineThrough,
+                                                                        decorationThickness:
+                                                                            2),
+                                                                    text: double.parse(product.variants[index].discountedPrice) !=
+                                                                            0
+                                                                        ? GeneralMethods.getCurrencyFormat(double.parse(product
+                                                                            .variants[index]
+                                                                            .price))
+                                                                        : "",
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
                                                           ),
                                                           CustomTextLabel(
@@ -524,12 +536,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                                 TextOverflow
                                                                     .ellipsis,
                                                             style: TextStyle(
-                                                                fontSize: 17,
-                                                                color: ColorsRes
-                                                                    .appColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
+                                                              fontSize: 17,
+                                                              color: ColorsRes
+                                                                  .appColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -572,7 +585,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                   padding: EdgeInsets.symmetric(
                                                       vertical: Constant.size7),
                                                   child: Divider(
-                                                    color: ColorsRes.grey,
+                                                    color: ColorsRes
+                                                        .menuTitleColor,
                                                     height: 5,
                                                   ),
                                                 );
@@ -624,7 +638,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             },
           ),
         ),
-        Divider(),
+        Divider(
+          color: ColorsRes.menuTitleColor,
+          endIndent: 10,
+          indent: 10,
+        ),
         Container(
           margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
           child: Column(

@@ -62,8 +62,10 @@ class _PayPalPaymentScreenState extends State<PayPalPaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WillPopScope(
-        onWillPop: onWillPop,
+      body: PopScope(
+        onPopInvoked: (didPop) {
+          onWillPop;
+        },
         child: Scaffold(
           appBar: getAppBar(
             context: context,

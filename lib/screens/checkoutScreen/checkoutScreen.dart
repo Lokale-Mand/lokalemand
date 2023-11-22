@@ -75,17 +75,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        if (context.read<CheckoutProvider>().isPaymentUnderProcessing) {
+    return PopScope(
+      onPopInvoked: (didPop) {
+        if (!context.read<CheckoutProvider>().isPaymentUnderProcessing) {
           GeneralMethods.showMessage(
               context,
               getTranslatedValue(context,
                   "you_can_not_go_back_until_payment_cancel_or_success"),
               MessageType.warning);
-          return Future.value(false);
-        } else {
-          return Future.value(true);
+          Navigator.pop(context);
         }
       },
       child: Scaffold(
