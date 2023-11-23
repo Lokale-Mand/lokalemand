@@ -1,6 +1,5 @@
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/provider/sellersListProvider.dart';
 
 class HomeScreen extends StatefulWidget {
   final ScrollController scrollController;

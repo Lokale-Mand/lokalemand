@@ -1,5 +1,4 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/provider/sellersListProvider.dart';
 
 class HomeMainScreenProvider extends ChangeNotifier {
   int currentPage = 0;

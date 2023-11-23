@@ -1,5 +1,5 @@
+import 'package:lokale_mand/customer/models/languageJsonData.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/models/languageJsonData.dart';
 
 enum LanguageState {
   initial,

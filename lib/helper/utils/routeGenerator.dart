@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:lokale_mand/customer/screen/getLocationScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/provider/brandProvider.dart';
-import 'package:lokale_mand/screens/authenticationScreen/createAccountScreen.dart';
-import 'package:lokale_mand/screens/authenticationScreen/userLocationScreen.dart';
-import 'package:lokale_mand/screens/brandListScreen.dart';
-import 'package:lokale_mand/screens/getLocationScreen.dart';
-import 'package:lokale_mand/screens/userTypeSelectionScreen.dart';
+import 'package:lokale_mand/seller/screen/authenticationScreen/sellerLoginAccountScreen.dart';
+
+// CUSTOMER SCREENS VARIABLES
 
 const String introSliderScreen = 'introSliderScreen';
 const String splashScreen = 'splashScreen';
@@ -43,6 +41,10 @@ const String underMaintenanceScreen = 'underMaintenanceScreen';
 const String appUpdateScreen = 'appUpdateScreen';
 const String paypalPaymentScreen = 'paypalPaymentScreen';
 
+// SELLER SCREENS VARIABLES
+
+const String sellerLoginAccountScreen = 'sellerLoginAccountScreen';
+
 String currentRoute = splashScreen;
 
 class RouteGenerator {
@@ -60,14 +62,15 @@ class RouteGenerator {
           builder: (_) => const SplashScreen(),
         );
 
-      case loginScreen:
-        return CupertinoPageRoute(
-          builder: (_) => LoginAccount(from: settings.arguments as String?),
-        );
-
       case userTypeSelectionScreen:
         return CupertinoPageRoute(
           builder: (_) => UserTypeSelectionScreen(),
+        );
+
+      // CUSTOMER SCREENS ROUTES
+      case loginScreen:
+        return CupertinoPageRoute(
+          builder: (_) => LoginAccount(from: settings.arguments as String?),
         );
 
       case createAccountScreen:
@@ -83,18 +86,6 @@ class RouteGenerator {
             email: userLocationScreenArguments["email"].toString(),
             password: userLocationScreenArguments["password"].toString(),
             user: userLocationScreenArguments["user"],
-          ),
-        );
-
-      case otpScreen:
-        List<dynamic> firebaseArguments = settings.arguments as List<dynamic>;
-        return CupertinoPageRoute(
-          builder: (_) => OtpVerificationScreen(
-            firebaseAuth: firebaseArguments[0] as FirebaseAuth,
-            otpVerificationId: firebaseArguments[1] as String,
-            phoneNumber: firebaseArguments[2] as String,
-            selectedCountryCode: firebaseArguments[3] as CountryCode,
-            from: firebaseArguments[4] as String?,
           ),
         );
 
@@ -336,6 +327,13 @@ class RouteGenerator {
         return CupertinoPageRoute(
           builder: (_) =>
               PayPalPaymentScreen(paymentUrl: settings.arguments as String),
+        );
+
+      // SELLER SCREENS ROUTES
+
+      case sellerLoginAccountScreen:
+        return CupertinoPageRoute(
+          builder: (_) => SellerLoginAccountScreen(),
         );
 
       default:

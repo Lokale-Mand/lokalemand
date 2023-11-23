@@ -1,5 +1,5 @@
+import 'package:lokale_mand/customer/models/userProfile.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/models/userProfile.dart';
 
 enum ProfileState { initial, loading, loaded }
 

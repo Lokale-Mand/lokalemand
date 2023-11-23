@@ -1,6 +1,6 @@
+import 'package:lokale_mand/customer/models/initiateTransaction.dart';
+import 'package:lokale_mand/customer/models/paytmTransationToken.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/models/initiateTransaction.dart';
-import 'package:lokale_mand/models/paytmTransationToken.dart';
 
 enum CheckoutTimeSlotsState {
   timeSlotsLoading,

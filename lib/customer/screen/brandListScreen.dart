@@ -1,5 +1,4 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/provider/brandProvider.dart';
 
 class BrandListScreen extends StatefulWidget {
   const BrandListScreen({

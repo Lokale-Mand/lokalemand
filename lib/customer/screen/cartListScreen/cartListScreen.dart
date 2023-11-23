@@ -1,5 +1,5 @@
+import 'package:lokale_mand/customer/screen/cartListScreen/screens/promoCodeScreen/widget/customPromoCodeDialog.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/screens/cartListScreen/screens/promoCodeScreen/widget/customPromoCodeDialog.dart';
 
 class CartListScreen extends StatefulWidget {
   const CartListScreen({Key? key}) : super(key: key);

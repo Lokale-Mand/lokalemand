@@ -10,7 +10,6 @@
 */
 
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/screens/orderSummaryScreen/widgets/orderTrackerItemContainer.dart';
 
 class OrderTrackingHistoryBottomSheet extends StatelessWidget {
   final List<List> listOfStatus;

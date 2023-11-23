@@ -1,6 +1,6 @@
+import 'package:lokale_mand/customer/models/storeTime.dart';
+import 'package:lokale_mand/customer/screen/productDetailScreen/widget/sliderImageWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/models/storeTime.dart';
-import 'package:lokale_mand/screens/productDetailScreen/widget/sliderImageWidget.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String? title;

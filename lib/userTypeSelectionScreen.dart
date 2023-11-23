@@ -64,7 +64,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
                     context,
                     10,
                     callback: () {
-                      Navigator.pushNamed(context, loginScreen);
+                      Navigator.pushNamed(context, sellerLoginAccountScreen);
                     },
                     otherWidgets: Padding(
                       padding: EdgeInsetsDirectional.only(

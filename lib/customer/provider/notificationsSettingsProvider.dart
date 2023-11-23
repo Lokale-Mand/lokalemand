@@ -1,8 +1,6 @@
-import 'package:lokale_mand/helper/utils/apiAndParams.dart';
-import 'package:lokale_mand/helper/utils/generalMethods.dart';
-import 'package:lokale_mand/models/notificationSettings.dart';
-import 'package:lokale_mand/repositories/notificationSettingsApi.dart';
-import 'package:flutter/material.dart';
+
+
+import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 enum NotificationsSettingsState { initial, loading, loaded, error }
 

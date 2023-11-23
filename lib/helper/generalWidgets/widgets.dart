@@ -491,27 +491,31 @@ AppBar getAppBar(
     bool? showBackButton,
     GestureTapCallback? onTap}) {
   return AppBar(
-    leading: showBackButton ?? true
-        ? GestureDetector(
-            onTap: onTap ??
-                () {
-                  Navigator.pop(context);
-                },
-            child: Padding(
-              padding: EdgeInsets.all(18),
-              child: SizedBox(
-                child: Widgets.defaultImg(
-                  image: "ic_arrow_back",
-                  iconColor: ColorsRes.mainTextColor,
+    leading: (showBackButton != null && showBackButton == true)
+        ? Container(
+            color: Colors.red,
+            child: GestureDetector(
+              onTap: onTap ??
+                  () {
+                    Navigator.pop(context);
+                  },
+              child: Padding(
+                padding: EdgeInsets.all(18),
+                child: SizedBox(
+                  child: Widgets.defaultImg(
+                    image: "ic_arrow_back",
+                    iconColor: ColorsRes.mainTextColor,
+                  ),
+                  height: 10,
+                  width: 10,
                 ),
-                height: 10,
-                width: 10,
               ),
             ),
           )
         : null,
     automaticallyImplyLeading: true,
     elevation: 0,
+    leadingWidth: (showBackButton != null && showBackButton == true) ? 10 : 0,
     title: title,
     centerTitle: centerTitle ?? true,
     backgroundColor:

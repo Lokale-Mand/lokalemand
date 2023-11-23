@@ -12,7 +12,8 @@ class LoginAccount extends StatefulWidget {
 class _LoginAccountState extends State<LoginAccount> {
   bool isLoading = false, isAcceptedTerms = false, isPasswordVisible = false;
 
-  TextEditingController edtEmail = TextEditingController(text: "wrteam.vimal@gmail.com");
+  TextEditingController edtEmail =
+      TextEditingController(text: "wrteam.vimal@gmail.com");
   TextEditingController edtPassword = TextEditingController(text: "123123");
   bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -34,6 +35,14 @@ class _LoginAccountState extends State<LoginAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: getAppBar(
+        context: context,
+        title: Container(),
+        actions: [
+          skipLoginText(),
+        ],
+        showBackButton: false,
+      ),
       body: Container(
         padding: EdgeInsetsDirectional.all(20),
         alignment: Alignment.center,
@@ -165,10 +174,6 @@ class _LoginAccountState extends State<LoginAccount> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Widgets.getSizedBox(
-          height: Constant.size20,
-        ),
-        skipLoginText(),
         CustomTextLabel(
           jsonKey: "login_account",
           style: TextStyle(

@@ -1,11 +1,7 @@
-import 'dart:convert';
 
-import 'package:lokale_mand/provider/checkoutProvider.dart';
-import 'package:lokale_mand/helper/utils/generalMethods.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 class StripeService {
   static String apiBase = 'https://api.stripe.com/v1';

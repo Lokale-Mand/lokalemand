@@ -1,5 +1,5 @@
+import 'package:lokale_mand/customer/screen/getLocationScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/screens/getLocationScreen.dart';
 
 export 'package:google_maps_webservice/places.dart';
 

@@ -1,5 +1,4 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/models/storeTime.dart';
 
 enum ProductDetailState {
   initial,

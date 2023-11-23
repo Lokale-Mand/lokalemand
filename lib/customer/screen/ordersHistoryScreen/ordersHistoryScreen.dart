@@ -1,6 +1,6 @@
+import 'package:lokale_mand/customer/screen/ordersHistoryScreen/activeOrdersHistoryScreen.dart';
+import 'package:lokale_mand/customer/screen/ordersHistoryScreen/widgets/orderTypeButtonWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/screens/ordersHistoryScreen/activeOrdersHistoryScreen.dart';
-import 'package:lokale_mand/screens/ordersHistoryScreen/widgets/orderTypeButtonWidget.dart';
 
 class OrdersHistoryScreen extends StatefulWidget {
   const OrdersHistoryScreen({super.key});
