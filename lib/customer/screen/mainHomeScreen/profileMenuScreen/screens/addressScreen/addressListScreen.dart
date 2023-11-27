@@ -66,7 +66,11 @@ class _AddressListScreenState extends State<AddressListScreen> {
           context: context,
           title: CustomTextLabel(
             jsonKey: "address",
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           ),
           onTap: () {
             if (widget.from == "checkout" &&

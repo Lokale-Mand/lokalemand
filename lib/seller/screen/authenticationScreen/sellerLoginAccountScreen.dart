@@ -6,7 +6,8 @@ class SellerLoginAccountScreen extends StatefulWidget {
   const SellerLoginAccountScreen({Key? key, this.from}) : super(key: key);
 
   @override
-  State<SellerLoginAccountScreen> createState() => _SellerLoginAccountScreenState();
+  State<SellerLoginAccountScreen> createState() =>
+      _SellerLoginAccountScreenState();
 }
 
 class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
@@ -136,9 +137,8 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
         CustomTextLabel(
           jsonKey: "login_account",
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.5,
-            fontSize: 30,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
             color: ColorsRes.mainTextColor,
           ),
         ),
@@ -385,9 +385,10 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
                       decoration: TextDecoration.underline),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
+
                       Navigator.pushNamed(
                         context,
-                        createAccountScreen,
+                        sellerCreateAccountScreen,
                       );
                     },
                 ),

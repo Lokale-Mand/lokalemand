@@ -1,7 +1,6 @@
-
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:http/http.dart' as http;
+import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class StripeService {
   static String apiBase = 'https://api.stripe.com/v1';

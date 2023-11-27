@@ -54,7 +54,11 @@ class _EditProfileState extends State<EditProfile> {
                     context,
                     "edit_profile",
                   ),
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           ),
           showBackButton: widget.from != "register"),
       body: ListView(

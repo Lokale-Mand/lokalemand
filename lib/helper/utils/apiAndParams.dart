@@ -1,3 +1,5 @@
+import 'package:lokale_mand/helper/utils/constant.dart';
+
 class ApiAndParams {
   //============== api ===========
   static String apiLogin = "login";
@@ -43,6 +45,9 @@ class ApiAndParams {
   static String apiAddFcmToken = "add_fcm_token";
   static String apiSystemLanguages = "system_languages";
   static String apiDeleteOrder = "delete_order";
+
+  //Sellers api
+  static String apiRegisterSeller = "${Constant.baseUrl}/sellers/save";
 
 //============ api params ============
 

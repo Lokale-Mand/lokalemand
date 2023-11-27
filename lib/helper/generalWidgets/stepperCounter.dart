@@ -79,14 +79,17 @@ class StepperCounter extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 if (thirdCounterText != null)
-                  Container(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: CustomTextLabel(
-                      jsonKey: thirdCounterText ?? "",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: ColorsRes.appColor,
-                        fontSize: 18,
+                  Expanded(
+                    child: Container(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: CustomTextLabel(
+                        jsonKey: thirdCounterText ?? "",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: ColorsRes.appColor,
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ),

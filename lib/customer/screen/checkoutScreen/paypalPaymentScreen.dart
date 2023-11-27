@@ -1,5 +1,5 @@
-import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class PayPalPaymentScreen extends StatefulWidget {
   final String paymentUrl;
@@ -72,7 +72,11 @@ class _PayPalPaymentScreenState extends State<PayPalPaymentScreen> {
             title: CustomTextLabel(
               jsonKey: "app_name",
               softWrap: true,
-              style: TextStyle(color: ColorsRes.mainTextColor),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: ColorsRes.mainTextColor,
+              ),
             ),
             showBackButton: true,
             onTap: onWillPop,

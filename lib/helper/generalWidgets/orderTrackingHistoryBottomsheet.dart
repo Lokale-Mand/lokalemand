@@ -59,16 +59,12 @@ class OrderTrackingHistoryBottomSheet extends StatelessWidget {
             jsonKey: "change_language",
             softWrap: true,
             textAlign: TextAlign.center,
-            style: Theme
-                .of(context)
-                .textTheme
-                .titleMedium!
-                .merge(
-              TextStyle(
-                letterSpacing: 0.5,
-                color: ColorsRes.mainTextColor,
-              ),
-            ),
+            style: Theme.of(context).textTheme.titleMedium!.merge(
+                  TextStyle(
+                    letterSpacing: 0.5,
+                    color: ColorsRes.mainTextColor,
+                  ),
+                ),
           ),
         ),
         Widgets.getSizedBox(

@@ -57,7 +57,7 @@ class _State extends State<CartListItemContainer> {
                                   child) {
                                 return (cart.status == "0")
                                     ? CustomTextLabel(
-                                        jsonKey:"out_of_stock",
+                                        jsonKey: "out_of_stock",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         softWrap: true,
@@ -79,8 +79,10 @@ class _State extends State<CartListItemContainer> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500,
-                                color: ColorsRes.mainTextColor,),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: ColorsRes.mainTextColor,
+                              ),
                             ),
                             Widgets.getSizedBox(
                               height: Constant.size10,
@@ -204,7 +206,6 @@ class _State extends State<CartListItemContainer> {
                                                 iconColor:
                                                     ColorsRes.mainIconColor,
                                               ),
-                                             
                                             ),
                                           );
                                   },

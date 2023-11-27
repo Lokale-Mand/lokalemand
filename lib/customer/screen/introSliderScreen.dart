@@ -142,9 +142,10 @@ class IntroSliderScreenState extends State<IntroSliderScreen> {
                 child: CircleAvatar(
                   backgroundColor: ColorsRes.appColorWhite,
                   child: Widgets.defaultImg(
-                      image: "logo",
-                      height: 50,
-                      width: 50,),
+                    image: "logo",
+                    height: 50,
+                    width: 50,
+                  ),
                 ),
               ),
             ],

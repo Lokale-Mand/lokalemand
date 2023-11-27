@@ -98,9 +98,14 @@ class _ProductListScreenState extends State<ProductSearchScreen> {
       appBar: getAppBar(
           context: context,
           title: CustomTextLabel(
-              jsonKey: "search",
-              softWrap: true,
-              style: TextStyle(color: ColorsRes.mainTextColor)),
+            jsonKey: "search",
+            softWrap: true,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
+          ),
           actions: [setCartCounter(context: context)]),
       body: Stack(
         children: [

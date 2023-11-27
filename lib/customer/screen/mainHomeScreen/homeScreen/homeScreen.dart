@@ -1,4 +1,3 @@
-
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class HomeScreen extends StatefulWidget {

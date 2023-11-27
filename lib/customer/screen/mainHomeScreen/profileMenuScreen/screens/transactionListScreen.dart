@@ -54,7 +54,11 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
           context: context,
           title: CustomTextLabel(
             jsonKey: "transactions",
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           )),
       body: setRefreshIndicator(
           refreshCallback: () {

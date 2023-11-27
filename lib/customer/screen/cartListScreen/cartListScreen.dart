@@ -37,7 +37,11 @@ class _CartListScreenState extends State<CartListScreen> {
           title: CustomTextLabel(
             jsonKey: "cart",
             softWrap: true,
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           )),
       body: setRefreshIndicator(
         refreshCallback: () async {
@@ -68,7 +72,8 @@ class _CartListScreenState extends State<CartListScreen> {
 
   btnWidget() {
     return Widgets.gradientBtnWidget(context, 10, callback: () async {
-      if (await context.read<CartProvider>().checkCartItemsStockStatus() == false) {
+      if (await context.read<CartProvider>().checkCartItemsStockStatus() ==
+          false) {
         Navigator.pushNamed(context, checkoutScreen);
       } else {
         GeneralMethods.showMessage(

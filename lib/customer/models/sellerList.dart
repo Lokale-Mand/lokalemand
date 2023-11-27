@@ -10,9 +10,9 @@ class SellerList {
     status = json['status'].toString();
     message = json['message'].toString();
     total = json['total'].toString();
-    if (json['data'] != null){
+    if (json['data'] != null) {
       data = <SellerListData>[];
-      json['data'].forEach((v){
+      json['data'].forEach((v) {
         data!.add(new SellerListData.fromJson(v));
       });
     }
@@ -44,15 +44,15 @@ class SellerListData {
 
   SellerListData(
       {this.id,
-        this.name,
-        this.storeName,
-        this.latitude,
-        this.longitude,
-        this.categories,
-        this.storeHours,
-        this.distance,
-        this.maxDeliverableDistance,
-        this.logoUrl});
+      this.name,
+      this.storeName,
+      this.latitude,
+      this.longitude,
+      this.categories,
+      this.storeHours,
+      this.distance,
+      this.maxDeliverableDistance,
+      this.logoUrl});
 
   SellerListData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

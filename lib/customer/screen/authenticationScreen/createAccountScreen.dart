@@ -73,9 +73,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         CustomTextLabel(
           jsonKey: "create_your_account",
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.5,
-            fontSize: 30,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
             color: ColorsRes.mainTextColor,
           ),
         ),

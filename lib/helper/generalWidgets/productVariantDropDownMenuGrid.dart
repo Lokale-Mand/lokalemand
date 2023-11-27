@@ -116,7 +116,7 @@ class _ProductVariantDropDownMenuGridState
     );
   }
 
-  /*@override
+/*@override
   Widget build(BuildContext context) {
     return Consumer<SelectedVariantItemProvider>(
       builder: (context, selectedVariantItemProvider, _) {

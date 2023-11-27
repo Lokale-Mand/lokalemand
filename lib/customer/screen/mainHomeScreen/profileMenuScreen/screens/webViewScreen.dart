@@ -54,7 +54,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
       appBar: getAppBar(
           title: CustomTextLabel(
             text: widget.dataFor,
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           ),
           context: context),
       body: SingleChildScrollView(

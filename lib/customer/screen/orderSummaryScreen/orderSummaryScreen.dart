@@ -711,7 +711,11 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
             context: context,
             title: CustomTextLabel(
               jsonKey: "order_summary",
-              style: TextStyle(color: ColorsRes.mainTextColor),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: ColorsRes.mainTextColor,
+              ),
             )),
         body: Stack(
           children: [

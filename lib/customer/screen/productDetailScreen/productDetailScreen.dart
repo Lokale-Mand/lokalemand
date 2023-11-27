@@ -1,4 +1,3 @@
-import 'package:lokale_mand/customer/models/storeTime.dart';
 import 'package:lokale_mand/customer/screen/productDetailScreen/widget/sliderImageWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 

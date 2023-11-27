@@ -27,9 +27,7 @@ Widget MessageContainer({
             ),
           ),
           width: MediaQuery.sizeOf(context).width,
-          constraints: BoxConstraints(
-            minHeight: 50
-          ),
+          constraints: BoxConstraints(minHeight: 50),
           child: Row(
             children: [
               Widgets.getSizedBox(width: 15),

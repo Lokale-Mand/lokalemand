@@ -39,7 +39,11 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
           context: context,
           title: CustomTextLabel(
             jsonKey: "categories",
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           ),
           actions: [
             setCartCounter(context: context),

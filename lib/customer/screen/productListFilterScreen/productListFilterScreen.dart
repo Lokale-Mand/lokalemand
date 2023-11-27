@@ -56,7 +56,11 @@ class _ProductListFilterScreenState extends State<ProductListFilterScreen> {
         context: context,
         title: CustomTextLabel(
           jsonKey: "filter",
-          style: TextStyle(color: ColorsRes.mainTextColor),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: ColorsRes.mainTextColor,
+          ),
         ),
       ),
       body: PopScope(

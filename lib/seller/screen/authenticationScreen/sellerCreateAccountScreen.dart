@@ -1,0 +1,1807 @@
+import 'package:dotted_border/dotted_border.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/provider/sellerRegisterProvider.dart';
+
+class SellerCreateAccountScreen extends StatefulWidget {
+  const SellerCreateAccountScreen({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<SellerCreateAccountScreen> createState() =>
+      _SellerCreateAccountScreenState();
+}
+
+class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
+  PageController pageController = PageController();
+  int currentPage = 0;
+
+  String selectedLogoPath = "";
+  String selectedAddressProofPath = "";
+  String selectedNationalIdPath = "";
+
+  TextEditingController edtBankName = TextEditingController();
+  TextEditingController edtBankAcNumber = TextEditingController();
+  TextEditingController edtBankAcName = TextEditingController();
+  TextEditingController edtBankIbanSwiftCode = TextEditingController();
+  TextEditingController edtNidNumber = TextEditingController();
+
+  List<StoreTime> storeTime = [
+    StoreTime(
+        day: "0", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
+    StoreTime(
+        day: "1", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
+    StoreTime(
+        day: "2", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
+    StoreTime(
+        day: "3", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
+    StoreTime(
+        day: "4", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
+    StoreTime(
+        day: "5", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
+    StoreTime(
+        day: "6", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
+  ];
+
+  TextEditingController edtStoreName = TextEditingController();
+  TextEditingController edtStoreLocation =
+      TextEditingController(text: "Wageningen");
+  TextEditingController edtStoreDescription = TextEditingController();
+  TextEditingController edtStoreCategories = TextEditingController();
+
+  CountryCode? selectedCountryCode;
+  bool isLoading = false, isPasswordVisible = false;
+  TextEditingController edtEmail = TextEditingController();
+  TextEditingController edtPassword = TextEditingController();
+  TextEditingController edtDuplicatePassword = TextEditingController();
+  TextEditingController edtFullName = TextEditingController();
+  TextEditingController edtPhoneNumber = TextEditingController();
+  bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+//   name:vijya
+//   email:wrteam.vijya@gmail.com1
+//   mobile:1234567890
+//   password:12345678
+//   confirm_password:12345678
+//   store_name:vijya store
+//   categories_ids:1,2
+//   pan_number:1234567890
+//   city_id:4
+//   latitude:11.111111122
+//   longitude:11.111111122
+//   bank_name:123456
+//   account_number:123456
+//   ifsc_code:123456
+//   account_name:123456
+//   store_hours:[{""store_open"":""1"",""day"":""0"",""open_time"":""03:00"",""close_time"":""00:04""},{""store_open"":""0"",""day"":""1"",""open_time"":""00:00"",""close_time"":""00:00""},{""store_open"":""0"",""day"":""2"",""open_time"":""00:00"",""close_time"":""00:00""},{""store_open"":""0"",""day"":""3"",""open_time"":""00:00"",""close_time"":""00:00""},{""store_open"":""0"",""day"":""4"",""open_time"":""00:00"",""close_time"":""00:00""},{""store_open"":""1"",""day"":""5"",""open_time"":""05:00"",""close_time"":""05:00""},{""store_open"":""0"",""day"":""6"",""open_time"":""00:00"",""close_time"":""00:00""}]
+//FIX   commission:0
+//FIX   require_products_approval:1
+//FIX   view_order_otp:0
+//FIX   assign_delivery_boy:0//FIX   status:1
+//FIX   admin_id:10
+  ///   id:5
+  ///   change_order_status_delivered:
+  ///   store_url:
+  ///   street:
+  ///   pincode_id:
+  ///   city_id:
+  ///   state:
+  ///   tax_name:
+  ///   tax_number:
+  ///   place_name:
+  ///   formatted_address:
+  ///   store_description:
+  ///   customer_privacy:
+
+  backendApiProcess() async {
+    Map<String, String> params = {
+      "name": edtFullName.text.toString(),
+      "email": edtEmail.text.toString(),
+      "mobile": edtPhoneNumber.text.toString(),
+      "password": edtPassword.text.toString(),
+      "confirm_password": edtDuplicatePassword.text.toString(),
+      "store_name": edtStoreName.text.toString(),
+      'categories_ids': edtStoreCategories.text.toString(),
+      "pan_number": edtNidNumber.text.toString(),
+      "city_id": "3",
+      "latitude": "51.9691868",
+      "longitude": "5.6653948",
+      "bank_name": edtBankName.text.toString(),
+      "account_number": edtBankName.text.toString(),
+      "ifsc_code": edtBankIbanSwiftCode.text.toString(),
+      "account_name": edtBankAcNumber.text.toString(),
+      "store_hours": "[{"
+          "store_open"
+          ":"
+          "1"
+          ","
+          "day"
+          ":"
+          "0"
+          ","
+          "open_time"
+          ":"
+          "03:00"
+          ","
+          "close_time"
+          ":"
+          "00:04"
+          "},{"
+          "store_open"
+          ":"
+          "0"
+          ","
+          "day"
+          ":"
+          "1"
+          ","
+          "open_time"
+          ":"
+          "00:00"
+          ","
+          "close_time"
+          ":"
+          "00:00"
+          "},{"
+          "store_open"
+          ":"
+          "0"
+          ","
+          "day"
+          ":"
+          "2"
+          ","
+          "open_time"
+          ":"
+          "00:00"
+          ","
+          "close_time"
+          ":"
+          "00:00"
+          "},{"
+          "store_open"
+          ":"
+          "0"
+          ","
+          "day"
+          ":"
+          "3"
+          ","
+          "open_time"
+          ":"
+          "00:00"
+          ","
+          "close_time"
+          ":"
+          "00:00"
+          "},{"
+          "store_open"
+          ":"
+          "0"
+          ","
+          "day"
+          ":"
+          "4"
+          ","
+          "open_time"
+          ":"
+          "00:00"
+          ","
+          "close_time"
+          ":"
+          "00:00"
+          "},{"
+          "store_open"
+          ":"
+          "1"
+          ","
+          "day"
+          ":"
+          "5"
+          ","
+          "open_time"
+          ":"
+          "05:00"
+          ","
+          "close_time"
+          ":"
+          "05:00"
+          "},{"
+          "store_open"
+          ":"
+          "0"
+          ","
+          "day"
+          ":"
+          "6"
+          ","
+          "open_time"
+          ":"
+          "00:00"
+          ","
+          "close_time"
+          ":"
+          "00:00"
+          "}]",
+    };
+
+    await context
+        .read<SellerRegisterProvider>()
+        .registerSellerApiProvider(context: context, params: params)
+        .then((value) {
+      GeneralMethods.showMessage(
+        context,
+        getTranslatedValue(context, "you_will_received_verification_mail"),
+        MessageType.warning,
+      );
+      Navigator.pop(context);
+    });
+  }
+
+  @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        bottomNavigationBar: Container(
+          constraints: BoxConstraints(
+            maxHeight: 60,
+          ),
+          padding: EdgeInsetsDirectional.symmetric(horizontal: 15),
+          child: StepperCounter(
+            firstCounterText: "back",
+            firstItemVoidCallback: () {
+              if (currentPage == 0) {
+                Navigator.pop(context);
+              } else {
+                currentPage--;
+                pageController.animateToPage(currentPage,
+                    duration: Duration(milliseconds: 500), curve: Curves.ease);
+              }
+            },
+            secondCounterText: "${currentPage + 1}/4",
+            thirdCounterText: currentPage == 3 ? "I'm ready!" : "next",
+            thirdItemVoidCallback: () => pageChangeValidation(currentPage),
+          ),
+        ),
+        body: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          onPageChanged: (value) {
+            print(">>>>>>>>> CURRENT PAGE VALUE $value");
+            currentPage = value;
+            print(">>>>>>>>> CURRENT PAGE $currentPage");
+            setState(() {});
+          },
+          controller: pageController,
+          children: [
+            //USER DETAILS PAGE
+            Container(
+              padding: EdgeInsetsDirectional.all(10),
+              alignment: Alignment.center,
+              child: Center(
+                child: ListView(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  children: [
+                    createAccountWidgets(),
+                  ],
+                ),
+              ),
+            ),
+            //STORE DETAILS PAGE
+            Container(
+              padding: EdgeInsetsDirectional.all(10),
+              alignment: Alignment.center,
+              child: Center(
+                child: ListView(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  children: [
+                    storeDetailsWidgets(),
+                  ],
+                ),
+              ),
+            ),
+            //STORE TIME DETAILS PAGE
+            Container(
+              padding: EdgeInsetsDirectional.all(10),
+              alignment: Alignment.center,
+              child: Center(
+                child: ListView(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  children: [
+                    storeHoursWidgets(),
+                  ],
+                ),
+              ),
+            ),
+            //PERSONAL DETAILS PAGE
+            Container(
+              padding: EdgeInsetsDirectional.all(10),
+              alignment: Alignment.center,
+              child: Center(
+                child: ListView(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  children: [
+                    personalInformationWidget(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ));
+  }
+
+  pageChangeValidation(int currentPage) {
+    print(">>>>>>>>>> $currentPage");
+    switch (currentPage) {
+      case 0:
+        userDetailsValidation();
+      case 1:
+        storeDetailsValidation();
+      case 2:
+        storeHoursValidation();
+      case 3:
+        personalInformationValidation();
+      default:
+        GeneralMethods.showMessage(
+            context, "something_went_wrong", MessageType.warning);
+    }
+  }
+
+  Widget createAccountWidgets() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomTextLabel(
+          jsonKey: "create_your_account",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            color: ColorsRes.mainTextColor,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        CustomTextLabel(
+          jsonKey: "full_name",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            controller: edtFullName,
+            keyboardType: TextInputType.name,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(
+                color: ColorsRes.menuTitleColor,
+              ),
+              hintText: "Lokale Mand",
+            ),
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        CustomTextLabel(
+          jsonKey: "mobile",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        mobileNoWidget(),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        CustomTextLabel(
+          jsonKey: "email",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            controller: edtEmail,
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(color: Colors.grey[300]),
+              hintText: "lokale-mand@mail.com",
+            ),
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        CustomTextLabel(
+          jsonKey: "password",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            controller: edtPassword,
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            obscureText: isPasswordVisible ? false : true,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(color: Colors.grey[300]),
+              hintText: "******",
+            ),
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        CustomTextLabel(
+          jsonKey: "duplicate_password",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            controller: edtDuplicatePassword,
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            obscureText: isPasswordVisible ? false : true,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(color: Colors.grey[300]),
+              hintText: "******",
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Checkbox(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              value: isPasswordVisible,
+              activeColor: ColorsRes.appColor,
+              onChanged: (bool? val) {
+                setState(
+                  () {
+                    isPasswordVisible = val!;
+                  },
+                );
+              },
+            ),
+            Expanded(
+              child: CustomTextLabel(
+                jsonKey: isPasswordVisible ? "hide_password" : "show_password",
+              ),
+            ),
+          ],
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+      ],
+    );
+  }
+
+  Widget storeDetailsWidgets() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        //Store Name
+        CustomTextLabel(
+          jsonKey: "about_store_title",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            color: ColorsRes.mainTextColor,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        //Store Name
+        CustomTextLabel(
+          jsonKey: "store_name",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            controller: edtStoreName,
+            keyboardType: TextInputType.name,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(
+                color: ColorsRes.menuTitleColor,
+              ),
+              hintText: "Lokale Mand",
+            ),
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        //Store Location and Store Categories
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //Store Location
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomTextLabel(
+                    jsonKey: "store_location",
+                    style: TextStyle(
+                      color: ColorsRes.mainTextColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Widgets.getSizedBox(
+                    height: Constant.size10,
+                  ),
+                  Container(
+                    padding: EdgeInsetsDirectional.all(8),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: ColorsRes.textFieldBorderColor,
+                        ),
+                        color: Theme.of(context).cardColor),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: edtStoreLocation,
+                            keyboardType: TextInputType.none,
+                            canRequestFocus: false,
+                            style: TextStyle(
+                              color: ColorsRes.mainTextColor,
+                            ),
+                            decoration: InputDecoration(
+                              enabled: false,
+                              border: InputBorder.none,
+                              isDense: true,
+                              hintStyle: TextStyle(
+                                color: ColorsRes.menuTitleColor,
+                              ),
+                              hintText: "Wageningen",
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, getLocationScreen,
+                                arguments: "seller_register");
+                          },
+                          icon: Icon(
+                            Icons.my_location_rounded,
+                            color: ColorsRes.appColor,
+                            size: 24,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            //Categories
+            Widgets.getSizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //Store Categories
+                  CustomTextLabel(
+                    jsonKey: "categories",
+                    style: TextStyle(
+                      color: ColorsRes.mainTextColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Widgets.getSizedBox(
+                    height: Constant.size10,
+                  ),
+                  Container(
+                    padding: EdgeInsetsDirectional.all(10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: ColorsRes.textFieldBorderColor,
+                        ),
+                        color: Theme.of(context).cardColor),
+                    child: TextField(
+                      controller: edtStoreCategories,
+                      keyboardType: TextInputType.text,
+                      style: TextStyle(
+                        color: ColorsRes.mainTextColor,
+                      ),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        isDense: true,
+                        hintStyle: TextStyle(
+                          color: ColorsRes.menuTitleColor,
+                        ),
+                        hintText: "Select Categories",
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        //Store Description
+        CustomTextLabel(
+          jsonKey: "store_description",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            minLines: 3,
+            maxLines: 100,
+            controller: edtStoreDescription,
+            keyboardType: TextInputType.multiline,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(
+                color: ColorsRes.menuTitleColor,
+              ),
+              hintText: "Store description goes here...",
+            ),
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        //Store Logo
+        CustomTextLabel(
+          jsonKey: "store_logo",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Row(
+          children: [
+            if (selectedLogoPath.isNotEmpty)
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: ColorsRes.textFieldBorderColor,
+                    ),
+                    color: Theme.of(context).cardColor),
+                height: 125,
+                width: 125,
+                child: Center(
+                  child: imgWidget(selectedLogoPath),
+                ),
+              ),
+            if (selectedLogoPath.isNotEmpty) Widgets.getSizedBox(width: 10),
+            Expanded(
+              child: GestureDetector(
+                onTap: () async {
+                  // Single file path
+                  FilePicker.platform
+                      .pickFiles(
+                          allowMultiple: false,
+                          allowCompression: true,
+                          type: FileType.image,
+                          lockParentWindow: true)
+                      .then((value) {
+                    cropImage(value!.paths.first.toString());
+                  });
+                },
+                child: DottedBorder(
+                  dashPattern: [5],
+                  strokeWidth: 2,
+                  strokeCap: StrokeCap.round,
+                  color: ColorsRes.menuTitleColor,
+                  radius: Radius.circular(10),
+                  borderType: BorderType.RRect,
+                  child: Container(
+                    height: 120,
+                    color: Colors.transparent,
+                    padding: EdgeInsetsDirectional.all(10),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Widgets.defaultImg(
+                            image: "upload",
+                            iconColor: ColorsRes.menuTitleColor,
+                            height: 70,
+                            width: 70,
+                          ),
+                          CustomTextLabel(
+                            jsonKey: "upload_logo_file_here",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: ColorsRes.menuTitleColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // STORE HOURS WIDGETS
+  Widget storeHoursWidgets() {
+    List lblWeekDaysNames = [
+      "week_days_names_sunday",
+      "week_days_names_monday",
+      "week_days_names_tuesday",
+      "week_days_names_wednesday",
+      "week_days_names_thursday",
+      "week_days_names_friday",
+      "week_days_names_saturday",
+    ];
+
+    return ListView(
+      physics: ClampingScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        CustomTextLabel(
+          jsonKey: "store_time_title",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            color: ColorsRes.mainTextColor,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size50,
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(7, (index) {
+            return Padding(
+              padding: EdgeInsetsDirectional.only(bottom: 15),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Transform.scale(
+                          scale: 1.2,
+                          child: Checkbox(
+                            value: storeTime[index].storeOpen == "true",
+                            onChanged: (value) {
+                              storeTime[index].storeOpen =
+                                  value == true ? "true" : "false";
+                              setState(() {});
+                            },
+                            checkColor: ColorsRes.appColorWhite,
+                            activeColor: ColorsRes.appColor,
+                            side: BorderSide(
+                              color: ColorsRes.menuTitleColor,
+                              width: 1.5,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: CustomTextLabel(
+                            overflow: TextOverflow.ellipsis,
+                            jsonKey: lblWeekDaysNames[index],
+                            softWrap: true,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: storeTime[index].storeOpen == "true"
+                                  ? ColorsRes.mainTextColor
+                                  : ColorsRes.menuTitleColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      padding: EdgeInsetsDirectional.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: ColorsRes.menuTitleColor,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          CustomTextLabel(
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            text: storeTime[index].openTime,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: storeTime[index].storeOpen == "true"
+                                  ? ColorsRes.mainTextColor
+                                  : ColorsRes.menuTitleColor,
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_drop_down_rounded,
+                            size: 24,
+                            color: storeTime[index].storeOpen == "true"
+                                ? ColorsRes.mainTextColor
+                                : ColorsRes.menuTitleColor,
+                          )
+                        ],
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                    ),
+                    onTap: () {
+                      if (storeTime[index].storeOpen == "true") {
+                        showStoreTimePicker().then((value) {
+                          storeTime[index].openTime =
+                              value.to24hours().toString();
+                          setState(() {});
+                        });
+                      }
+                    },
+                  ),
+                  Widgets.getSizedBox(width: 10),
+                  CustomTextLabel(
+                    overflow: TextOverflow.ellipsis,
+                    text: "-",
+                    softWrap: true,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Widgets.getSizedBox(width: 10),
+                  GestureDetector(
+                    child: Container(
+                      padding: EdgeInsetsDirectional.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: ColorsRes.menuTitleColor,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          CustomTextLabel(
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            text: storeTime[index].closeTime,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: storeTime[index].storeOpen == "true"
+                                    ? ColorsRes.mainTextColor
+                                    : ColorsRes.menuTitleColor),
+                          ),
+                          Icon(
+                            Icons.arrow_drop_down_rounded,
+                            color: storeTime[index].storeOpen == "true"
+                                ? ColorsRes.mainTextColor
+                                : ColorsRes.menuTitleColor,
+                          )
+                        ],
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                    ),
+                    onTap: () {
+                      if (storeTime[index].storeOpen == "true") {
+                        showStoreTimePicker().then((value) {
+                          if (compareTimes(
+                                  value,
+                                  convertStringToTimeOfDay(
+                                      storeTime[index].openTime.toString())) ==
+                              1) {
+                            storeTime[index].closeTime =
+                                value.to24hours().toString();
+                          } else {
+                            storeTime[index].closeTime = "00:00";
+                            GeneralMethods.showMessage(
+                                context,
+                                "wrong_shop_closing_time_message",
+                                MessageType.warning);
+                          }
+                          setState(() {});
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
+            );
+          }),
+        ),
+      ],
+    );
+  }
+
+  Future<TimeOfDay> showStoreTimePicker() async {
+    return showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            materialTapTargetSize: MaterialTapTargetSize.padded,
+          ),
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                alwaysUse24HourFormat: true,
+              ),
+              child: child!,
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      if (value != null) {
+        return value;
+      } else {
+        return TimeOfDay(hour: 0, minute: 0);
+      }
+    });
+  }
+
+  int compareTimes(TimeOfDay time1, TimeOfDay time2) {
+    if (time1.hour < time2.hour) {
+      return -1;
+    } else if (time1.hour > time2.hour) {
+      return 1;
+    } else {
+      if (time1.minute < time2.minute) {
+        return -1;
+      } else if (time1.minute > time2.minute) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  }
+
+  TimeOfDay convertStringToTimeOfDay(String timeString) {
+    List<String> parts = timeString.split(':');
+    int hour = int.parse(parts[0]);
+    int minute = int.parse(parts[1]);
+
+    return TimeOfDay(hour: hour, minute: minute);
+  }
+
+  void storeHoursValidation() async {
+    try {
+      if (edtEmail.text.isEmpty &&
+          GeneralMethods.validateEmail(edtEmail.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_email"),
+            MessageType.warning);
+      } else if (edtPassword.text.contains(" ") ||
+          edtDuplicatePassword.text.contains(" ")) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "password_should_not_contain_space"),
+            MessageType.warning);
+      } else if (edtPassword.text != edtDuplicatePassword.text) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(
+                context, "password_and_confirm_password_does_not_matching"),
+            MessageType.warning);
+      } else {
+        currentPage++;
+        pageController.animateToPage(currentPage,
+            duration: Duration(milliseconds: 500), curve: Curves.ease);
+        // UserCredential userCredential =
+        //     await firebaseAuth.createUserWithEmailAndPassword(
+        //   email: edtEmail.text,
+        //   password: edtPassword.text,
+        // );
+        //
+        // User? user = userCredential.user;
+        //
+        // await user?.sendEmailVerification().onError(
+        //   (error, stackTrace) {
+        //     GeneralMethods.showMessage(
+        //       context,
+        //       stackTrace.toString(),
+        //       MessageType.warning,
+        //     );
+        //     return null;
+        //   },
+        // ).then((value) => backendApiProcess(user));
+      }
+    } catch (e) {
+      GeneralMethods.showMessage(context, e.toString(), MessageType.warning);
+    }
+  }
+
+  // STORE HOURS WIDGETS END
+
+  mobileNoWidget() {
+    return Container(
+      padding: EdgeInsetsDirectional.all(5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: ColorsRes.textFieldBorderColor,
+          ),
+          color: Theme.of(context).cardColor),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          CountryCodePicker(
+            onInit: (countryCode) {
+              selectedCountryCode = countryCode;
+            },
+            onChanged: (countryCode) {
+              selectedCountryCode = countryCode;
+            },
+            initialSelection: Constant.initialCountryCode,
+            textOverflow: TextOverflow.ellipsis,
+            showCountryOnly: false,
+            alignLeft: false,
+            backgroundColor: Theme.of(context).cardColor,
+            textStyle: TextStyle(color: ColorsRes.mainTextColor),
+            dialogBackgroundColor: Theme.of(context).cardColor,
+            dialogSize: Size(MediaQuery.sizeOf(context).width,
+                MediaQuery.sizeOf(context).height * 0.9),
+            showDropDownButton: true,
+            padding: EdgeInsets.zero,
+          ),
+          Expanded(
+            child: TextField(
+              controller: edtPhoneNumber,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              style: TextStyle(
+                color: ColorsRes.mainTextColor,
+              ),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                isDense: true,
+                hintStyle: TextStyle(color: Colors.grey[300]),
+                hintText: "9999999999",
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void userDetailsValidation() async {
+    try {
+      if (edtFullName.text.isEmpty &&
+          GeneralMethods.emptyValidation(edtFullName.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_name"),
+            MessageType.warning);
+      } else if (edtEmail.text.isEmpty &&
+          GeneralMethods.validateEmail(edtEmail.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_email"),
+            MessageType.warning);
+      } else if (edtPhoneNumber.text.isNotEmpty &&
+          GeneralMethods.phoneValidation(edtPhoneNumber.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_mobile"),
+            MessageType.warning);
+      } else if (edtPassword.text.contains(" ") ||
+          edtDuplicatePassword.text.contains(" ")) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "password_should_not_contain_space"),
+            MessageType.warning);
+      } else if (edtPassword.text != edtDuplicatePassword.text) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(
+                context, "password_and_confirm_password_does_not_matching"),
+            MessageType.warning);
+      } else {
+        currentPage++;
+        pageController.animateToPage(currentPage,
+            duration: Duration(milliseconds: 500), curve: Curves.ease);
+      }
+    } catch (e) {
+      GeneralMethods.showMessage(context, e.toString(), MessageType.warning);
+    }
+  }
+
+  void storeDetailsValidation() async {
+    try {
+      if (edtStoreName.text.isEmpty &&
+          GeneralMethods.emptyValidation(edtStoreName.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_store_name"),
+            MessageType.warning);
+      } else if (edtStoreLocation.text.isEmpty &&
+          GeneralMethods.emptyValidation(edtStoreLocation.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_store_location"),
+            MessageType.warning);
+      } else if (edtStoreCategories.text.isEmpty) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_store_categories"),
+            MessageType.warning);
+      } else if (edtStoreDescription.text.isEmpty) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_store_description"),
+            MessageType.warning);
+      } else if (selectedLogoPath.isEmpty) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_store_logo"),
+            MessageType.warning);
+      } else {
+        currentPage++;
+        pageController.animateToPage(currentPage,
+            duration: Duration(milliseconds: 500), curve: Curves.ease);
+      }
+    } catch (e) {
+      GeneralMethods.showMessage(context, e.toString(), MessageType.warning);
+    }
+  }
+
+  // STORE HOURS WIDGETS ND
+
+  Widget personalInformationWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        //Store Name
+        CustomTextLabel(
+          jsonKey: "personal_information_title",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            color: ColorsRes.mainTextColor,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        //Bank Name
+        CustomTextLabel(
+          jsonKey: "bank_name",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            controller: edtBankName,
+            keyboardType: TextInputType.name,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(
+                color: ColorsRes.menuTitleColor,
+              ),
+              hintText: "Lokale Mand",
+            ),
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        //Bank Account Name
+        CustomTextLabel(
+          jsonKey: "bank_account_name",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            controller: edtBankAcName,
+            keyboardType: TextInputType.name,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(
+                color: ColorsRes.menuTitleColor,
+              ),
+              hintText: "Lokale Mand",
+            ),
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        //Bank Account Number
+        CustomTextLabel(
+          jsonKey: "bank_account_name",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            controller: edtBankAcNumber,
+            keyboardType: TextInputType.name,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(
+                color: ColorsRes.menuTitleColor,
+              ),
+              hintText: "Lokale Mand",
+            ),
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        // IBAN or SWIFT code
+        CustomTextLabel(
+          jsonKey: "bank_iban_or_swift_code",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            controller: edtBankIbanSwiftCode,
+            keyboardType: TextInputType.name,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(
+                color: ColorsRes.menuTitleColor,
+              ),
+              hintText: "Lokale Mand",
+            ),
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        // IBAN or SWIFT code
+        CustomTextLabel(
+          jsonKey: "national_id_number",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Container(
+          padding: EdgeInsetsDirectional.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
+              ),
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            controller: edtNidNumber,
+            keyboardType: TextInputType.name,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              hintStyle: TextStyle(
+                color: ColorsRes.menuTitleColor,
+              ),
+              hintText: "Lokale Mand",
+            ),
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        //National Id Proof
+        CustomTextLabel(
+          jsonKey: "national_id_proof",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Row(
+          children: [
+            if (selectedNationalIdPath.isNotEmpty)
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: ColorsRes.textFieldBorderColor,
+                    ),
+                    color: Theme.of(context).cardColor),
+                height: 125,
+                width: 125,
+                child: Center(
+                  child: imgWidget(selectedNationalIdPath),
+                ),
+              ),
+            if (selectedNationalIdPath.isNotEmpty)
+              Widgets.getSizedBox(width: 10),
+            Expanded(
+              child: GestureDetector(
+                onTap: () async {
+                  // Single file path
+                  FilePicker.platform
+                      .pickFiles(
+                          allowMultiple: false,
+                          allowCompression: true,
+                          type: FileType.custom,
+                          allowedExtensions: ["pdf", "jpg", "jpeg", "png"],
+                          lockParentWindow: true)
+                      .then((value) {
+                    if (value != null) {
+                      selectedNationalIdPath = value.paths.first.toString();
+                      setState(() {});
+                    }
+                  });
+                },
+                child: DottedBorder(
+                  dashPattern: [5],
+                  strokeWidth: 2,
+                  strokeCap: StrokeCap.round,
+                  color: ColorsRes.menuTitleColor,
+                  radius: Radius.circular(10),
+                  borderType: BorderType.RRect,
+                  child: Container(
+                    height: 120,
+                    color: Colors.transparent,
+                    padding: EdgeInsetsDirectional.all(10),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Widgets.defaultImg(
+                            image: "upload",
+                            iconColor: ColorsRes.menuTitleColor,
+                            height: 70,
+                            width: 70,
+                          ),
+                          CustomTextLabel(
+                            jsonKey: "upload_nid_file_here",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: ColorsRes.menuTitleColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        //National Id Proof
+        CustomTextLabel(
+          jsonKey: "address_id_proof",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Row(
+          children: [
+            if (selectedAddressProofPath.isNotEmpty)
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: ColorsRes.textFieldBorderColor,
+                    ),
+                    color: Theme.of(context).cardColor),
+                height: 125,
+                width: 125,
+                child: Center(
+                  child: imgWidget(selectedAddressProofPath),
+                ),
+              ),
+            if (selectedAddressProofPath.isNotEmpty)
+              Widgets.getSizedBox(width: 10),
+            Expanded(
+              child: GestureDetector(
+                onTap: () async {
+                  // Single file path
+                  FilePicker.platform
+                      .pickFiles(
+                          allowMultiple: false,
+                          allowCompression: true,
+                          type: FileType.custom,
+                          allowedExtensions: ["pdf", "jpg", "jpeg", "png"],
+                          lockParentWindow: true)
+                      .then((value) {
+                    if (value != null) {
+                      selectedAddressProofPath = value.paths.first.toString();
+                      setState(() {});
+                    }
+                  });
+                },
+                child: DottedBorder(
+                  dashPattern: [5],
+                  strokeWidth: 2,
+                  strokeCap: StrokeCap.round,
+                  color: ColorsRes.menuTitleColor,
+                  radius: Radius.circular(10),
+                  borderType: BorderType.RRect,
+                  child: Container(
+                    height: 120,
+                    color: Colors.transparent,
+                    padding: EdgeInsetsDirectional.all(10),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Widgets.defaultImg(
+                            image: "upload",
+                            iconColor: ColorsRes.menuTitleColor,
+                            height: 70,
+                            width: 70,
+                          ),
+                          CustomTextLabel(
+                            jsonKey: "upload_address_proof_file_here",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: ColorsRes.menuTitleColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+      ],
+    );
+  }
+
+  void personalInformationValidation() async {
+    try {
+      if (edtBankName.text.isEmpty &&
+          GeneralMethods.emptyValidation(edtBankName.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_personal_info_bank_name"),
+            MessageType.warning);
+      } else if (edtBankAcName.text.isEmpty &&
+          GeneralMethods.emptyValidation(edtBankAcName.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(
+                context, "enter_valid_personal_info_bank_ac_name"),
+            MessageType.warning);
+      } else if (edtBankAcNumber.text.isEmpty &&
+          GeneralMethods.emptyValidation(edtBankAcNumber.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(
+                context, "enter_valid_personal_info_bank_ac_numbers"),
+            MessageType.warning);
+      } else if (edtBankIbanSwiftCode.text.isEmpty &&
+          GeneralMethods.emptyValidation(edtBankIbanSwiftCode.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(
+                context, "enter_valid_personal_info_bank_ac_iban_swift_code"),
+            MessageType.warning);
+      } else if (edtNidNumber.text.isEmpty &&
+          GeneralMethods.emptyValidation(edtNidNumber.text) != null) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_personal_info_nic_number"),
+            MessageType.warning);
+      } else if (selectedNationalIdPath.isEmpty) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "enter_valid_personal_info_nic_proof"),
+            MessageType.warning);
+      } else if (selectedAddressProofPath.isEmpty) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(
+                context, "enter_valid_personal_info_address_proof"),
+            MessageType.warning);
+      } else {
+        backendApiProcess();
+      }
+    } catch (e) {
+      GeneralMethods.showMessage(context, e.toString(), MessageType.warning);
+    }
+  }
+
+  // STORE HOURS WIDGETS END
+
+  imgWidget(String fileName) {
+    return GestureDetector(
+      onTap: () {
+        try {
+          OpenFilex.open(fileName);
+        } catch (e) {
+          GeneralMethods.showMessage(
+              context, e.toString(), MessageType.warning);
+        }
+      },
+      child: fileName.split(".").last == "pdf"
+          ? Center(
+              child: Widgets.defaultImg(
+                image: "pdf",
+                height: 60,
+                width: 60,
+              ),
+            )
+          : ClipRRect(
+              borderRadius: Constant.borderRadius10,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Image(
+                image: FileImage(
+                  File(
+                    fileName,
+                  ),
+                ),
+                width: 110,
+                height: 110,
+                fit: BoxFit.fill,
+              ),
+            ),
+    );
+  }
+
+  Future<void> cropImage(String filePath) async {
+    await ImageCropper()
+        .cropImage(
+      sourcePath: filePath,
+      compressFormat: ImageCompressFormat.png,
+      compressQuality: 100,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      cropStyle: CropStyle.rectangle,
+      maxHeight: 1024,
+      maxWidth: 1024,
+    )
+        .then((croppedFile) {
+      if (croppedFile != null) {
+        setState(() {
+          selectedLogoPath = croppedFile.path;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    edtPassword.dispose();
+    edtDuplicatePassword.dispose();
+    edtEmail.dispose();
+    edtPhoneNumber.dispose();
+    edtFullName.dispose();
+    super.dispose();
+  }
+}

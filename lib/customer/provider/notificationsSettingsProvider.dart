@@ -1,5 +1,3 @@
-
-
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 enum NotificationsSettingsState { initial, loading, loaded, error }

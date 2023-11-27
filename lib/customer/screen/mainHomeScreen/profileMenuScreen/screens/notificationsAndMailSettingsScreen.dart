@@ -31,7 +31,11 @@ class _NotificationsAndMailSettingsScreenScreenState
         context: context,
         title: CustomTextLabel(
           jsonKey: "settings",
-          style: TextStyle(color: ColorsRes.mainTextColor),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: ColorsRes.mainTextColor,
+          ),
         ),
         centerTitle: true,
       ),

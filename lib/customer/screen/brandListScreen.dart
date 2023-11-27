@@ -33,7 +33,11 @@ class _BrandListScreenState extends State<BrandListScreen> {
         context: context,
         title: CustomTextLabel(
           jsonKey: "brands",
-          style: TextStyle(color: ColorsRes.mainTextColor),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: ColorsRes.mainTextColor,
+          ),
         ),
         actions: [
           setCartCounter(context: context),
@@ -88,7 +92,8 @@ class _BrandListScreenState extends State<BrandListScreen> {
                               arguments: [
                                 "brand",
                                 brand.id.toString(),
-                                brand.name,null,
+                                brand.name,
+                                null,
                               ],
                             );
                           },

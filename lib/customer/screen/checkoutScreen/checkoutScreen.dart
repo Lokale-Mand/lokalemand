@@ -92,7 +92,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           title: CustomTextLabel(
             jsonKey: "checkout",
             softWrap: true,
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           ),
           onTap: () async {
             if (context.read<CheckoutProvider>().isPaymentUnderProcessing) {

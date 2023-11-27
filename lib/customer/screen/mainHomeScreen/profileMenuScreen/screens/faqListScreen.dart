@@ -52,7 +52,11 @@ class _FaqListScreenState extends State<FaqListScreen> {
           context: context,
           title: CustomTextLabel(
             jsonKey: "faq",
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           )),
       body: setRefreshIndicator(
           refreshCallback: () {

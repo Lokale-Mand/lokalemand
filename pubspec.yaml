@@ -46,8 +46,7 @@ dependencies:
     sdk: flutter
   lottie: ^2.1.0
   geolocator: ^10.0.0 #for user location
-  flutter_google_places: ^0.3.0
-  google_maps_flutter: ^2.2.0  #for map
+  google_maps_flutter: ^2.5.0  #for map
   geocoding: ^2.0.4
   speech_to_text: ^6.1.0
   shimmer: ^3.0.0
@@ -69,7 +68,6 @@ dependencies:
   package_info_plus: ^4.0.2
   awesome_notifications: ^0.8.2
   permission_handler: ^10.2.0
-  flutter_swipe_button: ^2.1.1+1
   webview_flutter: ^4.0.7
   vibration: ^1.7.6
   google_fonts: ^4.0.4
@@ -78,6 +76,10 @@ dependencies:
   pinput: ^3.0.1
   flutter_rating_bar: ^4.0.1
   flutter_swiper_view: ^1.1.8
+  html_editor_enhanced: ^2.5.1
+  google_maps_webservice: ^0.0.20-nullsafety.5
+  google_api_headers: ^3.1.0
+  dotted_border: ^2.1.0
 
 dependency_overrides:
   intl: ^0.17.0

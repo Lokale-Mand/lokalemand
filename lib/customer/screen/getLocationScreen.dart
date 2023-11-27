@@ -1,4 +1,5 @@
 import 'package:lokale_mand/customer/screen/getLocationScreen.dart';
+import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/flutterGooglePlaces.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 export 'package:google_maps_webservice/places.dart';
@@ -45,30 +46,26 @@ class _GetLocationState extends State<GetLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvoked: (didPop) {
-        Navigator.pop(context, true);
-      },
-      child: Scaffold(
-        appBar: getAppBar(
-          context: context,
-          title: CustomTextLabel(
-            jsonKey: "select_location",
-            softWrap: true,
-            style: TextStyle(
-              color: ColorsRes.mainTextColor,
-            ),
+    return Scaffold(
+      appBar: getAppBar(
+        context: context,
+        title: CustomTextLabel(
+          jsonKey: "select_location",
+          softWrap: true,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: ColorsRes.mainTextColor,
           ),
-          onTap: () => Navigator.pop(context, true),
         ),
-        body: ListView(
-            padding: EdgeInsets.symmetric(
-                horizontal: Constant.size10, vertical: Constant.size10),
-            children: [
-              lblSelectLocation(),
-              if (visibleRecentWidget) recentAddressWidget(),
-            ]),
       ),
+      body: ListView(
+          padding: EdgeInsets.symmetric(
+              horizontal: Constant.size10, vertical: Constant.size10),
+          children: [
+            lblSelectLocation(),
+            if (visibleRecentWidget) recentAddressWidget(),
+          ]),
     );
   }
 
@@ -145,8 +142,11 @@ class _GetLocationState extends State<GetLocation> {
             child: CustomTextLabel(
               jsonKey: "or",
               softWrap: true,
-              style: TextStyle(fontWeight: FontWeight.bold, height: 0.5,
-                color: ColorsRes.mainTextColor,),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                height: 0.5,
+                color: ColorsRes.mainTextColor,
+              ),
             ),
           ),
           const Expanded(
@@ -188,17 +188,13 @@ class _GetLocationState extends State<GetLocation> {
   searchAddress() {
     Future.delayed(Duration.zero, () async {
       Prediction? p = await PlacesAutocomplete.show(
-          context: context,
-          apiKey: Constant.googleApiKey,
-          onError: (PlacesAutocompleteResponse response) {},
-          mode: Mode.overlay,
-          components: [],
-          types: [],
-          strictbounds: false,
-          logo: const SizedBox(
-            width: double.maxFinite,
-            height: 0,
-          ));
+        context: context,
+        apiKey: Constant.googleApiKey,
+        onError: (PlacesAutocompleteResponse response) {},
+        components: [],
+        types: [],
+        strictbounds: false,
+      );
 
       await GeneralMethods.displayPrediction(p, context)
           .then((value) => getRedirects(value));

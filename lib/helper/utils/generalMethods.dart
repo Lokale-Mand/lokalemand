@@ -1,9 +1,9 @@
-import 'package:lokale_mand/helper/generalWidgets/messageContainer.dart';
-import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:lokale_mand/helper/generalWidgets/messageContainer.dart';
+import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 enum MessageType { success, error, warning }
 
@@ -529,3 +529,12 @@ extension StringCasingExtension on String {
       .map((str) => str.toCapitalized())
       .join(' ');
 }
+
+extension TimeOfDayConverter on TimeOfDay {
+  String to24hours() {
+    final hour = this.hour.toString().padLeft(2, "0");
+    final min = this.minute.toString().padLeft(2, "0");
+    return "$hour:$min";
+  }
+}
+

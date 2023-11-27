@@ -138,7 +138,7 @@ class _ProductVariantDropDownMenuListState
                                                         .toString(),
                                                     softWrap: true,
                                                     style: TextStyle(
-                                                        fontSize: 20,
+                                                      fontSize: 20,
                                                       color: ColorsRes
                                                           .mainTextColor,
                                                     ),
@@ -205,7 +205,8 @@ class _ProductVariantDropDownMenuListState
                                                                             TextStyle(
                                                                           fontSize:
                                                                               14,
-                                                                              color: ColorsRes.mainTextColor,
+                                                                          color:
+                                                                              ColorsRes.mainTextColor,
                                                                         ),
                                                                       ),
                                                                     ),

@@ -491,23 +491,20 @@ AppBar getAppBar(
     bool? showBackButton,
     GestureTapCallback? onTap}) {
   return AppBar(
-    leading: (showBackButton != null && showBackButton == true)
-        ? Container(
-            color: Colors.red,
-            child: GestureDetector(
-              onTap: onTap ??
-                  () {
-                    Navigator.pop(context);
-                  },
+    leading: showBackButton ?? true
+        ? GestureDetector(
+            onTap: onTap ??
+                () {
+                  Navigator.pop(context);
+                },
+            child: Container(
               child: Padding(
-                padding: EdgeInsets.all(18),
+                padding: EdgeInsets.all(20),
                 child: SizedBox(
                   child: Widgets.defaultImg(
                     image: "ic_arrow_back",
                     iconColor: ColorsRes.mainTextColor,
                   ),
-                  height: 10,
-                  width: 10,
                 ),
               ),
             ),
@@ -515,11 +512,9 @@ AppBar getAppBar(
         : null,
     automaticallyImplyLeading: true,
     elevation: 0,
-    leadingWidth: (showBackButton != null && showBackButton == true) ? 10 : 0,
     title: title,
     centerTitle: centerTitle ?? true,
-    backgroundColor:
-        backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+    backgroundColor: backgroundColor ?? Theme.of(context).cardColor,
     actions: actions ?? [],
   );
 }
@@ -604,23 +599,52 @@ Widget getProductItemShimmer(
 //Search widgets for the multiple screen
 Widget getSearchWidget({
   required BuildContext context,
-  Function? trailingCallBack,
-  Function? leadingCallBack,
+  VoidCallback? trailingCallBack,
+  VoidCallback? leadingCallBack,
 }) {
   return GestureDetector(
     onTap: () {
       Navigator.pushNamed(context, productSearchScreen);
     },
     child: Container(
-      margin: EdgeInsetsDirectional.all(10),
-      decoration: DesignConfig.boxDecoration(
-        Theme.of(context).scaffoldBackgroundColor,
-        bordercolor: const Color(0xffe3e0e0),
-        borderwidth: 2,
-        isboarder: true,
-        15,
-      ),
-      child: ListTile(
+        height: 55,
+        margin: EdgeInsetsDirectional.all(10),
+        decoration: DesignConfig.boxDecoration(
+          Theme.of(context).scaffoldBackgroundColor,
+          bordercolor: const Color(0xffe3e0e0),
+          borderwidth: 2,
+          isboarder: true,
+          15,
+        ),
+        child: Row(
+          children: [
+            IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.search,
+                color: ColorsRes.mainTextColor,
+                size: 30,
+              ),
+              onPressed: leadingCallBack ?? null,
+            ),
+            CustomTextLabel(
+              jsonKey: context
+                  .read<LanguageProvider>()
+                  .currentLanguage["product_search_hint"],
+              style: TextStyle(color: ColorsRes.menuTitleColor),
+            ),
+            Spacer(),
+            IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.sort_rounded,
+                color: ColorsRes.mainTextColor,
+                size: 30,
+              ),
+              onPressed: trailingCallBack ?? null,
+            ),
+          ],
+        ) /*ListTile(
         title: TextField(
           enabled: false,
           decoration: InputDecoration(
@@ -650,8 +674,8 @@ Widget getSearchWidget({
           ),
           onPressed: () {},
         ),
-      ),
-    ),
+      ),*/
+        ),
   );
 }
 

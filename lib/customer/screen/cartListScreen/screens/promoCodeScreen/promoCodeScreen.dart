@@ -35,7 +35,11 @@ class _PromoCodeListScreenState extends State<PromoCodeListScreen> {
         context: context,
         title: CustomTextLabel(
           jsonKey: "promo_codes",
-          style: TextStyle(color: ColorsRes.mainTextColor),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: ColorsRes.mainTextColor,
+          ),
         ),
       ),
       body: PopScope(

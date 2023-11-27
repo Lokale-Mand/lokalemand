@@ -110,7 +110,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 "products",
               ),
           softWrap: true,
-          style: TextStyle(color: ColorsRes.mainTextColor),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: ColorsRes.mainTextColor,
+          ),
         ),
         actions: [
           // setCartCounter(context: context),

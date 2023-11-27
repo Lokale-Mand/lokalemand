@@ -41,7 +41,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: CustomTextLabel(
             jsonKey: "profile",
             softWrap: true,
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           ),
           showBackButton: false,
         ),
@@ -70,20 +74,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 MenuListItems(storeDataMenu),
                 Widgets.getSizedBox(height: 5),
-                Divider(color: ColorsRes.menuTitleColor),
-                Widgets.getSizedBox(height: 5),
-                CustomTextLabel(
-                  jsonKey: "personal_data",
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    color: ColorsRes.menuTitleColor,
+                if (Constant.session.isUserLoggedIn())
+                  Divider(color: ColorsRes.menuTitleColor),
+                if (Constant.session.isUserLoggedIn())
+                  Widgets.getSizedBox(height: 5),
+                if (Constant.session.isUserLoggedIn())
+                  CustomTextLabel(
+                    jsonKey: "personal_data",
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      color: ColorsRes.menuTitleColor,
+                    ),
                   ),
-                ),
-                Widgets.getSizedBox(height: 15),
-                MenuListItems(personalDataMenu),
+                if (Constant.session.isUserLoggedIn())
+                  Widgets.getSizedBox(height: 15),
+                if (Constant.session.isUserLoggedIn())
+                  MenuListItems(personalDataMenu),
                 Divider(color: ColorsRes.menuTitleColor),
                 Widgets.getSizedBox(height: 15),
                 CustomTextLabel(

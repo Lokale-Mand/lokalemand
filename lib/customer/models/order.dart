@@ -66,7 +66,11 @@ class Order {
   late final String createdAt;
   late final List<OrderItem> items;
 
-  Order copyWith({List<OrderItem>? orderItems, String? updatedActiveStatus,String? newTotal,String? newFinalTotal}) {
+  Order copyWith(
+      {List<OrderItem>? orderItems,
+      String? updatedActiveStatus,
+      String? newTotal,
+      String? newFinalTotal}) {
     return Order(
       id: id,
       userId: userId,

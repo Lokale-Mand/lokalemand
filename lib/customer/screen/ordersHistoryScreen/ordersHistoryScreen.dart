@@ -35,7 +35,11 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
           context: context,
           title: CustomTextLabel(
             jsonKey: "orders_history",
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           ),
           showBackButton: true),
       body: Column(

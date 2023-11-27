@@ -59,14 +59,14 @@ class User {
 
   User(
       {this.id,
-        this.name,
-        this.email,
-        this.countryCode,
-        this.mobile,
-        this.profile,
-        this.balance,
-        this.referralCode,
-        this.status});
+      this.name,
+      this.email,
+      this.countryCode,
+      this.mobile,
+      this.profile,
+      this.balance,
+      this.referralCode,
+      this.status});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

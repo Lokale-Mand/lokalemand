@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lokale_mand/customer/screen/getLocationScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/seller/screen/authenticationScreen/sellerLoginAccountScreen.dart';
+import 'package:lokale_mand/seller/provider/sellerRegisterProvider.dart';
 
 // CUSTOMER SCREENS VARIABLES
 
@@ -44,6 +44,7 @@ const String paypalPaymentScreen = 'paypalPaymentScreen';
 // SELLER SCREENS VARIABLES
 
 const String sellerLoginAccountScreen = 'sellerLoginAccountScreen';
+const String sellerCreateAccountScreen = 'sellerCreateAccountScreen';
 
 String currentRoute = splashScreen;
 
@@ -334,6 +335,14 @@ class RouteGenerator {
       case sellerLoginAccountScreen:
         return CupertinoPageRoute(
           builder: (_) => SellerLoginAccountScreen(),
+        );
+
+      case sellerCreateAccountScreen:
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<SellerRegisterProvider>(
+            create: (context) => SellerRegisterProvider(),
+            child: const SellerCreateAccountScreen(),
+          ),
         );
 
       default:

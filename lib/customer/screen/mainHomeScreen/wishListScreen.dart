@@ -75,6 +75,8 @@ class _ProductListScreenState extends State<WishListScreen> {
         title: CustomTextLabel(
           jsonKey: "wish_list",
           style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
             color: ColorsRes.mainTextColor,
           ),
         ),

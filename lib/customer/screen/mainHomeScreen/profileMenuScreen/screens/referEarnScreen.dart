@@ -60,9 +60,13 @@ class _ReferAndEarnState extends State<ReferAndEarn> {
       appBar: getAppBar(
           context: context,
           title: CustomTextLabel(
-            jsonKey:"refer_and_earn",
+            jsonKey: "refer_and_earn",
             softWrap: true,
-            style: TextStyle(color: ColorsRes.mainTextColor),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           )),
       body: Stack(
         children: [
@@ -101,7 +105,7 @@ class _ReferAndEarnState extends State<ReferAndEarn> {
             padding: EdgeInsets.symmetric(
                 horizontal: Constant.size10, vertical: Constant.size15),
             child: CustomTextLabel(
-              jsonKey:"your_referral_code",
+              jsonKey: "your_referral_code",
               softWrap: true,
               style: Theme.of(context)
                   .textTheme
@@ -154,7 +158,7 @@ class _ReferAndEarnState extends State<ReferAndEarn> {
                       softWrap: true,
                     )),
                     CustomTextLabel(
-                      jsonKey:"tap_to_copy",
+                      jsonKey: "tap_to_copy",
                       softWrap: true,
                       style: TextStyle(color: ColorsRes.appColor),
                     ),
@@ -192,7 +196,7 @@ class _ReferAndEarnState extends State<ReferAndEarn> {
             ),
             const SizedBox(width: 8),
             CustomTextLabel(
-              jsonKey:"refer_now",
+              jsonKey: "refer_now",
               softWrap: true,
               style: Theme.of(context).textTheme.titleMedium!.merge(TextStyle(
                   color: ColorsRes.mainTextColor,
@@ -289,7 +293,7 @@ class _ReferAndEarnState extends State<ReferAndEarn> {
           padding: EdgeInsets.symmetric(
               horizontal: Constant.size10, vertical: Constant.size15),
           child: CustomTextLabel(
-            jsonKey:"how_it_works",
+            jsonKey: "how_it_works",
             softWrap: true,
             style: Theme.of(context).textTheme.titleMedium!.merge(TextStyle(
                   fontWeight: FontWeight.w500,

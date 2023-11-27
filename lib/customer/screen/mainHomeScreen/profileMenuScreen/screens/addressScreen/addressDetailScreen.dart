@@ -93,7 +93,11 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
             context: context,
             title: CustomTextLabel(
               jsonKey: "address_detail",
-              style: TextStyle(color: ColorsRes.mainTextColor),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: ColorsRes.mainTextColor,
+              ),
             )),
         body: Stack(
           children: [

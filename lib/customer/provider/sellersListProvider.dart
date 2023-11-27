@@ -44,7 +44,8 @@ class SellerListProvider extends ChangeNotifier {
         for (SellerListData sellers in sellerListData) {
           storeMarkers.add(
             Marker(
-              infoWindow: InfoWindow(title: sellers.storeName.toString(),snippet: sellers.name),
+              infoWindow: InfoWindow(
+                  title: sellers.storeName.toString(), snippet: sellers.name),
               visible: true,
               zIndex: -1,
               markerId: MarkerId(sellers.storeName.toString()),
