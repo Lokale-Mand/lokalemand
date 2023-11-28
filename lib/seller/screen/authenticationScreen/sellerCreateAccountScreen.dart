@@ -1,7 +1,11 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/model/sellerCategory.dart';
+import 'package:lokale_mand/seller/model/sellerCityByLatLong.dart';
+import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerRegisterProvider.dart';
+import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCategoryItem.dart';
 
 class SellerCreateAccountScreen extends StatefulWidget {
   const SellerCreateAccountScreen({
@@ -16,17 +20,25 @@ class SellerCreateAccountScreen extends StatefulWidget {
 class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
   PageController pageController = PageController();
   int currentPage = 0;
+  bool isLoading = false, isPasswordVisible = false;
+  bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  late SellerCityByLatLongData cityByLatLongData;
 
-  String selectedLogoPath = "";
+  //PERSONAL DETAILS CONTROLLERS
+  TextEditingController edtBankName = TextEditingController(text: "DEMO BANK");
+  TextEditingController edtBankAcNumber =
+      TextEditingController(text: "123123123123");
+  TextEditingController edtBankAcName =
+      TextEditingController(text: "WRTeam Vimal");
+  TextEditingController edtBankIbanSwiftCode =
+      TextEditingController(text: "SWIFT123123");
+  TextEditingController edtNidNumber =
+      TextEditingController(text: "1231233132");
   String selectedAddressProofPath = "";
   String selectedNationalIdPath = "";
 
-  TextEditingController edtBankName = TextEditingController();
-  TextEditingController edtBankAcNumber = TextEditingController();
-  TextEditingController edtBankAcName = TextEditingController();
-  TextEditingController edtBankIbanSwiftCode = TextEditingController();
-  TextEditingController edtNidNumber = TextEditingController();
-
+  //STORE HOURS DETAILS CONTROLLERS
   List<StoreTime> storeTime = [
     StoreTime(
         day: "0", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
@@ -44,21 +56,30 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         day: "6", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
   ];
 
-  TextEditingController edtStoreName = TextEditingController();
-  TextEditingController edtStoreLocation =
-      TextEditingController(text: "Wageningen");
-  TextEditingController edtStoreDescription = TextEditingController();
+  //STORE DETAILS CONTROLLERS
+  String selectedLogoPath = "";
+  TextEditingController edtStoreName =
+      TextEditingController(text: "WRTeam Store");
+  TextEditingController edtStoreLocation = TextEditingController();
+  TextEditingController edtStoreDescription =
+      TextEditingController(text: "This is store");
   TextEditingController edtStoreCategories = TextEditingController();
+  String selectedCategoriesIds = "";
+  String cityId = "";
+  String latitude = "";
+  String longitude = "";
 
+  //User Account Details
   CountryCode? selectedCountryCode;
-  bool isLoading = false, isPasswordVisible = false;
-  TextEditingController edtEmail = TextEditingController();
-  TextEditingController edtPassword = TextEditingController();
-  TextEditingController edtDuplicatePassword = TextEditingController();
-  TextEditingController edtFullName = TextEditingController();
-  TextEditingController edtPhoneNumber = TextEditingController();
-  bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  TextEditingController edtEmail =
+      TextEditingController(text: "vimalp410fake@gmail.com");
+  TextEditingController edtPassword = TextEditingController(text: "123123");
+  TextEditingController edtDuplicatePassword =
+      TextEditingController(text: "123123");
+  TextEditingController edtFullName =
+      TextEditingController(text: "WRTeam Vimal");
+  TextEditingController edtPhoneNumber =
+      TextEditingController(text: "6359302924");
 
 //   name:vijya
 //   email:wrteam.vijya@gmail.com1
@@ -79,7 +100,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
 //FIX   commission:0
 //FIX   require_products_approval:1
 //FIX   view_order_otp:0
-//FIX   assign_delivery_boy:0//FIX   status:1
+//FIX   assign_delivery_boy:0
+//FIX   status:1
 //FIX   admin_id:10
   ///   id:5
   ///   change_order_status_delivered:
@@ -96,6 +118,13 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
   ///   customer_privacy:
 
   backendApiProcess() async {
+    // Convert List<Model> to List<Map<String, dynamic>>
+    List<Map<String, dynamic>> jsonList =
+        storeTime.map((model) => model.toJson()).toList();
+
+    // Convert List<Map<String, dynamic>> to JSON string
+    String jsonString = jsonEncode(jsonList);
+
     Map<String, String> params = {
       "name": edtFullName.text.toString(),
       "email": edtEmail.text.toString(),
@@ -103,7 +132,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
       "password": edtPassword.text.toString(),
       "confirm_password": edtDuplicatePassword.text.toString(),
       "store_name": edtStoreName.text.toString(),
-      'categories_ids': edtStoreCategories.text.toString(),
+      'categories_ids': selectedCategoriesIds,
       "pan_number": edtNidNumber.text.toString(),
       "city_id": "3",
       "latitude": "51.9691868",
@@ -112,131 +141,55 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
       "account_number": edtBankName.text.toString(),
       "ifsc_code": edtBankIbanSwiftCode.text.toString(),
       "account_name": edtBankAcNumber.text.toString(),
-      "store_hours": "[{"
-          "store_open"
-          ":"
-          "1"
-          ","
-          "day"
-          ":"
-          "0"
-          ","
-          "open_time"
-          ":"
-          "03:00"
-          ","
-          "close_time"
-          ":"
-          "00:04"
-          "},{"
-          "store_open"
-          ":"
-          "0"
-          ","
-          "day"
-          ":"
-          "1"
-          ","
-          "open_time"
-          ":"
-          "00:00"
-          ","
-          "close_time"
-          ":"
-          "00:00"
-          "},{"
-          "store_open"
-          ":"
-          "0"
-          ","
-          "day"
-          ":"
-          "2"
-          ","
-          "open_time"
-          ":"
-          "00:00"
-          ","
-          "close_time"
-          ":"
-          "00:00"
-          "},{"
-          "store_open"
-          ":"
-          "0"
-          ","
-          "day"
-          ":"
-          "3"
-          ","
-          "open_time"
-          ":"
-          "00:00"
-          ","
-          "close_time"
-          ":"
-          "00:00"
-          "},{"
-          "store_open"
-          ":"
-          "0"
-          ","
-          "day"
-          ":"
-          "4"
-          ","
-          "open_time"
-          ":"
-          "00:00"
-          ","
-          "close_time"
-          ":"
-          "00:00"
-          "},{"
-          "store_open"
-          ":"
-          "1"
-          ","
-          "day"
-          ":"
-          "5"
-          ","
-          "open_time"
-          ":"
-          "05:00"
-          ","
-          "close_time"
-          ":"
-          "05:00"
-          "},{"
-          "store_open"
-          ":"
-          "0"
-          ","
-          "day"
-          ":"
-          "6"
-          ","
-          "open_time"
-          ":"
-          "00:00"
-          ","
-          "close_time"
-          ":"
-          "00:00"
-          "}]",
+      "commission": "0",
+      "require_products_approval": "0",
+      "view_order_otp": "0",
+      "assign_delivery_boy": "0",
+      "status": "1",
+      "store_hours": jsonString,
     };
+
+    List<String> fileParamNames = [
+      "store_logo",
+      "national_id_card",
+      "address_proof",
+    ];
+    List<String> fileParamsFilesPath = [
+      selectedLogoPath,
+      selectedNationalIdPath,
+      selectedAddressProofPath
+    ];
 
     await context
         .read<SellerRegisterProvider>()
-        .registerSellerApiProvider(context: context, params: params)
-        .then((value) {
-      GeneralMethods.showMessage(
-        context,
-        getTranslatedValue(context, "you_will_received_verification_mail"),
-        MessageType.warning,
-      );
-      Navigator.pop(context);
+        .registerSellerApiProvider(
+            context: context,
+            params: params,
+            fileParamsFilesPath: fileParamsFilesPath,
+            fileParamsNames: fileParamNames)
+        .then((value) async {
+      if (value != null) {
+        UserCredential userCredential =
+            await firebaseAuth.createUserWithEmailAndPassword(
+          email: edtEmail.text,
+          password: edtPassword.text,
+        );
+
+        User? user = userCredential.user;
+
+        await user?.sendEmailVerification().onError(
+          (error, stackTrace) {
+            GeneralMethods.showMessage(
+              context,
+              stackTrace.toString(),
+              MessageType.warning,
+            );
+            return null;
+          },
+        );
+
+        Navigator.pop(context);
+      }
     });
   }
 
@@ -281,9 +234,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         body: PageView(
           physics: NeverScrollableScrollPhysics(),
           onPageChanged: (value) {
-            print(">>>>>>>>> CURRENT PAGE VALUE $value");
             currentPage = value;
-            print(">>>>>>>>> CURRENT PAGE $currentPage");
             setState(() {});
           },
           controller: pageController,
@@ -349,7 +300,6 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
   }
 
   pageChangeValidation(int currentPage) {
-    print(">>>>>>>>>> $currentPage");
     switch (currentPage) {
       case 0:
         userDetailsValidation();
@@ -672,8 +622,21 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                         ),
                         IconButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, getLocationScreen,
-                                arguments: "seller_register");
+                            Navigator.pushNamed(
+                                    context, sellerConfirmLocationScreen,
+                                    arguments: "seller_register")
+                                .then((value) {
+                              if (value != null) {
+                                cityByLatLongData =
+                                    (value as SellerCityByLatLong).data!;
+                                edtStoreLocation.text =
+                                    cityByLatLongData.formattedAddress ?? "";
+                                cityId = cityByLatLongData.id ?? "";
+                                latitude = cityByLatLongData.latitude ?? "";
+                                longitude = cityByLatLongData.longitude ?? "";
+                                setState(() {});
+                              }
+                            });
                           },
                           icon: Icon(
                             Icons.my_location_rounded,
@@ -713,20 +676,203 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                           color: ColorsRes.textFieldBorderColor,
                         ),
                         color: Theme.of(context).cardColor),
-                    child: TextField(
-                      controller: edtStoreCategories,
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(
-                        color: ColorsRes.mainTextColor,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        isDense: true,
-                        hintStyle: TextStyle(
-                          color: ColorsRes.menuTitleColor,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: edtStoreCategories,
+                            keyboardType: TextInputType.text,
+                            style: TextStyle(
+                              color: ColorsRes.mainTextColor,
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              isDense: true,
+                              hintStyle: TextStyle(
+                                color: ColorsRes.menuTitleColor,
+                              ),
+                              hintText: "Select Categories",
+                            ),
+                          ),
                         ),
-                        hintText: "Select Categories",
-                      ),
+                        IconButton(
+                          onPressed: () {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: DesignConfig.setRoundedBorderSpecific(20,
+                                  istop: true),
+                              builder: (BuildContext context) {
+                                return ChangeNotifierProvider(
+                                  create: (context) =>
+                                      SellerCategoryListProvider(),
+                                  child: Container(
+                                    padding: EdgeInsetsDirectional.only(
+                                        start: 15,
+                                        end: 15,
+                                        top: 15,
+                                        bottom: 15),
+                                    child: Wrap(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsetsDirectional.only(
+                                              start: 10, end: 10),
+                                          child: Text(
+                                            getTranslatedValue(
+                                                context, "categories"),
+                                            softWrap: true,
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsetsDirectional.only(
+                                              start: 10,
+                                              end: 10,
+                                              top: 10,
+                                              bottom: 10),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Consumer<
+                                                  SellerCategoryListProvider>(
+                                                builder: (context,
+                                                    sellerCategoryListProvider,
+                                                    _) {
+                                                  if (!sellerCategoryListProvider
+                                                      .startedApiCalling) {
+                                                    sellerCategoryListProvider
+                                                            .sellerCategoryState =
+                                                        SellerCategoryState
+                                                            .loading;
+                                                    sellerCategoryListProvider
+                                                        .getCategoryApiProviderForRegistration(
+                                                            context: context);
+                                                    sellerCategoryListProvider
+                                                            .startedApiCalling =
+                                                        !sellerCategoryListProvider
+                                                            .startedApiCalling;
+                                                  }
+                                                  return sellerCategoryListProvider
+                                                              .sellerCategoryState ==
+                                                          SellerCategoryState
+                                                              .loaded
+                                                      ? GridView.builder(
+                                                          itemCount:
+                                                              sellerCategoryListProvider
+                                                                  .categories
+                                                                  .length,
+                                                          shrinkWrap: true,
+                                                          physics:
+                                                              NeverScrollableScrollPhysics(),
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            CategoryData
+                                                                category =
+                                                                sellerCategoryListProvider
+                                                                        .categories[
+                                                                    index];
+
+                                                            return SellerCategoryItemContainer(
+                                                              category:
+                                                                  category,
+                                                              voidCallBack: () {
+                                                                sellerCategoryListProvider.addOrRemoveCategoryFromSelection(
+                                                                    id: category
+                                                                            .id ??
+                                                                        "",
+                                                                    name: category
+                                                                            .name ??
+                                                                        "");
+                                                                setState(() {});
+                                                              },
+                                                              isSelected: sellerCategoryListProvider
+                                                                  .selectedCategoryIdsList
+                                                                  .contains(
+                                                                      category
+                                                                          .id),
+                                                            );
+                                                          },
+                                                          gridDelegate:
+                                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                                                  childAspectRatio:
+                                                                      0.8,
+                                                                  crossAxisCount:
+                                                                      3,
+                                                                  crossAxisSpacing:
+                                                                      10,
+                                                                  mainAxisSpacing:
+                                                                      10),
+                                                        )
+                                                      : sellerCategoryListProvider
+                                                                  .sellerCategoryState ==
+                                                              CategoryState
+                                                                  .loading
+                                                          ? getCategoryShimmer(
+                                                              context: context,
+                                                              count: 6,
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .zero,
+                                                            )
+                                                          : SizedBox.shrink();
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Consumer<SellerCategoryListProvider>(
+                                          builder: (context,
+                                              sellerCategoryListProvider,
+                                              child) {
+                                            return Padding(
+                                              padding:
+                                                  EdgeInsetsDirectional.only(
+                                                      start: 10, end: 10),
+                                              child: Widgets.gradientBtnWidget(
+                                                context,
+                                                10,
+                                                title: getTranslatedValue(
+                                                    context, "done"),
+                                                callback: () {
+                                                  edtStoreCategories.text =
+                                                      sellerCategoryListProvider
+                                                          .selectedCategoriesNames
+                                                          .toString()
+                                                          .replaceAll("]", "")
+                                                          .replaceAll(" ", "")
+                                                          .replaceAll("[", "");
+                                                  selectedCategoriesIds =
+                                                      sellerCategoryListProvider
+                                                          .selectedCategoryIdsList
+                                                          .toString()
+                                                          .replaceAll("]", "")
+                                                          .replaceAll(" ", "")
+                                                          .replaceAll("[", "");
+                                                  
+                                                  print(">>>>>>>>> $selectedCategoriesIds");
+
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: Icon(
+                            Icons.mode_edit_outline_rounded,
+                            color: ColorsRes.appColor,
+                            size: 24,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -798,8 +944,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                       color: ColorsRes.textFieldBorderColor,
                     ),
                     color: Theme.of(context).cardColor),
-                height: 125,
-                width: 125,
+                height: 105,
+                width: 105,
                 child: Center(
                   child: imgWidget(selectedLogoPath),
                 ),
@@ -827,7 +973,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   radius: Radius.circular(10),
                   borderType: BorderType.RRect,
                   child: Container(
-                    height: 120,
+                    height: 100,
                     color: Colors.transparent,
                     padding: EdgeInsetsDirectional.all(10),
                     child: Center(
@@ -836,8 +982,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                           Widgets.defaultImg(
                             image: "upload",
                             iconColor: ColorsRes.menuTitleColor,
-                            height: 70,
-                            width: 70,
+                            height: 40,
+                            width: 40,
                           ),
                           CustomTextLabel(
                             jsonKey: "upload_logo_file_here",
@@ -1136,24 +1282,6 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         currentPage++;
         pageController.animateToPage(currentPage,
             duration: Duration(milliseconds: 500), curve: Curves.ease);
-        // UserCredential userCredential =
-        //     await firebaseAuth.createUserWithEmailAndPassword(
-        //   email: edtEmail.text,
-        //   password: edtPassword.text,
-        // );
-        //
-        // User? user = userCredential.user;
-        //
-        // await user?.sendEmailVerification().onError(
-        //   (error, stackTrace) {
-        //     GeneralMethods.showMessage(
-        //       context,
-        //       stackTrace.toString(),
-        //       MessageType.warning,
-        //     );
-        //     return null;
-        //   },
-        // ).then((value) => backendApiProcess(user));
       }
     } catch (e) {
       GeneralMethods.showMessage(context, e.toString(), MessageType.warning);
@@ -1527,8 +1655,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                       color: ColorsRes.textFieldBorderColor,
                     ),
                     color: Theme.of(context).cardColor),
-                height: 125,
-                width: 125,
+                height: 105,
+                width: 105,
                 child: Center(
                   child: imgWidget(selectedNationalIdPath),
                 ),
@@ -1561,7 +1689,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   radius: Radius.circular(10),
                   borderType: BorderType.RRect,
                   child: Container(
-                    height: 120,
+                    height: 100,
                     color: Colors.transparent,
                     padding: EdgeInsetsDirectional.all(10),
                     child: Center(
@@ -1570,8 +1698,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                           Widgets.defaultImg(
                             image: "upload",
                             iconColor: ColorsRes.menuTitleColor,
-                            height: 70,
-                            width: 70,
+                            height: 40,
+                            width: 40,
                           ),
                           CustomTextLabel(
                             jsonKey: "upload_nid_file_here",
@@ -1614,8 +1742,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                       color: ColorsRes.textFieldBorderColor,
                     ),
                     color: Theme.of(context).cardColor),
-                height: 125,
-                width: 125,
+                height: 105,
+                width: 105,
                 child: Center(
                   child: imgWidget(selectedAddressProofPath),
                 ),
@@ -1648,7 +1776,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   radius: Radius.circular(10),
                   borderType: BorderType.RRect,
                   child: Container(
-                    height: 120,
+                    height: 100,
                     color: Colors.transparent,
                     padding: EdgeInsetsDirectional.all(10),
                     child: Center(
@@ -1657,8 +1785,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                           Widgets.defaultImg(
                             image: "upload",
                             iconColor: ColorsRes.menuTitleColor,
-                            height: 70,
-                            width: 70,
+                            height: 40,
+                            width: 40,
                           ),
                           CustomTextLabel(
                             jsonKey: "upload_address_proof_file_here",
@@ -1754,8 +1882,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
           ? Center(
               child: Widgets.defaultImg(
                 image: "pdf",
-                height: 60,
-                width: 60,
+                height: 50,
+                width: 50,
               ),
             )
           : ClipRRect(
@@ -1767,8 +1895,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                     fileName,
                   ),
                 ),
-                width: 110,
-                height: 110,
+                width: 90,
+                height: 90,
                 fit: BoxFit.fill,
               ),
             ),
@@ -1797,11 +1925,21 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
 
   @override
   void dispose() {
+    edtBankName.dispose();
+    edtBankAcNumber.dispose();
+    edtBankAcName.dispose();
+    edtBankIbanSwiftCode.dispose();
+    edtNidNumber.dispose();
+    edtStoreName.dispose();
+    edtStoreLocation.dispose();
+    edtStoreDescription.dispose();
+    edtStoreCategories.dispose();
+    edtEmail.dispose();
     edtPassword.dispose();
     edtDuplicatePassword.dispose();
-    edtEmail.dispose();
-    edtPhoneNumber.dispose();
     edtFullName.dispose();
+    edtPhoneNumber.dispose();
+    pageController.dispose();
     super.dispose();
   }
 }

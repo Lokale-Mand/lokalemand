@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/flutterGooglePlaces.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/flutterGooglePlaces.dart';
 
 /// A text field like widget to input places with autocomplete.
 ///
@@ -55,7 +55,9 @@ class PlacesAutocompleteField extends StatefulWidget {
     this.inputDecoration = const InputDecoration(),
     this.overlayBorderRadius,
     this.textStyle,
-    this.textStyleFormField, this.trailing, this.trailingOnTap,
+    this.textStyleFormField,
+    this.trailing,
+    this.trailingOnTap,
   }) : super(key: key);
 
   /// Controls the text being edited.
@@ -144,6 +146,7 @@ class PlacesAutocompleteField extends StatefulWidget {
 
 class LocationAutocompleteFieldState extends State<PlacesAutocompleteField> {
   TextEditingController? _controller;
+
   TextEditingController? get _effectiveController =>
       widget.controller ?? _controller;
 

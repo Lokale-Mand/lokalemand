@@ -209,7 +209,7 @@
   "months_names_october": "October",
   "no_faq_found_message": "Not added any frequently asked questions!",
   "out_of_stock_message": "Oops, limited stock available!",
-  "select_your_location": "Select Your Location",
+  "select_your_location": "Select your Location",
   "something_went_wrong": "Something Went Wrong",
   "sure_to_cancel_order": "Are you sure, you want to cancel this order?",
   "sure_to_return_order": "Are you sure, you want to return this order?",
@@ -253,6 +253,7 @@
   "invite_friends_to_signup": "Invite to your friend to signup",
   "profile_info_description": "This is an initial information of you, don't worry you can change it anytime.",
   "select_delivery_location": "Select Your Delivery Location",
+  "search_location": "Search location...",
   "theme_display_names_dark": "Dark",
   "unable_to_cancel_product": "Unable to cancel product",
   "unable_to_return_product": "Unable to return product",
@@ -345,6 +346,8 @@
   "try_again": "Try Again",
   "store_time_title": "Daily store opening hours!",
   "about_store_title": "Tell us about your store!",
+  "store_description": "Store description",
+  "store_location": "Store location",
   "store_name": "Store name",
   "store_logo": "Store logo",
   "personal_information_title": "Personal information!",
@@ -371,5 +374,6 @@
   "enter_valid_personal_info_bank_ac_iban_swift_code": "Enter valid bank IBAN or SWIFT code",
   "enter_valid_personal_info_nic_number": "Enter valid national id number",
   "enter_valid_personal_info_nic_proof": "Select national id proof",
-  "enter_valid_personal_info_address_proof": "Select address proof"
+  "enter_valid_personal_info_address_proof": "Select address proof",
+  "home_bottom_menu_orders": "Reserve"
 }

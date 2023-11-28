@@ -1,6 +1,6 @@
-import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/placesAutocompleteField.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/placesAutocompleteField.dart';
 
 /// A [FormField] that contains a [PlacesAutocompleteField].
 ///

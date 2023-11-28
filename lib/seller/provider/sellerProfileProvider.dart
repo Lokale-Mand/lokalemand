@@ -1,18 +1,19 @@
-import 'package:lokale_mand/customer/models/userProfile.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/model/sellerProfile.dart';
+import 'package:lokale_mand/seller/repositories/sellerLoginApi.dart';
 
-enum ProfileState { initial, loading, loaded }
+enum SellerProfileState { initial, loading, loaded }
 
-class UserProfileProvider extends ChangeNotifier {
-  ProfileState profileState = ProfileState.initial;
+class SellerProfileProvider extends ChangeNotifier {
+  SellerProfileState sellerProfileState = SellerProfileState.initial;
 
-  Future updateUserProfile(
+  Future updateSellerProfile(
       {required BuildContext context,
       required String selectedImagePath,
       required Map<String, String> params}) async {
     var returnValue;
     try {
-      profileState = ProfileState.loading;
+      sellerProfileState = SellerProfileState.loading;
       notifyListeners();
 
       List<String> fileParamsNames = [];
@@ -33,7 +34,7 @@ class UserProfileProvider extends ChangeNotifier {
           if (value != {}) {
             if (value.isNotEmpty) {
               if (value[ApiAndParams.status].toString() == "1") {
-                loginApi(context: context, params: {
+                sellerLoginApi(context: context, params: {
                   ApiAndParams.mobile:
                       Constant.session.getData(SessionManager.keyPhone),
                   // ApiAndParams.authUid: "123456",
@@ -49,7 +50,7 @@ class UserProfileProvider extends ChangeNotifier {
                   value[ApiAndParams.message],
                   MessageType.warning,
                 );
-                profileState = ProfileState.loaded;
+                sellerProfileState = SellerProfileState.loaded;
                 notifyListeners();
 
                 returnValue = value[ApiAndParams.message];
@@ -61,7 +62,7 @@ class UserProfileProvider extends ChangeNotifier {
               value[ApiAndParams.message],
               MessageType.warning,
             );
-            profileState = ProfileState.loaded;
+            sellerProfileState = SellerProfileState.loaded;
             notifyListeners();
 
             returnValue = value;
@@ -70,64 +71,67 @@ class UserProfileProvider extends ChangeNotifier {
       );
     } catch (e) {
       GeneralMethods.showMessage(context, e.toString(), MessageType.warning);
-      profileState = ProfileState.loaded;
+      sellerProfileState = SellerProfileState.loaded;
       notifyListeners();
       returnValue = "";
     }
     return returnValue;
   }
 
-  Future loginApi(
+  Future sellerLoginApi(
       {required BuildContext context,
       required Map<String, String> params}) async {
-    try {
-      UserProfile? userProfile;
-      await getLoginApi(context: context, params: params)
-          .then((mainData) async {
-        userProfile = UserProfile.fromJson(mainData);
-        if (userProfile?.status == "1") {
-          await setUserDataInSession(mainData);
-        } else {
-          GeneralMethods.showMessage(
-            context,
-            mainData[ApiAndParams.message],
-            MessageType.warning,
-          );
-        }
-      });
-      return userProfile!.data?.user?.status ?? "0";
-    } catch (e) {
+    // try {
+    Map<String, dynamic> getSellerData =
+        await getSellerLoginRepository(context: context, params: params);
+
+    print(">>>>>>>>>>>>>>>> $getSellerData");
+    if (getSellerData[ApiAndParams.status].toString() == "1") {
+      SellerProfile sellerProfile = SellerProfile.fromJson(getSellerData);
+      await setSellerDataInSession(sellerProfile);
+
+      return sellerProfile.data?.user?.status.toString() ?? "";
+    } else {
+      GeneralMethods.showMessage(
+        context,
+        getSellerData[ApiAndParams.message],
+        MessageType.warning,
+      );
       return "0";
+    }
+    // } catch (e) {
+    //   GeneralMethods.showMessage(
+    //     context,
+    //     e.toString(),
+    //     MessageType.warning,
+    //   );
+    //   return "0";
+    // }
+  }
+
+  Future setSellerDataInSession(SellerProfile sellerProfile) async {
+    Constant.session.setBoolData(SessionManager.isUserLogin, true, false);
+    SellerProfileUser? user = sellerProfile.data?.user;
+
+    if (user != null) {
+      Constant.session.setUserData(
+        firebaseUid: Constant.session.getData(SessionManager.keyAuthUid),
+        name: user.username.toString(),
+        email: user.email.toString(),
+        profile: sellerProfile.data?.user?.seller?.logoUrl.toString() ?? "",
+        countryCode: "",
+        mobile: user.seller?.mobile.toString() ?? "",
+        referralCode: "",
+        status: int.parse(user.status.toString()),
+        token: sellerProfile.data?.accessToken.toString() ?? "", isUserSeller: true,
+        /*balance: userData[ApiAndParams.balance].toString()*/
+      );
+      sellerProfileState = SellerProfileState.loaded;
+      notifyListeners();
     }
   }
 
-  Future setUserDataInSession(Map<String, dynamic> mainData) async {
-    Map<String, dynamic> data =
-        await mainData[ApiAndParams.data] as Map<String, dynamic>;
-
-    Map<String, dynamic> userData =
-        await data[ApiAndParams.user] as Map<String, dynamic>;
-
-    Constant.session.setBoolData(SessionManager.isUserLogin, true, false);
-
-    Constant.session.setUserData(
-      firebaseUid: Constant.session.getData(SessionManager.keyAuthUid),
-      name: userData[ApiAndParams.name],
-      email: userData[ApiAndParams.email],
-      profile: userData[ApiAndParams.profile].toString(),
-      countryCode: userData[ApiAndParams.countryCode],
-      mobile: userData[ApiAndParams.mobile],
-      referralCode: userData[ApiAndParams.referralCode],
-      status: int.parse(userData[ApiAndParams.status].toString()),
-      token: data[ApiAndParams.accessToken],
-      isUserSeller: false,
-      /*balance: userData[ApiAndParams.balance].toString()*/
-    );
-    profileState = ProfileState.loaded;
-    notifyListeners();
-  }
-
-  updateUserDataInSession(Map<String, dynamic> mainData) async {
+  updateSellerDataInSession(Map<String, dynamic> mainData) async {
     Map<String, dynamic> userData =
         await mainData[ApiAndParams.user] as Map<String, dynamic>;
 
@@ -140,23 +144,25 @@ class UserProfileProvider extends ChangeNotifier {
       mobile: userData[ApiAndParams.mobile],
       referralCode: userData[ApiAndParams.referralCode],
       status: int.parse(userData[ApiAndParams.status].toString()),
-      token: Constant.session.getData(SessionManager.keyToken),
+      token: Constant.session.getData(
+        SessionManager.keyToken,
+      ),
       isUserSeller:
-          false, /*balance: Constant.session.getData(SessionManager.keyBalance)*/
+          true, /*balance: Constant.session.getData(SessionManager.keyBalance)*/
     );
 
-    profileState = ProfileState.loaded;
+    sellerProfileState = SellerProfileState.loaded;
     notifyListeners();
   }
 
-  getUserDetailBySessionKey({required bool isBool, required String key}) {
+  getSellerDetailBySessionKey({required bool isBool, required String key}) {
     return isBool == true
         ? Constant.session.getBoolData(key)
         : Constant.session.getData(key);
   }
 
   changeState() {
-    profileState = ProfileState.initial;
+    sellerProfileState = SellerProfileState.initial;
     notifyListeners();
   }
 }

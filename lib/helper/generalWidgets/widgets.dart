@@ -86,12 +86,20 @@ class Widgets {
   }
 
   static List getHomeBottomNavigationBarIcons({required bool isActive}) {
-    return [
-      Icon(Icons.map_rounded),
-      Icon(Icons.chat_bubble_outline_rounded),
-      Icon(Icons.person_outline),
-      Icon(Icons.storefront_rounded),
-    ];
+    if (Constant.session.getBoolData(SessionManager.isSeller)) {
+      return [
+        Icon(Icons.table_rows_outlined),
+        Icon(Icons.chat_bubble_outline_rounded),
+        Icon(Icons.storefront_sharp),
+        Icon(Icons.person_outline),
+      ];
+    } else {
+      return [
+        Icon(Icons.map_rounded),
+        Icon(Icons.chat_bubble_outline_rounded),
+        Icon(Icons.person_outline),
+      ];
+    }
   }
 
   static Widget setNetworkImg({

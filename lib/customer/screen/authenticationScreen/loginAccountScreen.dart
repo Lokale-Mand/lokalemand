@@ -123,7 +123,6 @@ class _LoginAccountState extends State<LoginAccount> {
                   }
                 } catch (e) {
                   setLoader(false);
-                  print(">>>>>>>>> ${e.toString()}");
                   GeneralMethods.showMessage(
                       context, e.toString(), MessageType.warning);
                 }

@@ -174,10 +174,11 @@ class GeneralMethods {
       request.fields.addAll(params);
 
       if (fileParamsNames.isNotEmpty) {
-        // for (int i = 0; i <= fileParamsNames.length; i++) {
-        request.files.add(await http.MultipartFile.fromPath(
-            fileParamsNames[0].toString(), fileParamsFilesPath[0].toString()));
-        // }
+        for (int i = 0; i < fileParamsNames.length; i++) {
+          request.files.add(await http.MultipartFile.fromPath(
+              fileParamsNames[i].toString(),
+              fileParamsFilesPath[i].toString()));
+        }
       }
       request.headers.addAll(headersData);
 
@@ -503,7 +504,6 @@ class GeneralMethods {
     final ShortDynamicLink shortLink =
         await FirebaseDynamicLinks.instance.buildShortLink(parameters);
     Uri uri = shortLink.shortUrl;
-    print(">>>>>> ${uri.toString()}");
     return uri.toString();
   }
 
@@ -537,4 +537,3 @@ extension TimeOfDayConverter on TimeOfDay {
     return "$hour:$min";
   }
 }
-

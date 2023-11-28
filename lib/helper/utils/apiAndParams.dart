@@ -47,7 +47,11 @@ class ApiAndParams {
   static String apiDeleteOrder = "delete_order";
 
   //Sellers api
-  static String apiRegisterSeller = "${Constant.baseUrl}/sellers/save";
+  static String apiSellerRegister = "${Constant.customerBaseSellerUrl}save";
+  static String apiSellerMainCategories =
+      "${Constant.sellerBaseUrl}/main_categories";
+  static String apiSellerCategories = "${Constant.sellerBaseUrl}/categories";
+  static String apiSellerLogin = "${Constant.hostUrl}api/login";
 
 //============ api params ============
 

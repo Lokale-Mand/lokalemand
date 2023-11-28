@@ -1,5 +1,5 @@
-import 'package:lokale_mand/helper/styles/colorsRes.dart';
 import 'package:flutter/material.dart';
+import 'package:lokale_mand/helper/styles/colorsRes.dart';
 
 class MapDeliveredMarker extends StatefulWidget {
   const MapDeliveredMarker({Key? key}) : super(key: key);

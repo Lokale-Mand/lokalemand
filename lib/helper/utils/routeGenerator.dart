@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lokale_mand/customer/screen/getLocationScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/seller/provider/sellerRegisterProvider.dart';
 
 // CUSTOMER SCREENS VARIABLES
 
-const String introSliderScreen = 'introSliderScreen';
+// const String introSliderScreen = 'introSliderScreen';
 const String splashScreen = 'splashScreen';
 const String loginScreen = 'loginScreen';
 const String userTypeSelectionScreen = 'userTypeSelectionScreen';
@@ -45,6 +44,11 @@ const String paypalPaymentScreen = 'paypalPaymentScreen';
 
 const String sellerLoginAccountScreen = 'sellerLoginAccountScreen';
 const String sellerCreateAccountScreen = 'sellerCreateAccountScreen';
+const String sellerConfirmLocationScreen = 'sellerConfirmLocationScreen';
+const String sellerMainHomeScreen = 'sellerMainHomeScreen';
+const String sellerMenuScreen = 'sellerMenuScreen';
+const String sellerMessageScreen = 'sellerMessageScreen';
+const String sellerProductScreen = 'sellerProductScreen';
 
 String currentRoute = splashScreen;
 
@@ -53,10 +57,10 @@ class RouteGenerator {
     currentRoute = settings.name ?? "";
 
     switch (settings.name) {
-      case introSliderScreen:
-        return CupertinoPageRoute(
-          builder: (_) => const IntroSliderScreen(),
-        );
+      // case introSliderScreen:
+      //   return CupertinoPageRoute(
+      //     builder: (_) => const IntroSliderScreen(),
+      //   );
 
       case splashScreen:
         return CupertinoPageRoute(
@@ -334,14 +338,71 @@ class RouteGenerator {
 
       case sellerLoginAccountScreen:
         return CupertinoPageRoute(
-          builder: (_) => SellerLoginAccountScreen(),
+          builder: (_) => ChangeNotifierProvider<SellerProfileProvider>(
+            create: (context) {
+              return SellerProfileProvider();
+            },
+            child: const SellerLoginAccountScreen(),
+          ),
         );
 
       case sellerCreateAccountScreen:
         return CupertinoPageRoute(
           builder: (_) => ChangeNotifierProvider<SellerRegisterProvider>(
-            create: (context) => SellerRegisterProvider(),
+            create: (context) {
+              return SellerRegisterProvider();
+            },
             child: const SellerCreateAccountScreen(),
+          ),
+        );
+
+      case sellerConfirmLocationScreen:
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
+            create: (context) {
+              return SellerCityByLatLongProvider();
+            },
+            child: SellerConfirmLocation(from: settings.arguments as String),
+          ),
+        );
+
+      case sellerMainHomeScreen:
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<SellerMainHomeScreenProvider>(
+            create: (context) {
+              return SellerMainHomeScreenProvider();
+            },
+            child: SellerMainHomeScreen(),
+          ),
+        );
+
+      case sellerMenuScreen:
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
+            create: (context) {
+              return SellerCityByLatLongProvider();
+            },
+            child: SellerMenuScreen(),
+          ),
+        );
+
+      case sellerMessageScreen:
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
+            create: (context) {
+              return SellerCityByLatLongProvider();
+            },
+            child: SellerMessageScreen(),
+          ),
+        );
+
+      case sellerProductScreen:
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
+            create: (context) {
+              return SellerCityByLatLongProvider();
+            },
+            child: SellerProductScreen(),
           ),
         );
 

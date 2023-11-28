@@ -1,4 +1,5 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/provider/sellerProfileProvider.dart';
 
 class SellerLoginAccountScreen extends StatefulWidget {
   final String? from;
@@ -14,7 +15,7 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
   bool isLoading = false, isAcceptedTerms = false, isPasswordVisible = false;
 
   TextEditingController edtEmail =
-      TextEditingController(text: "wrteam.vimal@gmail.com");
+      TextEditingController(text: "vimalp410fake@gmail.com");
   TextEditingController edtPassword = TextEditingController(text: "123123");
   bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -385,7 +386,6 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
                       decoration: TextDecoration.underline),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-
                       Navigator.pushNamed(
                         context,
                         sellerCreateAccountScreen,
@@ -440,53 +440,24 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
       };
 
       await context
-          .read<UserProfileProvider>()
-          .loginApi(context: context, params: params)
+          .read<SellerProfileProvider>()
+          .sellerLoginApi(context: context, params: params)
           .then((value) => getRedirection(status: value));
     }
   }
 
   getRedirection({String? status}) async {
+    print(">>>>>>>>>>>>> $status");
     if (status != null) {
       setState(() {
         isLoading = false;
       });
-      if (status == "2") {
-        Navigator.of(context)
-            .pushNamed(editProfileScreen, arguments: widget.from ?? "register");
-      } else {
-        if (widget.from == "add_to_cart") {
-          Navigator.pop(context);
-          Navigator.pop(context);
-        } else if (Constant.session.getBoolData(SessionManager.keySkipLogin) ||
-            Constant.session.getBoolData(SessionManager.isUserLogin)) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            mainHomeScreen,
-            (Route<dynamic> route) => false,
-          );
-        }
-      }
-    } else {
-      if (Constant.session.getBoolData(SessionManager.keySkipLogin) ||
-          Constant.session.getBoolData(SessionManager.isUserLogin)) {
-        if (Constant.session.getData(SessionManager.keyLatitude) == "0" &&
-            Constant.session.getData(SessionManager.keyLongitude) == "0") {
-          Navigator.pushReplacementNamed(context, getLocationScreen,
-              arguments: "location");
-        } else if (Constant.session
-            .getData(SessionManager.keyUserName)
-            .isNotEmpty) {
-          Navigator.pushReplacementNamed(
-            context,
-            mainHomeScreen,
-          );
-        } else {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            mainHomeScreen,
-            (route) => false,
-          );
-        }
+      if (status == "1") {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          sellerMainHomeScreen,
+          (route) => false,
+        );
       }
     }
   }

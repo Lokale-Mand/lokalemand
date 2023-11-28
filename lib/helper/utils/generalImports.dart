@@ -163,7 +163,6 @@ export 'package:lokale_mand/helper/generalWidgets/bottomSheetLanguageListContain
 export 'package:lokale_mand/helper/generalWidgets/brandItemContainer.dart';
 export 'package:lokale_mand/helper/generalWidgets/cartListItemContainer.dart';
 export 'package:lokale_mand/helper/generalWidgets/categoryItemContainer.dart';
-export 'package:lokale_mand/helper/generalWidgets/stepperCounter.dart';
 export 'package:lokale_mand/helper/generalWidgets/customCircularProgressIndicator.dart';
 export 'package:lokale_mand/helper/generalWidgets/customTextLabel.dart';
 export 'package:lokale_mand/helper/generalWidgets/defaultBlankItemMessageScreen.dart';
@@ -175,6 +174,7 @@ export 'package:lokale_mand/helper/generalWidgets/productListItemContainer.dart'
 export 'package:lokale_mand/helper/generalWidgets/productVariantDropDownMenuGrid.dart';
 export 'package:lokale_mand/helper/generalWidgets/productVariantDropDownMenuList.dart';
 export 'package:lokale_mand/helper/generalWidgets/productWishListIcon.dart';
+export 'package:lokale_mand/helper/generalWidgets/stepperCounter.dart';
 export 'package:lokale_mand/helper/generalWidgets/toastAnimation.dart';
 export 'package:lokale_mand/helper/generalWidgets/trackMyOrderButton.dart';
 export 'package:lokale_mand/helper/generalWidgets/widgets.dart';
@@ -188,6 +188,7 @@ export 'package:lokale_mand/helper/utils/constant.dart';
 export 'package:lokale_mand/helper/utils/generalMethods.dart';
 export 'package:lokale_mand/helper/utils/routeGenerator.dart';
 export 'package:lokale_mand/helper/utils/stripeService.dart';
+export 'package:lokale_mand/seller/repositories/sellerRegiserApi.dart';
 export 'package:lokale_mand/seller/screen/authenticationScreen/sellerCreateAccountScreen.dart';
 export 'package:lokale_mand/seller/screen/authenticationScreen/sellerLoginAccountScreen.dart';
 export 'package:lokale_mand/splashScreen.dart';
@@ -212,3 +213,16 @@ export 'package:speech_to_text/speech_to_text.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:version/version.dart';
 export 'package:webview_flutter/webview_flutter.dart';
+
+//SELLER SCREENS
+
+export 'package:lokale_mand/seller/provider/SellerCityByLatLongProvider.dart';
+export 'package:lokale_mand/seller/provider/sellerMainHomeScreenProvider.dart';
+export 'package:lokale_mand/seller/provider/sellerProfileProvider.dart';
+export 'package:lokale_mand/seller/provider/sellerRegisterProvider.dart';
+export 'package:lokale_mand/seller/screen/confirmLocationScreen/sellerConfirmLocationScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerMenuScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerMessageScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerProductScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/sellerMainHomeScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerOrdersScreen.dart';

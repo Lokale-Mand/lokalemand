@@ -83,8 +83,11 @@ class _SplashScreenState extends State<SplashScreen> {
       () async {
         if (Constant.appMaintenanceMode == "1") {
           Navigator.pushReplacementNamed(context, underMaintenanceScreen);
+        } else if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
+            Constant.session.getBoolData(SessionManager.isSeller)) {
+          Navigator.pushReplacementNamed(context, sellerMainHomeScreen);
         } else if (Platform.isAndroid) {
-          if (!Constant.session.getBoolData(SessionManager.introSlider)) {
+/*          if (!Constant.session.getBoolData(SessionManager.introSlider)) {
             if ((Constant.isVersionSystemOn == "1" ||
                     Constant.currentRequiredAppVersion.isNotEmpty) &&
                 (Version.parse(Constant.currentRequiredAppVersion) >
@@ -106,7 +109,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   .setBoolData(SessionManager.introSlider, true, false);
               Navigator.pushReplacementNamed(context, introSliderScreen);
             }
-          } else if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
+          } else */
+          if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
               Constant.session.getIntData(SessionManager.keyUserStatus) == 2) {
             if (Constant.isVersionSystemOn == "1" &&
                 (Version.parse(Constant.currentRequiredAppVersion) >
@@ -185,7 +189,7 @@ class _SplashScreenState extends State<SplashScreen> {
             }
           }
         } else if (Platform.isIOS) {
-          if (!Constant.session.getBoolData(SessionManager.introSlider)) {
+/*          if (!Constant.session.getBoolData(SessionManager.introSlider)) {
             if ((Constant.isIosVersionSystemOn == "1" ||
                     Constant.currentRequiredIosAppVersion.isNotEmpty) &&
                 (Version.parse(Constant.currentRequiredIosAppVersion) >
@@ -207,7 +211,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   .setBoolData(SessionManager.introSlider, true, false);
               Navigator.pushReplacementNamed(context, introSliderScreen);
             }
-          } else if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
+          } else */
+          if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
               Constant.session.getIntData(SessionManager.keyUserStatus) == 2) {
             if (await versionInformationAvailable()) {
               if (Constant.requiredIosForceUpdate == "1") {

@@ -3,24 +3,28 @@ import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widg
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/helper/utils/mapDeliveredMarker.dart';
 import 'package:lokale_mand/helper/utils/markergenerator.dart';
-import 'package:lokale_mand/seller/screen/confirmLocationScreen/widget/confirmButtonWidget.dart';
+import 'package:lokale_mand/seller/model/sellerCityByLatLong.dart';
+import 'package:lokale_mand/seller/provider/SellerCityByLatLongProvider.dart';
+import 'package:lokale_mand/seller/screen/confirmLocationScreen/widget/sellerConfirmButtonWidget.dart';
 
-class ConfirmLocation extends StatefulWidget {
+class SellerConfirmLocation extends StatefulWidget {
   final GeoAddress? address;
   final String from;
 
-  const ConfirmLocation({Key? key, this.address, required this.from})
+  const SellerConfirmLocation({Key? key, this.address, required this.from})
       : super(key: key);
 
   @override
-  State<ConfirmLocation> createState() => _ConfirmLocationState();
+  State<SellerConfirmLocation> createState() => _SellerConfirmLocationState();
 }
 
-class _ConfirmLocationState extends State<ConfirmLocation> {
+class _SellerConfirmLocationState extends State<SellerConfirmLocation> {
   late GoogleMapController controller;
   late CameraPosition kGooglePlex;
   late LatLng kMapCenter;
   double mapZoom = 14.4746;
+
+  late SellerCityByLatLong cityByLatLong;
 
   List<Marker> customMarkers = [];
 
@@ -78,7 +82,7 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
     Constant.cityAddressMap =
         await GeneralMethods.getCityNameAndAddress(kMapCenter, context);
 
-    if (widget.from == "location") {
+    if (widget.from == "location" || widget.from == "seller_register") {
       Map<String, dynamic> params = {};
       // params[ApiAndParams.cityName] = Constant.cityAddressMap["city"];
 
@@ -86,8 +90,13 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
       params[ApiAndParams.latitude] = kMapCenter.latitude.toString();
 
       await context
-          .read<CityByLatLongProvider>()
-          .getCityByLatLongApiProvider(context: context, params: params);
+          .read<SellerCityByLatLongProvider>()
+          .getSellerCityByLatLongApiProvider(context: context, params: params)
+          .then((value) {
+        if (value != null) {
+          cityByLatLong = value;
+        }
+      });
     }
 
     setState(() {});
@@ -187,9 +196,10 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
                             horizontal: Constant.size14,
                             vertical: Constant.size14,
                           ),
-                          child: Widgets.defaultImg(
-                            image: "my_location_icon",
-                            iconColor: ColorsRes.mainIconColor,
+                          child: Icon(
+                            Icons.my_location_outlined,
+                            color: ColorsRes.appColorWhite,
+                            size: 35,
                           ),
                         ),
                       ),
@@ -238,8 +248,8 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            (widget.from == "location" &&
-                    !context.read<CityByLatLongProvider>().isDeliverable)
+            ((widget.from == "location" || widget.from == "seller_register") &&
+                    !context.read<SellerCityByLatLongProvider>().isDeliverable)
                 ? CustomTextLabel(
                     jsonKey: "does_not_delivery_long_message",
                     style: Theme.of(context).textTheme.bodySmall!.apply(
@@ -269,12 +279,15 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
                 ],
               ),
             ),
-            if ((widget.from == "location" &&
-                    context.read<CityByLatLongProvider>().isDeliverable) ||
+            if (((widget.from == "location" ||
+                        widget.from == "seller_register") &&
+                    context
+                        .read<SellerCityByLatLongProvider>()
+                        .isDeliverable) ||
                 widget.from == "address")
               ConfirmButtonWidget(voidCallback: () {
                 if (widget.from == "location" &&
-                    context.read<CityByLatLongProvider>().isDeliverable) {
+                    context.read<SellerCityByLatLongProvider>().isDeliverable) {
                   context
                       .read<CartListProvider>()
                       .getAllCartItems(context: context);
@@ -284,12 +297,8 @@ class _ConfirmLocationState extends State<ConfirmLocation> {
                     mainHomeScreen,
                     (Route<dynamic> route) => false,
                   );
-                } else if (widget.from == "address") {
-                  Future.delayed(const Duration(milliseconds: 500))
-                      .then((value) {
-                    Navigator.pop(context, true);
-                    Navigator.pop(context, true);
-                  });
+                } else if (widget.from == "seller_register") {
+                  Navigator.pop(context, cityByLatLong);
                 }
               })
           ],

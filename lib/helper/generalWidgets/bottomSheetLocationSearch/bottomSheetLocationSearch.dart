@@ -11,14 +11,13 @@ class BottomSheetLocationSearch extends StatefulWidget {
 
 class _BottomSheetLocationSearchState extends State<BottomSheetLocationSearch> {
   void onError(PlacesAutocompleteResponse response) {
-    GeneralMethods.showMessage(context, response.errorMessage!, MessageType.warning);
+    GeneralMethods.showMessage(
+        context, response.errorMessage!, MessageType.warning);
   }
 
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((value) async {
-
-    });
+    Future.delayed(Duration.zero).then((value) async {});
     super.initState();
   }
 

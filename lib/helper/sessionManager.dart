@@ -2,6 +2,7 @@ import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class SessionManager extends ChangeNotifier {
   static String isUserLogin = "isUserLogin";
+  static String isSeller = "isSeller";
   static String introSlider = "introSlider";
   static String isDarkTheme = "isDarkTheme";
   static String appThemeName = "appThemeName";
@@ -70,6 +71,7 @@ class SessionManager extends ChangeNotifier {
     required String referralCode,
     required int status,
     required String token,
+    required bool isUserSeller,
     /*required String balance*/
   }) async {
     prefs.setString(keyAuthUid, firebaseUid);
@@ -82,6 +84,7 @@ class SessionManager extends ChangeNotifier {
     prefs.setInt(keyUserStatus, status);
     prefs.setString(keyToken, token);
     setBoolData(isUserLogin, true, true);
+    setBoolData(isSeller, isUserSeller, true);
     notifyListeners();
 /*
     prefs.setString(keyBalance, balance.toString());

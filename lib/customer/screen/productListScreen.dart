@@ -63,8 +63,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
       params = await setFilterParams(params);
 
-      print(">>>>>>> $params");
-
       await context
           .read<ProductListProvider>()
           .getProductListProvider(context: context, params: params);
