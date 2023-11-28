@@ -1,7 +1,6 @@
 name: lokale_mand
 description: A new Flutter project.
 
-
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -34,10 +33,10 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.0.15
   http: ^0.13.4
-  connectivity_plus: ^4.0.1
+  connectivity_plus: ^5.0.2
   provider: ^6.0.2
   flutter_svg: ^2.0.0+1
-  flutter_widget_from_html: ^0.10.0
+  flutter_widget_from_html: ^0.14.7
   firebase_core: ^2.15.1
   country_code_picker: ^3.0.0
   firebase_auth: ^4.1.2
@@ -46,7 +45,7 @@ dependencies:
     sdk: flutter
   lottie: ^2.1.0
   geolocator: ^10.0.0 #for user location
-  google_maps_flutter: ^2.5.0  #for map
+  google_maps_flutter: ^2.5.0 #for map
   geocoding: ^2.0.4
   speech_to_text: ^6.1.0
   shimmer: ^3.0.0
@@ -65,9 +64,9 @@ dependencies:
   open_filex: ^4.3.2
   paytm: ^3.0.1
   version: ^3.0.2
-  package_info_plus: ^4.0.2
+  package_info_plus: ^5.0.1
   awesome_notifications: ^0.8.2
-  permission_handler: ^10.2.0
+  permission_handler: ^11.1.0
   webview_flutter: ^4.0.7
   vibration: ^1.7.6
   google_fonts: ^4.0.4
