@@ -9,7 +9,7 @@ class Constant {
   static String baseUrl = "${hostUrl}customer/";
   static String customerBaseSellerUrl = "${hostUrl}customer/sellers/";
 
-  static String sellerBaseUrl = "${hostUrl}api/seller";
+  static String sellerBaseUrl = "${hostUrl}api/seller/";
   static String packageName = "com.lokalemand.nl";
   static String appStoreUrl = "https://testflight.apple.com/join/fcRe3J9F";
   static String playStoreUrl =

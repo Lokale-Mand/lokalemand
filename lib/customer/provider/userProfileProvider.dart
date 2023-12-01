@@ -113,6 +113,7 @@ class UserProfileProvider extends ChangeNotifier {
     Constant.session.setUserData(
       firebaseUid: Constant.session.getData(SessionManager.keyAuthUid),
       name: userData[ApiAndParams.name],
+      id: "0",
       email: userData[ApiAndParams.email],
       profile: userData[ApiAndParams.profile].toString(),
       countryCode: userData[ApiAndParams.countryCode],
@@ -133,6 +134,7 @@ class UserProfileProvider extends ChangeNotifier {
 
     Constant.session.setUserData(
       firebaseUid: Constant.session.getData(SessionManager.keyAuthUid),
+      id: "0",
       name: userData[ApiAndParams.name],
       email: userData[ApiAndParams.email],
       profile: userData[ApiAndParams.profile].toString(),

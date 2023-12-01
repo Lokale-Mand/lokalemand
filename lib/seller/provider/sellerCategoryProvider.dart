@@ -17,9 +17,13 @@ class SellerCategoryListProvider extends ChangeNotifier {
   bool startedApiCalling = false;
   List<String> selectedCategoriesNames = [];
 
-  getCategoryApiProviderForRegistration({required BuildContext context}) async {
+  Future getCategoryApiProviderForRegistration({required BuildContext context}) async {
     try {
+
+      sellerCategoryState = SellerCategoryState.loading;
+      notifyListeners();
       var getCategoryData = await getMainCategoryListRepository(context);
+
       if (getCategoryData[ApiAndParams.status].toString() == "1") {
         CategoryList category = CategoryList.fromJson(getCategoryData);
         categories = category.data ?? [];
@@ -27,7 +31,6 @@ class SellerCategoryListProvider extends ChangeNotifier {
         notifyListeners();
       } else {
         sellerCategoryState = SellerCategoryState.error;
-        Navigator.pop(context);
         GeneralMethods.showMessage(context,
             getCategoryData[ApiAndParams.message], MessageType.warning);
         notifyListeners();
@@ -48,6 +51,16 @@ class SellerCategoryListProvider extends ChangeNotifier {
     } else {
       selectedCategoryIdsList.add(id);
       selectedCategoriesNames.add(name);
+    }
+    notifyListeners();
+  }
+
+  categorySingleSelection({required String id}) {
+    selectedCategoryIdsList.clear();
+    if (selectedCategoryIdsList.contains(id)) {
+      selectedCategoryIdsList.remove(id);
+    } else {
+      selectedCategoryIdsList.add(id);
     }
     notifyListeners();
   }

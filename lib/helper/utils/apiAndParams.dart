@@ -48,9 +48,13 @@ class ApiAndParams {
 
   //Sellers api
   static String apiSellerRegister = "${Constant.customerBaseSellerUrl}save";
+  static String apiAddSellerProduct = "${Constant.sellerBaseUrl}products/save";
+  static String apiUpdateSellerProduct = "${Constant.sellerBaseUrl}products/update";
+  static String apiProductDietaries = "${Constant.baseUrl}dietaries";
   static String apiSellerMainCategories =
-      "${Constant.sellerBaseUrl}/main_categories";
-  static String apiSellerCategories = "${Constant.sellerBaseUrl}/categories";
+      "${Constant.sellerBaseUrl}main_categories";
+  // static String apiSellerCategories = "${Constant.sellerBaseUrl}/categories";
+  static String apiSellerProductUnit = "${Constant.sellerBaseUrl}units";
   static String apiSellerLogin = "${Constant.hostUrl}api/login";
 
 //============ api params ============

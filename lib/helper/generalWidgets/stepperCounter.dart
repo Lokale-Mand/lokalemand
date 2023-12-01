@@ -48,7 +48,6 @@ class StepperCounter extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: ColorsRes.subTitleMainTextColor,
-                        fontSize: 18,
                       ),
                     ),
                   ),
@@ -65,7 +64,6 @@ class StepperCounter extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: ColorsRes.mainTextColor,
-                fontSize: 18,
               ),
             ),
           ),
@@ -88,7 +86,6 @@ class StepperCounter extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: ColorsRes.appColor,
                           overflow: TextOverflow.ellipsis,
-                          fontSize: 18,
                         ),
                       ),
                     ),

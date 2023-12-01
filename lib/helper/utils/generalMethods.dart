@@ -157,7 +157,7 @@ class GeneralMethods {
       {required String apiName,
       required Map<String, String> params,
       required List<String> fileParamsNames,
-      required List<String> fileParamsFilesPath,
+      required List<String?> fileParamsFilesPath,
       required BuildContext context}) async {
     try {
       Map<String, String> headersData = {};

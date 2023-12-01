@@ -116,6 +116,7 @@ class SellerProfileProvider extends ChangeNotifier {
     if (user != null) {
       Constant.session.setUserData(
         firebaseUid: Constant.session.getData(SessionManager.keyAuthUid),
+        id: user.id.toString(),
         name: user.username.toString(),
         email: user.email.toString(),
         profile: sellerProfile.data?.user?.seller?.logoUrl.toString() ?? "",
@@ -137,6 +138,7 @@ class SellerProfileProvider extends ChangeNotifier {
 
     Constant.session.setUserData(
       firebaseUid: Constant.session.getData(SessionManager.keyAuthUid),
+      id: userData["id"],
       name: userData[ApiAndParams.name],
       email: userData[ApiAndParams.email],
       profile: userData[ApiAndParams.profile].toString(),

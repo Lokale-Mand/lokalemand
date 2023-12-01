@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lokale_mand/customer/screen/getLocationScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/provider/sellerAddProductProvider.dart';
+import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
+import 'package:lokale_mand/seller/provider/sellerDietaryProvider.dart';
+import 'package:lokale_mand/seller/provider/sellerProductUnitProvider.dart';
+import 'package:lokale_mand/seller/screen/htmlEditorScreen.dart';
+import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
 
 // CUSTOMER SCREENS VARIABLES
 
@@ -49,6 +55,8 @@ const String sellerMainHomeScreen = 'sellerMainHomeScreen';
 const String sellerMenuScreen = 'sellerMenuScreen';
 const String sellerMessageScreen = 'sellerMessageScreen';
 const String sellerProductScreen = 'sellerProductScreen';
+const String sellerAddOrUpdateProductScreen = 'sellerAddOrUpdateProductScreen';
+const String htmlEditorScreen = 'htmlEditorScreen';
 
 String currentRoute = splashScreen;
 
@@ -404,6 +412,29 @@ class RouteGenerator {
             },
             child: SellerProductScreen(),
           ),
+        );
+
+      case sellerAddOrUpdateProductScreen:
+        return CupertinoPageRoute(
+          builder: (_) => MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (context) => SellerAddUpdateProductProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (context) => SellerCategoryListProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (context) => SellerDietaryListProvider(),
+              ),
+            ],
+            child: const SellerAddOrUpdateProductScreen(),
+          ),
+        );
+
+      case htmlEditorScreen:
+        return CupertinoPageRoute(
+          builder: (_) => HtmlEditorScreen(htmlContent: settings.arguments as String),
         );
 
       default:

@@ -12,6 +12,7 @@ class SessionManager extends ChangeNotifier {
   static String keySearchHistory = "keySearchHistory";
   static String keyAuthUid = "keyAuthUid";
   static String keyUserName = "username";
+  static String keyUserId = "userId";
   static String keyUserImage = "image";
   static String keyPhone = "phone";
   static String keyEmail = "email";
@@ -64,6 +65,7 @@ class SessionManager extends ChangeNotifier {
   Future setUserData({
     required String firebaseUid,
     required String name,
+    required String id,
     required String email,
     required String profile,
     required String countryCode,
@@ -76,6 +78,7 @@ class SessionManager extends ChangeNotifier {
   }) async {
     prefs.setString(keyAuthUid, firebaseUid);
     setData(keyUserName, name, true);
+    setData(keyUserId, id, true);
     setData(keyUserImage, profile, true);
     setData(keyEmail, email, true);
     prefs.setString(keyCountryCode, countryCode);

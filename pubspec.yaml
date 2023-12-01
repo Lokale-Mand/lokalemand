@@ -79,6 +79,8 @@ dependencies:
   google_maps_webservice: ^0.0.20-nullsafety.5
   google_api_headers: ^3.1.0
   dotted_border: ^2.1.0
+  quill_html_editor: ^2.1.9
+  flutter_switch: ^0.3.2
 
 dependency_overrides:
   intl: ^0.17.0
