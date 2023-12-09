@@ -53,22 +53,16 @@ class SellerMainHomeScreenState extends State<SellerMainHomeScreen> {
               LocalAwesomeNotification.onBackgroundMessageHandler);
         } catch (ignore) {}
 
-        if (Constant.session.getData(SessionManager.keyLatitude) == "0" &&
-            Constant.session.getData(SessionManager.keyLongitude) == "0") {
-          Navigator.pushNamed(context, getLocationScreen,
-              arguments: "location");
-        } else {
-          if (context.read<SellerMainHomeScreenProvider>().getCurrentPage() ==
-              0) {
-            if (Constant.session
-                .getBoolData(SessionManager.keyPopupOfferEnabled)) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CustomDialog();
-                },
-              );
-            }
+        if (context.read<SellerMainHomeScreenProvider>().getCurrentPage() ==
+            0) {
+          if (Constant.session
+              .getBoolData(SessionManager.keyPopupOfferEnabled)) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialog();
+              },
+            );
           }
 
           if (Constant.session.isUserLoggedIn()) {

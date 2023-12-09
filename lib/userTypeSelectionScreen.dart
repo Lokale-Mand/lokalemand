@@ -119,7 +119,7 @@ class UserTypeSelectionScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Icon(
-                            Icons.man_rounded,
+                            Icons.emoji_people_rounded,
                             color: ColorsRes.appColorWhite,
                             size: 30,
                           ),

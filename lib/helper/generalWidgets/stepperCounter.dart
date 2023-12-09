@@ -1,8 +1,8 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class StepperCounter extends StatelessWidget {
-  String? firstCounterText;
-  VoidCallback? firstItemVoidCallback;
+  final String? firstCounterText;
+  final VoidCallback? firstItemVoidCallback;
 
   String? secondCounterText;
   VoidCallback? secondItemVoidCallback;
@@ -27,31 +27,33 @@ class StepperCounter extends StatelessWidget {
           flex: 1,
           child: GestureDetector(
             onTap: firstItemVoidCallback,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                if (firstCounterText != null)
-                  Icon(
-                    Icons.arrow_back,
-                    color: ColorsRes.subTitleMainTextColor,
-                  ),
-                if (firstCounterText != null)
-                  Widgets.getSizedBox(
-                    width: 10,
-                  ),
-                if (firstCounterText != null)
-                  Container(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: CustomTextLabel(
-                      jsonKey: firstCounterText ?? "",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: ColorsRes.subTitleMainTextColor,
+            child: Container(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  if (firstCounterText != null)
+                    Icon(
+                      Icons.arrow_back,
+                      color: ColorsRes.subTitleMainTextColor,
+                    ),
+                  if (firstCounterText != null)
+                    Widgets.getSizedBox(
+                      width: 10,
+                    ),
+                  if (firstCounterText != null)
+                    Container(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: CustomTextLabel(
+                        jsonKey: firstCounterText ?? "",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: ColorsRes.subTitleMainTextColor,
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -72,34 +74,36 @@ class StepperCounter extends StatelessWidget {
           flex: 1,
           child: GestureDetector(
             onTap: thirdItemVoidCallback,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (thirdCounterText != null)
-                  Expanded(
-                    child: Container(
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: CustomTextLabel(
-                        jsonKey: thirdCounterText ?? "",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: ColorsRes.appColor,
-                          overflow: TextOverflow.ellipsis,
+            child: Container(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (thirdCounterText != null)
+                    Expanded(
+                      child: Container(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: CustomTextLabel(
+                          jsonKey: thirdCounterText ?? "",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: ColorsRes.appColor,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                if (thirdCounterText != null)
-                  Widgets.getSizedBox(
-                    width: 10,
-                  ),
-                if (thirdCounterText != null)
-                  Icon(
-                    Icons.arrow_forward,
-                    color: ColorsRes.appColor,
-                  )
-              ],
+                  if (thirdCounterText != null)
+                    Widgets.getSizedBox(
+                      width: 10,
+                    ),
+                  if (thirdCounterText != null)
+                    Icon(
+                      Icons.arrow_forward,
+                      color: ColorsRes.appColor,
+                    )
+                ],
+              ),
             ),
           ),
         ),

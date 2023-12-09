@@ -40,8 +40,6 @@ class SellerAddUpdateProductProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
 
-      print(">>>>>>>>>>>>>>>> ${message}");
-
       sellerCategoryState = SellerAddUpdateProductState.error;
       GeneralMethods.showMessage(context, message, MessageType.warning);
       notifyListeners();

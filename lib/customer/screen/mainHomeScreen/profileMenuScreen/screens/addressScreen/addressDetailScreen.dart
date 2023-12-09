@@ -242,7 +242,7 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
                 TextInputType.text,
                 tailIcon: IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, getLocationScreen,
+                    Navigator.pushNamed(context, confirmLocationScreen,
                             arguments: "address")
                         .then(
                       (value) {

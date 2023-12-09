@@ -56,7 +56,7 @@ class OrderTrackingHistoryBottomSheet extends StatelessWidget {
         ),
         Center(
           child: CustomTextLabel(
-            jsonKey: "change_language",
+            jsonKey: "order_tracking",
             softWrap: true,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium!.merge(

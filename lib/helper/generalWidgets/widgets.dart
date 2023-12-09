@@ -446,7 +446,9 @@ Widget getCategoryShimmer(
     itemCount: count,
     padding: padding ??
         EdgeInsets.symmetric(
-            horizontal: Constant.size10, vertical: Constant.size10),
+          horizontal: Constant.size10,
+          vertical: Constant.size10,
+        ),
     shrinkWrap: true,
     physics: const NeverScrollableScrollPhysics(),
     itemBuilder: (BuildContext context, int index) {
@@ -457,10 +459,11 @@ Widget getCategoryShimmer(
       );
     },
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        childAspectRatio: 0.8,
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10),
+      childAspectRatio: 0.8,
+      crossAxisCount: 3,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+    ),
   );
 }
 
@@ -522,6 +525,7 @@ AppBar getAppBar(
     elevation: 0,
     title: title,
     centerTitle: centerTitle ?? true,
+    surfaceTintColor: Colors.transparent,
     backgroundColor: backgroundColor ?? Theme.of(context).cardColor,
     actions: actions ?? [],
   );
@@ -615,75 +619,45 @@ Widget getSearchWidget({
       Navigator.pushNamed(context, productSearchScreen);
     },
     child: Container(
-        height: 55,
-        margin: EdgeInsetsDirectional.all(10),
-        decoration: DesignConfig.boxDecoration(
-          Theme.of(context).scaffoldBackgroundColor,
-          bordercolor: const Color(0xffe3e0e0),
-          borderwidth: 2,
-          isboarder: true,
-          15,
-        ),
-        child: Row(
-          children: [
-            IconButton(
-              padding: EdgeInsets.zero,
-              icon: Icon(
-                Icons.search,
-                color: ColorsRes.mainTextColor,
-                size: 30,
-              ),
-              onPressed: leadingCallBack ?? null,
+      height: 55,
+      margin: EdgeInsetsDirectional.all(10),
+      decoration: DesignConfig.boxDecoration(
+        Theme.of(context).scaffoldBackgroundColor,
+        bordercolor: const Color(0xffe3e0e0),
+        borderwidth: 2,
+        isboarder: true,
+        15,
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              Icons.search,
+              color: ColorsRes.mainTextColor,
+              size: 30,
             ),
-            CustomTextLabel(
-              jsonKey: context
-                  .read<LanguageProvider>()
-                  .currentLanguage["product_search_hint"],
-              style: TextStyle(color: ColorsRes.menuTitleColor),
-            ),
-            Spacer(),
-            IconButton(
-              padding: EdgeInsets.zero,
-              icon: Icon(
-                Icons.sort_rounded,
-                color: ColorsRes.mainTextColor,
-                size: 30,
-              ),
-              onPressed: trailingCallBack ?? null,
-            ),
-          ],
-        ) /*ListTile(
-        title: TextField(
-          enabled: false,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintStyle: TextStyle(color: const Color(0xffe3e0e0)),
-            hintText: context
+            onPressed: leadingCallBack ?? null,
+          ),
+          CustomTextLabel(
+            jsonKey: context
                 .read<LanguageProvider>()
                 .currentLanguage["product_search_hint"],
+            style: TextStyle(color: ColorsRes.menuTitleColor),
           ),
-        ),
-        contentPadding: EdgeInsetsDirectional.only(start: Constant.size5),
-        leading: IconButton(
-          padding: EdgeInsets.zero,
-          icon: const Icon(
-            Icons.search,
-            color: Color(0xff323232),
-            size: 30,
+          Spacer(),
+          IconButton(
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              Icons.filter_list_rounded,
+              color: ColorsRes.mainTextColor,
+              size: 30,
+            ),
+            onPressed: trailingCallBack ?? null,
           ),
-          onPressed: () {},
-        ),
-        trailing: IconButton(
-          padding: EdgeInsets.zero,
-          icon: const Icon(
-            Icons.sort_rounded,
-            color: Color(0xff323232),
-            size: 30,
-          ),
-          onPressed: () {},
-        ),
-      ),*/
-        ),
+        ],
+      ),
+    ),
   );
 }
 

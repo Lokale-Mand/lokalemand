@@ -107,6 +107,7 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
         actions: [
           // setCartCounter(context: context),
         ],
+        showBackButton: false
       ),
       body: Column(
         children: [

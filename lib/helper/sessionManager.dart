@@ -34,6 +34,8 @@ class SessionManager extends ChangeNotifier {
   static String keyPopupOfferImage = "keyPopupOfferImage";
   static String keyPopupOfferUrl = "keyPopupOfferUrl";
   static String keyFavoriteIds = "keyFavoriteIds";
+  static String keySellerLatitude = "keySellerLatitude";
+  static String keySellerLongitude = "keySellerLongitude";
 
   late SharedPreferences prefs;
 
@@ -63,6 +65,38 @@ class SessionManager extends ChangeNotifier {
   }
 
   Future setUserData({
+    required String firebaseUid,
+    required String name,
+    required String id,
+    required String email,
+    required String profile,
+    required String countryCode,
+    required String mobile,
+    required String referralCode,
+    required int status,
+    required String token,
+    required bool isUserSeller,
+    /*required String balance*/
+  }) async {
+    prefs.setString(keyAuthUid, firebaseUid);
+    setData(keyUserName, name, true);
+    setData(keyUserId, id, true);
+    setData(keyUserImage, profile, true);
+    setData(keyEmail, email, true);
+    prefs.setString(keyCountryCode, countryCode);
+    prefs.setString(keyPhone, mobile);
+    prefs.setString(keyReferralCode, referralCode);
+    prefs.setInt(keyUserStatus, status);
+    prefs.setString(keyToken, token);
+    setBoolData(isUserLogin, true, true);
+    setBoolData(isSeller, isUserSeller, true);
+    notifyListeners();
+/*
+    prefs.setString(keyBalance, balance.toString());
+*/
+  }
+
+  Future setSellerData({
     required String firebaseUid,
     required String name,
     required String id,
@@ -129,6 +163,8 @@ class SessionManager extends ChangeNotifier {
     showDialog<String>(
       context: buildContext,
       builder: (BuildContext context) => AlertDialog(
+        backgroundColor: Theme.of(context).cardColor,
+        surfaceTintColor: Colors.transparent,
         title: CustomTextLabel(
           jsonKey: "logout_title",
           softWrap: true,
@@ -198,6 +234,8 @@ class SessionManager extends ChangeNotifier {
     showDialog<String>(
       context: buildContext,
       builder: (BuildContext context) => AlertDialog(
+        backgroundColor: Theme.of(context).cardColor,
+        surfaceTintColor: Colors.transparent,
         title: CustomTextLabel(
           jsonKey: "delete_user_title",
           softWrap: true,

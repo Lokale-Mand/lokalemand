@@ -42,6 +42,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: getAppBar(
           context: context,
           title: CustomTextLabel(
@@ -66,8 +67,12 @@ class _EditProfileState extends State<EditProfile> {
               horizontal: Constant.size10, vertical: Constant.size15),
           children: [
             imgWidget(),
-            Card(
+            Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(20)),
               margin: const EdgeInsets.only(top: 20),
+              padding: EdgeInsets.all(10),
               child: Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: Constant.size10, vertical: Constant.size15),
@@ -109,21 +114,6 @@ class _EditProfileState extends State<EditProfile> {
                           .then(
                         (value) {
                           if (value as bool) {
-                            if (Constant.session
-                                        .getData(SessionManager.keyLatitude) ==
-                                    "0" &&
-                                Constant.session
-                                        .getData(SessionManager.keyLongitude) ==
-                                    "0" &&
-                                Constant.session
-                                        .getData(SessionManager.keyAddress) ==
-                                    "") {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                getLocationScreen,
-                                (Route<dynamic> route) => false,
-                                arguments: "location",
-                              );
-                            } else {
                               if (widget.from == "register" ||
                                   widget.from == "header") {
                                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -142,7 +132,7 @@ class _EditProfileState extends State<EditProfile> {
                                   MessageType.success,
                                 );
                               }
-                            }
+
                             userProfileProvider.changeState();
                           } else {
                             userProfileProvider.changeState();

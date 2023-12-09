@@ -404,5 +404,6 @@
   "product_price_validation_title": "Please add price",
   "product_unit_validation_title": "Please select product unit",
   "in_stock": "in stock",
+  "product_price_hint": "100.00",
   "dietary_type": "Dietary Type"
 }

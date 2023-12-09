@@ -19,7 +19,7 @@ const String userLocationScreen = 'userLocationScreen';
 const String webViewScreen = 'webViewScreen';
 const String otpScreen = 'otpScreen';
 const String editProfileScreen = 'editProfileScreen';
-const String getLocationScreen = 'getLocationScreen';
+// const String getLocationScreen = 'getLocationScreen';
 const String confirmLocationScreen = 'confirmLocationScreen';
 const String mainHomeScreen = 'mainHomeScreen';
 const String brandListScreen = 'brandListScreen';
@@ -110,11 +110,6 @@ class RouteGenerator {
       case editProfileScreen:
         return CupertinoPageRoute(
           builder: (_) => EditProfile(from: settings.arguments as String),
-        );
-
-      case getLocationScreen:
-        return CupertinoPageRoute(
-          builder: (_) => GetLocation(from: settings.arguments as String),
         );
 
       case mainHomeScreen:

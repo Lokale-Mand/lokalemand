@@ -133,9 +133,7 @@ export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/scr
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/notificationsAndMailSettingsScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/transactionListScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/webViewScreen.dart';
-export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/widget/buttonWidget.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/widget/profileHeader.dart';
-export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/widget/quickUseWidget.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/wishListScreen.dart';
 export 'package:lokale_mand/customer/screen/orderPlacedScreen.dart';
 export 'package:lokale_mand/customer/screen/orderSummaryScreen/orderSummaryScreen.dart';

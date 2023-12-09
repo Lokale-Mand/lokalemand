@@ -133,8 +133,12 @@ class _NotificationsAndMailSettingsScreenScreenState
           getTranslatedValue(context, "order_status_display_names_cancelled"),
           getTranslatedValue(context, "order_status_display_names_returned"),
         ];
-        return Card(
-          color: Theme.of(context).cardColor,
+        print("${Theme.of(context).cardColor}, ${Theme.of(context).scaffoldBackgroundColor}");
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Theme.of(context).cardColor,
+          ),
           margin: EdgeInsetsDirectional.only(
               start: Constant.size10,
               end: Constant.size10,

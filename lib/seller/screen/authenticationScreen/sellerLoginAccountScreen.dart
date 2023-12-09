@@ -1,5 +1,4 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/seller/provider/sellerProfileProvider.dart';
 
 class SellerLoginAccountScreen extends StatefulWidget {
   final String? from;
@@ -447,7 +446,6 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
   }
 
   getRedirection({String? status}) async {
-    print(">>>>>>>>>>>>> $status");
     if (status != null) {
       setState(() {
         isLoading = false;

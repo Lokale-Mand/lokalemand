@@ -53,42 +53,36 @@ class HomeMainScreenState extends State<HomeMainScreen> {
               LocalAwesomeNotification.onBackgroundMessageHandler);
         } catch (ignore) {}
 
-        if (Constant.session.getData(SessionManager.keyLatitude) == "0" &&
-            Constant.session.getData(SessionManager.keyLongitude) == "0") {
-          Navigator.pushNamed(context, getLocationScreen,
-              arguments: "location");
-        } else {
-          if (context.read<HomeMainScreenProvider>().getCurrentPage() == 0) {
-            if (Constant.session
-                .getBoolData(SessionManager.keyPopupOfferEnabled)) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CustomDialog();
-                },
-              );
-            }
-          }
-
-          if (Constant.session.isUserLoggedIn()) {
-            await getAppNotificationSettingsRepository(
-                    params: {}, context: context)
-                .then(
-              (value) async {
-                if (value[ApiAndParams.status].toString() == "1") {
-                  late AppNotificationSettings notificationSettings =
-                      AppNotificationSettings.fromJson(value);
-                  if (notificationSettings.data!.isEmpty) {
-                    await updateAppNotificationSettingsRepository(params: {
-                      ApiAndParams.statusIds: "1,2,3,4,5,6,7,8",
-                      ApiAndParams.mobileStatuses: "1,1,1,1,1,1,1,1",
-                      ApiAndParams.mailStatuses: "1,1,1,1,1,1,1,1"
-                    }, context: context);
-                  }
-                }
+        if (context.read<HomeMainScreenProvider>().getCurrentPage() == 0) {
+          if (Constant.session
+              .getBoolData(SessionManager.keyPopupOfferEnabled)) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialog();
               },
             );
           }
+        }
+
+        if (Constant.session.isUserLoggedIn()) {
+          await getAppNotificationSettingsRepository(
+                  params: {}, context: context)
+              .then(
+            (value) async {
+              if (value[ApiAndParams.status].toString() == "1") {
+                late AppNotificationSettings notificationSettings =
+                    AppNotificationSettings.fromJson(value);
+                if (notificationSettings.data!.isEmpty) {
+                  await updateAppNotificationSettingsRepository(params: {
+                    ApiAndParams.statusIds: "1,2,3,4,5,6,7,8",
+                    ApiAndParams.mobileStatuses: "1,1,1,1,1,1,1,1",
+                    ApiAndParams.mailStatuses: "1,1,1,1,1,1,1,1"
+                  }, context: context);
+                }
+              }
+            },
+          );
         }
       },
     );

@@ -81,11 +81,10 @@ class SellerProfileProvider extends ChangeNotifier {
   Future sellerLoginApi(
       {required BuildContext context,
       required Map<String, String> params}) async {
-    // try {
+    try {
     Map<String, dynamic> getSellerData =
         await getSellerLoginRepository(context: context, params: params);
 
-    print(">>>>>>>>>>>>>>>> $getSellerData");
     if (getSellerData[ApiAndParams.status].toString() == "1") {
       SellerProfile sellerProfile = SellerProfile.fromJson(getSellerData);
       await setSellerDataInSession(sellerProfile);
@@ -99,14 +98,14 @@ class SellerProfileProvider extends ChangeNotifier {
       );
       return "0";
     }
-    // } catch (e) {
-    //   GeneralMethods.showMessage(
-    //     context,
-    //     e.toString(),
-    //     MessageType.warning,
-    //   );
-    //   return "0";
-    // }
+    } catch (e) {
+      GeneralMethods.showMessage(
+        context,
+        e.toString(),
+        MessageType.warning,
+      );
+      return "0";
+    }
   }
 
   Future setSellerDataInSession(SellerProfile sellerProfile) async {
@@ -114,7 +113,7 @@ class SellerProfileProvider extends ChangeNotifier {
     SellerProfileUser? user = sellerProfile.data?.user;
 
     if (user != null) {
-      Constant.session.setUserData(
+      Constant.session.setSellerData(
         firebaseUid: Constant.session.getData(SessionManager.keyAuthUid),
         id: user.id.toString(),
         name: user.username.toString(),
@@ -136,7 +135,7 @@ class SellerProfileProvider extends ChangeNotifier {
     Map<String, dynamic> userData =
         await mainData[ApiAndParams.user] as Map<String, dynamic>;
 
-    Constant.session.setUserData(
+    Constant.session.setSellerData(
       firebaseUid: Constant.session.getData(SessionManager.keyAuthUid),
       id: userData["id"],
       name: userData[ApiAndParams.name],

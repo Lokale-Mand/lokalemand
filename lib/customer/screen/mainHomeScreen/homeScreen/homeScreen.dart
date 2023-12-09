@@ -1,3 +1,5 @@
+import 'package:google_maps_webservice/places.dart';
+import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/flutterGooglePlaces.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -58,18 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          GeneralMethods.determinePosition().then((value) {
-            updateMap(value.latitude, value.longitude);
-          });
-        },
-        child: Icon(
-          Icons.near_me,
-          color: ColorsRes.appColorWhite,
-        ),
-      ),
       body: Stack(
         children: [
           PositionedDirectional(
@@ -78,6 +68,97 @@ class _HomeScreenState extends State<HomeScreen> {
             start: 0,
             end: 0,
             child: mapWidget(),
+          ),
+          PositionedDirectional(
+            top: 45,
+            end: 15,
+            start: 15,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    Prediction? p = await PlacesAutocomplete.show(
+                        context: context,
+                        apiKey: Constant.googleApiKey,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          labelStyle: TextStyle(
+                            color: ColorsRes.mainTextColor,
+                          ),
+                        ),
+                        textStyle: TextStyle(
+                          color: ColorsRes.mainTextColor,
+                        ));
+
+                    GeneralMethods.displayPrediction(p, context).then(
+                      (value) => updateMap(
+                        double.parse(value?.lattitud ?? "0.0"),
+                        double.parse(
+                          value?.longitude ?? "0.0",
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 55,
+                    padding: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: ColorsRes.menuTitleColor,
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Icon(
+                            Icons.search,
+                            color: ColorsRes.mainTextColor,
+                            size: 30,
+                          ),
+                        ),
+                        Expanded(
+                          child: CustomTextLabel(
+                            jsonKey: "search_location_hint",
+                            style: TextStyle(color: ColorsRes.menuTitleColor),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Icon(
+                            Icons.filter_list_rounded,
+                            color: ColorsRes.mainTextColor,
+                            size: 30,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Widgets.getSizedBox(height: 10),
+                IconButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => ColorsRes.appColor)),
+                  padding: EdgeInsets.all(10),
+                  color: ColorsRes.appColor,
+                  onPressed: () {
+                    GeneralMethods.determinePosition().then((value) {
+                      updateMap(value.latitude, value.longitude);
+                    });
+                  },
+                  icon: Icon(
+                    Icons.near_me_rounded,
+                    color: ColorsRes.appColorWhite,
+                    size: 35,
+                  ),
+                ),
+              ],
+            ),
           ),
           PositionedDirectional(
             start: 0,

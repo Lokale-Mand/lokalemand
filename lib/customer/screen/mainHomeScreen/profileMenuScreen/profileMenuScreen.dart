@@ -222,6 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             showModalBottomSheet<void>(
               context: context,
               isScrollControlled: true,
+              backgroundColor: Theme.of(context).cardColor,
               shape: DesignConfig.setRoundedBorderSpecific(20, istop: true),
               builder: (BuildContext context) {
                 return Wrap(

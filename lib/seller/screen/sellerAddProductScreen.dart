@@ -33,10 +33,10 @@ class _SellerAddOrUpdateProductScreenState
   String selectedDietaryType = "";
   String selectedDietaryId = "";
 
-  TextEditingController edtProductName = TextEditingController(text: "Apple");
-  TextEditingController edtProductPrice = TextEditingController(text: "10.00");
-  TextEditingController edtProductUnit = TextEditingController(text: "Piece");
-  TextEditingController edtProductStock = TextEditingController(text: "10");
+  TextEditingController edtProductName = TextEditingController();
+  TextEditingController edtProductPrice = TextEditingController();
+  TextEditingController edtProductUnit = TextEditingController();
+  TextEditingController edtProductStock = TextEditingController();
   String selectedUnitId = "";
 
   String selectedCategoryId = "";
@@ -93,7 +93,6 @@ class _SellerAddOrUpdateProductScreenState
 //   deleteImageIds:[]
 
   backendApiProcess() async {
-    print(">>>>>>>>>> getResult");
     Map<String, String> params = {
       // "id": " 21",
       "name": edtProductName.text.toString(),
@@ -104,7 +103,7 @@ class _SellerAddOrUpdateProductScreenState
       "brand_id": "0",
       "description": htmlDescription,
       "type": "packet",
-      "seller_id":Constant.session.getData(SessionManager.keyUserId),
+      "seller_id": Constant.session.getData(SessionManager.keyUserId),
       "is_unlimited_stock": "0",
       "fssai_lic_no": "",
       // "variant_id[]": "5",
@@ -368,7 +367,7 @@ class _SellerAddOrUpdateProductScreenState
                                       sellerCategoryListProvider
                                           .selectedCategoryIdsList[0])
                               ? ColorsRes.appColor
-                              : ColorsRes.appColorWhite,
+                              : Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
                             color: ColorsRes.appColor,
@@ -501,7 +500,7 @@ class _SellerAddOrUpdateProductScreenState
                                       sellerDietaryListProvider
                                           .selectedDietaryIdsList[0])
                               ? ColorsRes.appColor
-                              : ColorsRes.appColorWhite,
+                              : Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
                             color: ColorsRes.appColor,
@@ -517,7 +516,7 @@ class _SellerAddOrUpdateProductScreenState
                                       dietary.id ==
                                           sellerDietaryListProvider
                                               .selectedDietaryIdsList[0])
-                                  ? ColorsRes.appColorWhite
+                                  ? Theme.of(context).cardColor
                                   : ColorsRes.appColor,
                               size: 35,
                             ),
@@ -533,7 +532,7 @@ class _SellerAddOrUpdateProductScreenState
                                           dietary.id ==
                                               sellerDietaryListProvider
                                                   .selectedDietaryIdsList[0])
-                                      ? ColorsRes.appColorWhite
+                                      ? Theme.of(context).cardColor
                                       : ColorsRes.appColor,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -954,9 +953,7 @@ class _SellerAddOrUpdateProductScreenState
               hintStyle: TextStyle(
                 color: ColorsRes.menuTitleColor,
               ),
-              hintText: context
-                  .read<LanguageProvider>()
-                  .currentLanguage["product_price_hint"],
+              hintText: getTranslatedValue(context, "product_price_hint"),
             ),
           ),
         ),
@@ -999,7 +996,7 @@ class _SellerAddOrUpdateProductScreenState
                     ),
                     hintText: context
                         .read<LanguageProvider>()
-                        .currentLanguage["product_price_hint"],
+                        .currentLanguage["product_unit_hint"],
                   ),
                 ),
               ),
@@ -1014,6 +1011,13 @@ class _SellerAddOrUpdateProductScreenState
                       return ChangeNotifierProvider(
                         create: (context) => SellerProductUnitListProvider(),
                         child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                          ),
                           padding: EdgeInsetsDirectional.only(
                               start: 15, end: 15, top: 15, bottom: 15),
                           child: Wrap(
@@ -1024,10 +1028,13 @@ class _SellerAddOrUpdateProductScreenState
                                 child: Text(
                                   getTranslatedValue(context, "units"),
                                   softWrap: true,
-                                  style: TextStyle(fontSize: 20),
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: ColorsRes.menuTitleColor),
                                 ),
                               ),
                               Container(
+                                color: Theme.of(context).cardColor,
                                 padding: EdgeInsetsDirectional.only(
                                     start: 10, end: 10, top: 10, bottom: 10),
                                 child: Column(
@@ -1105,8 +1112,8 @@ class _SellerAddOrUpdateProductScreenState
                                                                             .selectedProductUnitIdsList[
                                                                         0])
                                                             ? ColorsRes.appColor
-                                                            : ColorsRes
-                                                                .appColorWhite,
+                                                            : Theme.of(context)
+                                                                .cardColor,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(10),
@@ -1252,8 +1259,8 @@ class _SellerAddOrUpdateProductScreenState
               width: 80,
               value: stockAvailableStatus,
               showOnOff: true,
-              activeColor: Color(0xffe5e5e5),
-              inactiveColor: Color(0xffe5e5e5),
+              activeColor: Theme.of(context).cardColor,
+              inactiveColor: Theme.of(context).cardColor,
               activeTextColor: ColorsRes.appColor,
               toggleColor: ColorsRes.appColor,
               inactiveTextColor: ColorsRes.appColor,

@@ -34,11 +34,11 @@ class ColorsRes {
 
   static Color mainIconColor = Colors.white;
 
-  static Color bgColorLight = const Color(0xffffffff);
-  static Color bgColorDark = const Color(0xff1b2228);
+  static Color bgColorLight = const Color(0xfffcfcfc);
+  static Color bgColorDark = const Color(0xff131313);
 
   static Color cardColorLight = const Color(0xffffffff);
-  static Color cardColorDark = const Color(0xff141A1F);
+  static Color cardColorDark = const Color(0xff101010);
 
   static Color textFieldBorderColor = const Color(0xffc4c2c2);
 
