@@ -1,4 +1,5 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/provider/ordersProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
 
 class SellerMainHomeScreenProvider extends ChangeNotifier {
@@ -16,19 +17,8 @@ class SellerMainHomeScreenProvider extends ChangeNotifier {
 
   setPages() {
     pages = [
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ProductListProvider>(
-            create: (context) {
-              return ProductListProvider();
-            },
-          ),
-          ChangeNotifierProvider<SellerListProvider>(
-            create: (context) {
-              return SellerListProvider();
-            },
-          ),
-        ],
+      ChangeNotifierProvider(
+        create: (context) => SellerOrdersProvider(),
         child: SellerOrderScreen(),
       ),
       SellerMessageScreen(),

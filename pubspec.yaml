@@ -65,7 +65,6 @@ dependencies:
   paytm: ^3.0.1
   version: ^3.0.2
   package_info_plus: ^5.0.1
-  awesome_notifications: ^0.8.2
   permission_handler: ^11.1.0
   webview_flutter: ^4.0.7
   vibration: ^1.7.6
@@ -81,6 +80,7 @@ dependencies:
   dotted_border: ^2.1.0
   quill_html_editor: ^2.1.9
   flutter_switch: ^0.3.2
+  awesome_notifications: ^0.8.2
 
 dependency_overrides:
   intl: ^0.17.0

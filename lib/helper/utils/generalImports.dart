@@ -120,7 +120,7 @@ export 'package:lokale_mand/customer/screen/checkoutScreen/widget/placeOrderButt
 export 'package:lokale_mand/customer/screen/checkoutScreen/widget/timeSlotsWidget.dart';
 export 'package:lokale_mand/customer/screen/editProfileScreen.dart';
 export 'package:lokale_mand/customer/screen/introSliderScreen.dart';
-export 'package:lokale_mand/customer/screen/mainHomeScreen/categoryListScreen.dart';
+export 'package:lokale_mand/customer/screen/mainHomeScreen/messageListScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/homeScreen/homeScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/homeScreen/widget/customDialog.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/mainHomeScreen.dart';

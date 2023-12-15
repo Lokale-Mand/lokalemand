@@ -49,12 +49,16 @@ class ApiAndParams {
   //Sellers api
   static String apiSellerRegister = "${Constant.customerBaseSellerUrl}save";
   static String apiAddSellerProduct = "${Constant.sellerBaseUrl}products/save";
-  static String apiUpdateSellerProduct = "${Constant.sellerBaseUrl}products/update";
+  static String apiUpdateSellerProduct =
+      "${Constant.sellerBaseUrl}products/update";
   static String apiProductDietaries = "${Constant.baseUrl}dietaries";
   static String apiSellerMainCategories =
       "${Constant.sellerBaseUrl}main_categories";
   // static String apiSellerCategories = "${Constant.sellerBaseUrl}/categories";
   static String apiSellerProductUnit = "${Constant.sellerBaseUrl}units";
+  static String apiSellerOrderById = "${Constant.sellerBaseUrl}order_by_id";
+  static String apiSellerOrdersHistory = "${Constant.sellerBaseUrl}orders";
+  static String apiOrderStatuses = "${Constant.sellerBaseUrl}order_statuses";
   static String apiSellerLogin = "${Constant.hostUrl}api/login";
 
 //============ api params ============
@@ -167,6 +171,7 @@ class ApiAndParams {
   //Language api params
   static String system_type = "system_type";
   static String is_default = "is_default";
+  static String statusId = "status_id";
 
   // Orders params
   static String active = "1";

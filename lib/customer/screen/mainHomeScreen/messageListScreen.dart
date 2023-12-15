@@ -1,36 +1,35 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
-class SellerMessageScreen extends StatefulWidget {
-  const SellerMessageScreen({super.key});
+class MessageListScreen extends StatefulWidget {
+  const MessageListScreen({super.key});
 
   @override
-  State<SellerMessageScreen> createState() => _SellerMessageScreenState();
+  State<MessageListScreen> createState() => _MessageListScreenState();
 }
 
-class _SellerMessageScreenState extends State<SellerMessageScreen> {
+class _MessageListScreenState extends State<MessageListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: getAppBar(
-        context: context,
-        title: CustomTextLabel(
-          text: getTranslatedValue(
-            context,
-            "chat",
+          context: context,
+          title: CustomTextLabel(
+            text: getTranslatedValue(
+              context,
+              "chat",
+            ),
+            softWrap: true,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
           ),
-          softWrap: true,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: ColorsRes.mainTextColor,
-          ),
-        ),
-        actions: [
-          // setCartCounter(context: context),
-        ],
-        showBackButton: false,
-      ),
+          actions: [
+            // setCartCounter(context: context),
+          ],
+          showBackButton: false),
       body: ListView(
         children: [
           Container(
