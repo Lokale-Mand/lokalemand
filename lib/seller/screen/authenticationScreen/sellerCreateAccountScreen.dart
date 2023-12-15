@@ -850,8 +850,6 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                                                           .replaceAll("]", "")
                                                           .replaceAll(" ", "")
                                                           .replaceAll("[", "");
-                                                  
-                                                  print(">>>>>>>>> $selectedCategoriesIds");
 
                                                   Navigator.pop(context);
                                                 },

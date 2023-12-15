@@ -16,19 +16,25 @@ class LocalAwesomeNotification {
     await requestPermission();
     await registerListeners(context);
     await notification.initialize(
-      'resource://mipmap/logo',
+      null,
       [
         NotificationChannel(
           channelKey: Constant.notificationChannel,
-          channelName: 'Basic notifications',
-          channelDescription: 'Notification channel',
+          channelName: Constant.notificationChannel,
+          channelDescription: Constant.notificationChannel,
           playSound: true,
           enableVibration: true,
           importance: NotificationImportance.High,
           ledColor: ColorsRes.appColor,
         )
       ],
-      channelGroups: [],
+      channelGroups: [
+        NotificationChannelGroup(
+          channelGroupKey: Constant.notificationChannel,
+          channelGroupName: Constant.notificationChannel,
+        )
+      ],
+      debug: true,
     );
 
     await listenTap(context);
@@ -43,6 +49,7 @@ class LocalAwesomeNotification {
             Map<String, dynamic> data =
                 jsonDecode(event.payload!["data"].toString());
 
+            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> listenTap ${data}");
             String notificationTypeId = data["id"];
             String notificationType = data["type"];
 
@@ -92,6 +99,8 @@ class LocalAwesomeNotification {
     try {
       Map<String, dynamic> data =
           jsonDecode(notificationData.data["data"].toString());
+      print(
+          ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> createImageNotification ${data}");
       await notification.createNotification(
         content: NotificationContent(
           id: Random().nextInt(5000),
@@ -110,6 +119,8 @@ class LocalAwesomeNotification {
         ),
       );
     } catch (e) {
+      print(
+          ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ERROR createImageNotification ${e.toString()}");
       rethrow;
     }
   }
@@ -120,6 +131,7 @@ class LocalAwesomeNotification {
     try {
       Map<String, dynamic> data =
           jsonDecode(notificationData.data["data"].toString());
+      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> createNotification ${data}");
 
       await notification.createNotification(
         content: NotificationContent(
@@ -137,6 +149,8 @@ class LocalAwesomeNotification {
         ),
       );
     } catch (e) {
+      print(
+          ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ERROR createNotification ${e.toString()}");
       rethrow;
     }
   }
@@ -154,6 +168,7 @@ class LocalAwesomeNotification {
   static Future<void> onBackgroundMessageHandler(RemoteMessage message) async {
     try {
       Map<String, dynamic> data = jsonDecode(message.data["data"].toString());
+      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BACK ${data}");
       if (data["image"] == "" || data["image"] == null) {
         localNotification.createNotification(
             isLocked: false, notificationData: message);
@@ -162,7 +177,7 @@ class LocalAwesomeNotification {
             isLocked: false, notificationData: message);
       }
     } catch (e) {
-      print("ISSUE ${e.toString()}");
+      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BACK ISSUE ${e.toString()}");
     }
   }
 
@@ -172,6 +187,7 @@ class LocalAwesomeNotification {
         FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       try {
         Map<String, dynamic> data = jsonDecode(message.data["data"].toString());
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FORE ${message.data["data"].toString()}");
         if (data["image"] == "" || data["image"] == null) {
           localNotification.createNotification(
               isLocked: false, notificationData: message);
@@ -180,7 +196,7 @@ class LocalAwesomeNotification {
               isLocked: false, notificationData: message);
         }
       } catch (e) {
-        print("ISSUE ${e.toString()}");
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FORE ISSUE ${e.toString()}");
       }
     });
   }
@@ -193,6 +209,8 @@ class LocalAwesomeNotification {
           return;
         }
         Map<String, dynamic> data = jsonDecode(message.data["data"].toString());
+        print(
+            ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> terminatedStateNotificationHandler ${data}");
         if (data["image"] == "" || data["image"] == null) {
           localNotification.createNotification(
               isLocked: false, notificationData: message);

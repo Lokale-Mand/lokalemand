@@ -33,56 +33,48 @@ class HomeMainScreenState extends State<HomeMainScreen> {
 
   @override
   void initState() {
+    print(">>>>>>>> ${Constant.session.getData(SessionManager.keyShippingAddress)}");
     if (mounted) {
       context.read<HomeMainScreenProvider>().setPages();
     }
     Future.delayed(
       Duration.zero,
       () async {
-        try {
-          await LocalAwesomeNotification().init(context);
 
-          await FirebaseMessaging.instance.getToken().then((token) {
-            if (Constant.session.getData(SessionManager.keyFCMToken).isEmpty) {
-              Constant.session
-                  .setData(SessionManager.keyFCMToken, token!, false);
-              registerFcmKey(context: context, fcmToken: token);
+        if (Constant.session.getData(SessionManager.keyShippingAddress).isNotEmpty) {
+          if (context.read<HomeMainScreenProvider>().getCurrentPage() == 0) {
+            if (Constant.session
+                .getBoolData(SessionManager.keyPopupOfferEnabled)) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomDialog();
+                },
+              );
             }
-          });
-          FirebaseMessaging.onBackgroundMessage(
-              LocalAwesomeNotification.onBackgroundMessageHandler);
-        } catch (ignore) {}
+          }
 
-        if (context.read<HomeMainScreenProvider>().getCurrentPage() == 0) {
-          if (Constant.session
-              .getBoolData(SessionManager.keyPopupOfferEnabled)) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return CustomDialog();
+          if (Constant.session.isUserLoggedIn()) {
+            await getAppNotificationSettingsRepository(
+                    params: {}, context: context)
+                .then(
+              (value) async {
+                if (value[ApiAndParams.status].toString() == "1") {
+                  late AppNotificationSettings notificationSettings =
+                      AppNotificationSettings.fromJson(value);
+                  if (notificationSettings.data!.isEmpty) {
+                    await updateAppNotificationSettingsRepository(params: {
+                      ApiAndParams.statusIds: "1,2,3,4,5,6,7,8",
+                      ApiAndParams.mobileStatuses: "1,1,1,1,1,1,1,1",
+                      ApiAndParams.mailStatuses: "1,1,1,1,1,1,1,1"
+                    }, context: context);
+                  }
+                }
               },
             );
           }
-        }
-
-        if (Constant.session.isUserLoggedIn()) {
-          await getAppNotificationSettingsRepository(
-                  params: {}, context: context)
-              .then(
-            (value) async {
-              if (value[ApiAndParams.status].toString() == "1") {
-                late AppNotificationSettings notificationSettings =
-                    AppNotificationSettings.fromJson(value);
-                if (notificationSettings.data!.isEmpty) {
-                  await updateAppNotificationSettingsRepository(params: {
-                    ApiAndParams.statusIds: "1,2,3,4,5,6,7,8",
-                    ApiAndParams.mobileStatuses: "1,1,1,1,1,1,1,1",
-                    ApiAndParams.mailStatuses: "1,1,1,1,1,1,1,1"
-                  }, context: context);
-                }
-              }
-            },
-          );
+        } else {
+          Navigator.pushNamed(context, addressDetailScreen);
         }
       },
     );

@@ -1,7 +1,33 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
-class UserTypeSelectionScreen extends StatelessWidget {
+class UserTypeSelectionScreen extends StatefulWidget {
   const UserTypeSelectionScreen({super.key});
+
+  @override
+  State<UserTypeSelectionScreen> createState() =>
+      _UserTypeSelectionScreenState();
+}
+
+class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen> {
+  @override
+  void initState() {
+    Future.delayed(Duration.zero).then((value) async {
+      try {
+        print(">>>>>> TOKEN ${Constant.session.getData(SessionManager.keyFCMToken)}");
+        if (Constant.session.getData(SessionManager.keyFCMToken).isEmpty) {
+          await LocalAwesomeNotification().init(context);
+
+          await FirebaseMessaging.instance.getToken().then((token) {
+            Constant.session.setData(SessionManager.keyFCMToken, token!, false);
+          });
+        }
+        FirebaseMessaging.onBackgroundMessage(
+            LocalAwesomeNotification.onBackgroundMessageHandler);
+      } catch (ignore) {}
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -40,7 +40,6 @@
   "paypal": "Paypal",
   "search": "Search",
   "stripe": "Stripe ",
-  "update": "Update",
   "address": "Address",
   "applied": "Applied",
   "country": "Country",
@@ -405,5 +404,7 @@
   "product_unit_validation_title": "Please select product unit",
   "in_stock": "in stock",
   "product_price_hint": "100.00",
-  "dietary_type": "Dietary Type"
+  "dietary_type": "Dietary Type",
+  "add": "Add",
+  "update": "Update"
 }

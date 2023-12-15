@@ -99,7 +99,6 @@ export 'package:lokale_mand/customer/repositories/paymentMethodsSettingsApi.dart
 export 'package:lokale_mand/customer/repositories/placeOrderApi.dart';
 export 'package:lokale_mand/customer/repositories/productApi.dart';
 export 'package:lokale_mand/customer/repositories/promoCodeApi.dart';
-export 'package:lokale_mand/customer/repositories/registerFcmKey.dart';
 export 'package:lokale_mand/customer/repositories/sellersApi.dart';
 export 'package:lokale_mand/customer/repositories/timeSlotSettingsApi.dart';
 export 'package:lokale_mand/customer/repositories/transactionApi.dart';
@@ -126,8 +125,6 @@ export 'package:lokale_mand/customer/screen/mainHomeScreen/homeScreen/homeScreen
 export 'package:lokale_mand/customer/screen/mainHomeScreen/homeScreen/widget/customDialog.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/mainHomeScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/profileMenuScreen.dart';
-export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/addressScreen/addressDetailScreen.dart';
-export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/addressScreen/addressListScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/faqListScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/notificationListScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/notificationsAndMailSettingsScreen.dart';

@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:lokale_mand/customer/screen/getLocationScreen.dart';
+import 'package:lokale_mand/customer/screen/addressDetailScreen.dart';
+import 'package:lokale_mand/customer/screen/confirmLocationScreen/confirmLocationScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/provider/sellerAddProductProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerDietaryProvider.dart';
-import 'package:lokale_mand/seller/provider/sellerProductUnitProvider.dart';
+import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
 import 'package:lokale_mand/seller/screen/htmlEditorScreen.dart';
 import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
 
@@ -19,7 +20,6 @@ const String userLocationScreen = 'userLocationScreen';
 const String webViewScreen = 'webViewScreen';
 const String otpScreen = 'otpScreen';
 const String editProfileScreen = 'editProfileScreen';
-// const String getLocationScreen = 'getLocationScreen';
 const String confirmLocationScreen = 'confirmLocationScreen';
 const String mainHomeScreen = 'mainHomeScreen';
 const String brandListScreen = 'brandListScreen';
@@ -91,14 +91,13 @@ class RouteGenerator {
           builder: (_) => CreateAccountScreen(),
         );
 
-      case userLocationScreen:
-        Map<String, dynamic> userLocationScreenArguments =
-            settings.arguments as Map<String, dynamic>;
+      case confirmLocationScreen:
         return CupertinoPageRoute(
-          builder: (_) => UserLocationScreen(
-            email: userLocationScreenArguments["email"].toString(),
-            password: userLocationScreenArguments["password"].toString(),
-            user: userLocationScreenArguments["user"],
+          builder: (_) => ChangeNotifierProvider<CityByLatLongProvider>(
+            create: (context) {
+              return CityByLatLongProvider();
+            },
+            child: ConfirmLocation(from: settings.arguments as String),
           ),
         );
 
@@ -233,26 +232,11 @@ class RouteGenerator {
           ),
         );
 
-      case addressListScreen:
-        return CupertinoPageRoute(
-          builder: (_) => ChangeNotifierProvider<AddressProvider>(
-            create: (context) => AddressProvider(),
-            child: AddressListScreen(
-              from: settings.arguments as String,
-            ),
-          ),
-        );
-
       case addressDetailScreen:
-        List<dynamic> addressDetailArguments =
-            settings.arguments as List<dynamic>;
         return CupertinoPageRoute(
           builder: (_) => ChangeNotifierProvider<AddressProvider>(
             create: (context) => AddressProvider(),
-            child: AddressDetailScreen(
-              address: addressDetailArguments[0],
-              addressProviderContext: addressDetailArguments[1] as BuildContext,
-            ),
+            child: AddressDetailScreen(),
           ),
         );
 
@@ -359,16 +343,6 @@ class RouteGenerator {
           ),
         );
 
-      case sellerConfirmLocationScreen:
-        return CupertinoPageRoute(
-          builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
-            create: (context) {
-              return SellerCityByLatLongProvider();
-            },
-            child: SellerConfirmLocation(from: settings.arguments as String),
-          ),
-        );
-
       case sellerMainHomeScreen:
         return CupertinoPageRoute(
           builder: (_) => ChangeNotifierProvider<SellerMainHomeScreenProvider>(
@@ -399,11 +373,21 @@ class RouteGenerator {
           ),
         );
 
+      case sellerConfirmLocationScreen:
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<CityByLatLongProvider>(
+            create: (context) {
+              return CityByLatLongProvider();
+            },
+            child: SellerConfirmLocation(from: settings.arguments as String),
+          ),
+        );
+
       case sellerProductScreen:
         return CupertinoPageRoute(
-          builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
+          builder: (_) => ChangeNotifierProvider<SellerProductListProvider>(
             create: (context) {
-              return SellerCityByLatLongProvider();
+              return SellerProductListProvider();
             },
             child: SellerProductScreen(),
           ),
@@ -429,7 +413,8 @@ class RouteGenerator {
 
       case htmlEditorScreen:
         return CupertinoPageRoute(
-          builder: (_) => HtmlEditorScreen(htmlContent: settings.arguments as String),
+          builder: (_) =>
+              HtmlEditorScreen(htmlContent: settings.arguments as String),
         );
 
       default:

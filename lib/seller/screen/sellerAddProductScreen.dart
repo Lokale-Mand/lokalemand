@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
@@ -158,7 +160,9 @@ class _SellerAddOrUpdateProductScreenState
             context: context,
             isAdd: true)
         .then((value) async {
-      if (value != null) {}
+      if (value != null) {
+        Navigator.pop(context, true);
+      }
     });
   }
 
@@ -887,8 +891,6 @@ class _SellerAddOrUpdateProductScreenState
                         .then((value) {
                       if (value != null) {
                         htmlDescription = value.toString();
-
-                        print(">>>>>>>>> $htmlDescription");
                         setState(() {});
                       }
                     });
@@ -943,7 +945,10 @@ class _SellerAddOrUpdateProductScreenState
               color: Theme.of(context).cardColor),
           child: TextField(
             controller: edtProductPrice,
-            keyboardType: TextInputType.name,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*')),
+            ],
             style: TextStyle(
               color: ColorsRes.mainTextColor,
             ),
@@ -984,7 +989,8 @@ class _SellerAddOrUpdateProductScreenState
               Expanded(
                 child: TextField(
                   controller: edtProductUnit,
-                  keyboardType: TextInputType.name,
+                  keyboardType: TextInputType.none,
+                  enabled: false,
                   style: TextStyle(
                     color: ColorsRes.mainTextColor,
                   ),
@@ -1292,7 +1298,19 @@ class _SellerAddOrUpdateProductScreenState
         Row(
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                try {
+                  if (edtProductStock.text.toString() != "0") {
+                    edtProductStock.text =
+                        (int.parse(edtProductStock.text.toString()) - 1)
+                            .toString();
+                    setState(() {});
+                  }
+                } catch (e) {
+                  GeneralMethods.showMessage(
+                      context, e.toString(), MessageType.warning);
+                }
+              },
               icon: Icon(
                 Icons.remove_circle_outline_rounded,
                 color: ColorsRes.appColor,
@@ -1335,7 +1353,20 @@ class _SellerAddOrUpdateProductScreenState
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                try {
+                  edtProductStock.text = (int.parse(
+                              edtProductStock.text.toString().isEmpty
+                                  ? "0"
+                                  : edtProductStock.text.toString()) +
+                          1)
+                      .toString();
+                  setState(() {});
+                } catch (e) {
+                  GeneralMethods.showMessage(
+                      context, e.toString(), MessageType.warning);
+                }
+              },
               icon: Icon(
                 Icons.add_circle_outline_rounded,
                 color: ColorsRes.appColor,
@@ -1636,5 +1667,43 @@ class CustomNumberTextInputFormatter extends TextInputFormatter {
     } else {
       return oldValue;
     }
+  }
+}
+
+class DecimalTextInputFormatter extends TextInputFormatter {
+  DecimalTextInputFormatter({required this.decimalRange})
+      : assert(decimalRange > 0);
+
+  final int decimalRange;
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue, // unused.
+    TextEditingValue newValue,
+  ) {
+    TextSelection newSelection = newValue.selection;
+    String truncated = newValue.text;
+
+    String value = newValue.text;
+
+    if (value.contains(".") &&
+        value.substring(value.indexOf(".") + 1).length > decimalRange) {
+      truncated = oldValue.text;
+      newSelection = oldValue.selection;
+    } else if (value == ".") {
+      truncated = "0.";
+
+      newSelection = newValue.selection.copyWith(
+        baseOffset: math.min(truncated.length, truncated.length + 1),
+        extentOffset: math.min(truncated.length, truncated.length + 1),
+      );
+    }
+
+    return TextEditingValue(
+      text: truncated,
+      selection: newSelection,
+      composing: TextRange.empty,
+    );
+    return newValue;
   }
 }

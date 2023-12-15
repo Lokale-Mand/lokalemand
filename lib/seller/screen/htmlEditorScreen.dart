@@ -20,66 +20,60 @@ class _HtmlEditorScreenState extends State<HtmlEditorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: HtmlEditor(
-          controller: controller,
-          otherOptions: OtherOptions(
-            height: MediaQuery.sizeOf(context).height,
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(
-                10,
-              ),
+    return Theme(
+      data: ThemeData(),
+      child: Scaffold(
+        body: SafeArea(
+          child: HtmlEditor(
+            controller: controller,
+            otherOptions: OtherOptions(
+              height: MediaQuery.sizeOf(context).height,
             ),
-          ),
-          htmlEditorOptions: HtmlEditorOptions(
-            adjustHeightForKeyboard: true,
-            hint: 'Your text here...',
-            initialText: widget.htmlContent ?? "",
-            shouldEnsureVisible: true,
-            autoAdjustHeight: true,
-            androidUseHybridComposition: true,
-          ),
-          htmlToolbarOptions: HtmlToolbarOptions(
+            htmlEditorOptions: HtmlEditorOptions(
+              adjustHeightForKeyboard: true,
+              hint: 'Your text here...',
+              initialText: widget.htmlContent ?? "",
+              shouldEnsureVisible: true,
+              autoAdjustHeight: true,
+              androidUseHybridComposition: true,
+            ),
+            htmlToolbarOptions: HtmlToolbarOptions(
+              buttonBorderWidth: 2,
               toolbarPosition: ToolbarPosition.aboveEditor,
               toolbarType: ToolbarType.nativeGrid,
-              buttonColor: ColorsRes.mainTextColor,
-              buttonFillColor: ColorsRes.appColorLight,
               buttonBorderRadius: BorderRadius.circular(10),
               renderBorder: true,
-              buttonBorderColor: ColorsRes.mainTextColor,
-              buttonSelectedBorderColor: ColorsRes.mainTextColor,
-              buttonSelectedColor: ColorsRes.mainTextColor),
+            ),
+          ),
         ),
-      ),
-      bottomNavigationBar: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.pop(context, controller.getText()),
-            child: Container(
-              decoration: BoxDecoration(
-                color: ColorsRes.appColor,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              height: 50,
-              alignment: Alignment.center,
-              padding: EdgeInsetsDirectional.all(10),
-              margin: EdgeInsetsDirectional.all(10),
-              child: CustomTextLabel(
-                jsonKey: "done",
-                style: TextStyle(
-                  color: ColorsRes.appColorWhite,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+        bottomNavigationBar: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: () => Navigator.pop(context, controller.getText()),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ColorsRes.appColor,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                height: 50,
+                alignment: Alignment.center,
+                padding: EdgeInsetsDirectional.all(10),
+                margin: EdgeInsetsDirectional.all(10),
+                child: CustomTextLabel(
+                  jsonKey: "done",
+                  style: TextStyle(
+                    color: ColorsRes.appColorWhite,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

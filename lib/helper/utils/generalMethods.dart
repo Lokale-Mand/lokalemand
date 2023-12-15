@@ -123,7 +123,6 @@ class GeneralMethods {
         if (response.body == "null") {
           return null;
         }
-
         return isRequestedForInvoice == true
             ? response.bodyBytes
             : response.body;

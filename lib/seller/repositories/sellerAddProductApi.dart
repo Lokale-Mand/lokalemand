@@ -15,7 +15,6 @@ Future addOrUpdateSellerProduct(
         fileParamsFilesPath: fileParamsFilesPath,
         fileParamsNames: fileParamsNames,
         context: context);
-    print("<>>>>>>>> URL ${ApiAndParams.apiAddSellerProduct}");
     return json.decode(response);
   } catch (e) {
     rethrow;

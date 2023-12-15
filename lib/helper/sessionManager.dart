@@ -25,6 +25,7 @@ class SessionManager extends ChangeNotifier {
   static String keyLatitude = "keyLatitude";
   static String keyLongitude = "keyLongitude";
   static String keyAddress = "keyAddress";
+  static String keyShippingAddress = "keyShippingAddress";
   static String keyPopupOfferEnabled = "keyPopupOfferEnabled";
   static String keyPopupAlwaysShowHome = "keyPopupAlwaysShowHome";
   static String keyPopupOfferType = "keyPopupOfferType";
@@ -36,6 +37,7 @@ class SessionManager extends ChangeNotifier {
   static String keyFavoriteIds = "keyFavoriteIds";
   static String keySellerLatitude = "keySellerLatitude";
   static String keySellerLongitude = "keySellerLongitude";
+  static String keySellerId = "keySellerId";
 
   late SharedPreferences prefs;
 
@@ -108,7 +110,8 @@ class SessionManager extends ChangeNotifier {
     required int status,
     required String token,
     required bool isUserSeller,
-    /*required String balance*/
+    required String sellerLatitude,
+    required String sellerLongitude,
   }) async {
     prefs.setString(keyAuthUid, firebaseUid);
     setData(keyUserName, name, true);
@@ -120,12 +123,13 @@ class SessionManager extends ChangeNotifier {
     prefs.setString(keyReferralCode, referralCode);
     prefs.setInt(keyUserStatus, status);
     prefs.setString(keyToken, token);
+    prefs.setString(keySellerId, id);
+    prefs.setString(keySellerLatitude, sellerLatitude);
+    prefs.setString(keySellerLongitude, sellerLongitude);
+    prefs.setString(keyToken, token);
     setBoolData(isUserLogin, true, true);
     setBoolData(isSeller, isUserSeller, true);
     notifyListeners();
-/*
-    prefs.setString(keyBalance, balance.toString());
-*/
   }
 
   void setDoubleData(String key, double value) {

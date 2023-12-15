@@ -351,8 +351,7 @@ class CheckoutProvider extends ChangeNotifier {
             deliveryChargeData?.totalAmount.toString() ?? "0";
         params[ApiAndParams.paymentMethod] = selectedPaymentMethod.toString();
         params[ApiAndParams.addressId] = selectedAddress!.id.toString();
-        print(
-            ">>>>>>>>. ${timeSlotsData?.timeSlotsIsEnabled},${initiallySelectedIndex}");
+
         if (timeSlotsData?.timeSlotsIsEnabled.toString() == "true" &&
             initiallySelectedIndex != -1) {
           params[ApiAndParams.deliveryTime] =

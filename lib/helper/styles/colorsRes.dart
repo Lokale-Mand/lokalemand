@@ -29,13 +29,14 @@ class ColorsRes {
 
   static Color mainTextColor = const Color(0xde000000);
   static Color subTitleMainTextColor = const Color(0xff333333);
+  static Color menuTitleColor = const Color(0xffb2b2b2);
 
   static Color activeWishListColor = const Color(0xffF31E6B);
 
   static Color mainIconColor = Colors.white;
 
   static Color bgColorLight = const Color(0xfffcfcfc);
-  static Color bgColorDark = const Color(0xff131313);
+    static Color bgColorDark = const Color(0xff131313);
 
   static Color cardColorLight = const Color(0xffffffff);
   static Color cardColorDark = const Color(0xff101010);
@@ -45,7 +46,8 @@ class ColorsRes {
   static Color lightThemeTextColor = const Color(0xde000000);
   static Color darkThemeTextColor = const Color(0xdeffffff);
 
-  static Color menuTitleColor = const Color(0xffBDBDBD);
+  static Color menuTitleLightColor = const Color(0x4d000000);
+  static Color menuTitleDarkColor = const Color(0x4dffffff);
 
   static Color subTitleTextColorLight = const Color(0xff333333);
   static Color subTitleTextColorDark = const Color(0x94ffffff);
@@ -141,6 +143,7 @@ class ColorsRes {
       }
       mainTextColor = darkThemeTextColor;
       subTitleMainTextColor = subTitleTextColorDark;
+      menuTitleColor = menuTitleDarkColor;
 
       shimmerBaseColor = shimmerBaseColorDark;
       shimmerHighlightColor = shimmerHighlightColorDark;
@@ -152,6 +155,7 @@ class ColorsRes {
       }
       mainTextColor = lightThemeTextColor;
       subTitleMainTextColor = subTitleTextColorLight;
+      menuTitleColor = menuTitleLightColor;
 
       shimmerBaseColor = shimmerBaseColorLight;
       shimmerHighlightColor = shimmerHighlightColorLight;

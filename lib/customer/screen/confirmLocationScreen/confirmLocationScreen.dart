@@ -6,18 +6,18 @@ import 'package:lokale_mand/helper/utils/markergenerator.dart';
 import 'package:lokale_mand/seller/model/sellerCityByLatLong.dart';
 import 'package:lokale_mand/seller/screen/confirmLocationScreen/widget/sellerConfirmButtonWidget.dart';
 
-class SellerConfirmLocation extends StatefulWidget {
+class ConfirmLocation extends StatefulWidget {
   final GeoAddress? address;
   final String from;
 
-  const SellerConfirmLocation({Key? key, this.address, required this.from})
+  const ConfirmLocation({Key? key, this.address, required this.from})
       : super(key: key);
 
   @override
-  State<SellerConfirmLocation> createState() => _SellerConfirmLocationState();
+  State<ConfirmLocation> createState() => _SellerConfirmLocationState();
 }
 
-class _SellerConfirmLocationState extends State<SellerConfirmLocation> {
+class _SellerConfirmLocationState extends State<ConfirmLocation> {
   late GoogleMapController controller;
   late CameraPosition kGooglePlex;
   late LatLng kMapCenter;
@@ -89,8 +89,8 @@ class _SellerConfirmLocationState extends State<SellerConfirmLocation> {
       params[ApiAndParams.latitude] = kMapCenter.latitude.toString();
 
       await context
-          .read<SellerCityByLatLongProvider>()
-          .getSellerCityByLatLongApiProvider(context: context, params: params)
+          .read<CityByLatLongProvider>()
+          .getCityByLatLongApiProvider(context: context, params: params)
           .then((value) {
         if (value != null) {
           cityByLatLong = value;
@@ -207,7 +207,15 @@ class _SellerConfirmLocationState extends State<SellerConfirmLocation> {
                 ],
               ),
             ),
-            confirmBtnWidget(),
+            Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(20),
+                  ),
+                ),
+                child: confirmBtnWidget()),
           ]),
         ));
   }
@@ -241,66 +249,76 @@ class _SellerConfirmLocationState extends State<SellerConfirmLocation> {
     }
   }
 
-  confirmBtnWidget() {
-    return Card(
-        color: Theme.of(context).cardColor,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ((widget.from == "location" || widget.from == "seller_register") &&
-                    !context.read<SellerCityByLatLongProvider>().isDeliverable)
-                ? CustomTextLabel(
-                    jsonKey: "does_not_delivery_long_message",
-                    style: Theme.of(context).textTheme.bodySmall!.apply(
-                          color: ColorsRes.appColorRed,
-                        ),
-                  )
-                : const SizedBox.shrink(),
-            Padding(
-              padding: EdgeInsetsDirectional.only(start: 20, end: 20, top: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Widgets.defaultImg(
-                    image: "address_icon",
-                    iconColor: ColorsRes.appColor,
-                    height: 25,
-                    width: 25,
+  Widget confirmBtnWidget() {
+    print(
+        ">>>>>>>>>>>>>>>>>>> ${context.read<CityByLatLongProvider>().isDeliverable}");
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ((widget.from == "location" ||
+                    widget.from == "seller_register" ||
+                    widget.from == "address_detail") &&
+                !context.read<CityByLatLongProvider>().isDeliverable)
+            ? Padding(
+                padding: EdgeInsetsDirectional.only(
+                    start: 20, end: 20, top: 10, bottom: 10),
+                child: CustomTextLabel(
+                  jsonKey: "does_not_delivery_long_message",
+                  style: TextStyle(
+                    color: ColorsRes.appColorRed,
                   ),
-                  Widgets.getSizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: CustomTextLabel(
-                      text: Constant.cityAddressMap["address"] ?? "",
-                    ),
-                  ),
-                ],
+                ),
+              )
+            : const SizedBox.shrink(),
+        Padding(
+          padding: EdgeInsetsDirectional.only(
+            start: 20,
+            end: 20,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Widgets.defaultImg(
+                image: "address_icon",
+                iconColor: ColorsRes.appColor,
+                height: 25,
+                width: 25,
               ),
-            ),
-            if (((widget.from == "location" ||
-                        widget.from == "seller_register") &&
-                    context
-                        .read<SellerCityByLatLongProvider>()
-                        .isDeliverable) ||
-                widget.from == "address")
-              ConfirmButtonWidget(voidCallback: () {
-                if (widget.from == "location" &&
-                    context.read<SellerCityByLatLongProvider>().isDeliverable) {
-                  context
-                      .read<CartListProvider>()
-                      .getAllCartItems(context: context);
-                  Constant.session.setData(SessionManager.keyAddress,
-                      Constant.cityAddressMap["address"], true);
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    mainHomeScreen,
-                    (Route<dynamic> route) => false,
-                  );
-                } else if (widget.from == "seller_register") {
-                  Navigator.pop(context, cityByLatLong);
-                }
-              })
-          ],
-        ));
+              Widgets.getSizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: CustomTextLabel(
+                  text: Constant.cityAddressMap["address"] ?? "",
+                  style: TextStyle(
+                    color: ColorsRes.mainTextColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (((widget.from == "location" || widget.from == "seller_register") &&
+                context.read<CityByLatLongProvider>().isDeliverable) ||
+            widget.from == "address")
+          ConfirmButtonWidget(voidCallback: () {
+            if (widget.from == "location" &&
+                context.read<CityByLatLongProvider>().isDeliverable) {
+              Constant.session.setData(SessionManager.keyAddress,
+                  Constant.cityAddressMap["address"], true);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                mainHomeScreen,
+                (Route<dynamic> route) => false,
+              );
+            } else if (widget.from == "address_detail" &&
+                context.read<CityByLatLongProvider>().isDeliverable) {
+              Navigator.pop(context, cityByLatLong);
+            } else if (widget.from == "seller_register") {
+              Navigator.pop(context, cityByLatLong);
+            }
+          })
+      ],
+    );
   }
 }

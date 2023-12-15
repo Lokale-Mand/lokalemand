@@ -177,6 +177,16 @@ class Constant {
     return params;
   }
 
+  static Future<Map<String, String>> getSellerProductsDefaultParams() async {
+    Map<String, String> params = {};
+    params[ApiAndParams.latitude] =
+        Constant.session.getData(SessionManager.keySellerLatitude);
+    params[ApiAndParams.longitude] =
+        Constant.session.getData(SessionManager.keySellerLongitude);
+
+    return params;
+  }
+
   static Future<String> getGetMethodUrlWithParams(
       String mainUrl, Map params) async {
     if (params.isNotEmpty) {

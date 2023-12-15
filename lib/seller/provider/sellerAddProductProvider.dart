@@ -13,7 +13,7 @@ class SellerAddUpdateProductProvider extends ChangeNotifier {
       SellerAddUpdateProductState.initial;
   String message = '';
 
-  addOrUpdateProducts(
+  Future addOrUpdateProducts(
       {required Map<String, String> params,
       required List<String> fileParamsNames,
       required List<String?> fileParamsFilesPath,
@@ -27,22 +27,24 @@ class SellerAddUpdateProductProvider extends ChangeNotifier {
           fileParamsNames: fileParamsNames,
           fileParamsFilesPath: fileParamsFilesPath);
 
-
+      GeneralMethods.showMessage(
+          context, getResult[ApiAndParams.message], MessageType.warning);
       if (getResult[ApiAndParams.status].toString() == "1") {
         sellerCategoryState = SellerAddUpdateProductState.loaded;
         notifyListeners();
+        return true;
       } else {
         sellerCategoryState = SellerAddUpdateProductState.error;
         notifyListeners();
+        return null;
       }
-      GeneralMethods.showMessage(
-          context, getResult[ApiAndParams.message], MessageType.warning);
     } catch (e) {
       message = e.toString();
 
       sellerCategoryState = SellerAddUpdateProductState.error;
       GeneralMethods.showMessage(context, message, MessageType.warning);
       notifyListeners();
+      return null;
     }
   }
 

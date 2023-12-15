@@ -550,6 +550,29 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         .getListingType()),
             ],
           );
+        }else if (productListProvider.productState ==
+            ProductState.loading) {
+          return GridView.builder(
+            itemCount: 10,
+            padding: EdgeInsetsDirectional.only(
+                start: Constant.size10,
+                end: Constant.size10,
+                bottom: Constant.size10,
+                top: Constant.size5),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return CustomShimmer(
+                borderRadius: 10,
+              );
+            },
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: 1,
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+          );
         } else if (productListProvider.productState == ProductState.empty) {
           return DefaultBlankItemMessageScreen(
             title: "empty_product_list_message",

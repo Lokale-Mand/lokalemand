@@ -1,4 +1,5 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
 
 class SellerMainHomeScreenProvider extends ChangeNotifier {
   int currentPage = 0;
@@ -28,19 +29,16 @@ class SellerMainHomeScreenProvider extends ChangeNotifier {
             },
           ),
         ],
-        child: SellerOrderScreen(
-          // scrollController: scrollController[0],
-        ),
+        child: SellerOrderScreen(),
       ),
-      SellerMessageScreen(
-        // scrollController: scrollController[1],
+      SellerMessageScreen(),
+      ChangeNotifierProvider<SellerProductListProvider>(
+        create: (context) {
+          return SellerProductListProvider();
+        },
+        child: SellerProductScreen(),
       ),
-      SellerProductScreen(
-        // scrollController: scrollController[2],
-      ),
-      SellerMenuScreen(
-        // scrollController: scrollController[2],
-      )
+      SellerMenuScreen()
     ];
   }
 
@@ -49,7 +47,8 @@ class SellerMainHomeScreenProvider extends ChangeNotifier {
     try {
       if (index == currentPage) {
         scrollController[currentPage].animateTo(0,
-            duration: const Duration(milliseconds: 800), curve: Curves.easeInOut);
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeInOut);
       }
 
       currentPage = index;

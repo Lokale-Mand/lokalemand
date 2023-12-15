@@ -1,4 +1,4 @@
-import 'package:lokale_mand/customer/screen/getLocationScreen.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class BottomSheetLocationSearch extends StatefulWidget {

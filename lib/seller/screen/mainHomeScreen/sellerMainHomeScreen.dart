@@ -39,19 +39,6 @@ class SellerMainHomeScreenState extends State<SellerMainHomeScreen> {
     Future.delayed(
       Duration.zero,
       () async {
-        try {
-          await LocalAwesomeNotification().init(context);
-
-          await FirebaseMessaging.instance.getToken().then((token) {
-            if (Constant.session.getData(SessionManager.keyFCMToken).isEmpty) {
-              Constant.session
-                  .setData(SessionManager.keyFCMToken, token!, false);
-              registerFcmKey(context: context, fcmToken: token);
-            }
-          });
-          FirebaseMessaging.onBackgroundMessage(
-              LocalAwesomeNotification.onBackgroundMessageHandler);
-        } catch (ignore) {}
 
         if (context.read<SellerMainHomeScreenProvider>().getCurrentPage() ==
             0) {
