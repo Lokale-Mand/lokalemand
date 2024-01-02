@@ -131,6 +131,7 @@ class AddressProvider extends ChangeNotifier {
       late AddressData tempAddress;
       if (getData[ApiAndParams.status].toString() == "1") {
         tempAddress = AddressData.fromJson(getData[ApiAndParams.data]);
+        Constant.session.setData(SessionManager.keyShippingAddress,tempAddress.toJson().toString(),false);
         if (params.containsKey(ApiAndParams.id)) {
           addresses.remove(address);
         }

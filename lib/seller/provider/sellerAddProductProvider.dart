@@ -47,5 +47,4 @@ class SellerAddUpdateProductProvider extends ChangeNotifier {
       return null;
     }
   }
-
 }

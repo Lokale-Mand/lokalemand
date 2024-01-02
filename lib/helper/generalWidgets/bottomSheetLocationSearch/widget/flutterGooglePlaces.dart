@@ -496,7 +496,7 @@ class PlacesAutocomplete {
                           ),
                           Expanded(
                             child: CustomTextLabel(
-                              jsonKey: "sort_by",
+                              jsonKey: "search_location",
                               softWrap: true,
                               textAlign: TextAlign.center,
                               style: Theme.of(context)

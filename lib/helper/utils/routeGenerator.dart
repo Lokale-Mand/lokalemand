@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:lokale_mand/customer/provider/productRatingListProvider.dart';
 import 'package:lokale_mand/customer/screen/addressDetailScreen.dart';
 import 'package:lokale_mand/customer/screen/confirmLocationScreen/confirmLocationScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
@@ -53,7 +54,7 @@ const String sellerCreateAccountScreen = 'sellerCreateAccountScreen';
 const String sellerConfirmLocationScreen = 'sellerConfirmLocationScreen';
 const String sellerMainHomeScreen = 'sellerMainHomeScreen';
 const String sellerMenuScreen = 'sellerMenuScreen';
-const String sellerMessageScreen = 'sellerMessageScreen';
+// const String sellerMessageScreen = 'sellerMessageScreen';
 const String sellerProductScreen = 'sellerProductScreen';
 const String sellerAddOrUpdateProductScreen = 'sellerAddOrUpdateProductScreen';
 const String htmlEditorScreen = 'htmlEditorScreen';
@@ -212,8 +213,15 @@ class RouteGenerator {
         List<dynamic> productDetailArguments =
             settings.arguments as List<dynamic>;
         return CupertinoPageRoute(
-          builder: (_) => ChangeNotifierProvider<ProductDetailProvider>(
-            create: (context) => ProductDetailProvider(),
+          builder: (_) => MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (context) => ProductDetailProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (context) => ProductRatingListProvider(),
+              )
+            ],
             child: ProductDetailScreen(
               id: productDetailArguments[0] as String,
               title: productDetailArguments[1] as String,
@@ -363,21 +371,21 @@ class RouteGenerator {
           ),
         );
 
-      case sellerMessageScreen:
+      // case sellerMessageScreen:
+      //   return CupertinoPageRoute(
+      //     builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
+      //       create: (context) {
+      //         return SellerCityByLatLongProvider();
+      //       },
+      //       child: SellerChatListScreen(scrollController: null,),
+      //     ),
+      //   );
+
+      case sellerConfirmLocationScreen:
         return CupertinoPageRoute(
           builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
             create: (context) {
               return SellerCityByLatLongProvider();
-            },
-            child: SellerMessageScreen(),
-          ),
-        );
-
-      case sellerConfirmLocationScreen:
-        return CupertinoPageRoute(
-          builder: (_) => ChangeNotifierProvider<CityByLatLongProvider>(
-            create: (context) {
-              return CityByLatLongProvider();
             },
             child: SellerConfirmLocation(from: settings.arguments as String),
           ),

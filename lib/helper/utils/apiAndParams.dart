@@ -33,6 +33,7 @@ class ApiAndParams {
   static String apiAddressUpdate = "$apiAddress/update";
   static String apiAddressRemove = "$apiAddress/delete";
   static String apiPlaceOrder = "place_order";
+  static String apiGetChatList = "getChatList";
   static String apiInitiateTransaction = "initiate_transaction";
   static String apiAddTransaction = "add_transaction";
   static String apiDeleteAccount = "delete_account";
@@ -45,6 +46,7 @@ class ApiAndParams {
   static String apiAddFcmToken = "add_fcm_token";
   static String apiSystemLanguages = "system_languages";
   static String apiDeleteOrder = "delete_order";
+  static String apiGetProductRatingList = "$apiProducts/ratings_list";
 
   //Sellers api
   static String apiSellerRegister = "${Constant.customerBaseSellerUrl}save";
@@ -54,12 +56,15 @@ class ApiAndParams {
   static String apiProductDietaries = "${Constant.baseUrl}dietaries";
   static String apiSellerMainCategories =
       "${Constant.sellerBaseUrl}main_categories";
+
   // static String apiSellerCategories = "${Constant.sellerBaseUrl}/categories";
   static String apiSellerProductUnit = "${Constant.sellerBaseUrl}units";
   static String apiSellerOrderById = "${Constant.sellerBaseUrl}order_by_id";
   static String apiSellerOrdersHistory = "${Constant.sellerBaseUrl}orders";
   static String apiOrderStatuses = "${Constant.sellerBaseUrl}order_statuses";
   static String apiSellerLogin = "${Constant.hostUrl}api/login";
+  static String getSellerChatListApi =
+      "${Constant.sellerBaseUrl}getSellerChatList";
 
 //============ api params ============
 

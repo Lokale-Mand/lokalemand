@@ -252,7 +252,8 @@
   "invite_friends_to_signup": "Invite to your friend to signup",
   "profile_info_description": "This is an initial information of you, don't worry you can change it anytime.",
   "select_delivery_location": "Select Your Delivery Location",
-  "search_location": "Search location...",
+  "search_location": "Search location",
+  "search_location_hint": "Search location here",
   "theme_display_names_dark": "Dark",
   "unable_to_cancel_product": "Unable to cancel product",
   "unable_to_return_product": "Unable to return product",
@@ -486,5 +487,8 @@
   "call_to_seller": "Call to Seller",
   "call_to_customer": "Call to Customer",
   "could_not_launch": "Could not launch ",
-  "settings_saved_successfully": "Settings saved successfully!"
+  "settings_saved_successfully": "Settings saved successfully!",
+  "opps_no_message_yet": "Opps! No chat available yet!",
+  "opps_no_message_yet_description": "Chat unavailable. Apologies. Please return later for assistance.",
+  "yesterday": "Yesterday"
 }

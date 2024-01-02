@@ -125,7 +125,6 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
   }
 
   _buildOrderContainer(SellerOrdersListItem order, String index) {
-    print(">>>>>>>>>>> ${order.activeStatus.toString()}");
     DateTime dateTime = DateTime.parse(order.createdAt.toString());
 
     List lblOrderStatusDisplayNames = [

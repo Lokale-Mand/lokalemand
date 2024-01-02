@@ -120,7 +120,7 @@ export 'package:lokale_mand/customer/screen/checkoutScreen/widget/placeOrderButt
 export 'package:lokale_mand/customer/screen/checkoutScreen/widget/timeSlotsWidget.dart';
 export 'package:lokale_mand/customer/screen/editProfileScreen.dart';
 export 'package:lokale_mand/customer/screen/introSliderScreen.dart';
-export 'package:lokale_mand/customer/screen/mainHomeScreen/messageListScreen.dart';
+export 'package:lokale_mand/customer/screen/mainHomeScreen/customerChatListScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/homeScreen/homeScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/homeScreen/widget/customDialog.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/mainHomeScreen.dart';
@@ -217,7 +217,7 @@ export 'package:lokale_mand/seller/provider/sellerProfileProvider.dart';
 export 'package:lokale_mand/seller/provider/sellerRegisterProvider.dart';
 export 'package:lokale_mand/seller/screen/confirmLocationScreen/sellerConfirmLocationScreen.dart';
 export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerMenuScreen.dart';
-export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerMessageScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerChatListScreen.dart';
 export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerProductScreen.dart';
 export 'package:lokale_mand/seller/screen/mainHomeScreen/sellerMainHomeScreen.dart';
 export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerOrdersScreen.dart';

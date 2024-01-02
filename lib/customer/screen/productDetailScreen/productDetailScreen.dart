@@ -1,3 +1,5 @@
+import 'package:lokale_mand/customer/models/productRating.dart';
+import 'package:lokale_mand/customer/provider/productRatingListProvider.dart';
 import 'package:lokale_mand/customer/screen/productDetailScreen/widget/sliderImageWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
@@ -24,11 +26,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         try {
           Map<String, String> params =
               await Constant.getProductsDefaultParams();
-          params[ApiAndParams.id] = widget.id;
+          params[ApiAndParams.id] = widget.id.toString();
 
-          await context
-              .read<ProductDetailProvider>()
-              .getProductDetailProvider(context: context, params: params);
+          List<Future> futures = [
+            context
+                .read<ProductDetailProvider>()
+                .getProductDetailProvider(context: context, params: params),
+            context.read<ProductRatingListProvider>().getProductRatingList(
+                context: context, params: {"product_id": widget.id.toString()})
+          ];
+
+          await Future.wait(futures);
         } catch (_) {}
       }
     });
@@ -276,6 +284,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     print("${storeTime.openTime}");
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
@@ -287,8 +297,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             builder: (context, selectedVariantItemProvider, _) {
               return product.variants.isNotEmpty
                   ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         CustomTextLabel(
                           text: product.name,
@@ -325,9 +336,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                     .getSelectedIndex()]
                                             .discountedPrice))
                                     : GeneralMethods.getCurrencyFormat(
-                                        double.parse(product
-                                            .variants[selectedVariantItemProvider.getSelectedIndex()]
-                                            .price)),
+                                        double.parse(
+                                          product
+                                              .variants[
+                                                  selectedVariantItemProvider
+                                                      .getSelectedIndex()]
+                                              .price,
+                                        ),
+                                      ),
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -356,7 +372,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                               0
                                           ? GeneralMethods.getCurrencyFormat(
                                               double.parse(
-                                                  product.variants[0].price))
+                                                product.variants[0].price,
+                                              ),
+                                            )
                                           : "",
                                     ),
                                   ],
@@ -704,6 +722,154 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   decoration: TextDecoration.none,
                   fontSize: 10,
                 ),
+              ),
+              if (context.read<ProductRatingListProvider>().totalData != 0)
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: Constant.size10),
+                  child: Divider(
+                    color: ColorsRes.menuTitleColor,
+                    height: 5,
+                  ),
+                ),
+              if (context.read<ProductRatingListProvider>().totalData != 0)
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: Constant.size10),
+                      child: CustomTextLabel(
+                        jsonKey: "reviews",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    CustomTextLabel(
+                      text: "4.5",
+                    ),
+                    Widgets.getSizedBox(
+                      width: 5,
+                    ),
+                    RatingBar.builder(
+                      initialRating: 3.5,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      maxRating: 5,
+                      updateOnDrag: true,
+                      itemSize: 15,
+                      itemCount: 5,
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+                      },
+                    ),
+                    CustomTextLabel(
+                      text:
+                          " (${context.read<ProductRatingListProvider>().totalData})",
+                    ),
+                  ],
+                ),
+              Consumer<ProductRatingListProvider>(
+                builder: (context, productRatingListProvider, child) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(
+                      /*productRatingListProvider.totalData*/
+                      productRatingListProvider.ratings.length,
+                      (index) {
+                        ProductRatingData rating =
+                            productRatingListProvider.ratings[index];
+
+                        return Container(
+                          padding:
+                              EdgeInsetsDirectional.only(bottom: 10, top: 10),
+                          decoration: BoxDecoration(
+                            border: BorderDirectional(
+                              bottom: BorderSide(
+                                color: ColorsRes.menuTitleColor,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  ClipRRect(
+                                    child: Widgets.setNetworkImg(
+                                      image: rating.user?.profile?.toString() ??
+                                          "",
+                                      height: 40,
+                                      width: 40,
+                                      boxFit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  Widgets.getSizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CustomTextLabel(
+                                        text:
+                                            rating.user?.name?.toString() ?? "",
+                                        style: TextStyle(
+                                          color: ColorsRes.mainTextColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                      Widgets.getSizedBox(height: 10),
+                                      RatingBar.builder(
+                                        initialRating: double.tryParse(
+                                                rating.rate.toString()) ??
+                                            0.0,
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        maxRating: 5,
+                                        updateOnDrag: true,
+                                        itemSize: 12,
+                                        itemCount: 5,
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          print(rating);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Widgets.getSizedBox(height: 5),
+                              CustomTextLabel(
+                                text: rating.review?.toString() ?? "",
+                                style: TextStyle(
+                                  color: ColorsRes.mainTextColor,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
             ],
           ),
