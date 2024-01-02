@@ -56,6 +56,9 @@ class CheckoutProvider extends ChangeNotifier {
   AddressData? selectedAddress = AddressData();
 
   // Order Delivery charge variables
+  bool? usedWallet;
+  double walletUsedAmount = 0.0;
+  double availableWalletAmount = 0.0;
   double subTotalAmount = 0.0;
   double totalAmount = 0.0;
   double savedAmount = 0.0;
@@ -68,7 +71,7 @@ class CheckoutProvider extends ChangeNotifier {
   TimeSlotsData? timeSlotsData;
   bool isTimeSlotsEnabled = true;
   int selectedDateId = 0;
-  String selectedDate = "N/A";
+  String? selectedDate = null;
   int selectedTime = 0;
   String selectedPaymentMethod = "";
   int initiallySelectedIndex = -1;
@@ -85,8 +88,38 @@ class CheckoutProvider extends ChangeNotifier {
 
   String paytmTxnToken = "";
 
+  int availablePaymentMethods = 0;
+
   Future setPaymentProcessState(bool value) async {
     isPaymentUnderProcessing = value;
+    notifyListeners();
+  }
+
+  Future updatePaymentMethodsCount() async {
+    availablePaymentMethods++;
+  }
+
+  Future resetPaymentMethodsCount() async {
+    availablePaymentMethods = 0;
+  }
+
+  Future userWalletAmount(bool used) async {
+    usedWallet = used;
+    if (used) {
+      if (availableWalletAmount >= totalAmount) {
+        walletUsedAmount = totalAmount;
+        availableWalletAmount = availableWalletAmount - totalAmount;
+        totalAmount = 0.0;
+      } else {
+        walletUsedAmount = availableWalletAmount;
+        totalAmount = totalAmount - walletUsedAmount;
+        availableWalletAmount = 0.0;
+      }
+    } else {
+      availableWalletAmount = walletUsedAmount + availableWalletAmount;
+      totalAmount = totalAmount + walletUsedAmount;
+      walletUsedAmount = 0.0;
+    }
     notifyListeners();
   }
 
@@ -100,23 +133,21 @@ class CheckoutProvider extends ChangeNotifier {
         selectedAddress = addressData.data?[0];
 
         if (selectedAddress?.cityId?.toString() == "0") {
-          checkoutAddressState = CheckoutAddressState.addressError;
-          notifyListeners();
-          selectedAddress = AddressData();
-          return AddressData();
-        } else {
-          checkoutAddressState = CheckoutAddressState.addressLoaded;
-          notifyListeners();
-          return selectedAddress;
+          isPaymentUnderProcessing = false;
         }
+        checkoutAddressState = CheckoutAddressState.addressLoaded;
+        notifyListeners();
+        return selectedAddress;
       } else {
         checkoutAddressState = CheckoutAddressState.addressBlank;
+        isPaymentUnderProcessing = false;
         notifyListeners();
         return selectedAddress;
       }
     } catch (e) {
       message = e.toString();
       checkoutAddressState = CheckoutAddressState.addressError;
+      isPaymentUnderProcessing = false;
       notifyListeners();
       GeneralMethods.showMessage(
         context,
@@ -128,38 +159,42 @@ class CheckoutProvider extends ChangeNotifier {
   }
 
   setSelectedAddress(BuildContext context, var address) async {
-    if (address != AddressData()) {
-      if (selectedAddress != AddressData()) {
-        selectedAddress = address;
+    selectedAddress = address;
 
-        checkoutAddressState = CheckoutAddressState.addressLoaded;
-        notifyListeners();
-
-        Map<String, String> params = {
-          ApiAndParams.cityId: selectedAddress!.cityId.toString(),
-          ApiAndParams.latitude: selectedAddress!.latitude.toString(),
-          ApiAndParams.longitude: selectedAddress!.longitude.toString(),
-          ApiAndParams.isCheckout: "1"
-        };
-        if (Constant.isPromoCodeApplied) {
-          params[ApiAndParams.promoCodeId] = Constant.selectedPromoCodeId;
-        }
-
-        await getOrderChargesProvider(
-          context: context,
-          params: params,
-        );
-      }
-    } else if (selectedAddress == null && address == null) {
-      checkoutAddressState = CheckoutAddressState.addressBlank;
-      notifyListeners();
-    }
-  }
-
-  setAddressEmptyState() {
-    selectedAddress = null;
     checkoutAddressState = CheckoutAddressState.addressLoaded;
     notifyListeners();
+
+    Map<String, String> params = {
+      ApiAndParams.cityId: selectedAddress!.cityId.toString(),
+      ApiAndParams.latitude: selectedAddress!.latitude.toString(),
+      ApiAndParams.longitude: selectedAddress!.longitude.toString(),
+      ApiAndParams.isCheckout: "1"
+    };
+    if (Constant.isPromoCodeApplied) {
+      params[ApiAndParams.promoCodeId] = Constant.selectedPromoCodeId;
+    }
+
+    if (selectedAddress!.cityId.toString() != "0") {
+      await getOrderChargesProvider(
+        context: context,
+        params: params,
+      );
+    } else {
+      isPaymentUnderProcessing = false;
+      message = e.toString();
+      checkoutDeliveryChargeState =
+          CheckoutDeliveryChargeState.deliveryChargeError;
+      checkoutAddressState = CheckoutAddressState.addressLoaded;
+      notifyListeners();
+
+      GeneralMethods.showMessage(
+          context,
+          context
+                  .read<LanguageProvider>()
+                  .currentLanguage["selected_address_is_not_deliverable"] ??
+              "Sorry, We are not delivering on selected address",
+          MessageType.warning);
+    }
   }
 
   Future getOrderChargesProvider(
@@ -183,23 +218,31 @@ class CheckoutProvider extends ChangeNotifier {
         sellerWiseDeliveryCharges =
             deliveryChargeData?.deliveryCharge!.sellersInfo!;
 
+        usedWallet = false;
+        walletUsedAmount = 0.0;
+
         checkoutDeliveryChargeState =
             CheckoutDeliveryChargeState.deliveryChargeLoaded;
         checkoutAddressState = CheckoutAddressState.addressLoaded;
         notifyListeners();
       } else {
-        isCodAllowed = false;
         checkoutDeliveryChargeState =
             CheckoutDeliveryChargeState.deliveryChargeError;
-        checkoutAddressState = CheckoutAddressState.addressBlank;
+        checkoutAddressState = CheckoutAddressState.addressLoaded;
+        isPaymentUnderProcessing = false;
         notifyListeners();
+        GeneralMethods.showMessage(
+          context,
+          getCheckoutData["message"],
+          MessageType.warning,
+        );
       }
     } catch (e) {
-      isCodAllowed = false;
+      isPaymentUnderProcessing = false;
       message = e.toString();
       checkoutDeliveryChargeState =
           CheckoutDeliveryChargeState.deliveryChargeError;
-      checkoutAddressState = CheckoutAddressState.addressBlank;
+      checkoutAddressState = CheckoutAddressState.addressLoaded;
       notifyListeners();
       GeneralMethods.showMessage(
         context,
@@ -213,7 +256,6 @@ class CheckoutProvider extends ChangeNotifier {
     try {
       Map<String, dynamic> getTimeSlotsSettings =
           (await getTimeSlotSettingsApi(context: context, params: {}));
-
       if (getTimeSlotsSettings[ApiAndParams.status].toString() == "1") {
         TimeSlotsSettings timeSlots =
             TimeSlotsSettings.fromJson(getTimeSlotsSettings);
@@ -226,18 +268,23 @@ class CheckoutProvider extends ChangeNotifier {
         checkoutTimeSlotsState = CheckoutTimeSlotsState.timeSlotsLoaded;
         notifyListeners();
       } else {
-        isTimeSlotsEnabled = false;
         GeneralMethods.showMessage(
           context,
-          message,
+          getTimeSlotsSettings[ApiAndParams.message].toString(),
           MessageType.warning,
         );
         checkoutTimeSlotsState = CheckoutTimeSlotsState.timeSlotsError;
         notifyListeners();
       }
     } catch (e) {
-      isTimeSlotsEnabled = false;
-
+      GeneralMethods.showMessage(
+        context,
+        context
+                .read<LanguageProvider>()
+                .currentLanguage["please_add_timeslot_in_admin_panel"] ??
+            "Please add timeslot in admin panel!",
+        MessageType.warning,
+      );
       checkoutTimeSlotsState = CheckoutTimeSlotsState.timeSlotsError;
       notifyListeners();
     }
@@ -260,6 +307,7 @@ class CheckoutProvider extends ChangeNotifier {
 
   setSelectedTimeWithoutNotify(int index) {
     initiallySelectedIndex = index;
+    selectedTime = index;
   }
 
   Future getPaymentMethods({required BuildContext context}) async {
@@ -324,19 +372,24 @@ class CheckoutProvider extends ChangeNotifier {
     }
   }
 
-  setSelectedPaymentMethod(String method) {
+  Future setSelectedPaymentMethod(String method) async {
     selectedPaymentMethod = method;
     notifyListeners();
   }
 
   Future placeOrder({required BuildContext context}) async {
-    if (timeSlotsData?.timeSlotsIsEnabled.toString().toLowerCase() == "true" &&
-        selectedTime != -1 &&
-        initiallySelectedIndex != -1) {
+    if (timeSlotsData!.timeSlots.isNotEmpty) {
       try {
-        context.read<CheckoutProvider>().isPaymentUnderProcessing = true;
+        isPaymentUnderProcessing = true;
 
-        final orderStatus = selectedPaymentMethod == "COD" ? "2" : "1";
+        if (totalAmount == 0.0) {
+          selectedPaymentMethod = "Wallet";
+        }
+
+        final orderStatus = (selectedPaymentMethod == "COD" ||
+                selectedPaymentMethod == "Wallet")
+            ? "2"
+            : "1";
 
         Map<String, String> params = {};
         params[ApiAndParams.productVariantId] =
@@ -344,16 +397,20 @@ class CheckoutProvider extends ChangeNotifier {
         params[ApiAndParams.quantity] =
             deliveryChargeData?.quantity.toString() ?? "0";
         params[ApiAndParams.total] =
-            deliveryChargeData?.subTotal.toString() ?? "0";
+            (deliveryChargeData?.subTotal.toString() ?? "0")
+                .toDouble
+                .toPrecision(2)
+                .toString();
         params[ApiAndParams.deliveryCharge] =
-            deliveryChargeData?.deliveryCharge?.totalDeliveryCharge ?? "0";
+            (deliveryChargeData?.deliveryCharge?.totalDeliveryCharge ?? "0")
+                .toDouble
+                .toPrecision(2)
+                .toString();
         params[ApiAndParams.finalTotal] =
-            deliveryChargeData?.totalAmount.toString() ?? "0";
+            totalAmount.toString().toDouble.toPrecision(2).toString();
         params[ApiAndParams.paymentMethod] = selectedPaymentMethod.toString();
         params[ApiAndParams.addressId] = selectedAddress!.id.toString();
-
-        if (timeSlotsData?.timeSlotsIsEnabled.toString() == "true" &&
-            initiallySelectedIndex != -1) {
+        if (isTimeSlotsEnabled) {
           params[ApiAndParams.deliveryTime] =
               "$selectedDate ${timeSlotsData?.timeSlots[selectedTime].title}";
         } else {
@@ -366,6 +423,7 @@ class CheckoutProvider extends ChangeNotifier {
 
         Map<String, dynamic> getPlaceOrderResponse =
             (await getPlaceOrderApi(context: context, params: params));
+
         if (getPlaceOrderResponse[ApiAndParams.status].toString() == "1") {
           if (selectedPaymentMethod != "COD") {
             PlacedPrePaidOrder placedPrePaidOrder =
@@ -379,7 +437,8 @@ class CheckoutProvider extends ChangeNotifier {
             payStackReference =
                 "Charged_From_${GeneralMethods.setFirstLetterUppercase(Platform.operatingSystem)}_${DateTime.now().millisecondsSinceEpoch}";
             transactionId = payStackReference;
-          } else if (selectedPaymentMethod == "COD") {
+          } else if (selectedPaymentMethod == "COD" ||
+              selectedPaymentMethod == "Wallet") {
             showOrderPlacedScreen(context);
           } else if (selectedPaymentMethod == "Paytm") {
             initiatePaytmTransaction(context: context).then((value) {
@@ -422,8 +481,8 @@ class CheckoutProvider extends ChangeNotifier {
         context,
         context
                 .read<LanguageProvider>()
-                .currentLanguage["please_select_timeslot"] ??
-            "Please select timeslot",
+                .currentLanguage["please_add_timeslot_in_admin_panel"] ??
+            "Please add timeslot in admin panel!",
         MessageType.warning,
       );
       checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderError;
@@ -451,6 +510,7 @@ class CheckoutProvider extends ChangeNotifier {
         checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderLoaded;
         notifyListeners();
       } else {
+        deleteAwaitingOrder(context);
         GeneralMethods.showMessage(
           context,
           message,
@@ -461,6 +521,7 @@ class CheckoutProvider extends ChangeNotifier {
         return false;
       }
     } catch (e) {
+      deleteAwaitingOrder(context);
       message = e.toString();
       GeneralMethods.showMessage(
         context,
@@ -491,15 +552,17 @@ class CheckoutProvider extends ChangeNotifier {
         checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderLoaded;
         notifyListeners();
       } else {
+        deleteAwaitingOrder(context);
         GeneralMethods.showMessage(
           context,
-          message,
+          getInitiatedTransactionResponse["message"],
           MessageType.warning,
         );
         checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderError;
         notifyListeners();
       }
     } catch (e) {
+      deleteAwaitingOrder(context);
       message = e.toString();
       GeneralMethods.showMessage(
         context,
@@ -524,7 +587,7 @@ class CheckoutProvider extends ChangeNotifier {
       params[ApiAndParams.orderId] = placedOrderId;
 
       Map<String, dynamic> getInitiatedTransactionResponse =
-          (await getInitiatedTransactionApi(context: context, params: params));
+          await getInitiatedTransactionApi(context: context, params: params);
 
       if (getInitiatedTransactionResponse[ApiAndParams.status].toString() ==
           "1") {
@@ -536,6 +599,7 @@ class CheckoutProvider extends ChangeNotifier {
           if (value == true) {
             showOrderPlacedScreen(context);
           } else {
+            deleteAwaitingOrder(context);
             context.read<CheckoutProvider>().deleteAwaitingOrder(context);
             GeneralMethods.showMessage(
               context,
@@ -548,6 +612,7 @@ class CheckoutProvider extends ChangeNotifier {
         checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderLoaded;
         notifyListeners();
       } else {
+        deleteAwaitingOrder(context);
         GeneralMethods.showMessage(
           context,
           message,
@@ -557,6 +622,7 @@ class CheckoutProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
+      deleteAwaitingOrder(context);
       message = e.toString();
       GeneralMethods.showMessage(
         context,

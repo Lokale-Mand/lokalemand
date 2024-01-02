@@ -2,10 +2,8 @@ import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class PlaceOrderButtonWidget extends StatefulWidget {
   final BuildContext context;
-  final bool isEnabled;
 
-  const PlaceOrderButtonWidget(
-      {Key? key, required this.context, required this.isEnabled})
+  const PlaceOrderButtonWidget({Key? key, required this.context})
       : super(key: key);
 
   @override
@@ -40,8 +38,8 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
   }
 
   void _handleRazorPayPaymentError(PaymentFailureResponse response) {
-    context.read<CheckoutProvider>().setPaymentProcessState(false);
     context.read<CheckoutProvider>().deleteAwaitingOrder(context);
+    context.read<CheckoutProvider>().setPaymentProcessState(false);
     GeneralMethods.showMessage(
         context, response.message.toString(), MessageType.warning);
   }
@@ -75,7 +73,7 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
             "0");
 
     Charge charge = Charge()
-      ..amount = (amount * 100).toInt()
+      ..amount = (context.read<CheckoutProvider>().totalAmount * 100).toInt()
       ..currency = context
               .read<CheckoutProvider>()
               .paymentMethodsData
@@ -139,7 +137,6 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
             .then((value) {
           Map<dynamic, dynamic> response = value["response"];
           if (response["STATUS"] == "TXN_SUCCESS") {
-            print("$response");
             context.read<CheckoutProvider>().transactionId =
                 response["TXNID"].toString();
             context.read<CheckoutProvider>().addTransaction(context: context);
@@ -162,25 +159,43 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
   Widget build(BuildContext context) {
     return Consumer<CheckoutProvider>(
       builder: (context, checkoutProvider, child) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: 10, left: 10, right: 10),
+        bool isAddressDeliverable =
+            checkoutProvider.selectedAddress?.cityId.toString() == "0";
+        bool isAddressEmpty = checkoutProvider.selectedAddress == null;
+        return Container(
+          height: 55,
+          padding: EdgeInsetsDirectional.only(start: 10, end: 10, bottom: 20),
           child: Widgets.gradientBtnWidget(
             context,
             5,
             callback: () async {
-              if (widget.isEnabled ||
-                  checkoutProvider.selectedAddress?.id != null &&
-                      checkoutProvider.checkoutAddressState !=
-                          CheckoutAddressState.addressLoading &&
-                      checkoutProvider.checkoutTimeSlotsState !=
-                          CheckoutTimeSlotsState.timeSlotsLoading &&
-                      checkoutProvider.checkoutPaymentMethodsState !=
-                          CheckoutPaymentMethodsState.paymentMethodLoading &&
-                      !context
-                          .read<CheckoutProvider>()
-                          .isPaymentUnderProcessing) {
+              if (checkoutProvider.availablePaymentMethods == 0) {
+                GeneralMethods.showMessage(
+                    context,
+                    getTranslatedValue(context, "payment_method_not_available"),
+                    MessageType.warning);
+              } else if (isAddressDeliverable) {
+                GeneralMethods.showMessage(
+                    context,
+                    getTranslatedValue(
+                        context, "selected_address_is_not_deliverable"),
+                    MessageType.warning);
+              } else if (isAddressEmpty) {
+                GeneralMethods.showMessage(
+                    context,
+                    getTranslatedValue(context, "add_address_first"),
+                    MessageType.warning);
+              } else if (checkoutProvider.checkoutTimeSlotsState ==
+                  CheckoutTimeSlotsState.timeSlotsError) {
+                GeneralMethods.showMessage(
+                    context,
+                    getTranslatedValue(
+                        context, "please_add_timeslot_in_admin_panel"),
+                    MessageType.warning);
+              } else {
                 checkoutProvider.setPaymentProcessState(true).then((value) {
-                  if (checkoutProvider.selectedPaymentMethod == "COD") {
+                  if (checkoutProvider.selectedPaymentMethod == "COD" ||
+                      checkoutProvider.selectedPaymentMethod == "Wallet") {
                     checkoutProvider.placeOrder(context: context);
                   } else if (checkoutProvider.selectedPaymentMethod ==
                       "Razorpay") {
@@ -189,11 +204,7 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
                             .paymentMethodsData
                             ?.razorpayKey ??
                         "0";
-                    amount = double.parse(context
-                            .read<CheckoutProvider>()
-                            .deliveryChargeData
-                            ?.totalAmount ??
-                        "0");
+                    amount = context.read<CheckoutProvider>().totalAmount;
                     context
                         .read<CheckoutProvider>()
                         .placeOrder(context: context)
@@ -207,11 +218,7 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
                     });
                   } else if (checkoutProvider.selectedPaymentMethod ==
                       "Paystack") {
-                    amount = double.parse(context
-                            .read<CheckoutProvider>()
-                            .deliveryChargeData
-                            ?.totalAmount ??
-                        "0");
+                    amount = context.read<CheckoutProvider>().totalAmount;
                     context
                         .read<CheckoutProvider>()
                         .placeOrder(context: context)
@@ -222,11 +229,7 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
                     });
                   } else if (checkoutProvider.selectedPaymentMethod ==
                       "Stripe") {
-                    amount = double.parse(context
-                            .read<CheckoutProvider>()
-                            .deliveryChargeData
-                            ?.totalAmount ??
-                        "0");
+                    amount = context.read<CheckoutProvider>().totalAmount;
 
                     context
                         .read<CheckoutProvider>()
@@ -264,11 +267,7 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
                     });
                   } else if (checkoutProvider.selectedPaymentMethod ==
                       "Paytm") {
-                    amount = double.parse(context
-                            .read<CheckoutProvider>()
-                            .deliveryChargeData
-                            ?.totalAmount ??
-                        "0");
+                    amount = context.read<CheckoutProvider>().totalAmount;
 
                     context
                         .read<CheckoutProvider>()
@@ -288,11 +287,7 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
                     });
                   } else if (checkoutProvider.selectedPaymentMethod ==
                       "Paypal") {
-                    amount = double.parse(context
-                            .read<CheckoutProvider>()
-                            .deliveryChargeData
-                            ?.totalAmount ??
-                        "0");
+                    amount = context.read<CheckoutProvider>().totalAmount;
                     context
                         .read<CheckoutProvider>()
                         .placeOrder(context: context)
@@ -307,29 +302,13 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
                 });
               }
             },
-            otherWidgets: (context
-                        .read<CheckoutProvider>()
-                        .isPaymentUnderProcessing &&
-                    checkoutProvider.selectedAddress?.id != null)
-                ? Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsetsDirectional.all(4),
-                    width: 40,
+            otherWidgets: (checkoutProvider.checkoutDeliveryChargeState ==
+                    CheckoutDeliveryChargeState.deliveryChargeLoading)
+                ? CustomShimmer(
                     height: 40,
-                    child: CircularProgressIndicator(
-                      color: ColorsRes.appColorWhite,
-                    ),
+                    borderRadius: 10,
                   )
-                : (widget.isEnabled ||
-                        checkoutProvider.checkoutAddressState ==
-                            CheckoutAddressState.addressLoading ||
-                        checkoutProvider.checkoutTimeSlotsState ==
-                            CheckoutTimeSlotsState.timeSlotsLoading ||
-                        checkoutProvider.checkoutPaymentMethodsState ==
-                            CheckoutPaymentMethodsState.paymentMethodLoading ||
-                        context
-                            .read<CheckoutProvider>()
-                            .isPaymentUnderProcessing)
+                : (context.read<CheckoutProvider>().isPaymentUnderProcessing)
                     ? Container(
                         alignment: Alignment.center,
                         padding: EdgeInsetsDirectional.all(4),
@@ -339,36 +318,44 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
                           color: ColorsRes.appColorWhite,
                         ),
                       )
-                    : Container(
-                        alignment: Alignment.center,
-                        child: CustomTextLabel(
-                          jsonKey:
-                              (checkoutProvider.selectedAddress?.id == null)
-                                  ? "unable_to_place_order"
-                                  : "place_order",
-                          style: Theme.of(context).textTheme.titleMedium!.merge(
-                                TextStyle(
-                                  letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w500,
-                                  color: (widget.isEnabled ||
-                                          context
-                                                  .read<CheckoutProvider>()
-                                                  .selectedAddress
-                                                  ?.id !=
-                                              null)
-                                      ? ColorsRes.appColorWhite
-                                      : ColorsRes.mainTextColor,
-                                  fontSize: 16,
-                                ),
-                              ),
-                        ),
-                      ),
-            color1: (widget.isEnabled ||
-                    checkoutProvider.selectedAddress?.id != null)
+                    : context.read<CheckoutProvider>().isPaymentUnderProcessing
+                        ? Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsetsDirectional.all(4),
+                            width: 40,
+                            height: 40,
+                            child: CircularProgressIndicator(
+                              color: ColorsRes.appColorWhite,
+                            ),
+                          )
+                        : Container(
+                            alignment: Alignment.center,
+                            child: CustomTextLabel(
+                              jsonKey: isAddressDeliverable
+                                  ? "address_is_not_deliverable"
+                                  : isAddressEmpty
+                                      ? "add_address_first"
+                                      : "reserve_product",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .merge(
+                                    TextStyle(
+                                      letterSpacing: 0.5,
+                                      fontWeight: FontWeight.w500,
+                                      color: (isAddressDeliverable &&
+                                              isAddressEmpty)
+                                          ? ColorsRes.mainTextColor
+                                          : ColorsRes.appColorWhite,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                            ),
+                          ),
+            color1: (!isAddressDeliverable && !isAddressEmpty)
                 ? ColorsRes.gradient1
                 : ColorsRes.grey,
-            color2: (widget.isEnabled ||
-                    checkoutProvider.selectedAddress?.id != null)
+            color2: (!isAddressDeliverable && !isAddressEmpty)
                 ? ColorsRes.gradient2
                 : ColorsRes.grey,
           ),

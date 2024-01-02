@@ -208,6 +208,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
           "isResetLabel": false
         },
+      if (Constant.session.isUserLoggedIn())
+        {
+          "icon": "notification_icon",
+          "label": "address",
+          "clickFunction": (context) {
+            Navigator.pushNamed(context, addressDetailScreen);
+          },
+          "isResetLabel": false
+        },
     ];
   }
 

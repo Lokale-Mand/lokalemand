@@ -7,7 +7,7 @@ class LocalAwesomeNotification {
   static FirebaseMessaging messagingInstance = FirebaseMessaging.instance;
 
   static LocalAwesomeNotification localNotification =
-      LocalAwesomeNotification();
+  LocalAwesomeNotification();
 
   static late StreamSubscription<RemoteMessage> foregroundStream;
   static late StreamSubscription<RemoteMessage> onMessageOpen;
@@ -16,25 +16,19 @@ class LocalAwesomeNotification {
     await requestPermission();
     await registerListeners(context);
     await notification.initialize(
-      null,
+      'resource://mipmap/logo',
       [
         NotificationChannel(
           channelKey: Constant.notificationChannel,
-          channelName: Constant.notificationChannel,
-          channelDescription: Constant.notificationChannel,
+          channelName: 'Basic notifications',
+          channelDescription: 'Notification channel',
           playSound: true,
           enableVibration: true,
           importance: NotificationImportance.High,
           ledColor: ColorsRes.appColor,
         )
       ],
-      channelGroups: [
-        NotificationChannelGroup(
-          channelGroupKey: Constant.notificationChannel,
-          channelGroupName: Constant.notificationChannel,
-        )
-      ],
-      debug: true,
+      channelGroups: [],
     );
 
     await listenTap(context);
@@ -46,50 +40,10 @@ class LocalAwesomeNotification {
       AwesomeNotifications().setListeners(
           onNotificationCreatedMethod: (receivedNotification) async {},
           onActionReceivedMethod: (ReceivedAction event) async {
-            Map<String, dynamic> data =
-                jsonDecode(event.payload!["data"].toString());
 
-            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> listenTap ${data}");
-            String notificationTypeId = data["id"];
-            String notificationType = data["type"];
-
-            Future.delayed(
-              Duration.zero,
-              () {
-                if (notificationType == "default" ||
-                    notificationType == "user") {
-                  if (currentRoute != notificationListScreen) {
-                    Navigator.pushNamed(Constant.navigatorKay.currentContext!,
-                        notificationListScreen);
-                  }
-                } else if (notificationType == "category") {
-                  Navigator.pushNamed(
-                      Constant.navigatorKay.currentContext!, productListScreen,
-                      arguments: [
-                        "category",
-                        notificationTypeId.toString(),
-                        getTranslatedValue(
-                            Constant.navigatorKay.currentContext!, "app_name"),
-                        null,
-                      ]);
-                } else if (notificationType == "product") {
-                  Navigator.pushNamed(Constant.navigatorKay.currentContext!,
-                      productDetailScreen,
-                      arguments: [
-                        notificationTypeId.toString(),
-                        getTranslatedValue(
-                            Constant.navigatorKay.currentContext!, "app_name"),
-                        null
-                      ]);
-                } else if (notificationType == "url") {
-                  launchUrl(Uri.parse(notificationTypeId.toString()),
-                      mode: LaunchMode.externalApplication);
-                }
-              },
-            );
           });
-    } catch (e, st) {
-      print(st.toString());
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -98,9 +52,7 @@ class LocalAwesomeNotification {
       {required RemoteMessage notificationData, required bool isLocked}) async {
     try {
       Map<String, dynamic> data =
-          jsonDecode(notificationData.data["data"].toString());
-      print(
-          ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> createImageNotification ${data}");
+      jsonDecode(notificationData.data["data"].toString());
       await notification.createNotification(
         content: NotificationContent(
           id: Random().nextInt(5000),
@@ -119,8 +71,6 @@ class LocalAwesomeNotification {
         ),
       );
     } catch (e) {
-      print(
-          ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ERROR createImageNotification ${e.toString()}");
       rethrow;
     }
   }
@@ -130,8 +80,7 @@ class LocalAwesomeNotification {
       {required RemoteMessage notificationData, required bool isLocked}) async {
     try {
       Map<String, dynamic> data =
-          jsonDecode(notificationData.data["data"].toString());
-      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> createNotification ${data}");
+      jsonDecode(notificationData.data["data"].toString());
 
       await notification.createNotification(
         content: NotificationContent(
@@ -149,8 +98,6 @@ class LocalAwesomeNotification {
         ),
       );
     } catch (e) {
-      print(
-          ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ERROR createNotification ${e.toString()}");
       rethrow;
     }
   }
@@ -168,7 +115,6 @@ class LocalAwesomeNotification {
   static Future<void> onBackgroundMessageHandler(RemoteMessage message) async {
     try {
       Map<String, dynamic> data = jsonDecode(message.data["data"].toString());
-      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BACK ${data}");
       if (data["image"] == "" || data["image"] == null) {
         localNotification.createNotification(
             isLocked: false, notificationData: message);
@@ -177,7 +123,6 @@ class LocalAwesomeNotification {
             isLocked: false, notificationData: message);
       }
     } catch (e) {
-      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BACK ISSUE ${e.toString()}");
     }
   }
 
@@ -185,32 +130,29 @@ class LocalAwesomeNotification {
   static foregroundNotificationHandler() async {
     foregroundStream =
         FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      try {
-        Map<String, dynamic> data = jsonDecode(message.data["data"].toString());
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FORE ${message.data["data"].toString()}");
-        if (data["image"] == "" || data["image"] == null) {
-          localNotification.createNotification(
-              isLocked: false, notificationData: message);
-        } else {
-          localNotification.createImageNotification(
-              isLocked: false, notificationData: message);
-        }
-      } catch (e) {
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FORE ISSUE ${e.toString()}");
-      }
-    });
+          try {
+            Map<String, dynamic> data = jsonDecode(message.data["data"].toString());
+            if (data["image"] == "" || data["image"] == null) {
+              localNotification.createNotification(
+                  isLocked: false, notificationData: message);
+            } else {
+              localNotification.createImageNotification(
+                  isLocked: false, notificationData: message);
+            }
+          } catch (e) {
+          }
+        });
   }
 
   @pragma('vm:entry-point')
   static terminatedStateNotificationHandler() {
     FirebaseMessaging.instance.getInitialMessage().then(
-      (RemoteMessage? message) {
+          (RemoteMessage? message) {
         if (message == null) {
           return;
         }
+
         Map<String, dynamic> data = jsonDecode(message.data["data"].toString());
-        print(
-            ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> terminatedStateNotificationHandler ${data}");
         if (data["image"] == "" || data["image"] == null) {
           localNotification.createNotification(
               isLocked: false, notificationData: message);
@@ -229,6 +171,7 @@ class LocalAwesomeNotification {
     await foregroundNotificationHandler();
     await terminatedStateNotificationHandler();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+
       if (message.notification != null) {
         LocalAwesomeNotification.onBackgroundMessageHandler(message);
       }

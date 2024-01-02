@@ -1,3 +1,4 @@
+import 'package:lokale_mand/customer/provider/customerChatListProvider.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class HomeMainScreenProvider extends ChangeNotifier {
@@ -32,8 +33,13 @@ class HomeMainScreenProvider extends ChangeNotifier {
           scrollController: scrollController[0],
         ),
       ),
-      MessageListScreen(
-        // scrollController: scrollController[1],
+      ChangeNotifierProvider<CustomerChatListProvider>(
+        create: (context) {
+          return CustomerChatListProvider();
+        },
+        child: CustomerChatListScreen(
+          scrollController: scrollController[1],
+        ),
       ),
       // WishListScreen(
       //   scrollController: scrollController[2],

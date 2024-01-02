@@ -47,6 +47,7 @@ class ProductDetailProvider extends ChangeNotifier {
       }
     } catch (e) {
       message = e.toString();
+      GeneralMethods.showMessage(context, message, MessageType.error);
       productDetailState = ProductDetailState.error;
       notifyListeners();
       rethrow;

@@ -1,9 +1,12 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 getAddressWidget(BuildContext context) {
-  return Card(
-    color: Theme.of(context).cardColor,
-    elevation: 0,
+  return Container(
+    decoration: DesignConfig.boxDecoration(Theme.of(context).cardColor, 10),
+    padding: const EdgeInsets.all(10),
+    margin: EdgeInsetsDirectional.all(
+      10,
+    ),
     child: Padding(
       padding: EdgeInsets.all(Constant.size10),
       child: Column(
@@ -50,27 +53,10 @@ getAddressWidget(BuildContext context) {
                                 .then((value) {
                               if (value is AddressData) {
                                 AddressData selectedAddress = value;
-                                if (value.cityId.toString() != "0") {
-                                  context
-                                      .read<CheckoutProvider>()
-                                      .setSelectedAddress(
-                                          context, selectedAddress);
-                                } else {
-                                  GeneralMethods.showMessage(
-                                      context,
-                                      context
-                                              .read<LanguageProvider>()
-                                              .currentLanguage[
-                                          "selected_address_is_not_deliverable"],
-                                      MessageType.warning);
-                                  context
-                                      .read<CheckoutProvider>()
-                                      .setAddressEmptyState();
-                                }
-                              } else if (!(value is String)) {
                                 context
                                     .read<CheckoutProvider>()
-                                    .setAddressEmptyState();
+                                    .setSelectedAddress(
+                                        context, selectedAddress);
                               }
                             });
                           },
@@ -113,15 +99,9 @@ getAddressWidget(BuildContext context) {
                     Navigator.pushNamed(context, addressListScreen,
                             arguments: "checkout")
                         .then((value) {
-                      if (value != null) {
-                        print("NOT BLANK 2");
-                        context
-                            .read<CheckoutProvider>()
-                            .setSelectedAddress(context, value as AddressData);
-                      } else {
-                        print("BLANK 2");
-                        context.read<CheckoutProvider>().setAddressEmptyState();
-                      }
+                      context
+                          .read<CheckoutProvider>()
+                          .setSelectedAddress(context, value as AddressData);
                     });
                   },
                   child: Padding(

@@ -2,10 +2,12 @@ import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 getDeliveryCharges(BuildContext context) {
   return Container(
-    padding: EdgeInsetsDirectional.all(Constant.size10),
-    decoration: BoxDecoration(
-      color: Theme.of(context).cardColor,
-      borderRadius: Constant.borderRadius10,
+    decoration: DesignConfig.boxDecoration(Theme.of(context).cardColor, 10),
+    padding: const EdgeInsets.all(10),
+    margin: EdgeInsetsDirectional.only(
+      start: 10,
+      end: 10,
+      bottom: 10,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,8 +39,11 @@ getDeliveryCharges(BuildContext context) {
               ),
             ),
             CustomTextLabel(
-              text: GeneralMethods.getCurrencyFormat(
-                  context.read<CheckoutProvider>().subTotalAmount),
+              text: context
+                  .read<CheckoutProvider>()
+                  .subTotalAmount
+                  .toString()
+                  .currency,
               softWrap: true,
               style: TextStyle(
                 fontSize: 14,
@@ -67,11 +72,13 @@ getDeliveryCharges(BuildContext context) {
                 GestureDetector(
                   onTapDown: (details) async {
                     await showMenu(
-                      color: Theme.of(context).cardColor,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      surfaceTintColor: Colors.transparent,
                       shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                        Radius.circular(10.0),
-                      )),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      ),
                       context: context,
                       position: RelativeRect.fromLTRB(
                         details.globalPosition.dx,
@@ -92,11 +99,13 @@ getDeliveryCharges(BuildContext context) {
                                   children: [
                                     CustomTextLabel(
                                       jsonKey:
-                                          "seller_wise_delivery_charges_detail",
+                                          "seller_wise_delivery_charges_details",
                                       softWrap: true,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontStyle: FontStyle.italic,
-                                          fontSize: 16),
+                                          fontSize: 16,
+                                          color:
+                                              ColorsRes.subTitleMainTextColor),
                                     ),
                                   ],
                                 )
@@ -113,24 +122,22 @@ getDeliveryCharges(BuildContext context) {
                                               .toString() ??
                                           "0",
                                       softWrap: true,
-                                      style: const TextStyle(fontSize: 14),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: ColorsRes.mainTextColor,
+                                      ),
                                     ),
                                     CustomTextLabel(
-                                      text: GeneralMethods.getCurrencyFormat(
-                                        double.parse(
-                                          context
-                                                  .read<CheckoutProvider>()
-                                                  .sellerWiseDeliveryCharges?[
-                                                      index - 1]
-                                                  .deliveryCharge
-                                                  .toString() ??
-                                              "0",
-                                        ),
-                                      ),
+                                      text: context
+                                          .read<CheckoutProvider>()
+                                          .sellerWiseDeliveryCharges?[index - 1]
+                                          .deliveryCharge
+                                          .toString()
+                                          .currency,
                                       softWrap: true,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: ColorsRes.mainTextColor),
                                     ),
                                   ],
                                 ),
@@ -152,8 +159,11 @@ getDeliveryCharges(BuildContext context) {
               ],
             ),
             CustomTextLabel(
-              text: GeneralMethods.getCurrencyFormat(
-                  context.read<CheckoutProvider>().deliveryCharge),
+              text: context
+                  .read<CheckoutProvider>()
+                  .deliveryCharge
+                  .toString()
+                  .currency,
               softWrap: true,
               style: TextStyle(
                 fontSize: 14,
@@ -173,7 +183,7 @@ getDeliveryCharges(BuildContext context) {
             children: [
               CustomTextLabel(
                 text:
-                    "${context.read<LanguageProvider>().currentLanguage["discount"]}(${Constant.selectedCoupon})",
+                    "${context.read<LanguageProvider>().currentLanguage["discount"] ?? "discount"}(${Constant.selectedCoupon})",
                 softWrap: true,
                 style: TextStyle(
                   fontSize: 14,
@@ -181,16 +191,8 @@ getDeliveryCharges(BuildContext context) {
                 ),
               ),
               CustomTextLabel(
-                text: "-${GeneralMethods.getCurrencyFormat(
-                  double.parse(
-                    context
-                            .read<CheckoutProvider>()
-                            .deliveryChargeData
-                            ?.promocodeDetails
-                            ?.discount ??
-                        "0",
-                  ),
-                )}",
+                text:
+                    "-${context.read<CheckoutProvider>().deliveryChargeData?.promocodeDetails?.discount.toString().currency}",
                 softWrap: true,
                 style: TextStyle(
                   fontSize: 14,
@@ -215,8 +217,11 @@ getDeliveryCharges(BuildContext context) {
               ),
             ),
             CustomTextLabel(
-              text: GeneralMethods.getCurrencyFormat(
-                  context.read<CheckoutProvider>().totalAmount),
+              text: context
+                  .read<CheckoutProvider>()
+                  .totalAmount
+                  .toString()
+                  .currency,
               softWrap: true,
               style: TextStyle(
                 fontSize: 14,

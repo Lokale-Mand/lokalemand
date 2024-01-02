@@ -1,5 +1,6 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/provider/ordersProvider.dart';
+import 'package:lokale_mand/seller/provider/sellerChatListProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
 
 class SellerMainHomeScreenProvider extends ChangeNotifier {
@@ -21,7 +22,14 @@ class SellerMainHomeScreenProvider extends ChangeNotifier {
         create: (context) => SellerOrdersProvider(),
         child: SellerOrderScreen(),
       ),
-      SellerMessageScreen(),
+      ChangeNotifierProvider<SellerChatListProvider>(
+        create: (context) {
+          return SellerChatListProvider();
+        },
+        child: SellerChatListScreen(
+          scrollController: scrollController[1],
+        ),
+      ),
       ChangeNotifierProvider<SellerProductListProvider>(
         create: (context) {
           return SellerProductListProvider();

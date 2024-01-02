@@ -13,7 +13,6 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen> {
   void initState() {
     Future.delayed(Duration.zero).then((value) async {
       try {
-        print(">>>>>> TOKEN ${Constant.session.getData(SessionManager.keyFCMToken)}");
         if (Constant.session.getData(SessionManager.keyFCMToken).isEmpty) {
           await LocalAwesomeNotification().init(context);
 

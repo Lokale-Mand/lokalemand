@@ -19,7 +19,7 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
   final TextEditingController edtState = TextEditingController();
   String longitude = "";
   String latitude = "";
-  late AddressData address;
+  late AddressData? address;
 
   bool isLoading = false;
 
@@ -33,8 +33,12 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
           if (Constant.session
               .getData(SessionManager.keyShippingAddress)
               .isNotEmpty) {
-            address = AddressData.fromJson(jsonDecode(
-                Constant.session.getData(SessionManager.keyShippingAddress)));
+            String addressString =
+                Constant.session.getData(SessionManager.keyShippingAddress);
+
+            Map<String, dynamic> resultMap = jsonDecode(addressString.trim());
+
+            AddressData address = AddressData.fromJson(resultMap);
 
             edtAddress.text = address.address ?? "";
             edtLandmark.text = address.landmark ?? "";
@@ -46,7 +50,10 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
             latitude = address.latitude ?? "";
             setState(() {});
           }
-        } catch (_) {}
+        } catch (e) {
+          GeneralMethods.showMessage(
+              context, e.toString(), MessageType.warning);
+        }
       },
     );
   }
@@ -70,6 +77,7 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
         child: Widgets.gradientBtnWidget(
           context,
           8,
+          height: 45,
           title: getTranslatedValue(
             context,
             Constant.session
@@ -83,13 +91,13 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
             if (formKey.currentState!.validate()) {
               if (longitude.isNotEmpty && latitude.isNotEmpty) {
                 Map<String, String> params = {};
+                try {
+                  String id = address?.id.toString() ?? "";
 
-                String id = address.id.toString();
-
-                if (id.isNotEmpty) {
-                  params[ApiAndParams.id] = id;
-                }
-
+                  if (id.isNotEmpty) {
+                    params[ApiAndParams.id] = id;
+                  }
+                } catch (ignore) {}
                 params[ApiAndParams.name] =
                     Constant.session.getData(SessionManager.keyUserName);
                 params[ApiAndParams.mobile] =
@@ -116,6 +124,12 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
                     isLoading = !isLoading;
                   },
                 );
+                context.read<AddressProvider>().addOrUpdateAddress(
+                    context: context,
+                    params: params,
+                    function: () {
+                      Navigator.pop(context);
+                    });
               } else {
                 setState(
                   () {
@@ -210,7 +224,6 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
                           arguments: "address_detail")
                       .then(
                     (value) {
-
                       edtAddress.text = Constant.cityAddressMap["address"];
 
                       edtCity.text = Constant.cityAddressMap["city"];

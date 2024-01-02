@@ -1,7 +1,13 @@
+import 'package:lokale_mand/customer/screen/checkoutScreen/widget/productItemWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({Key? key}) : super(key: key);
+  final ProductData productData;
+  final String cartCount;
+
+  const CheckoutScreen(
+      {Key? key, required this.productData, required this.cartCount})
+      : super(key: key);
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
@@ -17,73 +23,71 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       (value) async {
         await context
             .read<CheckoutProvider>()
-            .getSingleAddressProvider(context: context)
+            .getTimeSlotsSettings(context: context);
+
+        await context
+            .read<CheckoutProvider>()
+            .getPaymentMethods(context: context)
             .then(
-          (selectedAddress) async {
-            Map<String, String> params = {
-              ApiAndParams.latitude: selectedAddress?.latitude?.toString() ??
-                  Constant.session.getData(SessionManager.keyLatitude),
-              ApiAndParams.longitude: selectedAddress?.longitude?.toString() ??
-                  Constant.session.getData(SessionManager.keyLongitude),
-              ApiAndParams.isCheckout: "1"
-            };
-
-            if (Constant.selectedPromoCodeId != "0") {
-              params[ApiAndParams.promoCodeId] = Constant.selectedPromoCodeId;
-            }
-
-            await context
-                .read<CheckoutProvider>()
-                .getOrderChargesProvider(
-                  context: context,
-                  params: params,
-                )
-                .then(
-              (value) async {
-                await context
+          (value) {
+            StripeService.secret = context
                     .read<CheckoutProvider>()
-                    .getTimeSlotsSettings(context: context);
-
-                await context
-                    .read<CheckoutProvider>()
-                    .getPaymentMethods(context: context)
-                    .then(
-                  (value) {
-                    StripeService.secret = context
-                            .read<CheckoutProvider>()
-                            .paymentMethods
-                            ?.data
-                            .stripeSecretKey ??
-                        "";
-                    StripeService.init(
-                        context
-                                .read<CheckoutProvider>()
-                                .paymentMethods
-                                ?.data
-                                .stripePublicKey ??
-                            "",
-                        "");
-                  },
-                );
-              },
-            );
+                    .paymentMethods
+                    ?.data
+                    .stripeSecretKey ??
+                "";
+            StripeService.init(
+                context
+                        .read<CheckoutProvider>()
+                        .paymentMethods
+                        ?.data
+                        .stripePublicKey ??
+                    "",
+                "");
           },
-        );
+        ).then((value) async {
+          await context
+              .read<CheckoutProvider>()
+              .getSingleAddressProvider(context: context)
+              .then(
+            (selectedAddress) async {
+              Map<String, String> params = {
+                ApiAndParams.latitude: selectedAddress?.latitude?.toString() ??
+                    Constant.session.getData(SessionManager.keyLatitude),
+                ApiAndParams.longitude:
+                    selectedAddress?.longitude?.toString() ??
+                        Constant.session.getData(SessionManager.keyLongitude),
+                ApiAndParams.isCheckout: "1"
+              };
+
+              if (Constant.selectedPromoCodeId != "0") {
+                params[ApiAndParams.promoCodeId] = Constant.selectedPromoCodeId;
+              }
+
+              await context.read<CheckoutProvider>().getOrderChargesProvider(
+                    context: context,
+                    params: params,
+                  );
+            },
+          );
+        });
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvoked: (didPop) {
-        if (!context.read<CheckoutProvider>().isPaymentUnderProcessing) {
+    return WillPopScope(
+      onWillPop: () {
+        if (context.read<CheckoutProvider>().isPaymentUnderProcessing) {
           GeneralMethods.showMessage(
               context,
               getTranslatedValue(context,
                   "you_can_not_go_back_until_payment_cancel_or_success"),
               MessageType.warning);
-          Navigator.pop(context);
+          return Future.value(false);
+        } else {
+          return Future.value(true);
         }
       },
       child: Scaffold(
@@ -93,8 +97,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             jsonKey: "checkout",
             softWrap: true,
             style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
               color: ColorsRes.mainTextColor,
             ),
           ),
@@ -124,19 +126,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           checkoutProvider.checkoutPaymentMethodsState ==
                               CheckoutPaymentMethodsState.paymentMethodLoading)
                         getCheckoutShimmer(),
-                      if (checkoutProvider.checkoutPaymentMethodsState ==
-                              CheckoutPaymentMethodsState.paymentMethodLoaded &&
-                          (checkoutProvider.checkoutTimeSlotsState ==
-                                  CheckoutTimeSlotsState.timeSlotsLoaded ||
-                              checkoutProvider.checkoutTimeSlotsState ==
-                                  CheckoutTimeSlotsState.timeSlotsError) &&
-                          (checkoutProvider.checkoutAddressState ==
-                                  CheckoutAddressState.addressLoaded ||
-                              checkoutProvider.checkoutAddressState ==
-                                  CheckoutAddressState.addressBlank ||
-                              checkoutProvider.checkoutAddressState ==
-                                  CheckoutAddressState.addressError))
-                        getAddressWidget(context),
+                      // if (checkoutProvider.checkoutPaymentMethodsState ==
+                      //         CheckoutPaymentMethodsState.paymentMethodLoaded &&
+                      //     (checkoutProvider.checkoutTimeSlotsState ==
+                      //             CheckoutTimeSlotsState.timeSlotsLoaded ||
+                      //         checkoutProvider.checkoutTimeSlotsState ==
+                      //             CheckoutTimeSlotsState.timeSlotsError) &&
+                      //     (checkoutProvider.checkoutAddressState ==
+                      //             CheckoutAddressState.addressLoaded ||
+                      //         checkoutProvider.checkoutAddressState ==
+                      //             CheckoutAddressState.addressBlank ||
+                      //         checkoutProvider.checkoutAddressState ==
+                      //             CheckoutAddressState.addressError))
+                      //   getAddressWidget(context),
                       if (checkoutProvider.checkoutPaymentMethodsState ==
                               CheckoutPaymentMethodsState.paymentMethodLoaded &&
                           (checkoutProvider.checkoutTimeSlotsState ==
@@ -150,64 +152,73 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               checkoutProvider.checkoutAddressState ==
                                   CheckoutAddressState.addressError))
                         GetTimeSlots(),
-                      if (checkoutProvider.checkoutPaymentMethodsState ==
-                              CheckoutPaymentMethodsState.paymentMethodLoaded &&
-                          (checkoutProvider.checkoutTimeSlotsState ==
-                                  CheckoutTimeSlotsState.timeSlotsLoaded ||
-                              checkoutProvider.checkoutTimeSlotsState ==
-                                  CheckoutTimeSlotsState.timeSlotsError) &&
-                          (checkoutProvider.checkoutAddressState ==
-                                  CheckoutAddressState.addressLoaded ||
-                              checkoutProvider.checkoutAddressState ==
-                                  CheckoutAddressState.addressBlank ||
-                              checkoutProvider.checkoutAddressState ==
-                                  CheckoutAddressState.addressError))
+                      if (checkoutProvider.totalAmount != 0.0 &&
+                          (checkoutProvider.checkoutPaymentMethodsState ==
+                                  CheckoutPaymentMethodsState
+                                      .paymentMethodLoaded &&
+                              (checkoutProvider.checkoutTimeSlotsState ==
+                                      CheckoutTimeSlotsState.timeSlotsLoaded ||
+                                  checkoutProvider.checkoutTimeSlotsState ==
+                                      CheckoutTimeSlotsState.timeSlotsError) &&
+                              (checkoutProvider.checkoutAddressState ==
+                                      CheckoutAddressState.addressLoaded ||
+                                  checkoutProvider.checkoutAddressState ==
+                                      CheckoutAddressState.addressBlank ||
+                                  checkoutProvider.checkoutAddressState ==
+                                      CheckoutAddressState.addressError)))
+                        ProductItemWidget(
+                          productData: widget.productData,
+                          quantity: widget.cartCount.toInt,
+                        ),
+                      Divider(
+                        endIndent: 20,
+                        indent: 20,
+                        color: ColorsRes.menuTitleColor.withOpacity(0.2),
+                      ),
+                      if (checkoutProvider.totalAmount != 0.0 &&
+                          (checkoutProvider.checkoutPaymentMethodsState ==
+                                  CheckoutPaymentMethodsState
+                                      .paymentMethodLoaded &&
+                              (checkoutProvider.checkoutTimeSlotsState ==
+                                      CheckoutTimeSlotsState.timeSlotsLoaded ||
+                                  checkoutProvider.checkoutTimeSlotsState ==
+                                      CheckoutTimeSlotsState.timeSlotsError) &&
+                              (checkoutProvider.checkoutAddressState ==
+                                      CheckoutAddressState.addressLoaded ||
+                                  checkoutProvider.checkoutAddressState ==
+                                      CheckoutAddressState.addressBlank ||
+                                  checkoutProvider.checkoutAddressState ==
+                                      CheckoutAddressState.addressError)))
                         getPaymentMethods(
                             checkoutProvider.paymentMethodsData, context),
                     ],
                   ),
                 ),
-                Card(
-                  child: Column(
-                    children: [
-                      if (checkoutProvider.checkoutPaymentMethodsState ==
-                              CheckoutPaymentMethodsState.paymentMethodLoaded &&
-                          (checkoutProvider.checkoutTimeSlotsState ==
-                                  CheckoutTimeSlotsState.timeSlotsLoaded ||
-                              checkoutProvider.checkoutTimeSlotsState ==
-                                  CheckoutTimeSlotsState.timeSlotsError) &&
-                          (checkoutProvider.checkoutAddressState ==
-                                  CheckoutAddressState.addressLoaded ||
-                              checkoutProvider.checkoutAddressState ==
-                                  CheckoutAddressState.addressBlank ||
-                              checkoutProvider.checkoutAddressState ==
-                                  CheckoutAddressState.addressError) &&
-                          checkoutProvider.checkoutDeliveryChargeState ==
-                              CheckoutDeliveryChargeState
-                                  .deliveryChargeLoaded &&
-                          checkoutProvider.selectedAddress?.id != null)
-                        getDeliveryCharges(context),
-                      if (checkoutProvider.checkoutDeliveryChargeState ==
-                          CheckoutDeliveryChargeState.deliveryChargeLoading)
-                        getDeliveryChargeShimmer(),
-                      PlaceOrderButtonWidget(
-                        context: context,
-                        isEnabled: checkoutProvider
-                                    .checkoutPaymentMethodsState ==
-                                CheckoutPaymentMethodsState
-                                    .paymentMethodLoaded &&
-                            (checkoutProvider.checkoutTimeSlotsState ==
-                                    CheckoutTimeSlotsState.timeSlotsLoaded ||
-                                checkoutProvider.checkoutTimeSlotsState ==
-                                    CheckoutTimeSlotsState.timeSlotsError) &&
-                            (checkoutProvider.checkoutAddressState ==
-                                    CheckoutAddressState.addressBlank ||
-                                checkoutProvider.checkoutAddressState ==
-                                    CheckoutAddressState.addressError) &&
-                            checkoutProvider.selectedAddress != AddressData(),
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    if (checkoutProvider.checkoutPaymentMethodsState ==
+                            CheckoutPaymentMethodsState.paymentMethodLoaded &&
+                        (checkoutProvider.checkoutTimeSlotsState ==
+                                CheckoutTimeSlotsState.timeSlotsLoaded ||
+                            checkoutProvider.checkoutTimeSlotsState ==
+                                CheckoutTimeSlotsState.timeSlotsError) &&
+                        (checkoutProvider.checkoutAddressState ==
+                                CheckoutAddressState.addressLoaded ||
+                            checkoutProvider.checkoutAddressState ==
+                                CheckoutAddressState.addressBlank ||
+                            checkoutProvider.checkoutAddressState ==
+                                CheckoutAddressState.addressError) &&
+                        checkoutProvider.checkoutDeliveryChargeState ==
+                            CheckoutDeliveryChargeState.deliveryChargeLoaded &&
+                        checkoutProvider.selectedAddress?.id != null)
+                      getDeliveryCharges(context),
+                    if (checkoutProvider.checkoutDeliveryChargeState ==
+                        CheckoutDeliveryChargeState.deliveryChargeLoading)
+                      getDeliveryChargeShimmer(),
+                    PlaceOrderButtonWidget(
+                      context: context,
+                    ),
+                  ],
                 )
               ],
             );

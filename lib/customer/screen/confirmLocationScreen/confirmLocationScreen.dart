@@ -1,9 +1,9 @@
 import 'package:google_maps_webservice/places.dart';
+import 'package:lokale_mand/customer/models/cityByLatLong.dart';
 import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/flutterGooglePlaces.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/helper/utils/mapDeliveredMarker.dart';
 import 'package:lokale_mand/helper/utils/markergenerator.dart';
-import 'package:lokale_mand/seller/model/sellerCityByLatLong.dart';
 import 'package:lokale_mand/seller/screen/confirmLocationScreen/widget/sellerConfirmButtonWidget.dart';
 
 class ConfirmLocation extends StatefulWidget {
@@ -23,13 +23,15 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
   late LatLng kMapCenter;
   double mapZoom = 14.4746;
 
-  late SellerCityByLatLong cityByLatLong;
+  late CityByLatLong cityByLatLong;
 
   List<Marker> customMarkers = [];
 
   @override
   void initState() {
-    kMapCenter = LatLng(0.0, 0.0);
+    kMapCenter = LatLng(
+        Constant.session.getData(SessionManager.keyLatitude).toDouble,
+        Constant.session.getData(SessionManager.keyLongitude).toDouble);
 
     kGooglePlex = CameraPosition(
       target: kMapCenter,
@@ -81,7 +83,9 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
     Constant.cityAddressMap =
         await GeneralMethods.getCityNameAndAddress(kMapCenter, context);
 
-    if (widget.from == "location" || widget.from == "seller_register") {
+    if (widget.from == "location" ||
+        widget.from == "seller_register" ||
+        widget.from == "address_detail") {
       Map<String, dynamic> params = {};
       // params[ApiAndParams.cityName] = Constant.cityAddressMap["city"];
 
@@ -132,57 +136,60 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
                     start: 15,
                     child: Row(children: [
                       Expanded(
-                          child: GestureDetector(
-                        onTap: () async {
-                          Prediction? p = await PlacesAutocomplete.show(
-                              context: context,
-                              apiKey: Constant.googleApiKey,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(
+                        child: GestureDetector(
+                          onTap: () async {
+                            Prediction? p = await PlacesAutocomplete.show(
+                                context: context,
+                                apiKey: Constant.googleApiKey,
+                                decoration: InputDecoration(
+                                  labelStyle: TextStyle(
+                                    color: ColorsRes.mainTextColor,
+                                  ),
+                                ),
+                                textStyle: TextStyle(
                                   color: ColorsRes.mainTextColor,
+                                ));
+
+                            GeneralMethods.displayPrediction(p, context).then(
+                              (value) => updateMap(
+                                double.parse(value?.lattitud ?? "0.0"),
+                                double.parse(
+                                  value?.longitude ?? "0.0",
                                 ),
                               ),
-                              textStyle: TextStyle(
-                                color: ColorsRes.mainTextColor,
-                              ));
-
-                          GeneralMethods.displayPrediction(p, context).then(
-                            (value) => updateMap(
-                              double.parse(value?.lattitud ?? "0.0"),
-                              double.parse(
-                                value?.longitude ?? "0.0",
-                              ),
+                            );
+                          },
+                          child: Container(
+                            decoration: DesignConfig.boxDecoration(
+                              Theme.of(context).scaffoldBackgroundColor,
+                              10,
                             ),
-                          );
-                        },
-                        child: Container(
-                          decoration: DesignConfig.boxDecoration(
-                            Theme.of(context).scaffoldBackgroundColor,
-                            10,
-                          ),
-                          child: ListTile(
-                            title: TextField(
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: context
-                                            .read<LanguageProvider>()
-                                            .currentLanguage[
-                                        "product_search_hint"] ??
-                                    "product_search_hint",
-                              ),
-                            ),
-                            contentPadding: EdgeInsetsDirectional.only(
-                              start: Constant.size12,
-                            ),
-                            trailing: IconButton(
-                              padding: EdgeInsets.zero,
-                              icon: const Icon(Icons.search),
-                              onPressed: () {},
+                            padding: EdgeInsetsDirectional.only(
+                                start: 10, end: 10, top: 2, bottom: 2),
+                            child: Row(
+                              children: [
+                                CustomTextLabel(
+                                  jsonKey: context
+                                              .read<LanguageProvider>()
+                                              .currentLanguage[
+                                          "product_search_hint"] ??
+                                      "product_search_hint",
+                                  style: TextStyle(
+                                    color: ColorsRes.menuTitleColor,
+                                  ),
+                                ),
+                                Spacer(),
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  color: ColorsRes.menuTitleColor,
+                                  icon: const Icon(Icons.search),
+                                  onPressed: () {},
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      )),
+                      ),
                       SizedBox(width: Constant.size10),
                       GestureDetector(
                         onTap: () =>
@@ -190,6 +197,7 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
                           updateMap(value.latitude, value.longitude);
                         }),
                         child: Container(
+                          height: 50,
                           decoration: DesignConfig.boxGradient(10),
                           padding: EdgeInsets.symmetric(
                             horizontal: Constant.size14,
@@ -198,7 +206,6 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
                           child: Icon(
                             Icons.my_location_outlined,
                             color: ColorsRes.appColorWhite,
-                            size: 35,
                           ),
                         ),
                       ),
@@ -207,15 +214,7 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
                 ],
               ),
             ),
-            Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20),
-                    topLeft: Radius.circular(20),
-                  ),
-                ),
-                child: confirmBtnWidget()),
+            confirmBtnWidget(),
           ]),
         ));
   }
@@ -250,12 +249,19 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
   }
 
   Widget confirmBtnWidget() {
-    print(
-        ">>>>>>>>>>>>>>>>>>> ${context.read<CityByLatLongProvider>().isDeliverable}");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+            ),
+          ),
+          height: 20,
+        ),
         ((widget.from == "location" ||
                     widget.from == "seller_register" ||
                     widget.from == "address_detail") &&
@@ -301,7 +307,8 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
         ),
         if (((widget.from == "location" || widget.from == "seller_register") &&
                 context.read<CityByLatLongProvider>().isDeliverable) ||
-            widget.from == "address")
+            widget.from == "address" ||
+            widget.from == "address_detail")
           ConfirmButtonWidget(voidCallback: () {
             if (widget.from == "location" &&
                 context.read<CityByLatLongProvider>().isDeliverable) {

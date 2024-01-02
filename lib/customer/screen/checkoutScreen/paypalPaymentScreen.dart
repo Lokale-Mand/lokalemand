@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:flutter/cupertino.dart';
 
 class PayPalPaymentScreen extends StatefulWidget {
   final String paymentUrl;
@@ -26,20 +26,6 @@ class _PayPalPaymentScreenState extends State<PayPalPaymentScreen> {
   @override
   void initState() {
     print("URL is ${widget.paymentUrl}");
-    /* flutterWebViewPlugin.onUrlChanged.listen((url) {
-      //Paypal success redirect url - Constant.baseUrl/customer/paypal_redirect/success
-      //Paypal fail redirect url - Constant.baseUrl/customer/paypal_redirect/fail
-
-      if (url.startsWith(Constant.baseUrl)) {
-        String redirectUrl = url.split("?")[0];
-        String paymentStatus = redirectUrl.split("/").last;
-        if (paymentStatus.toLowerCase() == "success") {
-          Navigator.pop(context, true);
-        } else if (paymentStatus.toLowerCase() == "fail") {
-          Navigator.pop(context, false);
-        }
-      }
-    });*/
     super.initState();
   }
 
@@ -62,21 +48,15 @@ class _PayPalPaymentScreenState extends State<PayPalPaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PopScope(
-        onPopInvoked: (didPop) {
-          onWillPop;
-        },
+      body: WillPopScope(
+        onWillPop: onWillPop,
         child: Scaffold(
           appBar: getAppBar(
             context: context,
             title: CustomTextLabel(
               jsonKey: "app_name",
               softWrap: true,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: ColorsRes.mainTextColor,
-              ),
+              style: TextStyle(color: ColorsRes.mainTextColor),
             ),
             showBackButton: true,
             onTap: onWillPop,

@@ -31,9 +31,15 @@ class GetTimeSlots extends StatelessWidget {
     ];
     return context.read<CheckoutProvider>().timeSlotsData?.timeSlotsIsEnabled ==
             "true"
-        ? Card(
-            color: Theme.of(context).cardColor,
-            elevation: 0,
+        ? Container(
+            decoration:
+                DesignConfig.boxDecoration(Theme.of(context).cardColor, 10),
+            padding: const EdgeInsets.all(10),
+            margin: EdgeInsetsDirectional.only(
+              start: 10,
+              end: 10,
+              bottom: 10,
+            ),
             child: Padding(
               padding: EdgeInsetsDirectional.only(
                   start: Constant.size10,
@@ -65,33 +71,24 @@ class GetTimeSlots extends StatelessWidget {
                                 ?.timeSlotsAllowedDays ??
                             "0"),
                         (index) {
-                          late DateTime dateTime;
-                          if (int.parse(context
+                          int daysStartFrom = int.parse(context
                                       .read<CheckoutProvider>()
                                       .timeSlotsData
                                       ?.timeSlotsDeliveryStartsFrom
                                       .toString() ??
-                                  "") ==
-                              1) {
-                            dateTime = DateTime.now();
-                          } else {
-                            dateTime = DateTime.now().add(Duration(
-                                days: int.parse(context
-                                            .read<CheckoutProvider>()
-                                            .timeSlotsData
-                                            ?.timeSlotsDeliveryStartsFrom ??
-                                        "") -
-                                    1));
+                                  "0") -
+                              1;
+                          late DateTime dateTime =
+                              DateTime.now().add(Duration(days: daysStartFrom));
+                          if (index == 0 &&
+                              context.read<CheckoutProvider>().selectedDate ==
+                                  null) {
+                            String date = dateTime.day.toString();
+                            String month = dateTime.month.toString();
+                            String year = dateTime.year.toString();
+                            context.read<CheckoutProvider>().selectedDate =
+                                "$date-$month-$year";
                           }
-
-                          String date =
-                              dateTime.add(Duration(days: 0)).day.toString();
-                          String month =
-                              dateTime.add(Duration(days: 0)).month.toString();
-                          String year =
-                              dateTime.add(Duration(days: 0)).year.toString();
-                          context.read<CheckoutProvider>().selectedDate =
-                              "$date-$month-$year";
 
                           return GestureDetector(
                             onTap: () {
@@ -210,104 +207,116 @@ class GetTimeSlots extends StatelessWidget {
                   ),
                   Column(
                     children: List.generate(
-                        context
-                                .read<CheckoutProvider>()
-                                .timeSlotsData
-                                ?.timeSlots
-                                .length ??
-                            0, (index) {
-                      var now = DateTime.now();
-                      bool isActive = false;
-                      bool isToday = context
-                                  .read<CheckoutProvider>()
-                                  .timeSlotsData
-                                  ?.timeSlotsDeliveryStartsFrom ==
-                              "1" &&
-                          context.read<CheckoutProvider>().selectedDateId == 0;
-                      String time = context
+                      context
                               .read<CheckoutProvider>()
                               .timeSlotsData
-                              ?.timeSlots[index]
-                              .lastOrderTime
-                              .toString() ??
-                          "";
+                              ?.timeSlots
+                              .length ??
+                          0,
+                      (index) {
+                        var now = DateTime.now();
+                        bool isActive = false;
+                        bool isToday = context
+                                    .read<CheckoutProvider>()
+                                    .timeSlotsData
+                                    ?.timeSlotsDeliveryStartsFrom ==
+                                "1" &&
+                            context.read<CheckoutProvider>().selectedDateId ==
+                                0;
+                        String time = context
+                                .read<CheckoutProvider>()
+                                .timeSlotsData
+                                ?.timeSlots[index]
+                                .lastOrderTime
+                                .toString() ??
+                            "";
 
-                      late DateTime dateTime = now.copyWith(
-                          hour: int.parse(time.split(":")[0]),
-                          microsecond: int.parse(time.split(":")[1]),
-                          second: int.parse(time.split(":")[2]));
+                        late DateTime dateTime = now.copyWith(
+                            hour: int.parse(time.split(":")[0]),
+                            microsecond: int.parse(time.split(":")[1]),
+                            second: int.parse(time.split(":")[2]));
 
-                      if (now.isAfter(dateTime)) {
-                        if (isToday) {
-                          isActive = false;
+                        if (now.isAfter(dateTime)) {
+                          if (isToday) {
+                            isActive = false;
+                          } else {
+                            isActive = true;
+                          }
                         } else {
                           isActive = true;
                         }
-                      } else {
-                        isActive = true;
-                      }
-
-                      return isActive
-                          ? GestureDetector(
-                              onTap: () {
-                                context
-                                    .read<CheckoutProvider>()
-                                    .setSelectedTime(index);
-                              },
-                              child: Container(
-                                padding: EdgeInsets.zero,
-                                margin: EdgeInsets.zero,
-                                decoration: BoxDecoration(
-                                  border: BorderDirectional(
-                                    bottom: BorderSide(
-                                      width: 1,
-                                      color: context
-                                                  .read<CheckoutProvider>()
-                                                  .timeSlotsData
-                                                  ?.timeSlots
-                                                  .length ==
-                                              index + 1
-                                          ? Colors.transparent
-                                          : ColorsRes.grey.withOpacity(0.1),
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.only(
-                                          start: Constant.size10),
-                                      child: CustomTextLabel(
-                                        text: context
+                        if (isActive) {
+                          if (context
+                                  .read<CheckoutProvider>()
+                                  .initiallySelectedIndex ==
+                              -1) {
+                            context
+                                .read<CheckoutProvider>()
+                                .setSelectedTimeWithoutNotify(index);
+                          }
+                          return GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<CheckoutProvider>()
+                                  .setSelectedTime(index);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.zero,
+                              margin: EdgeInsets.zero,
+                              decoration: BoxDecoration(
+                                border: BorderDirectional(
+                                  bottom: BorderSide(
+                                    width: 1,
+                                    color: context
                                                 .read<CheckoutProvider>()
                                                 .timeSlotsData
-                                                ?.timeSlots[index]
-                                                .title ??
-                                            "",
-                                        style: TextStyle(
-                                          color: ColorsRes.mainTextColor,
-                                        ),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Radio(
-                                      value: context
-                                          .read<CheckoutProvider>()
-                                          .selectedTime,
-                                      groupValue: index,
-                                      activeColor: ColorsRes.appColor,
-                                      onChanged: (value) {
-                                        context
-                                            .read<CheckoutProvider>()
-                                            .setSelectedTime(index);
-                                      },
-                                    ),
-                                  ],
+                                                ?.timeSlots
+                                                .length ==
+                                            index + 1
+                                        ? Colors.transparent
+                                        : ColorsRes.grey.withOpacity(0.1),
+                                  ),
                                 ),
                               ),
-                            )
-                          : Container();
-                    }),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.only(
+                                        start: Constant.size10),
+                                    child: CustomTextLabel(
+                                      text: context
+                                              .read<CheckoutProvider>()
+                                              .timeSlotsData
+                                              ?.timeSlots[index]
+                                              .title ??
+                                          "",
+                                      style: TextStyle(
+                                        color: ColorsRes.mainTextColor,
+                                      ),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Radio(
+                                    value: context
+                                        .read<CheckoutProvider>()
+                                        .selectedTime,
+                                    groupValue: index,
+                                    activeColor: ColorsRes.appColor,
+                                    onChanged: (value) {
+                                      context
+                                          .read<CheckoutProvider>()
+                                          .setSelectedTime(index);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
                   ),
                   Widgets.getSizedBox(
                     height: Constant.size10,

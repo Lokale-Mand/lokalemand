@@ -26,6 +26,11 @@ Future<void> main() async {
             return HomeMainScreenProvider();
           },
         ),
+        ChangeNotifierProvider<AddressProvider>(
+          create: (context) {
+            return AddressProvider();
+          },
+        ),
         ChangeNotifierProvider<CategoryListProvider>(
           create: (context) {
             return CategoryListProvider();

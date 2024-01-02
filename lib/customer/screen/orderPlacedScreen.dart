@@ -12,8 +12,9 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero).then((value) =>
-        context.read<CartListProvider>().clearCart(context: context));
+    Future.delayed(Duration.zero).then(
+      (value) => context.read<CartListProvider>().clearCart(context: context),
+    );
   }
 
   @override

@@ -35,13 +35,13 @@ class _SellerAddOrUpdateProductScreenState
   String selectedDietaryType = "";
   String selectedDietaryId = "";
 
+  String selectedUnitId = "";
+
+  String selectedCategoryId = "";
   TextEditingController edtProductName = TextEditingController();
   TextEditingController edtProductPrice = TextEditingController();
   TextEditingController edtProductUnit = TextEditingController();
   TextEditingController edtProductStock = TextEditingController();
-  String selectedUnitId = "";
-
-  String selectedCategoryId = "";
 
 //   id:21
 //   name: Eiefregwsdwfrde efecwefe efdedescfescfededwedwd

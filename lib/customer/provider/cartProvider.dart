@@ -64,6 +64,7 @@ class CartProvider extends ChangeNotifier {
         notifyListeners();
       }
     }
+    return true;
   }
 
   Future checkCartItemsStockStatus() async {

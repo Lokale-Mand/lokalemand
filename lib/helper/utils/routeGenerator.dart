@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:lokale_mand/customer/provider/customerChatDetailProvider.dart';
+import 'package:lokale_mand/customer/provider/productRatingListProvider.dart';
 import 'package:lokale_mand/customer/screen/addressDetailScreen.dart';
+import 'package:lokale_mand/customer/screen/customerChatDetailScreen/customerChatDetailScreen.dart';
 import 'package:lokale_mand/customer/screen/confirmLocationScreen/confirmLocationScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/provider/sellerAddProductProvider.dart';
@@ -45,6 +48,7 @@ const String notificationsAndMailSettingsScreenScreen =
 const String underMaintenanceScreen = 'underMaintenanceScreen';
 const String appUpdateScreen = 'appUpdateScreen';
 const String paypalPaymentScreen = 'paypalPaymentScreen';
+const String chatDetailScreen = 'chatDetailScreen';
 
 // SELLER SCREENS VARIABLES
 
@@ -53,7 +57,7 @@ const String sellerCreateAccountScreen = 'sellerCreateAccountScreen';
 const String sellerConfirmLocationScreen = 'sellerConfirmLocationScreen';
 const String sellerMainHomeScreen = 'sellerMainHomeScreen';
 const String sellerMenuScreen = 'sellerMenuScreen';
-const String sellerMessageScreen = 'sellerMessageScreen';
+// const String sellerMessageScreen = 'sellerMessageScreen';
 const String sellerProductScreen = 'sellerProductScreen';
 const String sellerAddOrUpdateProductScreen = 'sellerAddOrUpdateProductScreen';
 const String htmlEditorScreen = 'htmlEditorScreen';
@@ -153,10 +157,14 @@ class RouteGenerator {
         );
 
       case checkoutScreen:
+        List<dynamic> checkoutArguments = settings.arguments as List<dynamic>;
         return CupertinoPageRoute(
           builder: (_) => ChangeNotifierProvider<CheckoutProvider>(
             create: (context) => CheckoutProvider(),
-            child: const CheckoutScreen(),
+            child: CheckoutScreen(
+              productData: checkoutArguments[0] as ProductData,
+              cartCount: checkoutArguments[1] as String,
+            ),
           ),
         );
 
@@ -212,8 +220,15 @@ class RouteGenerator {
         List<dynamic> productDetailArguments =
             settings.arguments as List<dynamic>;
         return CupertinoPageRoute(
-          builder: (_) => ChangeNotifierProvider<ProductDetailProvider>(
-            create: (context) => ProductDetailProvider(),
+          builder: (_) => MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (context) => ProductDetailProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (context) => ProductRatingListProvider(),
+              )
+            ],
             child: ProductDetailScreen(
               id: productDetailArguments[0] as String,
               title: productDetailArguments[1] as String,
@@ -234,10 +249,7 @@ class RouteGenerator {
 
       case addressDetailScreen:
         return CupertinoPageRoute(
-          builder: (_) => ChangeNotifierProvider<AddressProvider>(
-            create: (context) => AddressProvider(),
-            child: AddressDetailScreen(),
-          ),
+          builder: (_) => AddressDetailScreen(),
         );
 
       case orderHistoryScreen:
@@ -321,6 +333,20 @@ class RouteGenerator {
               PayPalPaymentScreen(paymentUrl: settings.arguments as String),
         );
 
+      case chatDetailScreen:
+        List<dynamic> chatDetailScreenArguments =
+            settings.arguments as List<dynamic>;
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<CustomerChatDetailProvider>(
+            create: (context) => CustomerChatDetailProvider(),
+            child: CustomerChatDetailScreen(
+              sellerId: chatDetailScreenArguments[0] as String,
+              sellerName: chatDetailScreenArguments[1] as String,
+              sellerLogo: chatDetailScreenArguments[2] as String,
+            ),
+          ),
+        );
+
       // SELLER SCREENS ROUTES
 
       case sellerLoginAccountScreen:
@@ -363,21 +389,21 @@ class RouteGenerator {
           ),
         );
 
-      case sellerMessageScreen:
+      // case sellerMessageScreen:
+      //   return CupertinoPageRoute(
+      //     builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
+      //       create: (context) {
+      //         return SellerCityByLatLongProvider();
+      //       },
+      //       child: SellerChatListScreen(scrollController: null,),
+      //     ),
+      //   );
+
+      case sellerConfirmLocationScreen:
         return CupertinoPageRoute(
           builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
             create: (context) {
               return SellerCityByLatLongProvider();
-            },
-            child: SellerMessageScreen(),
-          ),
-        );
-
-      case sellerConfirmLocationScreen:
-        return CupertinoPageRoute(
-          builder: (_) => ChangeNotifierProvider<CityByLatLongProvider>(
-            create: (context) {
-              return CityByLatLongProvider();
             },
             child: SellerConfirmLocation(from: settings.arguments as String),
           ),

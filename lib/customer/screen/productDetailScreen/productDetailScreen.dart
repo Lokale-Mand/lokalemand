@@ -1,5 +1,9 @@
+import 'package:intl/intl.dart';
+import 'package:lokale_mand/customer/models/productRating.dart';
+import 'package:lokale_mand/customer/provider/productRatingListProvider.dart';
 import 'package:lokale_mand/customer/screen/productDetailScreen/widget/sliderImageWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String? title;
@@ -15,6 +19,8 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  TextEditingController edtProductStock = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -24,11 +30,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         try {
           Map<String, String> params =
               await Constant.getProductsDefaultParams();
-          params[ApiAndParams.id] = widget.id;
+          params[ApiAndParams.id] = widget.id.toString();
 
-          await context
-              .read<ProductDetailProvider>()
-              .getProductDetailProvider(context: context, params: params);
+          List<Future> futures = [
+            context
+                .read<ProductDetailProvider>()
+                .getProductDetailProvider(context: context, params: params),
+            context.read<ProductRatingListProvider>().getProductRatingList(
+                context: context, params: {"product_id": widget.id.toString()})
+          ];
+
+          await Future.wait(futures);
         } catch (_) {}
       }
     });
@@ -276,6 +288,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     print("${storeTime.openTime}");
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
@@ -287,8 +301,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             builder: (context, selectedVariantItemProvider, _) {
               return product.variants.isNotEmpty
                   ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         CustomTextLabel(
                           text: product.name,
@@ -325,9 +340,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                     .getSelectedIndex()]
                                             .discountedPrice))
                                     : GeneralMethods.getCurrencyFormat(
-                                        double.parse(product
-                                            .variants[selectedVariantItemProvider.getSelectedIndex()]
-                                            .price)),
+                                        double.parse(
+                                          product
+                                              .variants[
+                                                  selectedVariantItemProvider
+                                                      .getSelectedIndex()]
+                                              .price,
+                                        ),
+                                      ),
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -356,7 +376,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                               0
                                           ? GeneralMethods.getCurrencyFormat(
                                               double.parse(
-                                                  product.variants[0].price))
+                                                product.variants[0].price,
+                                              ),
+                                            )
                                           : "",
                                     ),
                                   ],
@@ -631,6 +653,167 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ],
                           ),
                         ),
+                        Widgets.getSizedBox(height: Constant.size10),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                try {
+                                  if (int.parse(
+                                          edtProductStock.text.toString()) >
+                                      0) {
+                                    edtProductStock.text = (int.parse(
+                                                edtProductStock.text
+                                                    .toString()) -
+                                            1)
+                                        .toString();
+                                  } else {
+                                    edtProductStock.text = "0";
+                                  }
+                                  setState(() {});
+                                } catch (e) {
+                                  GeneralMethods.showMessage(context,
+                                      e.toString(), MessageType.warning);
+                                }
+                              },
+                              icon: Icon(
+                                Icons.remove_circle_outline_rounded,
+                                color: ColorsRes.appColor,
+                                size: 40,
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                height: 40,
+                                padding: EdgeInsetsDirectional.only(
+                                    start: 10, end: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                  border: Border.all(
+                                    color: ColorsRes.textFieldBorderColor,
+                                  ),
+                                  color: Theme.of(context).cardColor,
+                                ),
+                                child: TextField(
+                                  textAlign: TextAlign.center,
+                                  controller: edtProductStock,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    CustomNumberTextInputFormatter()
+                                  ],
+                                  style: TextStyle(
+                                    color: ColorsRes.mainTextColor,
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    hintStyle: TextStyle(
+                                      color: ColorsRes.menuTitleColor,
+                                    ),
+                                    hintText: context
+                                        .read<LanguageProvider>()
+                                        .currentLanguage["product_stock_hint"],
+                                  ),
+                                  onChanged: (value) {
+                                    if (value.isNotEmpty) {
+                                      edtProductStock.text = value;
+                                    }
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                try {
+                                  edtProductStock.text = (int.parse(
+                                              edtProductStock.text
+                                                      .toString()
+                                                      .isEmpty
+                                                  ? "0"
+                                                  : edtProductStock.text
+                                                      .toString()) +
+                                          1)
+                                      .toString();
+                                  setState(() {});
+                                } catch (e) {
+                                  GeneralMethods.showMessage(context,
+                                      e.toString(), MessageType.warning);
+                                }
+                              },
+                              icon: Icon(
+                                Icons.add_circle_outline_rounded,
+                                color: ColorsRes.appColor,
+                                size: 40,
+                              ),
+                            )
+                          ],
+                        ),
+                        if (edtProductStock.text.toString().isNotEmpty &&
+                            int.parse(edtProductStock.text.toString()) > 0)
+                          Widgets.getSizedBox(height: Constant.size10),
+                        if (edtProductStock.text.toString().isNotEmpty &&
+                            int.parse(edtProductStock.text.toString()) > 0)
+                          Consumer<CartListProvider>(
+                            builder: (context, cartListProvider, child) {
+                              return Widgets.gradientBtnWidget(
+                                context,
+                                10,
+                                callback: () async {
+                                  if (Constant.session.isUserLoggedIn()) {
+                                    cartListProvider.currentSelectedProduct =
+                                        product.id;
+                                    cartListProvider.currentSelectedVariant =
+                                        product.variants[0].id;
+
+                                    Map<String, String> params = {};
+                                    params[ApiAndParams.productId] = product.id;
+                                    params[ApiAndParams.productVariantId] =
+                                        product.variants[0].id;
+                                    params[ApiAndParams.qty] =
+                                        edtProductStock.text.toString();
+                                    await cartListProvider
+                                        .clearCart(context: context)
+                                        .then((value) async {
+                                      await cartListProvider
+                                          .addRemoveCartItem(
+                                        context: context,
+                                        params: params,
+                                        isUnlimitedStock:
+                                            product.isUnlimitedStock == "1",
+                                        maximumAllowedQuantity: double.tryParse(
+                                            product.totalAllowedQuantity
+                                                .toString())!,
+                                        availableStock: double.tryParse(
+                                            product.variants[0].stock)!,
+                                        actionFor: "add",
+                                      )
+                                          .then(
+                                        (value) {
+                                          if (value == true) {
+                                            Navigator.pushNamed(
+                                                context, checkoutScreen,
+                                                arguments: [
+                                                  product,
+                                                  edtProductStock.text
+                                                      .toString(),
+                                                ]);
+                                          }
+                                        },
+                                      );
+                                    });
+                                  } else {
+                                    Widgets.loginUserAccount(context, "cart");
+                                  }
+                                },
+                                height: 50,
+                                title: getTranslatedValue(
+                                    context, "reserve_product"),
+                              );
+                            },
+                          ),
                       ],
                     )
                   : const SizedBox.shrink();
@@ -705,11 +888,194 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   fontSize: 10,
                 ),
               ),
+              if (context.read<ProductRatingListProvider>().totalData != 0)
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: Constant.size10),
+                  child: Divider(
+                    color: ColorsRes.menuTitleColor,
+                    height: 5,
+                  ),
+                ),
+              if (context.read<ProductRatingListProvider>().totalData != 0)
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: Constant.size10),
+                      child: CustomTextLabel(
+                        jsonKey: "reviews",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    CustomTextLabel(
+                      text: product.averageRating,
+                    ),
+                    Widgets.getSizedBox(
+                      width: 5,
+                    ),
+                    RatingBar.builder(
+                      initialRating:
+                          double.tryParse(product.averageRating.toString()) ??
+                              0.0,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      maxRating: 5,
+                      updateOnDrag: true,
+                      itemSize: 15,
+                      itemCount: 5,
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+                      },
+                    ),
+                    CustomTextLabel(
+                      text: " (${product.ratingCount})",
+                    ),
+                  ],
+                ),
+              Consumer<ProductRatingListProvider>(
+                builder: (context, productRatingListProvider, child) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(
+                      productRatingListProvider.totalData,
+                      (index) {
+                        ProductRatingData rating =
+                            productRatingListProvider.ratings[index];
+
+                        String createdAt = "";
+
+                        DateTime dateTime =
+                            DateTime.parse(rating.updatedAt.toString())
+                                .toLocal();
+                        DateTime now = DateTime.now().toLocal();
+                        DateTime yesterday = now.subtract(Duration(days: 1));
+
+                        if (isSameDay(dateTime, now)) {
+                          // Today
+                          createdAt =
+                              DateFormat.Hm().format(dateTime); // HH:MM format
+                        } else if (isSameDay(dateTime, yesterday)) {
+                          // Yesterday
+                          createdAt = getTranslatedValue(context, "yesterday");
+                        } else {
+                          // More than yesterday
+                          createdAt = DateFormat('dd/MM/yyyy').format(dateTime);
+                        }
+
+                        return Container(
+                          padding:
+                              EdgeInsetsDirectional.only(bottom: 10, top: 10),
+                          decoration: BoxDecoration(
+                            border: BorderDirectional(
+                              bottom: BorderSide(
+                                color: ColorsRes.menuTitleColor,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  ClipRRect(
+                                    child: Widgets.setNetworkImg(
+                                      image: rating.user?.profile?.toString() ??
+                                          "",
+                                      height: 40,
+                                      width: 40,
+                                      boxFit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  Widgets.getSizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CustomTextLabel(
+                                        text:
+                                            rating.user?.name?.toString() ?? "",
+                                        style: TextStyle(
+                                          color: ColorsRes.mainTextColor,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      Widgets.getSizedBox(height: 5),
+                                      CustomTextLabel(
+                                        text: createdAt,
+                                        style: TextStyle(
+                                          color: ColorsRes.menuTitleColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                      Widgets.getSizedBox(height: 5),
+                                      RatingBar.builder(
+                                        initialRating: double.tryParse(
+                                                rating.rate.toString()) ??
+                                            0.0,
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        maxRating: 5,
+                                        updateOnDrag: true,
+                                        itemSize: 12,
+                                        itemCount: 5,
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          print(rating);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Widgets.getSizedBox(height: 5),
+                              CustomTextLabel(
+                                text: rating.review?.toString() ?? "",
+                                style: TextStyle(
+                                  color: ColorsRes.mainTextColor,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
       ],
     );
+  }
+
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
   }
 
   getProductDetailShimmer({required BuildContext context}) {

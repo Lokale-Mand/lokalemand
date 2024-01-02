@@ -536,3 +536,30 @@ extension TimeOfDayConverter on TimeOfDay {
     return "$hour:$min";
   }
 }
+extension ContextExtension on BuildContext {
+  double get width => MediaQuery.sizeOf(this).width;
+
+  double get height => MediaQuery.sizeOf(this).height;
+}
+
+extension CurrencyConverter on String {
+  String get currency => NumberFormat.currency(
+      symbol: Constant.currency,
+      decimalDigits: int.parse(Constant.decimalPoints.toString()),
+      name: Constant.currencyCode)
+      .format(this.toDouble);
+
+  double get toDouble => double.parse(this);
+
+  int get toInt => int.parse(this);
+
+  String get toStr => this.toString();
+}
+
+
+extension Precision on double {
+  double toPrecision(int fractionDigits) {
+    num mod = pow(10, fractionDigits.toDouble());
+    return ((this * mod).round().toDouble() / mod);
+  }
+}

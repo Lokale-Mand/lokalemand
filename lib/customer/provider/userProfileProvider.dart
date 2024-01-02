@@ -86,7 +86,14 @@ class UserProfileProvider extends ChangeNotifier {
           .then((mainData) async {
         userProfile = UserProfile.fromJson(mainData);
         if (userProfile?.status == "1") {
-          await setUserDataInSession(mainData);
+          Constant.session.setData(SessionManager.keyToken,
+              userProfile?.data?.accessToken.toString() ?? "", false);
+          await context
+              .read<AddressProvider>()
+              .getAddressProvider(context: context)
+              .then((value) async {
+            await setUserDataInSession(mainData);
+          });
         } else {
           GeneralMethods.showMessage(
             context,

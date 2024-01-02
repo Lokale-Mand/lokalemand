@@ -14,6 +14,7 @@ class ConfirmButtonWidget extends StatelessWidget {
       child: Widgets.gradientBtnWidget(
         context,
         10,
+        height: 45,
         title: getTranslatedValue(
           context,
           "confirm_location",

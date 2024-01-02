@@ -33,15 +33,15 @@ class HomeMainScreenState extends State<HomeMainScreen> {
 
   @override
   void initState() {
-    print(">>>>>>>> ${Constant.session.getData(SessionManager.keyShippingAddress)}");
     if (mounted) {
       context.read<HomeMainScreenProvider>().setPages();
     }
     Future.delayed(
       Duration.zero,
       () async {
-
-        if (Constant.session.getData(SessionManager.keyShippingAddress).isNotEmpty) {
+        if (Constant.session
+            .getData(SessionManager.keyShippingAddress)
+            .isNotEmpty) {
           if (context.read<HomeMainScreenProvider>().getCurrentPage() == 0) {
             if (Constant.session
                 .getBoolData(SessionManager.keyPopupOfferEnabled)) {

@@ -30,6 +30,5 @@ Future<Map<String, dynamic>> removeItemFromCartApi(
       params: params,
       isPost: true,
       context: context);
-
   return json.decode(response);
 }

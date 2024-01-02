@@ -18,7 +18,7 @@ class AddressProvider extends ChangeNotifier {
   int offset = 0;
   int selectedAddressId = 0;
 
-  getAddressProvider({required BuildContext context}) async {
+  Future getAddressProvider({required BuildContext context}) async {
     if (offset == 0) {
       addressState = AddressState.loading;
     } else {
@@ -47,6 +47,14 @@ class AddressProvider extends ChangeNotifier {
         }
 
         addresses.addAll(tempAddresses);
+
+        Constant.session.setData(SessionManager.keyShippingAddress,
+            jsonEncode(addresses[0].toJson()), false);
+
+        Constant.session.setData(
+            SessionManager.keyLatitude, addresses[0].latitude.toString(), true);
+        Constant.session.setData(SessionManager.keyLongitude,
+            addresses[0].longitude.toString(), true);
 
         hasMoreData = totalData > addresses.length;
         if (hasMoreData) {
@@ -131,6 +139,14 @@ class AddressProvider extends ChangeNotifier {
       late AddressData tempAddress;
       if (getData[ApiAndParams.status].toString() == "1") {
         tempAddress = AddressData.fromJson(getData[ApiAndParams.data]);
+        Constant.session.setData(SessionManager.keyShippingAddress,
+            jsonEncode(tempAddress.toJson()), false);
+
+        Constant.session.setData(
+            SessionManager.keyLatitude, addresses[0].latitude.toString(), true);
+        Constant.session.setData(SessionManager.keyLongitude,
+            addresses[0].longitude.toString(), true);
+
         if (params.containsKey(ApiAndParams.id)) {
           addresses.remove(address);
         }

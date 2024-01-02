@@ -9,7 +9,7 @@ class CartListProvider extends ChangeNotifier {
   String currentSelectedProduct = "";
   String currentSelectedVariant = "";
 
-  Future<void> addRemoveCartItemFromLocalList(
+  Future<bool> addRemoveCartItemFromLocalList(
       {required String productId,
       required String productVariantId,
       required String qty}) async {
@@ -34,6 +34,7 @@ class CartListProvider extends ChangeNotifier {
       cartListState = CartListState.loaded;
       notifyListeners();
     }
+    return true;
   }
 
   getAllCartItems({required BuildContext context}) async {
@@ -79,7 +80,7 @@ class CartListProvider extends ChangeNotifier {
     return quantity;
   }
 
-  Future<void> addRemoveCartItem({
+  Future<bool> addRemoveCartItem({
     required BuildContext context,
     required Map<String, String> params,
     required bool isUnlimitedStock,
@@ -93,6 +94,10 @@ class CartListProvider extends ChangeNotifier {
 
     try {
       Map<String, dynamic> response = {};
+
+      if ((await Vibration.hasVibrator() ?? false)) {
+        Vibration.vibrate(duration: 100);
+      }
 
       if (int.parse(params[ApiAndParams.qty].toString()) > 0) {
         if (isUnlimitedStock) {
@@ -109,6 +114,7 @@ class CartListProvider extends ChangeNotifier {
             );
             cartListState = CartListState.error;
             notifyListeners();
+            return false;
           } else {
             response = await addItemToCartApi(context: context, params: params);
             try {
@@ -122,9 +128,11 @@ class CartListProvider extends ChangeNotifier {
                     productVariantId:
                         params[ApiAndParams.productVariantId].toString(),
                     qty: params[ApiAndParams.qty].toString());
+                return true;
               } else {
                 cartListState = CartListState.error;
                 notifyListeners();
+                return false;
               }
             } catch (e) {
               cartListState = CartListState.error;
@@ -137,6 +145,7 @@ class CartListProvider extends ChangeNotifier {
                 ),
                 MessageType.warning,
               );
+              return false;
             }
           }
         } else {
@@ -153,6 +162,7 @@ class CartListProvider extends ChangeNotifier {
             );
             cartListState = CartListState.error;
             notifyListeners();
+            return false;
           } else if (double.parse(params[ApiAndParams.qty].toString()) >
                   maximumAllowedQuantity &&
               actionFor == "add") {
@@ -166,6 +176,7 @@ class CartListProvider extends ChangeNotifier {
             );
             cartListState = CartListState.error;
             notifyListeners();
+            return false;
           } else {
             response = await addItemToCartApi(context: context, params: params);
 
@@ -180,9 +191,11 @@ class CartListProvider extends ChangeNotifier {
                     productVariantId:
                         params[ApiAndParams.productVariantId].toString(),
                     qty: params[ApiAndParams.qty].toString());
+                return true;
               } else {
                 cartListState = CartListState.error;
                 notifyListeners();
+                return false;
               }
             } catch (e) {
               cartListState = CartListState.error;
@@ -195,6 +208,7 @@ class CartListProvider extends ChangeNotifier {
                 ),
                 MessageType.warning,
               );
+              return false;
             }
           }
         }
@@ -217,14 +231,12 @@ class CartListProvider extends ChangeNotifier {
                 variantId: int.parse(
                     params[ApiAndParams.productVariantId].toString()));
           }
+          return true;
         } else {
           cartListState = CartListState.error;
           notifyListeners();
+          return false;
         }
-      }
-
-      if ((await Vibration.hasVibrator() ?? false)) {
-        Vibration.vibrate(duration: 100);
       }
     } catch (e) {
       GeneralMethods.showMessage(
@@ -234,6 +246,7 @@ class CartListProvider extends ChangeNotifier {
       );
       cartListState = CartListState.error;
       notifyListeners();
+      return false;
     }
   }
 

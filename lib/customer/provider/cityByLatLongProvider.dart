@@ -1,3 +1,4 @@
+import 'package:lokale_mand/customer/models/cityByLatLong.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 export 'package:geocoding/geocoding.dart';
@@ -12,7 +13,7 @@ enum CityByLatLongState {
 class CityByLatLongProvider extends ChangeNotifier {
   CityByLatLongState cityByLatLongState = CityByLatLongState.initial;
   String message = '';
-  late Map<String, dynamic> cityByLatLong;
+  late CityByLatLong cityByLatLong;
   String address = "";
   late List<Placemark> addresses;
   bool isDeliverable = false;
@@ -25,25 +26,25 @@ class CityByLatLongProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      cityByLatLong =
-          (await getCityByLatLongApi(context: context, params: params));
-
-      if (cityByLatLong[ApiAndParams.status].toString() == "0") {
-        cityByLatLongState = CityByLatLongState.error;
-        notifyListeners();
-        isDeliverable = false;
-      } else {
+      Map<String, dynamic> getCityData =
+          await getCityByLatLongApi(context: context, params: params);
+      if (getCityData[ApiAndParams.status].toString() == "1") {
+        cityByLatLong = CityByLatLong.fromJson(getCityData);
         Constant.session.setData(
             SessionManager.keyLatitude, params[ApiAndParams.latitude], false);
+
         Constant.session.setData(
             SessionManager.keyLongitude, params[ApiAndParams.longitude], false);
-
-        print("${Constant.session.getData(SessionManager.keyLatitude)}");
-        print("${Constant.session.getData(SessionManager.keyLongitude)}");
 
         cityByLatLongState = CityByLatLongState.loaded;
         notifyListeners();
         isDeliverable = true;
+        return cityByLatLong;
+      } else {
+        cityByLatLongState = CityByLatLongState.error;
+        notifyListeners();
+        isDeliverable = false;
+        return null;
       }
     } catch (e) {
       message = e.toString();
@@ -55,6 +56,7 @@ class CityByLatLongProvider extends ChangeNotifier {
       );
       notifyListeners();
       isDeliverable = false;
+      return null;
     }
   }
 }
