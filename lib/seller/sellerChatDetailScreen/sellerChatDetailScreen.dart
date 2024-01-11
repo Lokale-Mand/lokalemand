@@ -1,27 +1,26 @@
 import 'package:intl/intl.dart';
-import 'package:lokale_mand/customer/models/chatDetail.dart';
-import 'package:lokale_mand/customer/provider/customerChatDetailProvider.dart';
-import 'package:lokale_mand/customer/screen/customerChatDetailScreen/widget/chatDetailOrderItemWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/model/sellerChatDetail.dart';
+import 'package:lokale_mand/seller/provider/sellerChatDetailProvider.dart';
+import 'package:lokale_mand/seller/sellerChatDetailScreen/widget/sellerChatDetailOrderItemWidget.dart';
 
-class CustomerChatDetailScreen extends StatefulWidget {
-  final String sellerId;
-  final String sellerName;
-  final String sellerLogo;
+class SellerChatDetailScreen extends StatefulWidget {
+  final String customerId;
+  final String customerName;
+  final String customerProfile;
 
-  CustomerChatDetailScreen({
+  SellerChatDetailScreen({
     super.key,
-    required this.sellerId,
-    required this.sellerName,
-    required this.sellerLogo,
+    required this.customerId,
+    required this.customerName,
+    required this.customerProfile,
   });
 
   @override
-  State<CustomerChatDetailScreen> createState() =>
-      _CustomerChatDetailScreenState();
+  State<SellerChatDetailScreen> createState() => _SellerChatDetailScreenState();
 }
 
-class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
+class _SellerChatDetailScreenState extends State<SellerChatDetailScreen> {
   ScrollController scrollController = ScrollController();
   TextEditingController chatMessageTextEditingController =
       TextEditingController();
@@ -34,7 +33,7 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
       // _scrollController fetches the next paginated data when the current position of the user on the screen has surpassed
       if (scrollController.position.pixels >= prevPageTrigger) {
         if (mounted) {
-          if (context.read<CustomerChatDetailProvider>().hasMoreData) {
+          if (context.read<SellerChatDetailProvider>().hasMoreData) {
             callApi(isReset: false);
           }
         }
@@ -45,16 +44,17 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
   callApi({required isReset}) async {
     if (Constant.session.isUserLoggedIn()) {
       if (isReset) {
-        context.read<CustomerChatDetailProvider>().offset = 0;
-        context.read<CustomerChatDetailProvider>().chatDetails = [];
+        context.read<SellerChatDetailProvider>().offset = 0;
+        context.read<SellerChatDetailProvider>().chatDetails = [];
       }
 
-      await context.read<CustomerChatDetailProvider>().getCustomerChatDetail(
-          context: context, params: {ApiAndParams.sellerId: widget.sellerId});
+      await context.read<SellerChatDetailProvider>().getSellerChatDetail(
+          context: context,
+          params: {ApiAndParams.customerId: widget.customerId});
     } else {
       setState(() {
-        context.read<CustomerChatDetailProvider>().customerChatDetailState =
-            CustomerChatDetailState.error;
+        context.read<SellerChatDetailProvider>().sellerChatDetailState =
+            SellerChatDetailState.error;
       });
     }
   }
@@ -83,7 +83,7 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
             ClipRRect(
               borderRadius: BorderRadius.circular(100),
               child: Widgets.setNetworkImg(
-                image: widget.sellerLogo.toString(),
+                image: widget.customerProfile.toString(),
                 height: 35,
                 width: 35,
                 boxFit: BoxFit.cover,
@@ -91,7 +91,7 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
             ),
             Widgets.getSizedBox(width: 10),
             CustomTextLabel(
-              text: widget.sellerName,
+              text: widget.customerName,
               softWrap: true,
               style: TextStyle(
                 fontSize: 16,
@@ -105,8 +105,8 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
           // setCartCounter(context: context),
         ],
       ),
-      bottomNavigationBar: Consumer<CustomerChatDetailProvider>(
-        builder: (context, customerChatListProvider, _) {
+      bottomNavigationBar: Consumer<SellerChatDetailProvider>(
+        builder: (context, sellerChatListProvider, _) {
           return PhysicalModel(
             elevation: 10,
             color: Theme.of(context).scaffoldBackgroundColor,
@@ -182,33 +182,32 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
                               .text.isNotEmpty) {
                             print(chatMessageTextEditingController.text
                                 .toString());
-                            customerChatListProvider.sendMessageToSeller(
+                            sellerChatListProvider.sendMessageToSeller(
                               params: {
                                 "message": chatMessageTextEditingController.text
                                     .toString(),
                                 "sender_id": Constant.session
                                     .getData(SessionManager.keyUserId),
-                                "receiver_id": widget.sellerId,
-                                "sender_type": "1",
+                                "receiver_id": widget.customerId,
+                                "sender_type": "2",
                               },
                               context: context,
                             ).then((value) =>
                                 chatMessageTextEditingController.clear());
                           }
                         },
-                        child:
-                            customerChatListProvider.customerSendMessageState ==
-                                    CustomerSendMessageState.messageSending
-                                ? Container(
-                                    height: 25,
-                                    width: 25,
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : Icon(
-                                    Icons.send_rounded,
-                                    color: ColorsRes.mainTextColor,
-                                    size: 25,
-                                  ),
+                        child: sellerChatListProvider.sellerSendMessageState ==
+                                SellerSendMessageState.messageSending
+                            ? Container(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(),
+                              )
+                            : Icon(
+                                Icons.send_rounded,
+                                color: ColorsRes.mainTextColor,
+                                size: 25,
+                              ),
                       ),
                     ],
                   ),
@@ -218,15 +217,15 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
           );
         },
       ),
-      body: Consumer<CustomerChatDetailProvider>(
-        builder: (context, customerChatListProvider, _) {
+      body: Consumer<SellerChatDetailProvider>(
+        builder: (context, sellerChatListProvider, _) {
           return ListView(
             reverse: true,
             controller: scrollController,
             physics: AlwaysScrollableScrollPhysics(),
             children: [
-              customerChatListProvider.customerChatDetailState ==
-                      CustomerChatDetailState.loading
+              sellerChatListProvider.sellerChatDetailState ==
+                      SellerChatDetailState.loading
                   ? Column(
                       children: List.generate(
                         10,
@@ -237,14 +236,14 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
                         ),
                       ),
                     )
-                  : (customerChatListProvider.customerChatDetailState ==
-                              CustomerChatDetailState.loadingMore ||
-                          customerChatListProvider.customerChatDetailState ==
-                              CustomerChatDetailState.loaded)
+                  : (sellerChatListProvider.sellerChatDetailState ==
+                              SellerChatDetailState.loadingMore ||
+                          sellerChatListProvider.sellerChatDetailState ==
+                              SellerChatDetailState.loaded)
                       ? ListView.builder(
                           itemBuilder: (context, index) {
-                            CustomerChatDetailData chat =
-                                customerChatListProvider.chatDetails[index];
+                            SellerChatDetailData chat =
+                                sellerChatListProvider.chatDetails[index];
 
                             String createdAt = "";
 
@@ -273,7 +272,7 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Align(
-                                  alignment: (chat.senderType == "1")
+                                  alignment: (chat.senderType == "2")
                                       ? AlignmentDirectional.centerEnd
                                       : AlignmentDirectional.centerStart,
                                   child: Container(
@@ -303,9 +302,9 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
                                             children: [
                                               CustomTextLabel(
                                                 jsonKey:
-                                                    "${getTranslatedValue(context, "you_have_request_a_reservation_from")} ${widget.sellerName}:",
+                                                    "${getTranslatedValue(context, "you_have_received_a_reservation_request_from")} ${widget.customerName}:",
                                               ),
-                                              ChatDetailOrderItemWidget(
+                                              SellerChatDetailOrderItemWidget(
                                                 orderData: chat,
                                               )
                                             ],
@@ -348,8 +347,7 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
                               ],
                             );
                           },
-                          itemCount:
-                              customerChatListProvider.chatDetails.length,
+                          itemCount: sellerChatListProvider.chatDetails.length,
                           reverse: true,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),

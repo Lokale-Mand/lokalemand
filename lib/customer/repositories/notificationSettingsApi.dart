@@ -4,7 +4,9 @@ Future<Map<String, dynamic>> getAppNotificationSettingsRepository(
     {required Map<String, dynamic> params,
     required BuildContext context}) async {
   var response = await GeneralMethods.sendApiRequest(
-      apiName: ApiAndParams.apiNotificationSettings,
+      apiName: (Constant.session.getBoolData(SessionManager.isSeller) == true)
+          ? ApiAndParams.apiSellerNotificationSettings
+          : ApiAndParams.apiNotificationSettings,
       params: params,
       isPost: false,
       context: context);
@@ -16,7 +18,9 @@ Future<Map<String, dynamic>> updateAppNotificationSettingsRepository(
     {required Map<String, dynamic> params,
     required BuildContext context}) async {
   var response = await GeneralMethods.sendApiRequest(
-      apiName: ApiAndParams.apiNotificationSettingsUpdate,
+      apiName: (Constant.session.getBoolData(SessionManager.isSeller) == true)
+          ? ApiAndParams.apiSellerNotificationSettingsUpdate
+          : ApiAndParams.apiNotificationSettings,
       params: params,
       isPost: true,
       context: context);

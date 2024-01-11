@@ -35,6 +35,7 @@ class ApiAndParams {
   static String apiPlaceOrder = "place_order";
   static String apiGetChatList = "getChatList";
   static String apiGetAllMessage = "getAllMessage";
+  static String apiSendMessageToSeller = "store_chat";
   static String apiInitiateTransaction = "initiate_transaction";
   static String apiAddTransaction = "add_transaction";
   static String apiDeleteAccount = "delete_account";
@@ -48,6 +49,8 @@ class ApiAndParams {
   static String apiSystemLanguages = "system_languages";
   static String apiDeleteOrder = "delete_order";
   static String apiGetProductRatingList = "$apiProducts/ratings_list";
+  static String apiGetProductRatingAdd = "$apiProducts/rating/add";
+  static String apiGetProductRatingUpdate = "$apiProducts/rating/update";
 
   //Sellers api
   static String apiSellerRegister = "${Constant.customerBaseSellerUrl}save";
@@ -66,6 +69,13 @@ class ApiAndParams {
   static String apiSellerLogin = "${Constant.hostUrl}api/login";
   static String getSellerChatListApi =
       "${Constant.sellerBaseUrl}getSellerChatList";
+  static String apiSellerAllMessage =
+      "${Constant.sellerBaseUrl}getSellerAllMessage";
+  static String apiSendMessageToCustomer =
+      "${Constant.sellerBaseUrl}store_chat";
+  static String apiSellerNotificationSettings = "${Constant.sellerBaseUrl}mail_settings";
+  static String apiSellerNotificationSettingsUpdate = "${Constant.sellerBaseUrl}$apiSellerNotificationSettings/save";
+
 
 //============ api params ============
 
@@ -178,6 +188,7 @@ class ApiAndParams {
   static String system_type = "system_type";
   static String is_default = "is_default";
   static String statusId = "status_id";
+  static String customerId = "customer_id";
 
   // Orders params
   static String active = "1";

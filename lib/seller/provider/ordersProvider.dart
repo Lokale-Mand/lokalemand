@@ -4,6 +4,7 @@ import 'package:lokale_mand/helper/utils/apiAndParams.dart';
 import 'package:lokale_mand/helper/utils/constant.dart';
 import 'package:lokale_mand/helper/utils/generalMethods.dart';
 import 'package:lokale_mand/seller/model/orderStatuses.dart';
+import 'package:lokale_mand/seller/model/sellerChatDetail.dart';
 import 'package:lokale_mand/seller/model/sellerOrders.dart';
 import 'package:lokale_mand/seller/repositories/ordersApi.dart';
 
@@ -166,7 +167,7 @@ class SellerOrdersProvider extends ChangeNotifier {
   Future updateSellerOrdersStatus({
     required Map<String, String> params,
     required BuildContext context,
-    SellerOrdersListItem? order,
+    required SellerChatDetailOrder? order,
   }) async {
     try {
       ordersStatusState = OrderUpdateStatusState.updating;

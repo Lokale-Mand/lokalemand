@@ -59,7 +59,6 @@ dependencies:
   razorpay_flutter: any
   flutter_paystack: ^1.0.7
   firebase_messaging: ^14.1.0
-  flutter_stripe: ^9.3.0
   external_path: ^1.0.3
   open_filex: ^4.3.2
   paytm: ^3.0.1
@@ -81,13 +80,10 @@ dependencies:
   quill_html_editor: ^2.1.9
   flutter_switch: ^0.3.2
   awesome_notifications: ^0.8.2
+  flutter_stripe: ^10.0.0
 
 dependency_overrides:
   intl: ^0.17.0
-  modal_bottom_sheet:
-    git:
-      url: https://github.com/danReynolds/modal_bottom_sheet.git
-      path: modal_bottom_sheet
 
   flutter_lints: ^2.0.1
 

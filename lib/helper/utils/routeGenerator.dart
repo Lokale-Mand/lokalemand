@@ -5,12 +5,15 @@ import 'package:lokale_mand/customer/screen/addressDetailScreen.dart';
 import 'package:lokale_mand/customer/screen/customerChatDetailScreen/customerChatDetailScreen.dart';
 import 'package:lokale_mand/customer/screen/confirmLocationScreen/confirmLocationScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/model/sellerChatDetail.dart';
 import 'package:lokale_mand/seller/provider/sellerAddProductProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
+import 'package:lokale_mand/seller/provider/sellerChatDetailProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerDietaryProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
 import 'package:lokale_mand/seller/screen/htmlEditorScreen.dart';
 import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
+import 'package:lokale_mand/seller/sellerChatDetailScreen/sellerChatDetailScreen.dart';
 
 // CUSTOMER SCREENS VARIABLES
 
@@ -61,6 +64,7 @@ const String sellerMenuScreen = 'sellerMenuScreen';
 const String sellerProductScreen = 'sellerProductScreen';
 const String sellerAddOrUpdateProductScreen = 'sellerAddOrUpdateProductScreen';
 const String htmlEditorScreen = 'htmlEditorScreen';
+const String sellerChatDetailScreen = 'sellerChatDetailScreen';
 
 String currentRoute = splashScreen;
 
@@ -386,6 +390,20 @@ class RouteGenerator {
               return SellerCityByLatLongProvider();
             },
             child: SellerMenuScreen(),
+          ),
+        );
+
+      case sellerChatDetailScreen:
+        List<dynamic> sellerChatDetailScreenArguments =
+        settings.arguments as List<dynamic>;
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<SellerChatDetailProvider>(
+            create: (context) => SellerChatDetailProvider(),
+            child: SellerChatDetailScreen(
+              customerId: sellerChatDetailScreenArguments[0] as String,
+              customerName: sellerChatDetailScreenArguments[1] as String,
+              customerProfile: sellerChatDetailScreenArguments[2] as String,
+            ),
           ),
         );
 

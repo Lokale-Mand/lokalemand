@@ -215,6 +215,7 @@ class _CustomerChatListScreenState extends State<CustomerChatListScreen> {
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w400,
                                                   ),
+                                                  maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                 ),

@@ -133,86 +133,100 @@ class _SellerChatListScreenState extends State<SellerChatListScreen> {
                                     createdAt = DateFormat('dd/MM/yyyy')
                                         .format(dateTime);
                                   }
-                                  return Container(
-                                    padding: EdgeInsets.all(10),
-                                    margin: EdgeInsetsDirectional.only(
-                                      start: 10,
-                                      end: 10,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        top: index == 0
-                                            ? BorderSide(
-                                          width: 1.5,
-                                          color: ColorsRes.menuTitleColor
-                                              .withOpacity(0.1),
-                                        )
-                                            : BorderSide.none,
-                                        bottom: BorderSide(
-                                          width: 1.5,
-                                          color: ColorsRes.menuTitleColor
-                                              .withOpacity(0.1),
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        sellerChatDetailScreen,
+                                        arguments: [
+                                          chat.customerId.toString(),
+                                          chat.customerName.toString(),
+                                          chat.customerLogo,
+                                        ],
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(10),
+                                      margin: EdgeInsetsDirectional.only(
+                                        start: 10,
+                                        end: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          top: index == 0
+                                              ? BorderSide(
+                                            width: 1.5,
+                                            color: ColorsRes.menuTitleColor
+                                                .withOpacity(0.1),
+                                          )
+                                              : BorderSide.none,
+                                          bottom: BorderSide(
+                                            width: 1.5,
+                                            color: ColorsRes.menuTitleColor
+                                                .withOpacity(0.1),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        ClipRRect(
-                                          child: Widgets.setNetworkImg(
-                                              image: chat.customerLogo.toString(),
-                                              height: 60,
-                                              width: 60,
-                                              boxFit: BoxFit.cover),
-                                          borderRadius:
-                                          BorderRadius.circular(100),
-                                        ),
-                                        Widgets.getSizedBox(width: 10),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              CustomTextLabel(
-                                                text:
-                                                chat.customerName.toString(),
-                                                style: TextStyle(
-                                                    color:
-                                                    ColorsRes.mainTextColor,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                    FontWeight.w500),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              Widgets.getSizedBox(height: 5),
-                                              CustomTextLabel(
-                                                text: chat.message.toString(),
-                                                style: TextStyle(
-                                                  color:
-                                                  ColorsRes.menuTitleColor,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          ClipRRect(
+                                            child: Widgets.setNetworkImg(
+                                                image: chat.customerLogo.toString(),
+                                                height: 60,
+                                                width: 60,
+                                                boxFit: BoxFit.cover),
+                                            borderRadius:
+                                            BorderRadius.circular(100),
+                                          ),
+                                          Widgets.getSizedBox(width: 10),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                CustomTextLabel(
+                                                  text:
+                                                  chat.customerName.toString(),
+                                                  style: TextStyle(
+                                                      color:
+                                                      ColorsRes.mainTextColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                      FontWeight.w500),
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
+                                                Widgets.getSizedBox(height: 5),
+                                                CustomTextLabel(
+                                                  text: chat.message.toString(),
+                                                  style: TextStyle(
+                                                    color:
+                                                    ColorsRes.menuTitleColor,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        CustomTextLabel(
-                                          text: createdAt.toString(),
-                                          style: TextStyle(
-                                            color: ColorsRes.menuTitleColor,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
+                                          CustomTextLabel(
+                                            text: createdAt.toString(),
+                                            style: TextStyle(
+                                              color: ColorsRes.menuTitleColor,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },

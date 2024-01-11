@@ -39,7 +39,6 @@ class SellerMainHomeScreenState extends State<SellerMainHomeScreen> {
     Future.delayed(
       Duration.zero,
       () async {
-
         if (context.read<SellerMainHomeScreenProvider>().getCurrentPage() ==
             0) {
           if (Constant.session
@@ -57,16 +56,15 @@ class SellerMainHomeScreenState extends State<SellerMainHomeScreen> {
                     params: {}, context: context)
                 .then(
               (value) async {
-                if (value[ApiAndParams.status].toString() == "1") {
-                  late AppNotificationSettings notificationSettings =
-                      AppNotificationSettings.fromJson(value);
-                  if (notificationSettings.data!.isEmpty) {
-                    await updateAppNotificationSettingsRepository(params: {
+                if (value[ApiAndParams.status].toString() != "1") {
+                  await updateAppNotificationSettingsRepository(
+                    params: {
                       ApiAndParams.statusIds: "1,2,3,4,5,6,7,8",
                       ApiAndParams.mobileStatuses: "1,1,1,1,1,1,1,1",
                       ApiAndParams.mailStatuses: "1,1,1,1,1,1,1,1"
-                    }, context: context);
-                  }
+                    },
+                    context: context,
+                  );
                 }
               },
             );

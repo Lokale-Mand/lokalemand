@@ -1,19 +1,19 @@
-class CustomerChatDetail {
+class SellerChatDetail {
   String? status;
   String? message;
   String? total;
-  List<CustomerChatDetailData>? data;
+  List<SellerChatDetailData>? data;
 
-  CustomerChatDetail({this.status, this.message, this.total, this.data});
+  SellerChatDetail({this.status, this.message, this.total, this.data});
 
-  CustomerChatDetail.fromJson(Map<String, dynamic> json) {
+  SellerChatDetail.fromJson(Map<String, dynamic> json) {
     status = json['status'].toString();
     message = json['message'].toString();
     total = json['total'].toString();
     if (json['data'] != null) {
-      data = <CustomerChatDetailData>[];
+      data = <SellerChatDetailData>[];
       json['data'].forEach((v) {
-        data!.add(new CustomerChatDetailData.fromJson(v));
+        data!.add(new SellerChatDetailData.fromJson(v));
       });
     }
   }
@@ -30,7 +30,7 @@ class CustomerChatDetail {
   }
 }
 
-class CustomerChatDetailData {
+class SellerChatDetailData {
   String? id;
   String? senderId;
   String? senderType;
@@ -38,21 +38,21 @@ class CustomerChatDetailData {
   String? orderId;
   String? message;
   String? createdAt;
-  CustomerChatDetailOrder? order;
+  SellerChatDetailOrder? order;
   ProductRating? productRating;
 
-  CustomerChatDetailData(
+  SellerChatDetailData(
       {this.id,
-        this.senderId,
-        this.senderType,
-        this.receiverId,
-        this.orderId,
-        this.message,
-        this.createdAt,
-        this.order,
-        this.productRating});
+      this.senderId,
+      this.senderType,
+      this.receiverId,
+      this.orderId,
+      this.message,
+      this.createdAt,
+      this.order,
+      this.productRating});
 
-  CustomerChatDetailData.fromJson(Map<String, dynamic> json) {
+  SellerChatDetailData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
     senderId = json['sender_id'].toString();
     senderType = json['sender_type'].toString();
@@ -60,7 +60,9 @@ class CustomerChatDetailData {
     orderId = json['order_id'].toString();
     message = json['message'].toString();
     createdAt = json['created_at'].toString();
-    order = json['order'] != null ? new CustomerChatDetailOrder.fromJson(json['order']) : null;
+    order = json['order'] != null
+        ? new SellerChatDetailOrder.fromJson(json['order'])
+        : null;
     productRating = json['product_rating'] != null
         ? new ProductRating.fromJson(json['product_rating'])
         : null;
@@ -83,9 +85,11 @@ class CustomerChatDetailData {
     }
     return data;
   }
+
+  void copyWith({String? activeStatus}) {}
 }
 
-class CustomerChatDetailOrder {
+class SellerChatDetailOrder {
   String? id;
   String? userId;
   String? deliveryBoyId;
@@ -123,45 +127,45 @@ class CustomerChatDetailOrder {
   List<Items>? items;
   User? user;
 
-  CustomerChatDetailOrder(
+  SellerChatDetailOrder(
       {this.id,
-        this.userId,
-        this.deliveryBoyId,
-        this.deliveryBoyBonusDetails,
-        this.deliveryBoyBonusAmount,
-        this.transactionId,
-        this.ordersId,
-        this.otp,
-        this.mobile,
-        this.orderNote,
-        this.total,
-        this.deliveryCharge,
-        this.taxAmount,
-        this.taxPercentage,
-        this.walletBalance,
-        this.discount,
-        this.promoCodeId,
-        this.promoCode,
-        this.promoDiscount,
-        this.finalTotal,
-        this.paymentMethod,
-        this.address,
-        this.latitude,
-        this.longitude,
-        this.deliveryTime,
-        this.status,
-        this.activeStatus,
-        this.orderFrom,
-        this.pincodeId,
-        this.addressId,
-        this.areaId,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt,
-        this.items,
-        this.user});
+      this.userId,
+      this.deliveryBoyId,
+      this.deliveryBoyBonusDetails,
+      this.deliveryBoyBonusAmount,
+      this.transactionId,
+      this.ordersId,
+      this.otp,
+      this.mobile,
+      this.orderNote,
+      this.total,
+      this.deliveryCharge,
+      this.taxAmount,
+      this.taxPercentage,
+      this.walletBalance,
+      this.discount,
+      this.promoCodeId,
+      this.promoCode,
+      this.promoDiscount,
+      this.finalTotal,
+      this.paymentMethod,
+      this.address,
+      this.latitude,
+      this.longitude,
+      this.deliveryTime,
+      this.status,
+      this.activeStatus,
+      this.orderFrom,
+      this.pincodeId,
+      this.addressId,
+      this.areaId,
+      this.createdAt,
+      this.updatedAt,
+      this.deletedAt,
+      this.items,
+      this.user});
 
-  CustomerChatDetailOrder.fromJson(Map<String, dynamic> json) {
+  SellerChatDetailOrder.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
     userId = json['user_id'].toString();
     deliveryBoyId = json['delivery_boy_id'].toString();
@@ -203,6 +207,50 @@ class CustomerChatDetailOrder {
       });
     }
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
+  }
+
+  SellerChatDetailOrder copyWith(
+      {String? newDeliveryBoyId,
+      String? newDeliveryBoyName,
+      String? activeStatus}) {
+    return SellerChatDetailOrder(
+      id: this.id,
+      userId: this.userId,
+      deliveryBoyId: newDeliveryBoyId ?? this.deliveryBoyId,
+      deliveryBoyBonusDetails: this.deliveryBoyBonusDetails,
+      deliveryBoyBonusAmount: this.deliveryBoyBonusAmount,
+      transactionId: this.transactionId,
+      ordersId: this.ordersId,
+      otp: this.otp,
+      mobile: this.mobile,
+      orderNote: this.orderNote,
+      total: this.total,
+      deliveryCharge: this.deliveryCharge,
+      taxAmount: this.taxAmount,
+      taxPercentage: this.taxPercentage,
+      walletBalance: this.walletBalance,
+      discount: this.discount,
+      promoCodeId: this.promoCodeId,
+      promoCode: this.promoCode,
+      promoDiscount: this.promoDiscount,
+      finalTotal: this.finalTotal,
+      paymentMethod: this.paymentMethod,
+      address: this.address,
+      latitude: this.latitude,
+      longitude: this.longitude,
+      deliveryTime: this.deliveryTime,
+      status: this.status,
+      activeStatus: this.activeStatus,
+      orderFrom: this.orderFrom,
+      pincodeId: this.pincodeId,
+      addressId: this.addressId,
+      areaId: this.areaId,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      deletedAt: this.deletedAt,
+      items: this.items,
+      user: this.user,
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -279,29 +327,29 @@ class Items {
 
   Items(
       {this.id,
-        this.userId,
-        this.orderId,
-        this.ordersId,
-        this.productName,
-        this.variantName,
-        this.productVariantId,
-        this.deliveryBoyId,
-        this.quantity,
-        this.price,
-        this.discountedPrice,
-        this.taxAmount,
-        this.taxPercentage,
-        this.discount,
-        this.subTotal,
-        this.status,
-        this.activeStatus,
-        this.sellerId,
-        this.isCredited,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt,
-        this.imageUrl,
-        this.productVariant});
+      this.userId,
+      this.orderId,
+      this.ordersId,
+      this.productName,
+      this.variantName,
+      this.productVariantId,
+      this.deliveryBoyId,
+      this.quantity,
+      this.price,
+      this.discountedPrice,
+      this.taxAmount,
+      this.taxPercentage,
+      this.discount,
+      this.subTotal,
+      this.status,
+      this.activeStatus,
+      this.sellerId,
+      this.isCredited,
+      this.createdAt,
+      this.updatedAt,
+      this.deletedAt,
+      this.imageUrl,
+      this.productVariant});
 
   Items.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -378,15 +426,15 @@ class ProductVariant {
 
   ProductVariant(
       {this.id,
-        this.productId,
-        this.type,
-        this.status,
-        this.measurement,
-        this.price,
-        this.discountedPrice,
-        this.stock,
-        this.stockUnitId,
-        this.product});
+      this.productId,
+      this.type,
+      this.status,
+      this.measurement,
+      this.price,
+      this.discountedPrice,
+      this.stock,
+      this.stockUnitId,
+      this.product});
 
   ProductVariant.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -399,7 +447,7 @@ class ProductVariant {
     stock = json['stock'].toString();
     stockUnitId = json['stock_unit_id'].toString();
     product =
-    json['product'] != null ? new Product.fromJson(json['product']) : null;
+        json['product'] != null ? new Product.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -458,17 +506,17 @@ class User {
 
   User(
       {this.id,
-        this.name,
-        this.email,
-        this.profile,
-        this.countryCode,
-        this.mobile,
-        this.balance,
-        this.referralCode,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt});
+      this.name,
+      this.email,
+      this.profile,
+      this.countryCode,
+      this.mobile,
+      this.balance,
+      this.referralCode,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.deletedAt});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -514,12 +562,12 @@ class ProductRating {
 
   ProductRating(
       {this.id,
-        this.productId,
-        this.userId,
-        this.rate,
-        this.review,
-        this.status,
-        this.updatedAt});
+      this.productId,
+      this.userId,
+      this.rate,
+      this.review,
+      this.status,
+      this.updatedAt});
 
   ProductRating.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

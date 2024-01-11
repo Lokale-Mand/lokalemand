@@ -465,6 +465,7 @@ class _LoginAccountState extends State<LoginAccount> {
 
   backendApiProcess(User? user) async {
     if (user != null) {
+
       Constant.session.setData(SessionManager.keyAuthUid, user.uid, false);
       Map<String, String> params = {
         ApiAndParams.email: edtEmail.text.toString(),
@@ -504,9 +505,7 @@ class _LoginAccountState extends State<LoginAccount> {
     } else {
       if (Constant.session.getBoolData(SessionManager.keySkipLogin) ||
           Constant.session.getBoolData(SessionManager.isUserLogin)) {
-        if (Constant.session
-            .getData(SessionManager.keyUserName)
-            .isNotEmpty) {
+        if (Constant.session.getData(SessionManager.keyUserName).isNotEmpty) {
           Navigator.pushReplacementNamed(
             context,
             mainHomeScreen,

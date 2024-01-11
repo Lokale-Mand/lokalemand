@@ -1,8 +1,8 @@
-import 'package:lokale_mand/customer/models/chatDetail.dart';
-import 'package:lokale_mand/customer/repositories/customerChatDetailApi.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/model/sellerChatDetail.dart';
+import 'package:lokale_mand/seller/repositories/sellerChatDetailApi.dart';
 
-enum CustomerChatDetailState {
+enum SellerChatDetailState {
   initial,
   loading,
   loaded,
@@ -12,20 +12,19 @@ enum CustomerChatDetailState {
   error,
 }
 
-enum CustomerSendMessageState {
+enum SellerSendMessageState {
   initial,
   messageSending,
   loaded,
   error,
 }
 
-class CustomerChatDetailProvider extends ChangeNotifier {
-  CustomerChatDetailState customerChatDetailState =
-      CustomerChatDetailState.initial;
-  CustomerSendMessageState customerSendMessageState =
-      CustomerSendMessageState.initial;
+class SellerChatDetailProvider extends ChangeNotifier {
+  SellerChatDetailState sellerChatDetailState = SellerChatDetailState.initial;
+  SellerSendMessageState sellerSendMessageState =
+      SellerSendMessageState.initial;
   String message = '';
-  List<CustomerChatDetailData> chatDetails = [];
+  List<SellerChatDetailData> chatDetails = [];
   bool hasMoreData = false;
   int totalData = 0;
   int offset = 0;
@@ -42,14 +41,14 @@ class CustomerChatDetailProvider extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  getCustomerChatDetail({
+  getSellerChatDetail({
     required Map<String, String> params,
     required BuildContext context,
   }) async {
     if (offset == 0) {
-      customerChatDetailState = CustomerChatDetailState.loading;
+      sellerChatDetailState = SellerChatDetailState.loading;
     } else {
-      customerChatDetailState = CustomerChatDetailState.loadingMore;
+      sellerChatDetailState = SellerChatDetailState.loadingMore;
     }
     notifyListeners();
 
@@ -60,21 +59,21 @@ class CustomerChatDetailProvider extends ChangeNotifier {
       params[ApiAndParams.offset] = offset.toString();
 
       Map<String, dynamic> getData =
-          (await getCustomerChatDetailApi(context: context, params: params));
+          (await getSellerChatDetailApi(context: context, params: params));
 
       if (getData[ApiAndParams.status].toString() == "1") {
         totalData = int.parse(getData[ApiAndParams.total].toString());
 
         if (totalData == 0) {
-          customerChatDetailState = CustomerChatDetailState.empty;
+          sellerChatDetailState = SellerChatDetailState.empty;
           notifyListeners();
         } else {
-          List<CustomerChatDetailData> tempCustomerChatDetail = (getData['data']
-                  as List)
-              .map((e) => CustomerChatDetailData.fromJson(Map.from(e ?? {})))
-              .toList();
+          List<SellerChatDetailData> tempSellerChatDetail =
+              (getData['data'] as List)
+                  .map((e) => SellerChatDetailData.fromJson(Map.from(e ?? {})))
+                  .toList();
 
-          chatDetails.addAll(tempCustomerChatDetail);
+          chatDetails.addAll(tempSellerChatDetail);
 
           hasMoreData = totalData > chatDetails.length;
           if (hasMoreData) {
@@ -82,13 +81,13 @@ class CustomerChatDetailProvider extends ChangeNotifier {
                 (Constant.defaultDataLoadLimitAtOnce.toString().toInt + 30);
           }
 
-          customerChatDetailState = CustomerChatDetailState.loaded;
+          sellerChatDetailState = SellerChatDetailState.loaded;
           notifyListeners();
         }
       }
     } catch (e) {
       message = e.toString();
-      customerChatDetailState = CustomerChatDetailState.error;
+      sellerChatDetailState = SellerChatDetailState.error;
       GeneralMethods.showMessage(
         context,
         message,
@@ -102,26 +101,25 @@ class CustomerChatDetailProvider extends ChangeNotifier {
     required Map<String, String> params,
     required BuildContext context,
   }) async {
-    customerSendMessageState = CustomerSendMessageState.messageSending;
+    sellerSendMessageState = SellerSendMessageState.messageSending;
     notifyListeners();
 
     try {
-
-      Map<String, dynamic> getData = await getCustomerSendMessageToSellerApi(
+      Map<String, dynamic> getData = await getSellerSendMessageToSellerApi(
         context: context,
         params: params,
       );
 
       if (getData[ApiAndParams.status].toString() == "1") {
-        CustomerChatDetailData customerChatDetailData =
-            CustomerChatDetailData.fromJson(getData[ApiAndParams.data]);
-        chatDetails = [customerChatDetailData, ...chatDetails];
-        customerSendMessageState = CustomerSendMessageState.loaded;
+        SellerChatDetailData sellerChatDetailData =
+            SellerChatDetailData.fromJson(getData[ApiAndParams.data]);
+        chatDetails = [sellerChatDetailData, ...chatDetails];
+        sellerSendMessageState = SellerSendMessageState.loaded;
         notifyListeners();
       }
     } catch (e) {
       message = e.toString();
-      customerSendMessageState = CustomerSendMessageState.error;
+      sellerSendMessageState = SellerSendMessageState.error;
       GeneralMethods.showMessage(
         context,
         message,

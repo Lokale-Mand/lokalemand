@@ -85,6 +85,7 @@ class UserProfileProvider extends ChangeNotifier {
       await getLoginApi(context: context, params: params)
           .then((mainData) async {
         userProfile = UserProfile.fromJson(mainData);
+
         if (userProfile?.status == "1") {
           Constant.session.setData(SessionManager.keyToken,
               userProfile?.data?.accessToken.toString() ?? "", false);
@@ -92,7 +93,7 @@ class UserProfileProvider extends ChangeNotifier {
               .read<AddressProvider>()
               .getAddressProvider(context: context)
               .then((value) async {
-            await setUserDataInSession(mainData);
+            await setUserDataInSession(userProfile);
           });
         } else {
           GeneralMethods.showMessage(
@@ -108,50 +109,24 @@ class UserProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future setUserDataInSession(Map<String, dynamic> mainData) async {
-    Map<String, dynamic> data =
-        await mainData[ApiAndParams.data] as Map<String, dynamic>;
-
-    Map<String, dynamic> userData =
-        await data[ApiAndParams.user] as Map<String, dynamic>;
-
+  Future setUserDataInSession(UserProfile? userProfile) async {
     Constant.session.setBoolData(SessionManager.isUserLogin, true, false);
 
     Constant.session.setUserData(
       firebaseUid: Constant.session.getData(SessionManager.keyAuthUid),
-      name: userData[ApiAndParams.name],
-      id: "0",
-      email: userData[ApiAndParams.email],
-      profile: userData[ApiAndParams.profile].toString(),
-      countryCode: userData[ApiAndParams.countryCode],
-      mobile: userData[ApiAndParams.mobile],
-      referralCode: userData[ApiAndParams.referralCode],
-      status: int.parse(userData[ApiAndParams.status].toString()),
-      token: data[ApiAndParams.accessToken],
+      name: userProfile?.data?.user?.name ?? "",
+      id: userProfile?.data?.user?.id ?? "",
+      email: userProfile?.data?.user?.email ?? "",
+      profile: userProfile?.data?.user?.profile ?? "",
+      countryCode: userProfile?.data?.user?.countryCode ?? "",
+      mobile: userProfile?.data?.user?.mobile ?? "",
+      referralCode: userProfile?.data?.user?.referralCode ?? "",
+      status: int.parse(
+        userProfile?.data?.user?.status ?? "0",
+      ),
+      token: userProfile?.data?.accessToken ?? "",
       isUserSeller: false,
       /*balance: userData[ApiAndParams.balance].toString()*/
-    );
-    profileState = ProfileState.loaded;
-    notifyListeners();
-  }
-
-  updateUserDataInSession(Map<String, dynamic> mainData) async {
-    Map<String, dynamic> userData =
-        await mainData[ApiAndParams.user] as Map<String, dynamic>;
-
-    Constant.session.setUserData(
-      firebaseUid: Constant.session.getData(SessionManager.keyAuthUid),
-      id: "0",
-      name: userData[ApiAndParams.name],
-      email: userData[ApiAndParams.email],
-      profile: userData[ApiAndParams.profile].toString(),
-      countryCode: userData[ApiAndParams.countryCode],
-      mobile: userData[ApiAndParams.mobile],
-      referralCode: userData[ApiAndParams.referralCode],
-      status: int.parse(userData[ApiAndParams.status].toString()),
-      token: Constant.session.getData(SessionManager.keyToken),
-      isUserSeller:
-          false, /*balance: Constant.session.getData(SessionManager.keyBalance)*/
     );
 
     profileState = ProfileState.loaded;

@@ -1,21 +1,21 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
-Future<Map<String, dynamic>> getCustomerChatDetailApi(
+Future<Map<String, dynamic>> getSellerChatDetailApi(
     {required BuildContext context,
     required Map<String, dynamic> params}) async {
   var response = await GeneralMethods.sendApiRequest(
-      apiName: ApiAndParams.apiGetAllMessage,
+      apiName: ApiAndParams.apiSellerAllMessage,
       params: params,
       isPost: false,
       context: context);
   return json.decode(response);
 }
 
-Future<Map<String, dynamic>> getCustomerSendMessageToSellerApi(
+Future<Map<String, dynamic>> getSellerSendMessageToSellerApi(
     {required BuildContext context,
     required Map<String, dynamic> params}) async {
   var response = await GeneralMethods.sendApiRequest(
-      apiName: ApiAndParams.apiSendMessageToSeller,
+      apiName: ApiAndParams.apiSendMessageToCustomer,
       params: params,
       isPost: true,
       context: context);

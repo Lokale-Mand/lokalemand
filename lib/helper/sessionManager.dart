@@ -81,17 +81,17 @@ class SessionManager extends ChangeNotifier {
     /*required String balance*/
   }) async {
     prefs.setString(keyAuthUid, firebaseUid);
-    setData(keyUserName, name, true);
-    setData(keyUserId, id, true);
-    setData(keyUserImage, profile, true);
-    setData(keyEmail, email, true);
+    setData(keyUserName, name, false);
+    setData(keyUserId, id, false);
+    setData(keyUserImage, profile, false);
+    setData(keyEmail, email, false);
     prefs.setString(keyCountryCode, countryCode);
     prefs.setString(keyPhone, mobile);
     prefs.setString(keyReferralCode, referralCode);
     prefs.setInt(keyUserStatus, status);
     prefs.setString(keyToken, token);
-    setBoolData(isUserLogin, true, true);
-    setBoolData(isSeller, isUserSeller, true);
+    setBoolData(isUserLogin, true, false);
+    setBoolData(isSeller, isUserSeller, false);
     notifyListeners();
 /*
     prefs.setString(keyBalance, balance.toString());
@@ -114,10 +114,10 @@ class SessionManager extends ChangeNotifier {
     required String sellerLongitude,
   }) async {
     prefs.setString(keyAuthUid, firebaseUid);
-    setData(keyUserName, name, true);
-    setData(keyUserId, id, true);
-    setData(keyUserImage, profile, true);
-    setData(keyEmail, email, true);
+    setData(keyUserName, name, false);
+    setData(keyUserId, id, false);
+    setData(keyUserImage, profile, false);
+    setData(keyEmail, email, false);
     prefs.setString(keyCountryCode, countryCode);
     prefs.setString(keyPhone, mobile);
     prefs.setString(keyReferralCode, referralCode);
@@ -127,8 +127,8 @@ class SessionManager extends ChangeNotifier {
     prefs.setString(keySellerLatitude, sellerLatitude);
     prefs.setString(keySellerLongitude, sellerLongitude);
     prefs.setString(keyToken, token);
-    setBoolData(isUserLogin, true, true);
-    setBoolData(isSeller, isUserSeller, true);
+    setBoolData(isUserLogin, true, false);
+    setBoolData(isSeller, isUserSeller, false);
     notifyListeners();
   }
 

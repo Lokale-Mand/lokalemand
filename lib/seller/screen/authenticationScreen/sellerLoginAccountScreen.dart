@@ -14,7 +14,7 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
   bool isLoading = false, isAcceptedTerms = false, isPasswordVisible = false;
 
   TextEditingController edtEmail =
-      TextEditingController(text: "vimalp410fake@gmail.com");
+      TextEditingController(text: "wrteam.vimal.fake@gmail.com");
   TextEditingController edtPassword = TextEditingController(text: "123123");
   bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
