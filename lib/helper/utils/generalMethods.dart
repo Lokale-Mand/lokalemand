@@ -536,6 +536,7 @@ extension TimeOfDayConverter on TimeOfDay {
     return "$hour:$min";
   }
 }
+
 extension ContextExtension on BuildContext {
   double get width => MediaQuery.sizeOf(this).width;
 
@@ -544,18 +545,17 @@ extension ContextExtension on BuildContext {
 
 extension CurrencyConverter on String {
   String get currency => NumberFormat.currency(
-      symbol: Constant.currency,
-      decimalDigits: int.parse(Constant.decimalPoints.toString()),
-      name: Constant.currencyCode)
+          symbol: Constant.currency,
+          decimalDigits: int.parse(Constant.decimalPoints.toString()),
+          name: Constant.currencyCode)
       .format(this.toDouble);
 
-  double get toDouble => double.parse(this);
+  double get toDouble => double.tryParse(this) ?? 0.0;
 
-  int get toInt => int.parse(this);
+  int get toInt => int.tryParse(this) ?? 0;
 
   String get toStr => this.toString();
 }
-
 
 extension Precision on double {
   double toPrecision(int fractionDigits) {

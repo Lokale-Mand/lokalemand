@@ -35,6 +35,7 @@ class ApiAndParams {
   static String apiPlaceOrder = "place_order";
   static String apiGetChatList = "getChatList";
   static String apiGetAllMessage = "getAllMessage";
+  static String apiSendMessageToSeller = "store_chat";
   static String apiInitiateTransaction = "initiate_transaction";
   static String apiAddTransaction = "add_transaction";
   static String apiDeleteAccount = "delete_account";
@@ -48,6 +49,8 @@ class ApiAndParams {
   static String apiSystemLanguages = "system_languages";
   static String apiDeleteOrder = "delete_order";
   static String apiGetProductRatingList = "$apiProducts/ratings_list";
+  static String apiGetProductRatingAdd = "$apiProducts/rating/add";
+  static String apiGetProductRatingUpdate = "$apiProducts/rating/update";
 
   //Sellers api
   static String apiSellerRegister = "${Constant.customerBaseSellerUrl}save";

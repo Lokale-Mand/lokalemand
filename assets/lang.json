@@ -493,5 +493,8 @@
   "yesterday": "Yesterday",
   "reserve_product": "Reserve product",
   "your_products": "Reserve product(s)",
-  "payment_method_description": "Choose your preferred payment method. The seller still has to accept your reservation before you can pay."
+  "payment_method_description": "Choose your preferred payment method. The seller still has to accept your reservation before you can pay.",
+  "you_have_received_a_request_from": "You have requested a reservation from",
+  "rate_the_product": "Rate the product",
+  "rate_now": "Rate Now"
 }

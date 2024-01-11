@@ -27,17 +27,19 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
       TextEditingController();
 
   scrollListener() {
-    // nextPageTrigger will have a value equivalent to 70% of the list size.
-    var nextPageTrigger = 0.7 * scrollController.position.minScrollExtent;
+    try {
+      // prevPageTrigger will have a value equivalent to 70% of the list size.
+      var prevPageTrigger = 0.7 * scrollController.position.maxScrollExtent;
 
-// _scrollController fetches the next paginated data when the current position of the user on the screen has surpassed
-    if (scrollController.position.pixels <= nextPageTrigger) {
-      if (mounted) {
-        if (context.read<CustomerChatDetailProvider>().hasMoreData) {
-          callApi(isReset: false);
+      // _scrollController fetches the next paginated data when the current position of the user on the screen has surpassed
+      if (scrollController.position.pixels >= prevPageTrigger) {
+        if (mounted) {
+          if (context.read<CustomerChatDetailProvider>().hasMoreData) {
+            callApi(isReset: false);
+          }
         }
       }
-    }
+    } catch (s) {}
   }
 
   callApi({required isReset}) async {
@@ -59,7 +61,13 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((value) => callApi(isReset: true));
+    Future.delayed(Duration.zero).then((value) {
+      scrollController.addListener(() {
+        scrollListener();
+      });
+
+      callApi(isReset: true);
+    });
     super.initState();
   }
 
@@ -97,23 +105,12 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
           // setCartCounter(context: context),
         ],
       ),
-      bottomNavigationBar: PhysicalModel(
-        elevation: 10,
-        color: Theme.of(context).scaffoldBackgroundColor,
-        shadowColor: Colors.black,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(
-            15,
-          ),
-          topRight: Radius.circular(
-            15,
-          ),
-        ),
-        child: Container(
-          padding: EdgeInsetsDirectional.only(
-              start: 20, end: 20, top: 20, bottom: 30),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
+      bottomNavigationBar: Consumer<CustomerChatDetailProvider>(
+        builder: (context, customerChatListProvider, _) {
+          return PhysicalModel(
+            elevation: 10,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            shadowColor: Colors.black,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(
                 15,
@@ -122,65 +119,113 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
                 15,
               ),
             ),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  width: MediaQuery.sizeOf(context).width,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: ColorsRes.menuTitleColor.withOpacity(0.2),
-                      width: 2,
-                    ),
+            child: Container(
+              padding: EdgeInsetsDirectional.only(
+                start: 20,
+                end: 20,
+                top: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 30,
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(
+                    15,
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: TextField(
-                      decoration: null,
-                      controller: chatMessageTextEditingController,
-                    ),
+                  topRight: Radius.circular(
+                    15,
                   ),
                 ),
               ),
-              Widgets.getSizedBox(width: 10),
-              Row(
+              child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.attach_file_rounded,
-                      color: ColorsRes.mainTextColor,
-                      size: 25,
+                  Expanded(
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      constraints: BoxConstraints(
+                        minHeight: 40,
+                        maxHeight: 120,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: ColorsRes.menuTitleColor.withOpacity(0.2),
+                          width: 2,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: TextField(
+                          decoration: null,
+                          minLines: 1,
+                          maxLines: 100,
+                          controller: chatMessageTextEditingController,
+                        ),
+                      ),
                     ),
                   ),
                   Widgets.getSizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.send_rounded,
-                      color: ColorsRes.mainTextColor,
-                      size: 25,
-                    ),
+                  Row(
+                    children: [
+                      // GestureDetector(
+                      //   onTap: () {},
+                      //   child: Icon(
+                      //     Icons.attach_file_rounded,
+                      //     color: ColorsRes.mainTextColor,
+                      //     size: 25,
+                      //   ),
+                      // ),
+                      // Widgets.getSizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () {
+                          if (chatMessageTextEditingController
+                              .text.isNotEmpty) {
+                            print(chatMessageTextEditingController.text
+                                .toString());
+                            customerChatListProvider.sendMessageToSeller(
+                              params: {
+                                "message": chatMessageTextEditingController.text
+                                    .toString(),
+                                "sender_id": Constant.session
+                                    .getData(SessionManager.keyUserId),
+                                "receiver_id": widget.sellerId,
+                                "sender_type": "1",
+                              },
+                              context: context,
+                            ).then((value) =>
+                                chatMessageTextEditingController.clear());
+                          }
+                        },
+                        child:
+                            customerChatListProvider.customerSendMessageState ==
+                                    CustomerSendMessageState.messageSending
+                                ? Container(
+                                    height: 25,
+                                    width: 25,
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Icon(
+                                    Icons.send_rounded,
+                                    color: ColorsRes.mainTextColor,
+                                    size: 25,
+                                  ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
       body: Consumer<CustomerChatDetailProvider>(
         builder: (context, customerChatListProvider, _) {
-          return setRefreshIndicator(
-            refreshCallback: () async {
-              callApi(isReset: true);
-            },
-            child: SingleChildScrollView(
-              controller: scrollController,
-              physics: AlwaysScrollableScrollPhysics(),
-              child: customerChatListProvider.customerChatDetailState ==
+          return ListView(
+            reverse: true,
+            controller: scrollController,
+            physics: AlwaysScrollableScrollPhysics(),
+            children: [
+              customerChatListProvider.customerChatDetailState ==
                       CustomerChatDetailState.loading
                   ? Column(
                       children: List.generate(
@@ -196,136 +241,125 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
                               CustomerChatDetailState.loadingMore ||
                           customerChatListProvider.customerChatDetailState ==
                               CustomerChatDetailState.loaded)
-                      ? ListView(
+                      ? ListView.builder(
+                          itemBuilder: (context, index) {
+                            CustomerChatDetailData chat =
+                                customerChatListProvider.chatDetails[index];
+
+                            String createdAt = "";
+
+                            DateTime dateTime =
+                                DateTime.parse(chat.createdAt.toString())
+                                    .toLocal();
+                            DateTime now = DateTime.now().toLocal();
+                            DateTime yesterday =
+                                now.subtract(Duration(days: 1));
+
+                            if (isSameDay(dateTime, now)) {
+                              // Today
+                              createdAt = DateFormat.Hm()
+                                  .format(dateTime); // HH:MM format
+                            } else if (isSameDay(dateTime, yesterday)) {
+                              // Yesterday
+                              createdAt =
+                                  getTranslatedValue(context, "yesterday");
+                            } else {
+                              // More than yesterday
+                              createdAt =
+                                  DateFormat('dd/MM/yyyy').format(dateTime);
+                            }
+
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Align(
+                                  alignment: (chat.senderType == "1")
+                                      ? AlignmentDirectional.centerEnd
+                                      : AlignmentDirectional.centerStart,
+                                  child: Container(
+                                    constraints: BoxConstraints(
+                                      maxWidth:
+                                          MediaQuery.sizeOf(context).width *
+                                              0.7,
+                                    ),
+                                    padding: EdgeInsets.all(10),
+                                    margin: EdgeInsetsDirectional.only(
+                                        start: 10, end: 10, bottom: 10),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: ColorsRes.menuTitleColor,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: ColorsRes.menuTitleColor
+                                          .withOpacity(0.02),
+                                    ),
+                                    child: (chat.order != null ||
+                                            chat.orderId != "null")
+                                        ? Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CustomTextLabel(
+                                                jsonKey:
+                                                    "${getTranslatedValue(context, "you_have_received_a_request_from")} ${widget.sellerName}:",
+                                              ),
+                                              ChatDetailOrderItemWidget(
+                                                orderData: chat,
+                                              )
+                                            ],
+                                          )
+                                        : Column(
+                                            children: [
+                                              Align(
+                                                child: CustomTextLabel(
+                                                  text: chat.message
+                                                      .toString()
+                                                      .replaceAll("\\n", "\n")
+                                                      .replaceAll("\\t", "\t"),
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorsRes.mainTextColor,
+                                                  ),
+                                                  softWrap: true,
+                                                ),
+                                                alignment: AlignmentDirectional
+                                                    .centerStart,
+                                              ),
+                                              Align(
+                                                child: CustomTextLabel(
+                                                  text: createdAt.toString(),
+                                                  style: TextStyle(
+                                                    color: ColorsRes
+                                                        .menuTitleColor,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  softWrap: true,
+                                                ),
+                                                alignment: AlignmentDirectional
+                                                    .centerEnd,
+                                              ),
+                                            ],
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                          itemCount:
+                              customerChatListProvider.chatDetails.length,
+                          reverse: true,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          children: [
-                            Column(
-                              children: List.generate(
-                                customerChatListProvider.chatDetails.length,
-                                (index) {
-                                  CustomerChatDetailData chat =
-                                      customerChatListProvider
-                                          .chatDetails[index];
-
-                                  String createdAt = "";
-
-                                  DateTime dateTime =
-                                      DateTime.parse(chat.createdAt.toString())
-                                          .toLocal();
-                                  DateTime now = DateTime.now().toLocal();
-                                  DateTime yesterday =
-                                      now.subtract(Duration(days: 1));
-
-                                  if (isSameDay(dateTime, now)) {
-                                    // Today
-                                    createdAt = DateFormat.Hm()
-                                        .format(dateTime); // HH:MM format
-                                  } else if (isSameDay(dateTime, yesterday)) {
-                                    // Yesterday
-                                    createdAt = getTranslatedValue(
-                                        context, "yesterday");
-                                  } else {
-                                    // More than yesterday
-                                    createdAt = DateFormat('dd/MM/yyyy')
-                                        .format(dateTime);
-                                  }
-
-                                  return Align(
-                                    alignment: (chat.senderType == "1")
-                                        ? AlignmentDirectional.centerEnd
-                                        : AlignmentDirectional.centerStart,
-                                    child: Container(
-                                      constraints: BoxConstraints(
-                                        maxWidth:
-                                            MediaQuery.sizeOf(context).width *
-                                                0.7,
-                                      ),
-                                      padding: EdgeInsets.all(10),
-                                      margin: EdgeInsetsDirectional.only(
-                                          start: 10, end: 10, bottom: 10),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: ColorsRes.menuTitleColor,
-                                        ),
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: ColorsRes.menuTitleColor
-                                            .withOpacity(0.02),
-                                      ),
-                                      child: (chat.order != null ||
-                                              chat.orderId != "null")
-                                          ? Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                CustomTextLabel(
-                                                  text:
-                                                      "You have requested a reservation from Felyx:",
-                                                ),
-                                                ChatDetailOrderItemWidget(
-                                                  orderData: chat.order,
-                                                )
-                                              ],
-                                            )
-                                          : Column(
-                                              children: [
-                                                Align(
-                                                  child: CustomTextLabel(
-                                                    text:
-                                                        chat.message.toString(),
-                                                    style: TextStyle(
-                                                      color: ColorsRes
-                                                          .mainTextColor,
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  alignment:
-                                                      AlignmentDirectional
-                                                          .centerStart,
-                                                ),
-                                                Align(
-                                                  child: CustomTextLabel(
-                                                    text: createdAt.toString(),
-                                                    style: TextStyle(
-                                                      color: ColorsRes
-                                                          .menuTitleColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  alignment:
-                                                      AlignmentDirectional
-                                                          .centerEnd,
-                                                ),
-                                              ],
-                                            ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            if (customerChatListProvider
-                                    .customerChatDetailState ==
-                                CustomerChatDetailState.loadingMore)
-                              CustomShimmer(
-                                height: 80,
-                                width: MediaQuery.sizeOf(context).width,
-                                margin: EdgeInsets.only(bottom: 10),
-                              ),
-                          ],
                         )
                       : DefaultBlankItemMessageScreen(
                           image: "messages",
                           title: "opps_no_message_yet",
                           description: "opps_no_message_yet_description",
                         ),
-            ),
+            ],
           );
         },
       ),
