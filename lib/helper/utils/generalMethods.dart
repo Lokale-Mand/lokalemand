@@ -117,7 +117,9 @@ class GeneralMethods {
             params);
 
         response = await http.get(Uri.parse(mainUrl), headers: headersData);
-      }
+      }print(
+          "ERROR IS ${"$mainUrl,{$params},Status Code - ${response.statusCode}, ${response.body}"}");
+
 
       if (response.statusCode == 200) {
         if (response.body == "null") {
@@ -553,8 +555,6 @@ extension CurrencyConverter on String {
   double get toDouble => double.tryParse(this) ?? 0.0;
 
   int get toInt => int.tryParse(this) ?? 0;
-
-  String get toStr => this.toString();
 }
 
 extension Precision on double {

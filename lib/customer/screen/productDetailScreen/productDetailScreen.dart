@@ -285,8 +285,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     StoreTime storeTime =
         context.read<ProductDetailProvider>().storeTime[dateTime.weekday];
 
-    print("${storeTime.openTime}");
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,

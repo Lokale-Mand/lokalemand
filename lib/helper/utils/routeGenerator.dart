@@ -9,11 +9,14 @@ import 'package:lokale_mand/seller/model/sellerChatDetail.dart';
 import 'package:lokale_mand/seller/provider/sellerAddProductProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerChatDetailProvider.dart';
+import 'package:lokale_mand/seller/provider/sellerCityProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerDietaryProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
+import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCategoryItem.dart';
+import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCitiesListScreen.dart';
 import 'package:lokale_mand/seller/screen/htmlEditorScreen.dart';
 import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
-import 'package:lokale_mand/seller/sellerChatDetailScreen/sellerChatDetailScreen.dart';
+import 'package:lokale_mand/seller/screen/sellerChatDetailScreen/sellerChatDetailScreen.dart';
 
 // CUSTOMER SCREENS VARIABLES
 
@@ -65,6 +68,7 @@ const String sellerProductScreen = 'sellerProductScreen';
 const String sellerAddOrUpdateProductScreen = 'sellerAddOrUpdateProductScreen';
 const String htmlEditorScreen = 'htmlEditorScreen';
 const String sellerChatDetailScreen = 'sellerChatDetailScreen';
+const String citiesListScreen = 'citiesListScreen';
 
 String currentRoute = splashScreen;
 
@@ -404,6 +408,15 @@ class RouteGenerator {
               customerName: sellerChatDetailScreenArguments[1] as String,
               customerProfile: sellerChatDetailScreenArguments[2] as String,
             ),
+          ),
+        );
+
+
+      case citiesListScreen:
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+            create: (context) => SellerCitiesListProvider(),
+            child: CitiesListScreen(),
           ),
         );
 

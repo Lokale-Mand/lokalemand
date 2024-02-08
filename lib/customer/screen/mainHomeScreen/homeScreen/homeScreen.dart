@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late CameraPosition kGooglePlex;
   late LatLng kMapCenter;
 
-  List<Marker> markers = [];
+  Set<Marker> markers = Set();
 
   Future<void> updateMap(double latitude, double longitude) async {
     Constant.session
@@ -48,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     controller.animateCamera(CameraUpdate.newCameraPosition(kGooglePlex));
+    context.read<SellerListProvider>().storeMarkers.clear();
     context.read<SellerListProvider>().getSellerListProvider(
       params: {
         ApiAndParams.latitude: latitude,
@@ -55,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       context: context,
     );
+
   }
 
   @override
@@ -323,6 +325,7 @@ class _HomeScreenState extends State<HomeScreen> {
       zoomControlsEnabled: false,
       onTap: (value) async {
         updateMap(value.latitude, value.longitude);
+        context.read<SellerListProvider>().storeMarkers.clear();
         context.read<SellerListProvider>().getSellerListProvider(
           params: {
             ApiAndParams.latitude: value.latitude.toString(),
@@ -335,7 +338,10 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       },
       onMapCreated: _onMapCreated,
-      markers: markers.toSet(),
+      markers: markers,
+      buildingsEnabled: false,
+      indoorViewEnabled: false,
+
 
       // markers: markers,
     );

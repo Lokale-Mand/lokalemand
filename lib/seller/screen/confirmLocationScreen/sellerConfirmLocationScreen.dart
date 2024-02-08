@@ -299,7 +299,8 @@ class _SellerConfirmLocationState extends State<SellerConfirmLocation> {
                 } else if (widget.from == "seller_register") {
                   Navigator.pop(context, cityByLatLong);
                 }
-              })
+              }),
+            SizedBox(height: 10,)
           ],
         ));
   }

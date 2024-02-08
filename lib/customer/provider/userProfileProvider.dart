@@ -34,8 +34,11 @@ class UserProfileProvider extends ChangeNotifier {
             if (value.isNotEmpty) {
               if (value[ApiAndParams.status].toString() == "1") {
                 loginApi(context: context, params: {
+
                   ApiAndParams.mobile:
                       Constant.session.getData(SessionManager.keyPhone),
+                  ApiAndParams.email:
+                      Constant.session.getData(SessionManager.keyEmail),
                   // ApiAndParams.authUid: "123456",
                   // Temp used for testing
                   ApiAndParams.authUid:
@@ -89,11 +92,15 @@ class UserProfileProvider extends ChangeNotifier {
         if (userProfile?.status == "1") {
           Constant.session.setData(SessionManager.keyToken,
               userProfile?.data?.accessToken.toString() ?? "", false);
+
+          Constant.session.setData(SessionManager.keyUserImage,
+              userProfile?.data?.user?.profile.toString() ?? "", false);
+
+          await setUserDataInSession(userProfile);
           await context
               .read<AddressProvider>()
               .getAddressProvider(context: context)
               .then((value) async {
-            await setUserDataInSession(userProfile);
           });
         } else {
           GeneralMethods.showMessage(

@@ -133,7 +133,6 @@ class _NotificationsAndMailSettingsScreenScreenState
           getTranslatedValue(context, "order_status_display_names_cancelled"),
           getTranslatedValue(context, "order_status_display_names_returned"),
         ];
-        print("${Theme.of(context).cardColor}, ${Theme.of(context).scaffoldBackgroundColor}");
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),

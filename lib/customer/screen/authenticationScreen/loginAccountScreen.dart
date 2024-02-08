@@ -13,8 +13,8 @@ class _LoginAccountState extends State<LoginAccount> {
   bool isLoading = false, isAcceptedTerms = false, isPasswordVisible = false;
 
   TextEditingController edtEmail =
-      TextEditingController(text: "wrteam.vimal@gmail.com");
-  TextEditingController edtPassword = TextEditingController(text: "123123");
+      TextEditingController();
+  TextEditingController edtPassword = TextEditingController();
   bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 

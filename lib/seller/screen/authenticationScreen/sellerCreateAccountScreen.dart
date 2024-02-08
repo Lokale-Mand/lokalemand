@@ -2,9 +2,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/model/sellerCategory.dart';
+import 'package:lokale_mand/seller/model/sellerCities.dart';
 import 'package:lokale_mand/seller/model/sellerCityByLatLong.dart';
 import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
-import 'package:lokale_mand/seller/provider/sellerRegisterProvider.dart';
 import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCategoryItem.dart';
 
 class SellerCreateAccountScreen extends StatefulWidget {
@@ -26,17 +26,42 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
   late SellerCityByLatLongData cityByLatLongData;
 
   //PERSONAL DETAILS CONTROLLERS
-  TextEditingController edtBankName = TextEditingController(text: "DEMO BANK");
+  TextEditingController edtBankName = TextEditingController();
   TextEditingController edtBankAcNumber =
-      TextEditingController(text: "123123123123");
+  TextEditingController();
   TextEditingController edtBankAcName =
-      TextEditingController(text: "WRTeam Vimal");
+  TextEditingController();
   TextEditingController edtBankIbanSwiftCode =
-      TextEditingController(text: "SWIFT123123");
+  TextEditingController();
   TextEditingController edtNidNumber =
-      TextEditingController(text: "1231233132");
+  TextEditingController();
   String selectedAddressProofPath = "";
   String selectedNationalIdPath = "";
+
+  //STORE DETAILS CONTROLLERS
+  String selectedLogoPath = "";
+  TextEditingController edtStoreName =
+  TextEditingController();
+  TextEditingController edtStoreLocation = TextEditingController();
+  TextEditingController edtStoreDescription =
+  TextEditingController();
+  TextEditingController edtStoreCategories = TextEditingController();
+  String selectedCategoriesIds = "";
+  String cityId = "";
+  String latitude = "";
+  String longitude = "";
+
+  //User Account Details
+  CountryCode? selectedCountryCode;
+  TextEditingController edtEmail =
+  TextEditingController();
+  TextEditingController edtPassword = TextEditingController();
+  TextEditingController edtDuplicatePassword =
+  TextEditingController();
+  TextEditingController edtFullName =
+  TextEditingController();
+  TextEditingController edtPhoneNumber =
+  TextEditingController();
 
   //STORE HOURS DETAILS CONTROLLERS
   List<StoreTime> storeTime = [
@@ -56,30 +81,6 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         day: "6", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
   ];
 
-  //STORE DETAILS CONTROLLERS
-  String selectedLogoPath = "";
-  TextEditingController edtStoreName =
-      TextEditingController(text: "WRTeam Store");
-  TextEditingController edtStoreLocation = TextEditingController();
-  TextEditingController edtStoreDescription =
-      TextEditingController(text: "This is store");
-  TextEditingController edtStoreCategories = TextEditingController();
-  String selectedCategoriesIds = "";
-  String cityId = "";
-  String latitude = "";
-  String longitude = "";
-
-  //User Account Details
-  CountryCode? selectedCountryCode;
-  TextEditingController edtEmail =
-      TextEditingController(text: "vimalp410fake@gmail.com");
-  TextEditingController edtPassword = TextEditingController(text: "123123");
-  TextEditingController edtDuplicatePassword =
-      TextEditingController(text: "123123");
-  TextEditingController edtFullName =
-      TextEditingController(text: "WRTeam Vimal");
-  TextEditingController edtPhoneNumber =
-      TextEditingController(text: "6359302924");
 
 //   name:vijya
 //   email:wrteam.vijya@gmail.com1
@@ -622,28 +623,24 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                         ),
                         IconButton(
                           onPressed: () {
-                            Navigator.pushNamed(
-                                    context, sellerConfirmLocationScreen,
-                                    arguments: "seller_register")
-                                .then((value) {
-                              if (value != null) {
-                                cityByLatLongData =
-                                    (value as SellerCityByLatLong).data!;
-                                edtStoreLocation.text =
-                                    cityByLatLongData.formattedAddress ?? "";
-                                cityId = cityByLatLongData.id ?? "";
-                                latitude = cityByLatLongData.latitude ?? "";
-                                longitude = cityByLatLongData.longitude ?? "";
-                                setState(() {});
-                              }
-                            });
+                            Navigator.pushNamed(context, citiesListScreen).then(
+                              (value) {
+                                if (value is SellerCitiesData) {
+                                  edtStoreLocation.text = value.name ?? "";
+                                  cityId = value.id ?? "";
+                                  latitude = value.latitude ?? "";
+                                  longitude = value.longitude ?? "";
+                                  setState(() {});
+                                }
+                              },
+                            );
                           },
                           icon: Icon(
-                            Icons.my_location_rounded,
+                            Icons.mode_edit_outline_rounded,
                             color: ColorsRes.appColor,
                             size: 24,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -880,8 +877,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         ),
         Widgets.getSizedBox(
           height: Constant.size20,
-        ),
-        //Store Description
+        ), //Store Description
         CustomTextLabel(
           jsonKey: "store_description",
           style: TextStyle(

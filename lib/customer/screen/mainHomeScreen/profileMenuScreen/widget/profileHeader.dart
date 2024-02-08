@@ -21,15 +21,15 @@ class ProfileHeader extends StatelessWidget {
             Container(
               child: CircleAvatar(
                 backgroundColor: ColorsRes.menuTitleColor,
-                radius: 42,
+                radius: 25,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(35),
                   child: Constant.session.isUserLoggedIn()
                       ? Consumer<UserProfileProvider>(
                           builder: (context, value, child) {
                             return Widgets.setNetworkImg(
-                              height: 80,
-                              width: 80,
+                              height: 48,
+                              width: 48,
                               boxFit: BoxFit.fill,
                               image: Constant.session.getData(
                                 SessionManager.keyUserImage,
@@ -38,8 +38,8 @@ class ProfileHeader extends StatelessWidget {
                           },
                         )
                       : Widgets.defaultImg(
-                          height: 80,
-                          width: 80,
+                          height: 48,
+                          width: 48,
                           image: "default_user",
                         ),
                 ),
@@ -47,11 +47,10 @@ class ProfileHeader extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                height: 84,
                 padding: EdgeInsetsDirectional.only(start: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Consumer<UserProfileProvider>(
                       builder: (context, userProfileProvide, _) =>

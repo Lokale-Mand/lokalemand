@@ -39,38 +39,32 @@ class HomeMainScreenState extends State<HomeMainScreen> {
     Future.delayed(
       Duration.zero,
       () async {
-        if (Constant.session
-            .getData(SessionManager.keyShippingAddress)
-            .isNotEmpty) {
-          if (context.read<HomeMainScreenProvider>().getCurrentPage() == 0) {
-            if (Constant.session
-                .getBoolData(SessionManager.keyPopupOfferEnabled)) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CustomDialog();
-                },
-              );
-            }
-          }
-
-          if (Constant.session.isUserLoggedIn()) {
-            await getAppNotificationSettingsRepository(
-                    params: {}, context: context)
-                .then(
-              (value) async {
-                if (value[ApiAndParams.status].toString() != "1") {
-                  await updateAppNotificationSettingsRepository(params: {
-                    ApiAndParams.statusIds: "1,2,3,4,5,6,7,8",
-                    ApiAndParams.mobileStatuses: "1,1,1,1,1,1,1,1",
-                    ApiAndParams.mailStatuses: "1,1,1,1,1,1,1,1"
-                  }, context: context);
-                }
+        if (context.read<HomeMainScreenProvider>().getCurrentPage() == 0) {
+          if (Constant.session
+              .getBoolData(SessionManager.keyPopupOfferEnabled)) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialog();
               },
             );
           }
-        } else {
-          Navigator.pushNamed(context, addressDetailScreen);
+        }
+
+        if (Constant.session.isUserLoggedIn()) {
+          await getAppNotificationSettingsRepository(
+                  params: {}, context: context)
+              .then(
+            (value) async {
+              if (value[ApiAndParams.status].toString() != "1") {
+                await updateAppNotificationSettingsRepository(params: {
+                  ApiAndParams.statusIds: "1,2,3,4,5,6,7,8",
+                  ApiAndParams.mobileStatuses: "1,1,1,1,1,1,1,1",
+                  ApiAndParams.mailStatuses: "1,1,1,1,1,1,1,1"
+                }, context: context);
+              }
+            },
+          );
         }
       },
     );

@@ -137,6 +137,37 @@ flutter clean
 flutter pub get
 ```
 
+
+### Clean and Get Dependencies IOS
+
+To clean the project and fetch dependencies IOS:
+
+```shell
+flutter clean
+flutter pub get
+cd ios/
+pod init
+pod install
+pod update
+```
+
+
+```shell
+adb connect 192.168.2.8:5555
+flutter upgrade
+flutter pub get
+```
+
+### Run app in release mode
+
+To run app in release mode
+
+```shell
+flutter clean
+flutter pub get
+flutter run --release
+```
+
 ### Repair Pub Cache
 
 To repair the pub cache:
@@ -178,7 +209,7 @@ pod install
 pod update
 cd ..
 ```
-
+ 
 ## Clear Derived Cache Data in iOS
 
 To clear derived cache data in iOS:
@@ -204,7 +235,7 @@ rm ios/podfile.lock
 cd ios 
 pod install 
 pod update 
-#xed .
+xed .
 ```
 
 ### Publish With Changing Version

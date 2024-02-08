@@ -16,12 +16,14 @@ class SellerListProvider extends ChangeNotifier {
   bool hasMoreData = false;
   int totalData = 0;
   int offset = 0;
-  List<Marker> storeMarkers = [];
+  Set<Marker>  storeMarkers = Set();
 
   Future getSellerListProvider({
     required Map<String, dynamic> params,
     required BuildContext context,
   }) async {
+    
+    storeMarkers.clear();
     if (offset == 0) {
       itemsState = SellerListState.loading;
     } else {
@@ -58,7 +60,7 @@ class SellerListProvider extends ChangeNotifier {
                 ),
               ),
               // Replace with your latitude and longitude
-              icon: BitmapDescriptor.defaultMarker, // Custom icon for marker 1
+              icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), // Custom icon for marker 1
             ),
           );
         }

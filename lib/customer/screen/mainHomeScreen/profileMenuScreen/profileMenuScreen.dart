@@ -20,6 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
+
     Future.delayed(Duration.zero).then((value) {
       setLegalDataMenuList();
       setSettingsDataMenuList();
@@ -199,7 +200,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
           "isResetLabel": false
         },
-      if (Constant.session.isUserLoggedIn())
+      if (Constant.session.isUserLoggedIn() ||
+          Constant.session.getBoolData(SessionManager.isSeller)==false)
         {
           "icon": "transaction_icon",
           "label": "transaction_history",

@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/model/sellerChatDetail.dart';
 import 'package:lokale_mand/seller/provider/sellerChatDetailProvider.dart';
-import 'package:lokale_mand/seller/sellerChatDetailScreen/widget/sellerChatDetailOrderItemWidget.dart';
+import 'package:lokale_mand/seller/screen/sellerChatDetailScreen/widget/sellerChatDetailOrderItemWidget.dart';
 
 class SellerChatDetailScreen extends StatefulWidget {
   final String customerId;

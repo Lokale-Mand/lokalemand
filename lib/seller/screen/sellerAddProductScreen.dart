@@ -29,7 +29,8 @@ class _SellerAddOrUpdateProductScreenState
   int currentPage = 0;
   late bool isLoading = false;
   String selectedProductMainImage = "";
-  String htmlDescription = "";
+
+  // String htmlDescription = "";
   List<String?> selectedProductOtherImages = [];
   bool stockAvailableStatus = true;
   String selectedDietaryType = "";
@@ -39,6 +40,7 @@ class _SellerAddOrUpdateProductScreenState
 
   String selectedCategoryId = "";
   TextEditingController edtProductName = TextEditingController();
+  TextEditingController edtProductDescription = TextEditingController();
   TextEditingController edtProductPrice = TextEditingController();
   TextEditingController edtProductUnit = TextEditingController();
   TextEditingController edtProductStock = TextEditingController();
@@ -103,7 +105,7 @@ class _SellerAddOrUpdateProductScreenState
       "tags": edtProductName.text.toString(),
       "tax_id": "0",
       "brand_id": "0",
-      "description": htmlDescription,
+      "description": edtProductDescription.text.toString(),
       "type": "packet",
       "seller_id": Constant.session.getData(SessionManager.keyUserId),
       "is_unlimited_stock": "0",
@@ -853,57 +855,87 @@ class _SellerAddOrUpdateProductScreenState
           height: Constant.size10,
         ),
         Container(
-          constraints: BoxConstraints(
-            minWidth: MediaQuery.sizeOf(context).width,
-            minHeight: 65,
-          ),
+          padding: EdgeInsetsDirectional.all(10),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: ColorsRes.textFieldBorderColor,
-            ),
-            color: Theme.of(context).cardColor,
-          ),
-          child: Stack(
-            children: [
-              Container(
-                padding: EdgeInsetsDirectional.all(10),
-                child: HtmlWidget(
-                  htmlDescription.isEmpty
-                      ? context
-                              .read<LanguageProvider>()
-                              .currentLanguage["product_description_hint"] ??
-                          ""
-                      : htmlDescription,
-                  enableCaching: true,
-                  renderMode: RenderMode.column,
-                  buildAsync: false,
-                  textStyle: TextStyle(color: ColorsRes.mainTextColor),
-                ),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColorsRes.textFieldBorderColor,
               ),
-              PositionedDirectional(
-                top: 0,
-                end: 0,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, htmlEditorScreen,
-                            arguments: htmlDescription)
-                        .then((value) {
-                      if (value != null) {
-                        htmlDescription = value.toString();
-                        setState(() {});
-                      }
-                    });
-                  },
-                  icon: Icon(
-                    Icons.edit,
-                    color: ColorsRes.appColor,
-                  ),
-                ),
-              )
-            ],
+              color: Theme.of(context).cardColor),
+          child: TextField(
+            textInputAction: TextInputAction.newline,
+            controller: edtProductDescription,
+            keyboardType: TextInputType.name,
+            minLines: 1,
+            maxLines: 10000,
+            style: TextStyle(
+              color: ColorsRes.mainTextColor,
+            ),
+            decoration: InputDecoration(
+              isDense: true,
+              border: InputBorder.none,
+              hintStyle: TextStyle(
+                color: ColorsRes.menuTitleColor,
+              ),
+              hintText: context
+                      .read<LanguageProvider>()
+                      .currentLanguage["product_description_hint"] ??
+                  "",
+            ),
           ),
         ),
+        // Container(
+        //   constraints: BoxConstraints(
+        //     minWidth: MediaQuery.sizeOf(context).width,
+        //     minHeight: 65,
+        //   ),
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(10),
+        //     border: Border.all(
+        //       color: ColorsRes.textFieldBorderColor,
+        //     ),
+        //     color: Theme.of(context).cardColor,
+        //   ),
+        //   child: Stack(
+        //     children: [
+        //       Container(
+        //         padding: EdgeInsetsDirectional.all(10),
+        //         child: HtmlWidget(
+        //           htmlDescription.isEmpty
+        //               ? context
+        //                       .read<LanguageProvider>()
+        //                       .currentLanguage["product_description_hint"] ??
+        //                   ""
+        //               : htmlDescription,
+        //           enableCaching: true,
+        //           renderMode: RenderMode.column,
+        //           buildAsync: false,
+        //           textStyle: TextStyle(color: ColorsRes.mainTextColor),
+        //         ),
+        //       ),
+        //       PositionedDirectional(
+        //         top: 0,
+        //         end: 0,
+        //         child: IconButton(
+        //           onPressed: () {
+        //             Navigator.pushNamed(context, htmlEditorScreen,
+        //                     arguments: htmlDescription)
+        //                 .then((value) {
+        //               if (value != null) {
+        //                 htmlDescription = value.toString();
+        //                 setState(() {});
+        //               }
+        //             });
+        //           },
+        //           icon: Icon(
+        //             Icons.edit,
+        //             color: ColorsRes.appColor,
+        //           ),
+        //         ),
+        //       )
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
@@ -977,7 +1009,7 @@ class _SellerAddOrUpdateProductScreenState
           height: Constant.size10,
         ),
         Container(
-          padding: EdgeInsetsDirectional.all(10),
+          padding: EdgeInsetsDirectional.only(start: 10,end: 10,top: 5,bottom: 5),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
@@ -1480,7 +1512,7 @@ class _SellerAddOrUpdateProductScreenState
                       ),
                       Widgets.getSizedBox(height: 10),
                       HtmlWidget(
-                        htmlDescription,
+                        edtProductDescription.text.toString(),
                         enableCaching: true,
                         renderMode: RenderMode.column,
                         buildAsync: false,
@@ -1564,7 +1596,7 @@ class _SellerAddOrUpdateProductScreenState
             context,
             getTranslatedValue(context, "product_name_validation_message"),
             MessageType.warning);
-      } else if (htmlDescription.isEmpty) {
+      } else if (edtProductDescription.text.isEmpty) {
         GeneralMethods.showMessage(
             context,
             getTranslatedValue(

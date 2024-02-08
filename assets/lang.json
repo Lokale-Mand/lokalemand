@@ -499,5 +499,7 @@
   "rate_the_product": "Rate the product",
   "rate_now": "Rate Now",
   "accept": "Accept",
-  "reject": "Reject"
+  "reject": "Reject",
+  "product_unit_title": "Product unit",
+  "unit": "Unit"
 }
