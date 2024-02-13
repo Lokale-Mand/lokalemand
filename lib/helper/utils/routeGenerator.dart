@@ -2,17 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:lokale_mand/customer/provider/customerChatDetailProvider.dart';
 import 'package:lokale_mand/customer/provider/productRatingListProvider.dart';
 import 'package:lokale_mand/customer/screen/addressDetailScreen.dart';
-import 'package:lokale_mand/customer/screen/customerChatDetailScreen/customerChatDetailScreen.dart';
 import 'package:lokale_mand/customer/screen/confirmLocationScreen/confirmLocationScreen.dart';
+import 'package:lokale_mand/customer/screen/customerChatDetailScreen/customerChatDetailScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/seller/model/sellerChatDetail.dart';
 import 'package:lokale_mand/seller/provider/sellerAddProductProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerChatDetailProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerCityProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerDietaryProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
-import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCategoryItem.dart';
 import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCitiesListScreen.dart';
 import 'package:lokale_mand/seller/screen/htmlEditorScreen.dart';
 import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
@@ -197,6 +195,8 @@ class RouteGenerator {
                 productListArguments[2],
               ),
               categories: productListArguments[3],
+              sellerLogo: productListArguments[5],
+              sellerName: productListArguments[4],
             ),
           ),
         );
@@ -241,6 +241,9 @@ class RouteGenerator {
               id: productDetailArguments[0] as String,
               title: productDetailArguments[1] as String,
               productListItem: productDetailArguments[2],
+              sellerId: productDetailArguments[3],
+              storeName: productDetailArguments[4],
+              storeLogo: productDetailArguments[5],
             ),
           ),
         );
@@ -344,6 +347,7 @@ class RouteGenerator {
       case chatDetailScreen:
         List<dynamic> chatDetailScreenArguments =
             settings.arguments as List<dynamic>;
+
         return CupertinoPageRoute(
           builder: (_) => ChangeNotifierProvider<CustomerChatDetailProvider>(
             create: (context) => CustomerChatDetailProvider(),
@@ -399,7 +403,7 @@ class RouteGenerator {
 
       case sellerChatDetailScreen:
         List<dynamic> sellerChatDetailScreenArguments =
-        settings.arguments as List<dynamic>;
+            settings.arguments as List<dynamic>;
         return CupertinoPageRoute(
           builder: (_) => ChangeNotifierProvider<SellerChatDetailProvider>(
             create: (context) => SellerChatDetailProvider(),
@@ -410,7 +414,6 @@ class RouteGenerator {
             ),
           ),
         );
-
 
       case citiesListScreen:
         return CupertinoPageRoute(

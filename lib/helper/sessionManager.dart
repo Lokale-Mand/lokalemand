@@ -145,6 +145,10 @@ class SessionManager extends ChangeNotifier {
     return prefs.getBool(key) ?? false;
   }
 
+  setSystemTheme(String key, bool value, bool isRefresh) {
+    setBoolData(key, value, isRefresh);
+  }
+
   void setBoolData(String key, bool value, bool isRefresh) {
     prefs.setBool(key, value);
     if (isRefresh) notifyListeners();

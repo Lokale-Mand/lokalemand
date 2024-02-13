@@ -139,7 +139,7 @@ class ColorsRes {
 
     if (isDark) {
       if (!isDarkTheme) {
-        Constant.session.setBoolData(SessionManager.isDarkTheme, false, false);
+        Constant.session.setSystemTheme(SessionManager.isDarkTheme, false, false);
       }
       mainTextColor = darkThemeTextColor;
       subTitleMainTextColor = subTitleTextColorDark;
@@ -151,7 +151,7 @@ class ColorsRes {
       return darkTheme;
     } else {
       if (isDarkTheme) {
-        Constant.session.setBoolData(SessionManager.isDarkTheme, true, false);
+        Constant.session.setSystemTheme(SessionManager.isDarkTheme, true, false);
       }
       mainTextColor = lightThemeTextColor;
       subTitleMainTextColor = subTitleTextColorLight;

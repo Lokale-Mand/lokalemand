@@ -501,5 +501,6 @@
   "accept": "Accept",
   "reject": "Reject",
   "product_unit_title": "Product unit",
-  "unit": "Unit"
+  "unit": "Unit",
+  "units": "Units"
 }

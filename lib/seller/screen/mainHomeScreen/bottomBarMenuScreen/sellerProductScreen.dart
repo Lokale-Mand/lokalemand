@@ -40,7 +40,7 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
         context.read<SellerProductListProvider>().products = [];
       }
 
-      Map<String, String> params = await Constant.getProductsDefaultParams();
+      Map<String, String> params = await Constant.getSellerProductsDefaultParams();
 
       params[ApiAndParams.sort] = ApiAndParams.productListSortTypes[
           context.read<SellerProductListProvider>().currentSortByOrderIndex ??
@@ -179,7 +179,7 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
                       product: products[index]);
                 },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 1,
+                  childAspectRatio: 0.8,
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,

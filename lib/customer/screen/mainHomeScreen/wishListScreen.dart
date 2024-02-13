@@ -200,7 +200,11 @@ class _ProductListScreenState extends State<WishListScreen> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return ProductGridItemContainer(
-                            product: wishlistProducts[index]);
+                          product: wishlistProducts[index],
+                          sellerId: '',
+                          storeLogo: '',
+                          storeName: '',
+                        );
                       },
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(

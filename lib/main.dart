@@ -141,6 +141,7 @@ class MyAppState extends State<MyApp> {
 
           // This callback is called every time the brightness changes from the device.
           PlatformDispatcher.instance.onPlatformBrightnessChanged = () {
+
             if (Constant.session.getData(SessionManager.appThemeName) ==
                 Constant.themeList[0]) {
               Constant.session.setBoolData(

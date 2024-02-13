@@ -509,6 +509,7 @@ AppBar getAppBar(
                   Navigator.pop(context);
                 },
             child: Container(
+              color: Colors.transparent,
               child: Padding(
                 padding: EdgeInsets.all(20),
                 child: SizedBox(

@@ -142,14 +142,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .getBoolData(SessionManager.isDarkTheme),
                           onChanged: (value) {
                             if (value) {
-                              Constant.session.setBoolData(
+                              Constant.session.setSystemTheme(
                                   SessionManager.isDarkTheme, value, true);
                               Constant.session.setData(
                                   SessionManager.appThemeName,
                                   Constant.themeList[2],
                                   true);
                             } else {
-                              Constant.session.setBoolData(
+                              Constant.session.setSystemTheme(
                                   SessionManager.isDarkTheme, value, true);
                               Constant.session.setData(
                                   SessionManager.appThemeName,

@@ -81,43 +81,6 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         day: "6", storeOpen: "false", openTime: "00:00", closeTime: "00:00"),
   ];
 
-
-//   name:vijya
-//   email:wrteam.vijya@gmail.com1
-//   mobile:1234567890
-//   password:12345678
-//   confirm_password:12345678
-//   store_name:vijya store
-//   categories_ids:1,2
-//   pan_number:1234567890
-//   city_id:4
-//   latitude:11.111111122
-//   longitude:11.111111122
-//   bank_name:123456
-//   account_number:123456
-//   ifsc_code:123456
-//   account_name:123456
-//   store_hours:[{""store_open"":""1"",""day"":""0"",""open_time"":""03:00"",""close_time"":""00:04""},{""store_open"":""0"",""day"":""1"",""open_time"":""00:00"",""close_time"":""00:00""},{""store_open"":""0"",""day"":""2"",""open_time"":""00:00"",""close_time"":""00:00""},{""store_open"":""0"",""day"":""3"",""open_time"":""00:00"",""close_time"":""00:00""},{""store_open"":""0"",""day"":""4"",""open_time"":""00:00"",""close_time"":""00:00""},{""store_open"":""1"",""day"":""5"",""open_time"":""05:00"",""close_time"":""05:00""},{""store_open"":""0"",""day"":""6"",""open_time"":""00:00"",""close_time"":""00:00""}]
-//FIX   commission:0
-//FIX   require_products_approval:1
-//FIX   view_order_otp:0
-//FIX   assign_delivery_boy:0
-//FIX   status:1
-//FIX   admin_id:10
-  ///   id:5
-  ///   change_order_status_delivered:
-  ///   store_url:
-  ///   street:
-  ///   pincode_id:
-  ///   city_id:
-  ///   state:
-  ///   tax_name:
-  ///   tax_number:
-  ///   place_name:
-  ///   formatted_address:
-  ///   store_description:
-  ///   customer_privacy:
-
   backendApiProcess() async {
     // Convert List<Model> to List<Map<String, dynamic>>
     List<Map<String, dynamic>> jsonList =

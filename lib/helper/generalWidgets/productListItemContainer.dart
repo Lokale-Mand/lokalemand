@@ -26,8 +26,11 @@ class _State extends State<ProductListItemContainer> {
       child: variants.length > 0
           ? GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, productDetailScreen,
-                    arguments: [product.id.toString(), product.name, product]);
+                Navigator.pushNamed(context, productDetailScreen, arguments: [
+                  product.id.toString(),
+                  product.name,
+                  product,
+                ]);
               },
               child: ChangeNotifierProvider<SelectedVariantItemProvider>(
                 create: (context) => SelectedVariantItemProvider(),

@@ -160,6 +160,7 @@ class _SellerChatDetailScreenState extends State<SellerChatDetailScreen> {
                           minLines: 1,
                           maxLines: 100,
                           controller: chatMessageTextEditingController,
+                          style: TextStyle(color: ColorsRes.mainTextColor),
                         ),
                       ),
                     ),

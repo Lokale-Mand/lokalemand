@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:google_maps_webservice/places.dart';
 import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/flutterGooglePlaces.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
@@ -21,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.delayed(Duration.zero).then(
       (value) async {
         await getAppSettings(context: context);
-
         GeneralMethods.determinePosition().then((value) {
           updateMap(value.latitude, value.longitude);
         });
@@ -29,11 +30,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  static Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
+  }
+
   late GoogleMapController controller;
   late CameraPosition kGooglePlex;
   late LatLng kMapCenter;
-
-  Set<Marker> markers = Set();
 
   Future<void> updateMap(double latitude, double longitude) async {
     Constant.session
@@ -56,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       context: context,
     );
-
   }
 
   @override
@@ -188,6 +196,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 sellerListProvider
                                     .sellerListData[index].categories
                                     .toString(),
+                                sellerListProvider
+                                    .sellerListData[index].storeName
+                                    .toString(),
+                                sellerListProvider.sellerListData[index].logoUrl
+                                    .toString()
                               ],
                             );
                           },
@@ -332,27 +345,42 @@ class _HomeScreenState extends State<HomeScreen> {
             ApiAndParams.longitude: value.longitude.toString(),
           },
           context: context,
-        ).then((value) {
-          markers.addAll(context.read<SellerListProvider>().storeMarkers);
-          setState(() {});
-        });
+        );
       },
       onMapCreated: _onMapCreated,
-      markers: markers,
+      markers: context.watch<SellerListProvider>().storeMarkers,
       buildingsEnabled: false,
       indoorViewEnabled: false,
-
 
       // markers: markers,
     );
   }
 
+// This callback will be invoked every time the platform brightness changes.
+  @override
+  Future<void> didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (Constant.session.getBoolData(SessionManager.isDarkTheme)) {
+      controller.setMapStyle(
+          await rootBundle.loadString('assets/mapTheme/nightMode.json'));
+      setState(() {});
+    } else {
+      controller.setMapStyle(
+          await rootBundle.loadString('assets/mapTheme/dayMode.json'));
+      setState(() {});
+    }
+  }
+
   Future<void> _onMapCreated(GoogleMapController controllerParam) async {
     controller = controllerParam;
-
     if (Constant.session.getBoolData(SessionManager.isDarkTheme)) {
-      controllerParam.setMapStyle(
+      controller.setMapStyle(
           await rootBundle.loadString('assets/mapTheme/nightMode.json'));
+      setState(() {});
+    } else {
+      controller.setMapStyle(
+          await rootBundle.loadString('assets/mapTheme/dayMode.json'));
+      setState(() {});
     }
   }
 }

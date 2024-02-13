@@ -203,6 +203,8 @@ flutter build appbundle
 Update iOS dependencies:
 
 ```shell
+flutter clean
+flutter pub get
 cd ios
 pod init
 pod install

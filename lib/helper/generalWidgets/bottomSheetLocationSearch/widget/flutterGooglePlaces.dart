@@ -102,7 +102,7 @@ class _PlacesAutocompleteOverlayState extends PlacesAutocompleteState {
               IconButton(
                 color: Theme.of(context).brightness == Brightness.light
                     ? Colors.black45
-                    : null,
+                    : Colors.white54,
                 icon: Icon(Icons.search_rounded),
                 onPressed: () {},
               ),
@@ -282,7 +282,7 @@ class PredictionTile extends StatelessWidget {
                 IconButton(
                   color: Theme.of(context).brightness == Brightness.light
                       ? Colors.black45
-                      : null,
+                      : Colors.white54,
                   icon: Icon(Icons.location_on_rounded),
                   onPressed: () {},
                 ),
@@ -461,6 +461,7 @@ class PlacesAutocomplete {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: Theme.of(context).cardColor,
       shape: DesignConfig.setRoundedBorderSpecific(20, istop: true),
       builder: (BuildContext context) {
         return Padding(

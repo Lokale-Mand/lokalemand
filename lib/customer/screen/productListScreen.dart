@@ -5,14 +5,18 @@ class ProductListScreen extends StatefulWidget {
   final String from;
   final String id;
   final categories;
+  final String sellerLogo;
+  final String sellerName;
 
-  const ProductListScreen(
-      {Key? key,
-      this.title,
-      required this.from,
-      required this.id,
-      this.categories})
-      : super(key: key);
+  const ProductListScreen({
+    Key? key,
+    this.title,
+    required this.from,
+    required this.id,
+    this.categories,
+    required this.sellerLogo,
+    required this.sellerName,
+  }) : super(key: key);
 
   @override
   State<ProductListScreen> createState() => _ProductListScreenState();
@@ -130,7 +134,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         ),
         child: Container(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsetsDirectional.only(
+              bottom: 25, start: 10, end: 10, top: 10),
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.only(
@@ -151,7 +156,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    chatDetailScreen,
+                    arguments: [
+                      widget.id.toString(),
+                      widget.sellerName.toString(),
+                      widget.sellerLogo,
+                    ],
+                  );
+                },
                 child: Container(
                   height: 50,
                   alignment: Alignment.center,
@@ -187,294 +202,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
           getSearchWidget(
             context: context,
           ),
-          // Widgets.getSizedBox(
-          //   height: Constant.size5,
-          // ),
-/*          Container(
-            margin: EdgeInsets.symmetric(horizontal: Constant.size5),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      Navigator.pushNamed(
-                        context,
-                        productListFilterScreen,
-                        arguments: [
-                          context
-                              .read<ProductListProvider>()
-                              .productList
-                              .brands,
-                          double.parse(context
-                                      .read<ProductListProvider>()
-                                      .productList
-                                      .maxPrice) !=
-                                  0
-                              ? double.parse(context
-                                  .read<ProductListProvider>()
-                                  .productList
-                                  .maxPrice)
-                              : double.parse(context
-                                  .read<ProductListProvider>()
-                                  .productList
-                                  .maxPrice),
-                          double.parse(context
-                                      .read<ProductListProvider>()
-                                      .productList
-                                      .minPrice) !=
-                                  0
-                              ? double.parse(context
-                                  .read<ProductListProvider>()
-                                  .productList
-                                  .minPrice)
-                              : double.parse(context
-                                  .read<ProductListProvider>()
-                                  .productList
-                                  .minPrice),
-                          context.read<ProductListProvider>().productList.sizes
-                        ],
-                      ).then((value) async {
-                        if (value == true) {
-                          context.read<ProductListProvider>().offset = 0;
-                          context.read<ProductListProvider>().products = [];
-
-                          callApi(isReset: true);
-                        }
-                      });
-                    },
-                    child: Card(
-                        color: Theme.of(context).cardColor,
-                        elevation: 0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Widgets.defaultImg(
-                                image: "filter_icon",
-                                height: 17,
-                                width: 17,
-                                padding: const EdgeInsetsDirectional.only(
-                                    top: 7, bottom: 7, end: 7),
-                                iconColor: Theme.of(context).primaryColor),
-                            CustomTextLabel(
-                              jsonKey: "filter",
-                              softWrap: true,
-                            )
-                          ],
-                        )),
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet<void>(
-                        context: context,
-                        isScrollControlled: true,
-                        shape: DesignConfig.setRoundedBorderSpecific(20,
-                            istop: true),
-                        builder: (BuildContext context1) {
-                          return Wrap(
-                            children: [
-                              Container(
-                                padding: EdgeInsetsDirectional.only(
-                                    start: Constant.size15,
-                                    end: Constant.size15,
-                                    top: Constant.size15,
-                                    bottom: Constant.size15),
-                                child: Column(
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        PositionedDirectional(
-                                          child: GestureDetector(
-                                            onTap: () => Navigator.pop(context),
-                                            child: Padding(
-                                              padding: EdgeInsets.all(10),
-                                              child: Widgets.defaultImg(
-                                                image: "ic_arrow_back",
-                                                iconColor:
-                                                    ColorsRes.mainTextColor,
-                                                height: 15,
-                                                width: 15,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Center(
-                                          child: CustomTextLabel(
-                                            jsonKey: "sort_by",
-                                            softWrap: true,
-                                            textAlign: TextAlign.center,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium!
-                                                .merge(
-                                                  TextStyle(
-                                                    letterSpacing: 0.5,
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w400,
-                                                    color:
-                                                        ColorsRes.mainTextColor,
-                                                  ),
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Widgets.getSizedBox(height: 10),
-                                    Column(
-                                      children: List.generate(
-                                        ApiAndParams
-                                            .productListSortTypes.length,
-                                        (index) {
-                                          return GestureDetector(
-                                            onTap: () async {
-                                              Navigator.pop(context);
-                                              context
-                                                  .read<ProductListProvider>()
-                                                  .products = [];
-
-                                              context
-                                                  .read<ProductListProvider>()
-                                                  .offset = 0;
-
-                                              context
-                                                      .read<ProductListProvider>()
-                                                      .currentSortByOrderIndex =
-                                                  index;
-
-                                              callApi(isReset: true);
-                                            },
-                                            child: Container(
-                                              padding:
-                                                  EdgeInsetsDirectional.all(10),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  context
-                                                              .read<
-                                                                  ProductListProvider>()
-                                                              .currentSortByOrderIndex ==
-                                                          index
-                                                      ? Icon(
-                                                          Icons
-                                                              .radio_button_checked,
-                                                          color: ColorsRes
-                                                              .appColor,
-                                                        )
-                                                      : Icon(
-                                                          Icons
-                                                              .radio_button_off,
-                                                          color: ColorsRes
-                                                              .appColor,
-                                                        ),
-                                                  Widgets.getSizedBox(
-                                                      width: 10),
-                                                  Expanded(
-                                                    child: CustomTextLabel(
-                                                      jsonKey:
-                                                          lblSortingDisplayList[
-                                                              index],
-                                                      softWrap: true,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleMedium!
-                                                          .merge(
-                                                            TextStyle(
-                                                              letterSpacing:
-                                                                  0.5,
-                                                              fontSize: 16,
-                                                              color: ColorsRes
-                                                                  .mainTextColor,
-                                                            ),
-                                                          ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: Card(
-                        color: Theme.of(context).cardColor,
-                        elevation: 0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Widgets.defaultImg(
-                                image: "sorting_icon",
-                                height: 17,
-                                width: 17,
-                                padding: const EdgeInsetsDirectional.only(
-                                    top: 7, bottom: 7, end: 7),
-                                iconColor: Theme.of(context).primaryColor),
-                            CustomTextLabel(
-                              jsonKey: "sort_by",
-                              softWrap: true,
-                            )
-                          ],
-                        )),
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      context
-                          .read<ProductChangeListingTypeProvider>()
-                          .changeListingType();
-                    },
-                    child: Card(
-                        color: Theme.of(context).cardColor,
-                        elevation: 0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Widgets.defaultImg(
-                                image: context
-                                            .watch<
-                                                ProductChangeListingTypeProvider>()
-                                            .getListingType() ==
-                                        false
-                                    ? "grid_view_icon"
-                                    : "list_view_icon",
-                                height: 17,
-                                width: 17,
-                                padding: const EdgeInsetsDirectional.only(
-                                    top: 7, bottom: 7, end: 7),
-                                iconColor: Theme.of(context).primaryColor),
-                            CustomTextLabel(
-                              text: context
-                                          .watch<
-                                              ProductChangeListingTypeProvider>()
-                                          .getListingType() ==
-                                      false
-                                  ? getTranslatedValue(
-                                      context,
-                                      "grid_view",
-                                    )
-                                  : getTranslatedValue(
-                                      context,
-                                      "list_view",
-                                    ),
-                              softWrap: true,
-                            )
-                          ],
-                        )),
-                  ),
-                ),
-              ],
-            ),
-          ),*/
           Expanded(
             child: setRefreshIndicator(
               refreshCallback: () async {
@@ -510,38 +237,30 @@ class _ProductListScreenState extends State<ProductListScreen> {
             productListProvider.productState == ProductState.loadingMore) {
           return Column(
             children: [
-              context
-                          .read<ProductChangeListingTypeProvider>()
-                          .getListingType() ==
-                      true
-                  ? /* GRID VIEW UI */ GridView.builder(
-                      itemCount: products.length,
-                      padding: EdgeInsetsDirectional.only(
-                          start: Constant.size10,
-                          end: Constant.size10,
-                          bottom: Constant.size10,
-                          top: Constant.size5),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return ProductGridItemContainer(
-                            product: products[index]);
-                      },
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 1,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
-                    )
-                  : /* LIST VIEW UI */ Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: List.generate(products.length, (index) {
-                        return ProductListItemContainer(
-                            product: products[index]);
-                      }),
-                    ),
+              GridView.builder(
+                itemCount: products.length,
+                padding: EdgeInsetsDirectional.only(
+                    start: Constant.size10,
+                    end: Constant.size10,
+                    bottom: Constant.size10,
+                    top: Constant.size5),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return ProductGridItemContainer(
+                    product: products[index],
+                    sellerId: widget.id.toString(),
+                    storeLogo: widget.sellerLogo,
+                    storeName: widget.sellerName.toString(),
+                  );
+                },
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.8,
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+              ),
               if (productListProvider.productState == ProductState.loadingMore)
                 getProductItemShimmer(
                     context: context,
@@ -550,8 +269,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         .getListingType()),
             ],
           );
-        }else if (productListProvider.productState ==
-            ProductState.loading) {
+        } else if (productListProvider.productState == ProductState.loading) {
           return GridView.builder(
             itemCount: 10,
             padding: EdgeInsetsDirectional.only(

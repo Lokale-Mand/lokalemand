@@ -631,7 +631,11 @@ class _ProductListScreenState extends State<ProductSearchScreen> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return ProductGridItemContainer(
-                            product: products[index]);
+                          product: products[index],
+                          sellerId: '',
+                          storeLogo: '',
+                          storeName: '',
+                        );
                       },
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(

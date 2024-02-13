@@ -2,8 +2,12 @@ import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class ProductGridItemContainer extends StatefulWidget {
   final ProductListItem product;
+  final String sellerId;
+  final String storeLogo;
+  final String storeName;
 
-  const ProductGridItemContainer({Key? key, required this.product})
+
+  const ProductGridItemContainer({Key? key, required this.product, required this.sellerId, required this.storeLogo, required this.storeName})
       : super(key: key);
 
   @override
@@ -31,6 +35,9 @@ class _State extends State<ProductGridItemContainer> {
             product.id.toString(),
             product.name,
             product,
+            widget.sellerId,
+            widget.storeName,
+            widget.storeLogo,
           ],
         );
       },
@@ -56,6 +63,7 @@ class _State extends State<ProductGridItemContainer> {
                       Column(
                         children: [
                           Expanded(
+                            flex: 25,
                             child: ClipRRect(
                               borderRadius: BorderRadiusDirectional.only(
                                 topStart: Radius.circular(10),
@@ -71,7 +79,7 @@ class _State extends State<ProductGridItemContainer> {
                             ),
                           ),
                           Expanded(
-                            flex: 1,
+                            flex: 10,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
