@@ -40,108 +40,100 @@ class _State extends State<ProductListItemContainer> {
                   child: Stack(
                     children: [
                       Row(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Consumer<SelectedVariantItemProvider>(
-                              builder: (context, selectedVariantItemProvider,
-                                  child) {
-                                return Stack(
-                                  children: [
-                                    ClipRRect(
-                                        borderRadius: Constant.borderRadius10,
-                                        clipBehavior:
-                                            Clip.antiAliasWithSaveLayer,
-                                        child: Widgets.setNetworkImg(
-                                          boxFit: BoxFit.fill,
-                                          image: product.imageUrl.toString(),
-                                          height: 125,
-                                          width: 125,
-                                        )),
-                                    if (product
-                                            .variants?[
-                                                selectedVariantItemProvider
-                                                    .getSelectedIndex()]
-                                            .status
-                                            .toString() ==
-                                        "0")
-                                      PositionedDirectional(
-                                        top: 0,
-                                        end: 0,
-                                        start: 0,
-                                        bottom: 0,
-                                        child: getOutOfStockWidget(
-                                          height: 125,
-                                          width: 125,
-                                          textSize: 15,
-                                          context: context,
-                                        ),
-                                      ),
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Consumer<SelectedVariantItemProvider>(
+                            builder:
+                                (context, selectedVariantItemProvider, child) {
+                              return Stack(
+                                children: [
+                                  ClipRRect(
+                                      borderRadius: Constant.borderRadius10,
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      child: Widgets.setNetworkImg(
+                                        boxFit: BoxFit.fill,
+                                        image: product.imageUrl.toString(),
+                                        height: 125,
+                                        width: 125,
+                                      )),
+                                  if (product
+                                          .variants?[selectedVariantItemProvider
+                                              .getSelectedIndex()]
+                                          .status
+                                          .toString() ==
+                                      "0")
                                     PositionedDirectional(
-                                        bottom: 5,
-                                        end: 5,
-                                        child: Column(
-                                          children: [
-                                            if (product.indicator == 1)
-                                              Widgets.defaultImg(
-                                                  height: 24,
-                                                  width: 24,
-                                                  image: "veg_indicator"),
-                                            if (product.indicator == 2)
-                                              Widgets.defaultImg(
-                                                  height: 24,
-                                                  width: 24,
-                                                  image: "non_veg_indicator"),
-                                          ],
-                                        )),
-                                  ],
-                                );
-                              },
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: Constant.size10,
-                                    horizontal: Constant.size10),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Widgets.getSizedBox(
-                                      height: Constant.size10,
-                                    ),
-                                    CustomTextLabel(
-                                      text: product.name.toString(),
-                                      softWrap: true,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: ColorsRes.mainTextColor,
+                                      top: 0,
+                                      end: 0,
+                                      start: 0,
+                                      bottom: 0,
+                                      child: getOutOfStockWidget(
+                                        height: 125,
+                                        width: 125,
+                                        textSize: 15,
+                                        context: context,
                                       ),
                                     ),
-                                    Widgets.getSizedBox(
-                                      height: Constant.size10,
+                                  PositionedDirectional(
+                                      bottom: 5,
+                                      end: 5,
+                                      child: Column(
+                                        children: [
+                                          if (product.indicator == 1)
+                                            Widgets.defaultImg(
+                                                height: 24,
+                                                width: 24,
+                                                image: "veg_indicator"),
+                                          if (product.indicator == 2)
+                                            Widgets.defaultImg(
+                                                height: 24,
+                                                width: 24,
+                                                image: "non_veg_indicator"),
+                                        ],
+                                      )),
+                                ],
+                              );
+                            },
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: Constant.size10,
+                                  horizontal: Constant.size10),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Widgets.getSizedBox(
+                                    height: Constant.size10,
+                                  ),
+                                  CustomTextLabel(
+                                    text: product.name.toString(),
+                                    softWrap: true,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: ColorsRes.mainTextColor,
                                     ),
-                                    ProductVariantDropDownMenuList(
-                                      variants: variants,
-                                      from: "",
-                                      product: product,
-                                      isGrid: false,
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                  Widgets.getSizedBox(
+                                    height: Constant.size10,
+                                  ),
+                                  ProductVariantDropDownMenuList(
+                                    variants: variants,
+                                    from: "",
+                                    product: product,
+                                    isGrid: false,
+                                  ),
+                                ],
                               ),
-                            )
-                          ]),
-                      PositionedDirectional(
-                        end: 5,
-                        top: 5,
-                        child: ProductWishListIcon(
-                          product: product,
-                        ),
+                            ),
+                          )
+                        ],
                       ),
                     ],
                   ),

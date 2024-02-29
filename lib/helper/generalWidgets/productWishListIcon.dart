@@ -75,20 +75,7 @@ class ProductWishListIcon extends StatelessWidget {
                           : ColorsRes.mainTextColor,
                     ),
                   ),
-                ), /*Container(
-                  height: 24,
-                  width: 24,
-                  child: Widgets.getDarkLightIcon(
-                    iconColor: ColorsRes.appColor,
-                      isActive: Constant.session.isUserLoggedIn()
-                          ? providerContext
-                              .read<ProductAddOrRemoveFavoriteProvider>()
-                              .favoriteList
-                              .contains(int.parse(product?.id.toString() ?? "0"))
-                          : false,
-                    image: "wishlist",
-                  ),
-                ),*/
+                ),
         );
       },
     );

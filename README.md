@@ -185,7 +185,8 @@ To build the Android application:
 ```shell
 flutter clean
 flutter pub get
-flutter build apk --split-per-abi
+#flutter build apk --split-per-abi
+flutter build apk
 ```
 
 ## Build Android App Bundle

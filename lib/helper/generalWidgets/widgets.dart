@@ -624,7 +624,7 @@ Widget getSearchWidget({
       margin: EdgeInsetsDirectional.all(10),
       decoration: DesignConfig.boxDecoration(
         Theme.of(context).scaffoldBackgroundColor,
-        bordercolor: const Color(0xffe3e0e0),
+        bordercolor: ColorsRes.menuTitleColor,
         borderwidth: 2,
         isboarder: true,
         15,

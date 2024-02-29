@@ -24,22 +24,68 @@ Widget editBoxWidget(
             isLastField == true ? TextInputAction.done : TextInputAction.next,
         decoration: InputDecoration(
           suffixIcon: tailIcon,
-          fillColor: Theme.of(context).scaffoldBackgroundColor,
+          fillColor: Theme.of(context).cardColor,
           filled: true,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(8),
+            ),
+            borderSide: BorderSide(
+              color: ColorsRes.appColor,
+              width: 1,
+              style: BorderStyle.solid,
+              strokeAlign: BorderSide.strokeAlignCenter,
+            ),
+          ),
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               Radius.circular(8),
             ),
             borderSide: BorderSide(
-                color: ColorsRes.appColor,
-                width: 1,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignCenter),
+              color: ColorsRes.subTitleMainTextColor,
+              width: 1,
+              style: BorderStyle.solid,
+              strokeAlign: BorderSide.strokeAlignCenter,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(8),
+            ),
+            borderSide: BorderSide(
+              color: ColorsRes.appColorRed,
+              width: 1,
+              style: BorderStyle.solid,
+              strokeAlign: BorderSide.strokeAlignCenter,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(8),
+            ),
+            borderSide: BorderSide(
+              color: ColorsRes.subTitleMainTextColor,
+              width: 1,
+              style: BorderStyle.solid,
+              strokeAlign: BorderSide.strokeAlignCenter,
+            ),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(8),
+            ),
+            borderSide: BorderSide(
+              color: ColorsRes.subTitleMainTextColor.withOpacity(0.5),
+              width: 1,
+              style: BorderStyle.solid,
+              strokeAlign: BorderSide.strokeAlignCenter,
+            ),
           ),
           labelText: label,
+          labelStyle: TextStyle(color: ColorsRes.subTitleMainTextColor),
           isDense: true,
           floatingLabelStyle: MaterialStateTextStyle.resolveWith(
-            (Set<MaterialState> states) {
+                (Set<MaterialState> states) {
               final Color color = states.contains(MaterialState.error)
                   ? Theme.of(context).colorScheme.error
                   : ColorsRes.appColor;

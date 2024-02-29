@@ -4,6 +4,7 @@ import 'package:lokale_mand/customer/provider/productRatingListProvider.dart';
 import 'package:lokale_mand/customer/screen/addressDetailScreen.dart';
 import 'package:lokale_mand/customer/screen/confirmLocationScreen/confirmLocationScreen.dart';
 import 'package:lokale_mand/customer/screen/customerChatDetailScreen/customerChatDetailScreen.dart';
+import 'package:lokale_mand/customer/screen/wishlistScreen/wishlistScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/provider/sellerAddProductProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
@@ -46,13 +47,14 @@ const String orderHistoryScreen = 'orderHistoryScreen';
 const String notificationListScreen = 'notificationListScreen';
 const String transactionListScreen = 'transactionListScreen';
 const String faqListScreen = 'faqListScreen';
-const String orderPlaceScreen = 'orderPlaceScreen';
+// const String orderPlaceScreen = 'orderPlaceScreen';
 const String notificationsAndMailSettingsScreenScreen =
     'notificationsAndMailSettingsScreenScreen';
 const String underMaintenanceScreen = 'underMaintenanceScreen';
 const String appUpdateScreen = 'appUpdateScreen';
 const String paypalPaymentScreen = 'paypalPaymentScreen';
 const String chatDetailScreen = 'chatDetailScreen';
+const String wishListScreen = 'wishListScreen';
 
 // SELLER SCREENS VARIABLES
 
@@ -201,6 +203,14 @@ class RouteGenerator {
           ),
         );
 
+      case wishListScreen:
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<ProductWishListProvider>(
+            create: (context) => ProductWishListProvider(),
+            child: WishListScreenScreen(),
+          ),
+        );
+
       case productSearchScreen:
         return CupertinoPageRoute(
           builder: (_) => ChangeNotifierProvider<ProductSearchProvider>(
@@ -322,10 +332,10 @@ class RouteGenerator {
           ),
         );
 
-      case orderPlaceScreen:
-        return CupertinoPageRoute(
-          builder: (_) => const OrderPlacedScreen(),
-        );
+      // case orderPlaceScreen:
+      //   return CupertinoPageRoute(
+      //     builder: (_) => const OrderPlacedScreen(),
+      //   );
 
       case underMaintenanceScreen:
         return CupertinoPageRoute(

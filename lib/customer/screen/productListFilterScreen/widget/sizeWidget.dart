@@ -1,4 +1,5 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/helper/generalWidgets/customCheckbox.dart';
 
 getSizeWidget(List<Sizes> sizes, BuildContext context) {
   return ListView(
@@ -14,7 +15,7 @@ getSizeWidget(List<Sizes> sizes, BuildContext context) {
           softWrap: true,
           overflow: TextOverflow.ellipsis,
         ),
-        leading: Checkbox(
+        leading: CustomCheckbox(
           activeColor: ColorsRes.appColor,
           value: context
               .watch<ProductFilterProvider>()

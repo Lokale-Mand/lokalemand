@@ -1,3 +1,4 @@
+import 'package:lokale_mand/helper/generalWidgets/customCheckbox.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -11,7 +12,9 @@ class CreateAccountScreen extends StatefulWidget {
 
 class _CreateAccountScreenState extends State<CreateAccountScreen> {
   CountryCode? selectedCountryCode;
-  bool isLoading = false, isPasswordVisible = false;
+  bool isLoading = false,
+      isPasswordVisible = false,
+      isConfirmPasswordVisible = false;
   TextEditingController edtEmail = TextEditingController();
   TextEditingController edtPassword = TextEditingController();
   TextEditingController edtDuplicatePassword = TextEditingController();
@@ -45,8 +48,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         child: StepperCounter(
           firstCounterText: "back",
           firstItemVoidCallback: () => Navigator.pop(context),
-          secondCounterText: "1/2",
-          thirdCounterText: "next",
+          // secondCounterText: "1/2",
+          thirdCounterText: "ready",
           thirdItemVoidCallback: () => createAccountProcess(),
         ),
       ),
@@ -185,19 +188,40 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 color: ColorsRes.textFieldBorderColor,
               ),
               color: Theme.of(context).cardColor),
-          child: TextField(
-            controller: edtPassword,
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: ColorsRes.mainTextColor,
-            ),
-            obscureText: isPasswordVisible ? false : true,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              hintStyle: TextStyle(color: Colors.grey[300]),
-              hintText: "******",
-            ),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: edtPassword,
+                  keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(
+                    color: ColorsRes.mainTextColor,
+                  ),
+                  obscureText: isPasswordVisible ? false : true,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    hintStyle: TextStyle(color: Colors.grey[300]),
+                    hintText: "******",
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(
+                    () {
+                      isPasswordVisible = !isPasswordVisible;
+                    },
+                  );
+                },
+                child: Icon(
+                  isPasswordVisible
+                      ? Icons.visibility_off_rounded
+                      : Icons.visibility_rounded,
+                  color: ColorsRes.subTitleMainTextColor,
+                ),
+              ),
+            ],
           ),
         ),
         Widgets.getSizedBox(
@@ -221,44 +245,41 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 color: ColorsRes.textFieldBorderColor,
               ),
               color: Theme.of(context).cardColor),
-          child: TextField(
-            controller: edtDuplicatePassword,
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: ColorsRes.mainTextColor,
-            ),
-            obscureText: isPasswordVisible ? false : true,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              hintStyle: TextStyle(color: Colors.grey[300]),
-              hintText: "******",
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Checkbox(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              value: isPasswordVisible,
-              activeColor: ColorsRes.appColor,
-              onChanged: (bool? val) {
-                setState(
-                  () {
-                    isPasswordVisible = val!;
-                  },
-                );
-              },
-            ),
-            Expanded(
-              child: CustomTextLabel(
-                jsonKey: isPasswordVisible ? "hide_password" : "show_password",
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: edtDuplicatePassword,
+                  keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(
+                    color: ColorsRes.mainTextColor,
+                  ),
+                  obscureText: isConfirmPasswordVisible ? false : true,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    hintStyle: TextStyle(color: Colors.grey[300]),
+                    hintText: "******",
+                  ),
+                ),
               ),
-            ),
-          ],
+              GestureDetector(
+                onTap: () {
+                  setState(
+                    () {
+                      isConfirmPasswordVisible = !isConfirmPasswordVisible;
+                    },
+                  );
+                },
+                child: Icon(
+                  isConfirmPasswordVisible
+                      ? Icons.visibility_off_rounded
+                      : Icons.visibility_rounded,
+                  color: ColorsRes.subTitleMainTextColor,
+                ),
+              ),
+            ],
+          ),
         ),
         Widgets.getSizedBox(
           height: Constant.size20,
@@ -371,6 +392,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     if (user != null) {
       Constant.session.setData(SessionManager.keyAuthUid, user.uid, false);
       Map<String, String> params = {
+        ApiAndParams.name: edtFullName.text.toString(),
         ApiAndParams.email: edtEmail.text.toString(),
         ApiAndParams.password: edtPassword.text.toString(),
         ApiAndParams.authUid: user.uid,

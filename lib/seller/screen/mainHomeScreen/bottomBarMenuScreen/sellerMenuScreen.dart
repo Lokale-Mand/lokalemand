@@ -13,6 +13,7 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
   List storeDataMenu = [];
   List legalDataMenu = [];
   List settingsDataMenu = [];
+  List deleteAccountMenuItem = [];
 
   @override
   void initState() {
@@ -20,6 +21,7 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
       setLegalDataMenuList();
       setSettingsDataMenuList();
       setPersonalDataMenuList();
+      setDeleteMenuItem();
     });
     super.initState();
   }
@@ -51,6 +53,7 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
             setLegalDataMenuList();
             setSettingsDataMenuList();
             setPersonalDataMenuList();
+            setDeleteMenuItem();
             return ListView(
               padding: EdgeInsetsDirectional.all(20),
               children: [
@@ -116,7 +119,7 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
                 ),
                 Padding(
                   padding:
-                  EdgeInsetsDirectional.only(top: 10, start: 10, end: 10),
+                      EdgeInsetsDirectional.only(top: 10, start: 10, end: 10),
                   child: Row(
                     children: [
                       CustomTextLabel(
@@ -152,7 +155,7 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
                             }
                           },
                           activeThumbImage:
-                          AssetImage(Constant.getAssetsPath(0, "dark.png")),
+                              AssetImage(Constant.getAssetsPath(0, "dark.png")),
                           inactiveThumbImage: AssetImage(
                               Constant.getAssetsPath(0, "light.png")),
                         ),
@@ -161,6 +164,7 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
                   ),
                 ),
                 MenuListItems(settingsDataMenu),
+                CustomMenuListItems(deleteAccountMenuItem),
                 Widgets.getSizedBox(height: 5),
               ],
             );
@@ -194,15 +198,15 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
           },
           "isResetLabel": false
         },
-      if (Constant.session.isUserLoggedIn())
-        {
-          "icon": "transaction_icon",
-          "label": "transaction_history",
-          "clickFunction": (context) {
-            Navigator.pushNamed(context, transactionListScreen);
-          },
-          "isResetLabel": false
-        },
+      // if (Constant.session.isUserLoggedIn())
+      //   {
+      //     "icon": "transaction_icon",
+      //     "label": "transaction_history",
+      //     "clickFunction": (context) {
+      //       Navigator.pushNamed(context, transactionListScreen);
+      //     },
+      //     "isResetLabel": false
+      //   },
     ];
   }
 
@@ -230,16 +234,16 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
           },
           "isResetLabel": true,
         },
-      if (Constant.session.isUserLoggedIn())
-        {
-          "icon": "settings",
-          "label": "settings",
-          "clickFunction": (context) {
-            Navigator.pushNamed(
-                context, notificationsAndMailSettingsScreenScreen);
-          },
-          "isResetLabel": false
-        },
+      // if (Constant.session.isUserLoggedIn())
+      //   {
+      //     "icon": "settings",
+      //     "label": "settings",
+      //     "clickFunction": (context) {
+      //       Navigator.pushNamed(
+      //           context, notificationsAndMailSettingsScreenScreen);
+      //     },
+      //     "isResetLabel": false
+      //   },
       if (Constant.session.isUserLoggedIn())
         {
           "icon": "logout_icon",
@@ -247,6 +251,12 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
           "clickFunction": Constant.session.logoutUser,
           "isResetLabel": false
         },
+    ];
+  }
+
+  setDeleteMenuItem(){
+    deleteAccountMenuItem = [];
+    deleteAccountMenuItem = [
       if (Constant.session.isUserLoggedIn())
         {
           "icon": "delete_user_account_icon",
@@ -353,7 +363,7 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(
         menu.length,
-            (index) => Padding(
+        (index) => Padding(
           padding: EdgeInsetsDirectional.only(top: 10, start: 10, end: 10),
           child: GestureDetector(
             onTap: () {
@@ -365,6 +375,31 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
                 color: ColorsRes.mainTextColor,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget CustomMenuListItems(List menu) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(
+        menu.length,
+        (index) => Padding(
+          padding: EdgeInsetsDirectional.only(top: 10, start: 10, end: 10),
+          child: GestureDetector(
+            onTap: () {
+              menu[index]['clickFunction'](context);
+            },
+            child: CustomTextLabel(
+              jsonKey: menu[index]['label'],
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: ColorsRes.appColorRed,
               ),
             ),
           ),

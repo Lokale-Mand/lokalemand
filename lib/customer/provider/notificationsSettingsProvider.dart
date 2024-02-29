@@ -105,7 +105,7 @@ class NotificationsSettingsProvider extends ChangeNotifier {
       GeneralMethods.showMessage(
         context,
         notificationSettingsUpdateApiResponse[ApiAndParams.message],
-        MessageType.warning,
+        MessageType.success,
       );
       notificationsSettingsUpdateState =
           NotificationsSettingsUpdateState.loaded;

@@ -1,3 +1,4 @@
+import 'package:lokale_mand/helper/generalWidgets/customRadio.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class BottomSheetLanguageListContainer extends StatefulWidget {
@@ -80,7 +81,8 @@ class _BottomSheetLanguageListContainerState
                                 ),
                               ),
                             ),
-                            Radio(
+                            CustomRadio(
+                              inactiveColor: ColorsRes.subTitleMainTextColor,
                               activeColor: ColorsRes.appColor,
                               value: languageProvider.selectedLanguage,
                               groupValue: languageProvider

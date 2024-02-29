@@ -136,6 +136,9 @@ class AddressProvider extends ChangeNotifier {
         getData = (await addAddressApi(context: context, params: params));
       }
 
+      print(
+          ">>>>>${params.containsKey(ApiAndParams.id) ? "old" : "new"} >>>  $getData");
+
       late AddressData tempAddress;
       if (getData[ApiAndParams.status].toString() == "1") {
         tempAddress = AddressData.fromJson(getData[ApiAndParams.data]);

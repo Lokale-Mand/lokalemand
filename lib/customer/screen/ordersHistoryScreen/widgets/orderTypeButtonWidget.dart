@@ -13,12 +13,6 @@ class OrderTypeButtonWidget extends StatelessWidget {
     return Container(
       margin: margin ?? EdgeInsetsDirectional.zero,
       height: 45,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: isActive == false
-            ? Theme.of(context).cardColor
-            : ColorsRes.appColor,
-      ),
       child: child,
     );
   }

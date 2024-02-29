@@ -50,7 +50,7 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
       GeneralMethods.determinePosition().then((value) async {
         updateMap(value.latitude, value.longitude);
       });
-    }
+        }
 
     setMarkerIcon();
     super.initState();

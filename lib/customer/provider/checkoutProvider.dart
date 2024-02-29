@@ -576,7 +576,6 @@ class CheckoutProvider extends ChangeNotifier {
 
   showOrderPlacedScreen(BuildContext context) {
     Navigator.popUntil(context, (route) => route.isFirst);
-    Navigator.pushNamed(context, orderPlaceScreen);
   }
 
   Future initiatePaypalTransaction({required BuildContext context}) async {

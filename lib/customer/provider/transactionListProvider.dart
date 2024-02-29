@@ -49,9 +49,14 @@ class TransactionProvider extends ChangeNotifier {
       if (hasMoreData) {
         offset += Constant.defaultDataLoadLimitAtOnce;
       }
+      if (transactions.length > 0) {
+        itemsState = TransactionState.loaded;
+        notifyListeners();
+      } else {
+        itemsState = TransactionState.error;
+        notifyListeners();
+      }
 
-      itemsState = TransactionState.loaded;
-      notifyListeners();
     } catch (e) {
       message = e.toString();
       itemsState = TransactionState.error;

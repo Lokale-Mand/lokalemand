@@ -16,6 +16,7 @@ class SessionManager extends ChangeNotifier {
   static String keyUserImage = "image";
   static String keyPhone = "phone";
   static String keyEmail = "email";
+  static String keyPassword = "password";
   static String keyCountryCode = "countryCode";
   static String keyReferralCode = "referral_code";
   static String keyUserStatus = "userStatus";
@@ -236,6 +237,43 @@ class SessionManager extends ChangeNotifier {
         ],
       ),
     );
+  }
+
+  void logoutUserMethod(BuildContext context) {
+    {
+      String themeName = getData(SessionManager.appThemeName);
+      String languageId = getData(SessionManager.keySelectedLanguageId);
+      String latitude = getData(SessionManager.keyLatitude);
+      String longitude = getData(SessionManager.keyLongitude);
+      String address = getData(SessionManager.keyAddress);
+
+      bool isDark = false;
+      if (themeName == Constant.themeList[2]) {
+        isDark = true;
+      } else if (themeName == Constant.themeList[1]) {
+        isDark = false;
+      } else if (themeName == "" || themeName == Constant.themeList[0]) {
+        var brightness = PlatformDispatcher.instance.platformBrightness;
+        isDark = brightness == Brightness.dark;
+
+        if (themeName == "") {
+          setData(SessionManager.appThemeName, Constant.themeList[0], false);
+        }
+      }
+      prefs.clear();
+      setBoolData(introSlider, true, false);
+      setBoolData(isUserLogin, false, false);
+      setData(SessionManager.appThemeName, themeName, false);
+      setData(keySelectedLanguageId, languageId, false);
+      setData(SessionManager.keyLatitude, latitude, false);
+      setData(SessionManager.keyLongitude, longitude, false);
+      setData(SessionManager.keyAddress, address, false);
+      setBoolData(SessionManager.isDarkTheme, isDark, false);
+      setBoolData(SessionManager.introSlider, true, false);
+      context.read<CartListProvider>().cartList.clear();
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          userTypeSelectionScreen, (Route<dynamic> route) => false);
+    }
   }
 
   void deleteUserAccount(BuildContext buildContext) {

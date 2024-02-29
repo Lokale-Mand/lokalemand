@@ -11,7 +11,7 @@ class Constant {
 
   static String sellerBaseUrl = "${hostUrl}api/seller/";
   static String packageName = "com.lokalemand.nl";
-  static String appStoreUrl = "https://testflight.apple.com/join/fcRe3J9F";
+  static String appStoreUrl = "https://apps.apple.com/us/app/lokale-mand/id6476257411";
   static String playStoreUrl =
       "https://play.google.com/store/apps/details?id=$packageName";
 

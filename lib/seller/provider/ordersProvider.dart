@@ -92,10 +92,17 @@ class SellerOrdersProvider extends ChangeNotifier {
             offset += Constant.defaultDataLoadLimitAtOnce;
           }
         }
+        if (sellerOrdersList.length > 0) {
+          ordersState = SellerOrdersState.loaded;
+          notifyListeners();
+        } else {
+          ordersState = SellerOrdersState.error;
+          notifyListeners();
+        }
+      } else {
+        ordersState = SellerOrdersState.error;
+        notifyListeners();
       }
-
-      ordersState = SellerOrdersState.loaded;
-      notifyListeners();
     } catch (e) {
       message = e.toString();
       ordersState = SellerOrdersState.error;
@@ -200,7 +207,8 @@ class SellerOrdersProvider extends ChangeNotifier {
     for (int i = 0; i < sellerOrdersProductsList.length; i++) {
       if (sellerOrdersProductsList[i].orderId.toString() ==
           orderId.toString()) {
-        imageLink = "${Constant.hostUrl}storage/${sellerOrdersProductsList[i].image.toString()}";
+        imageLink =
+            "${Constant.hostUrl}storage/${sellerOrdersProductsList[i].image.toString()}";
       }
     }
 

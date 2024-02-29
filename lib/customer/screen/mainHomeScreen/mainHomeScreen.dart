@@ -56,7 +56,7 @@ class HomeMainScreenState extends State<HomeMainScreen> {
                   params: {}, context: context)
               .then(
             (value) async {
-              if (value[ApiAndParams.status].toString() != "1") {
+              if (value[ApiAndParams.data].toString() == "[]") {
                 await updateAppNotificationSettingsRepository(params: {
                   ApiAndParams.statusIds: "1,2,3,4,5,6,7,8",
                   ApiAndParams.mobileStatuses: "1,1,1,1,1,1,1,1",

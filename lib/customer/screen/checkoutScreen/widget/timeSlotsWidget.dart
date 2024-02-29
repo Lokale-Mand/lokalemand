@@ -1,4 +1,5 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/helper/generalWidgets/customRadio.dart';
 
 class GetTimeSlots extends StatelessWidget {
   const GetTimeSlots({super.key});
@@ -296,7 +297,8 @@ class GetTimeSlots extends StatelessWidget {
                                     ),
                                   ),
                                   const Spacer(),
-                                  Radio(
+                                   CustomRadio(
+                              inactiveColor: ColorsRes.subTitleMainTextColor,
                                     value: context
                                         .read<CheckoutProvider>()
                                         .selectedTime,

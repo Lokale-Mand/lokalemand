@@ -670,104 +670,106 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ],
                           ),
                         ),
-                        // Widgets.getSizedBox(height: Constant.size10),
-                        // Row(
-                        //   children: [
-                        //     IconButton(
-                        //       onPressed: () {
-                        //         try {
-                        //           if (int.parse(
-                        //                   edtProductStock.text.toString()) >
-                        //               0) {
-                        //             edtProductStock.text = (int.parse(
-                        //                         edtProductStock.text
-                        //                             .toString()) -
-                        //                     1)
-                        //                 .toString();
-                        //           } else {
-                        //             edtProductStock.text = "0";
-                        //           }
-                        //           setState(() {});
-                        //         } catch (e) {
-                        //           GeneralMethods.showMessage(context,
-                        //               e.toString(), MessageType.warning);
-                        //         }
-                        //       },
-                        //       icon: Icon(
-                        //         Icons.remove_circle_outline_rounded,
-                        //         color: ColorsRes.appColor,
-                        //         size: 40,
-                        //       ),
-                        //     ),
-                        //     Expanded(
-                        //       child: Container(
-                        //         height: 40,
-                        //         padding: EdgeInsetsDirectional.only(
-                        //             start: 10, end: 10),
-                        //         decoration: BoxDecoration(
-                        //           borderRadius:
-                        //               BorderRadius.all(Radius.circular(30)),
-                        //           border: Border.all(
-                        //             color: ColorsRes.textFieldBorderColor,
-                        //           ),
-                        //           color: Theme.of(context).cardColor,
-                        //         ),
-                        //         child: TextField(
-                        //           textAlign: TextAlign.center,
-                        //           controller: edtProductStock,
-                        //           keyboardType: TextInputType.number,
-                        //           inputFormatters: [
-                        //             FilteringTextInputFormatter.digitsOnly,
-                        //             CustomNumberTextInputFormatter()
-                        //           ],
-                        //           style: TextStyle(
-                        //             color: ColorsRes.mainTextColor,
-                        //           ),
-                        //           decoration: InputDecoration(
-                        //             border: InputBorder.none,
-                        //             isDense: true,
-                        //             hintStyle: TextStyle(
-                        //               color: ColorsRes.menuTitleColor,
-                        //             ),
-                        //             hintText: context
-                        //                 .read<LanguageProvider>()
-                        //                 .currentLanguage["product_stock_hint"],
-                        //           ),
-                        //           onChanged: (value) {
-                        //             if (value.isNotEmpty) {
-                        //               edtProductStock.text = value;
-                        //             }
-                        //             setState(() {});
-                        //           },
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     IconButton(
-                        //       onPressed: () {
-                        //         try {
-                        //           edtProductStock.text = (int.parse(
-                        //                       edtProductStock.text
-                        //                               .toString()
-                        //                               .isEmpty
-                        //                           ? "0"
-                        //                           : edtProductStock.text
-                        //                               .toString()) +
-                        //                   1)
-                        //               .toString();
-                        //           setState(() {});
-                        //         } catch (e) {
-                        //           GeneralMethods.showMessage(context,
-                        //               e.toString(), MessageType.warning);
-                        //         }
-                        //       },
-                        //       icon: Icon(
-                        //         Icons.add_circle_outline_rounded,
-                        //         color: ColorsRes.appColor,
-                        //         size: 40,
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
+                        Widgets.getSizedBox(height: Constant.size10),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                try {
+                                  if (edtProductStock.text.isEmpty) {
+                                    edtProductStock.text = "0";
+                                  } else if (int.parse(
+                                          edtProductStock.text.toString()) >
+                                      0) {
+                                    edtProductStock.text = (int.parse(
+                                                edtProductStock.text
+                                                    .toString()) -
+                                            1)
+                                        .toString();
+                                  } else {
+                                    edtProductStock.text = "0";
+                                  }
+                                  setState(() {});
+                                } catch (e) {
+                                  GeneralMethods.showMessage(context,
+                                      e.toString(), MessageType.warning);
+                                }
+                              },
+                              icon: Icon(
+                                Icons.remove_circle_outline_rounded,
+                                color: ColorsRes.appColor,
+                                size: 40,
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                height: 40,
+                                padding: EdgeInsetsDirectional.only(
+                                    start: 10, end: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                  border: Border.all(
+                                    color: ColorsRes.textFieldBorderColor,
+                                  ),
+                                  color: Theme.of(context).cardColor,
+                                ),
+                                child: TextField(
+                                  textAlign: TextAlign.center,
+                                  controller: edtProductStock,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    CustomNumberTextInputFormatter()
+                                  ],
+                                  style: TextStyle(
+                                    color: ColorsRes.mainTextColor,
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    hintStyle: TextStyle(
+                                      color: ColorsRes.menuTitleColor,
+                                    ),
+                                    hintText: context
+                                        .read<LanguageProvider>()
+                                        .currentLanguage["product_stock_hint"],
+                                  ),
+                                  onChanged: (value) {
+                                    if (value.isNotEmpty) {
+                                      edtProductStock.text = value;
+                                    }
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                try {
+                                  edtProductStock.text = (int.parse(
+                                              edtProductStock.text
+                                                      .toString()
+                                                      .isEmpty
+                                                  ? "0"
+                                                  : edtProductStock.text
+                                                      .toString()) +
+                                          1)
+                                      .toString();
+                                  setState(() {});
+                                } catch (e) {
+                                  GeneralMethods.showMessage(context,
+                                      e.toString(), MessageType.warning);
+                                }
+                              },
+                              icon: Icon(
+                                Icons.add_circle_outline_rounded,
+                                color: ColorsRes.appColor,
+                                size: 40,
+                              ),
+                            )
+                          ],
+                        ),
                         if (edtProductStock.text.toString().isNotEmpty &&
                             int.parse(edtProductStock.text.toString()) > 0)
                           Widgets.getSizedBox(height: Constant.size10),

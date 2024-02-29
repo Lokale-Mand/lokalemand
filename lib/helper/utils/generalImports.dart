@@ -131,7 +131,7 @@ export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/scr
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/transactionListScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/webViewScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/widget/profileHeader.dart';
-export 'package:lokale_mand/customer/screen/mainHomeScreen/wishListScreen.dart';
+export 'package:lokale_mand/customer/screen/wishlistScreen/productWishListScreen.dart';
 export 'package:lokale_mand/customer/screen/orderPlacedScreen.dart';
 export 'package:lokale_mand/customer/screen/orderSummaryScreen/orderSummaryScreen.dart';
 export 'package:lokale_mand/customer/screen/orderSummaryScreen/widgets/cancelProductDialog.dart';

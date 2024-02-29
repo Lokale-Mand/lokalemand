@@ -117,6 +117,7 @@ class CustomerChatDetailProvider extends ChangeNotifier {
             CustomerChatDetailData.fromJson(getData[ApiAndParams.data]);
         chatDetails = [customerChatDetailData, ...chatDetails];
         customerSendMessageState = CustomerSendMessageState.loaded;
+        customerChatDetailState = CustomerChatDetailState.loaded;
         notifyListeners();
       }
     } catch (e) {

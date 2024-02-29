@@ -69,8 +69,13 @@ class CustomerChatListProvider extends ChangeNotifier {
             offset += Constant.defaultDataLoadLimitAtOnce;
           }
 
-          customerChatListState = CustomerChatListState.loaded;
-          notifyListeners();
+          if (chats.length > 0) {
+            customerChatListState = CustomerChatListState.loaded;
+            notifyListeners();
+          } else {
+            customerChatListState = CustomerChatListState.error;
+            notifyListeners();
+          }
         }
       }
     } catch (e) {

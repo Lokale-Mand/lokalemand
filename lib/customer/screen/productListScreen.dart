@@ -1,3 +1,5 @@
+import 'package:lokale_mand/customer/provider/sellerWishListProvider.dart';
+import 'package:lokale_mand/helper/generalWidgets/sellerWishListIcon.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -106,11 +108,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
       appBar: getAppBar(
         context: context,
         title: CustomTextLabel(
-          text: widget.title ??
-              getTranslatedValue(
-                context,
-                "products",
-              ),
+          text: widget.sellerName.isNotEmpty
+              ? widget.sellerName
+              : getTranslatedValue(
+                  context,
+                  "products",
+                ),
           softWrap: true,
           style: TextStyle(
             fontSize: 16,
@@ -119,7 +122,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         ),
         actions: [
-          // setCartCounter(context: context),
+          ChangeNotifierProvider<SellerAddOrRemoveFavoriteProvider>(
+            create: (context) => SellerAddOrRemoveFavoriteProvider(),
+            child: SellerWishListIcon(
+              sellerId: widget.id,
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: PhysicalModel(
@@ -285,7 +293,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               );
             },
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 1,
+              childAspectRatio: 0.8,
               crossAxisCount: 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,

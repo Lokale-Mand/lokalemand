@@ -8,18 +8,27 @@
     ]
   },
   {
-    "elementType": "labels.text.fill",
+    "elementType": "labels",
     "stylers": [
       {
-        "color": "#00746855"
+        "weight": 0.5
       }
     ]
   },
   {
+    "featureType": "administrative",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative",
     "elementType": "labels.text.stroke",
     "stylers": [
       {
-        "color": "#00242f3e"
+        "color": "#242f3e"
       }
     ]
   },
@@ -28,7 +37,23 @@
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#00d59563"
+        "color": "#d59563"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "stylers": [
+      {
+        "visibility": "off"
       }
     ]
   },
@@ -37,7 +62,7 @@
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#00d59563"
+        "color": "#d59563"
       }
     ]
   },
@@ -55,7 +80,15 @@
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#006b9a76"
+        "color": "#6b9a76"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "stylers": [
+      {
+        "visibility": "on"
       }
     ]
   },
@@ -82,7 +115,7 @@
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#009ca5b3"
+        "color": "#9ca5b3"
       }
     ]
   },
@@ -109,7 +142,15 @@
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#00f3d19c"
+        "color": "#f3d19c"
+      }
+    ]
+  },
+  {
+    "featureType": "transit",
+    "stylers": [
+      {
+        "visibility": "off"
       }
     ]
   },
@@ -127,7 +168,15 @@
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#00d59563"
+        "color": "#d59563"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "stylers": [
+      {
+        "visibility": "on"
       }
     ]
   },
@@ -145,7 +194,7 @@
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#00515c6d"
+        "color": "#515c6d"
       }
     ]
   },
@@ -154,23 +203,7 @@
     "elementType": "labels.text.stroke",
     "stylers": [
       {
-        "color": "#0017263c"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "stylers": [
-      {
-        "visibility": "off"
+        "color": "#17263c"
       }
     ]
   }

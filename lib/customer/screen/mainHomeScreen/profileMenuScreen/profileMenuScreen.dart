@@ -17,14 +17,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List storeDataMenu = [];
   List legalDataMenu = [];
   List settingsDataMenu = [];
+  List deleteAccountMenu = [];
 
   @override
   void initState() {
-
     Future.delayed(Duration.zero).then((value) {
       setLegalDataMenuList();
       setSettingsDataMenuList();
       setPersonalDataMenuList();
+      setDeleteAccountMenuItem();
     });
     super.initState();
   }
@@ -56,24 +57,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
             setLegalDataMenuList();
             setSettingsDataMenuList();
             setPersonalDataMenuList();
+            setDeleteAccountMenuItem();
             return ListView(
               padding: EdgeInsetsDirectional.all(20),
               controller: widget.scrollController,
               children: [
                 ProfileHeader(),
-                Divider(color: ColorsRes.menuTitleColor),
-                Widgets.getSizedBox(height: 5),
-                CustomTextLabel(
-                  jsonKey: "store",
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    color: ColorsRes.menuTitleColor,
-                  ),
-                ),
-                MenuListItems(storeDataMenu),
+                // Divider(color: ColorsRes.menuTitleColor),
+                // Widgets.getSizedBox(height: 5),
+                // CustomTextLabel(
+                //   jsonKey: "store",
+                //   softWrap: true,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.w600,
+                //     fontSize: 12,
+                //     color: ColorsRes.menuTitleColor,
+                //   ),
+                // ),
+                // MenuListItems(storeDataMenu),
                 Widgets.getSizedBox(height: 5),
                 if (Constant.session.isUserLoggedIn())
                   Divider(color: ColorsRes.menuTitleColor),
@@ -90,8 +92,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: ColorsRes.menuTitleColor,
                     ),
                   ),
-                if (Constant.session.isUserLoggedIn())
-                  Widgets.getSizedBox(height: 15),
                 if (Constant.session.isUserLoggedIn())
                   MenuListItems(personalDataMenu),
                 Divider(color: ColorsRes.menuTitleColor),
@@ -167,6 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 MenuListItems(settingsDataMenu),
+                CustomMenuListItems(deleteAccountMenu),
                 Widgets.getSizedBox(height: 5),
               ],
             );
@@ -191,6 +192,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   setPersonalDataMenuList() {
     personalDataMenu = [];
     personalDataMenu = [
+      if (Constant.session.isUserLoggedIn() &&
+          !Constant.session.getBoolData(SessionManager.isSeller))
+        {
+          "icon": "notification_icon",
+          "label": "favorite",
+          "clickFunction": (context) {
+            Navigator.pushNamed(context, wishListScreen);
+          },
+          "isResetLabel": false
+        },
       if (Constant.session.isUserLoggedIn())
         {
           "icon": "notification_icon",
@@ -201,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           "isResetLabel": false
         },
       if (Constant.session.isUserLoggedIn() ||
-          Constant.session.getBoolData(SessionManager.isSeller)==false)
+          Constant.session.getBoolData(SessionManager.isSeller) == false)
         {
           "icon": "transaction_icon",
           "label": "transaction_history",
@@ -246,16 +257,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
           "isResetLabel": true,
         },
-      if (Constant.session.isUserLoggedIn())
-        {
-          "icon": "settings",
-          "label": "settings",
-          "clickFunction": (context) {
-            Navigator.pushNamed(
-                context, notificationsAndMailSettingsScreenScreen);
-          },
-          "isResetLabel": false
-        },
+      // if (Constant.session.isUserLoggedIn())
+      //   {
+      //     "icon": "settings",
+      //     "label": "settings",
+      //     "clickFunction": (context) {
+      //       Navigator.pushNamed(
+      //           context, notificationsAndMailSettingsScreenScreen);
+      //     },
+      //     "isResetLabel": false
+      //   },
       if (Constant.session.isUserLoggedIn())
         {
           "icon": "logout_icon",
@@ -263,6 +274,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           "clickFunction": Constant.session.logoutUser,
           "isResetLabel": false
         },
+    ];
+  }
+
+  setDeleteAccountMenuItem() {
+    deleteAccountMenu = [];
+    deleteAccountMenu = [
       if (Constant.session.isUserLoggedIn())
         {
           "icon": "delete_user_account_icon",
@@ -381,6 +398,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
                 color: ColorsRes.mainTextColor,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget CustomMenuListItems(List menu) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(
+        menu.length,
+        (index) => Padding(
+          padding: EdgeInsetsDirectional.only(top: 10, start: 10, end: 10),
+          child: GestureDetector(
+            onTap: () {
+              menu[index]['clickFunction'](context);
+            },
+            child: CustomTextLabel(
+              jsonKey: menu[index]['label'],
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: ColorsRes.appColorRed,
               ),
             ),
           ),

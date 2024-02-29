@@ -1,3 +1,4 @@
+import 'package:lokale_mand/helper/generalWidgets/customCheckbox.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class LoginAccount extends StatefulWidget {
@@ -12,8 +13,7 @@ class LoginAccount extends StatefulWidget {
 class _LoginAccountState extends State<LoginAccount> {
   bool isLoading = false, isAcceptedTerms = false, isPasswordVisible = false;
 
-  TextEditingController edtEmail =
-      TextEditingController();
+  TextEditingController edtEmail = TextEditingController();
   TextEditingController edtPassword = TextEditingController();
   bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -235,44 +235,41 @@ class _LoginAccountState extends State<LoginAccount> {
                 color: ColorsRes.textFieldBorderColor,
               ),
               color: Theme.of(context).cardColor),
-          child: TextField(
-            controller: edtPassword,
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: ColorsRes.mainTextColor,
-            ),
-            obscureText: isPasswordVisible ? false : true,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              hintStyle: TextStyle(color: Colors.grey[300]),
-              hintText: "******",
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Checkbox(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              value: isPasswordVisible,
-              activeColor: ColorsRes.appColor,
-              onChanged: (bool? val) {
-                setState(
-                  () {
-                    isPasswordVisible = val!;
-                  },
-                );
-              },
-            ),
-            Expanded(
-              child: CustomTextLabel(
-                jsonKey: isPasswordVisible ? "hide_password" : "show_password",
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: edtPassword,
+                  keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(
+                    color: ColorsRes.mainTextColor,
+                  ),
+                  obscureText: isPasswordVisible ? false : true,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    hintStyle: TextStyle(color: Colors.grey[300]),
+                    hintText: "******",
+                  ),
+                ),
               ),
-            ),
-          ],
+              GestureDetector(
+                onTap: () {
+                  setState(
+                        () {
+                      isPasswordVisible = !isPasswordVisible;
+                    },
+                  );
+                },
+                child: Icon(
+                  isPasswordVisible
+                      ? Icons.visibility_off_rounded
+                      : Icons.visibility_rounded,
+                  color: ColorsRes.subTitleMainTextColor,
+                ),
+              ),
+            ],
+          ),
         ),
         Widgets.getSizedBox(
           height: Constant.size10,
@@ -313,7 +310,7 @@ class _LoginAccountState extends State<LoginAccount> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Checkbox(
+            CustomCheckbox(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               value: isAcceptedTerms,
@@ -398,38 +395,21 @@ class _LoginAccountState extends State<LoginAccount> {
           height: Constant.size20,
         ),
         proceedButtonWidget(),
-        Container(
-          alignment: AlignmentDirectional.centerEnd,
-          child: RichText(
-            softWrap: true,
-            text: TextSpan(
-              style: Theme.of(context).textTheme.titleSmall!.merge(
-                    TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: ColorsRes.mainTextColor,
-                    ),
-                  ),
-              text: "${getTranslatedValue(
-                context,
-                "want_to_create_account",
-              )}\t",
-              children: <TextSpan>[
-                TextSpan(
-                  text: getTranslatedValue(context, "click_here"),
-                  style: TextStyle(
-                      color: ColorsRes.appColor,
-                      decoration: TextDecoration.underline),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      Navigator.pushNamed(
-                        context,
-                        createAccountScreen,
-                      );
-                    },
-                ),
-              ],
-            ),
-          ),
+        Widgets.getSizedBox(height: 20),
+        Widgets.gradientBtnWidget(
+          context,
+          10,
+          title: getTranslatedValue(
+            context,
+            "register",
+          ).toUpperCase(),
+          height: 55,
+          callback: () {
+            Navigator.pushNamed(
+              context,
+              createAccountScreen,
+            );
+          },
         ),
       ],
     );
@@ -465,7 +445,6 @@ class _LoginAccountState extends State<LoginAccount> {
 
   backendApiProcess(User? user) async {
     if (user != null) {
-
       Constant.session.setData(SessionManager.keyAuthUid, user.uid, false);
       Map<String, String> params = {
         ApiAndParams.email: edtEmail.text.toString(),
@@ -483,6 +462,11 @@ class _LoginAccountState extends State<LoginAccount> {
   }
 
   getRedirection({String? status}) async {
+
+    Constant.session.setData(SessionManager.keyEmail, edtEmail.text, false);
+    Constant.session
+        .setData(SessionManager.keyPassword, edtPassword.text, false);
+
     if (status != null) {
       setState(() {
         isLoading = false;

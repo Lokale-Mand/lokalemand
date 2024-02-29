@@ -20,7 +20,7 @@ Future<Map<String, dynamic>> updateAppNotificationSettingsRepository(
   var response = await GeneralMethods.sendApiRequest(
       apiName: (Constant.session.getBoolData(SessionManager.isSeller) == true)
           ? ApiAndParams.apiSellerNotificationSettingsUpdate
-          : ApiAndParams.apiNotificationSettings,
+          : ApiAndParams.apiNotificationSettingsUpdate,
       params: params,
       isPost: true,
       context: context);

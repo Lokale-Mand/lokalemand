@@ -19,16 +19,32 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    super.initState();
+    GeneralMethods.determinePosition().then((value) {
+      updateMap(value.latitude, value.longitude, "");
+    });
     Future.delayed(Duration.zero).then(
-      (value) async {
+        (value) async {
+        markerIcon =
+            await getBytesFromAsset(Constant.getAssetsPath(0, 'map.png'), 100);
+        currentMarkerIcon = await getBytesFromAsset(
+            Constant.getAssetsPath(0, 'current_map.png'), 100);
+
         await getAppSettings(context: context);
-        GeneralMethods.determinePosition().then((value) {
-          updateMap(value.latitude, value.longitude);
-        });
       },
     );
+    super.initState();
   }
+
+  late GoogleMapController controller;
+  late CameraPosition kGooglePlex;
+  late LatLng kMapCenter;
+  int currentPage = 0;
+  PageController pageController = PageController(
+    viewportFraction: 0.9,
+  );
+
+  late Uint8List markerIcon;
+  late Uint8List currentMarkerIcon;
 
   static Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
@@ -40,11 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .asUint8List();
   }
 
-  late GoogleMapController controller;
-  late CameraPosition kGooglePlex;
-  late LatLng kMapCenter;
-
-  Future<void> updateMap(double latitude, double longitude) async {
+  Future<void> updateMap(double latitude, double longitude, String from) async {
     Constant.session
         .setData(SessionManager.keyLatitude, latitude.toString(), false);
     Constant.session
@@ -53,18 +65,19 @@ class _HomeScreenState extends State<HomeScreen> {
     kMapCenter = LatLng(latitude, longitude);
     kGooglePlex = CameraPosition(
       target: kMapCenter,
-      zoom: 14.4746,
+      zoom: 14,
     );
 
     controller.animateCamera(CameraUpdate.newCameraPosition(kGooglePlex));
-    context.read<SellerListProvider>().storeMarkers.clear();
-    context.read<SellerListProvider>().getSellerListProvider(
-      params: {
-        ApiAndParams.latitude: latitude,
-        ApiAndParams.longitude: longitude,
-      },
-      context: context,
-    );
+    if (from.isEmpty) {
+      context.read<SellerListProvider>().getSellerListProvider(
+        params: {
+          ApiAndParams.latitude: latitude,
+          ApiAndParams.longitude: longitude,
+        },
+        context: context,
+      );
+    }
   }
 
   @override
@@ -102,12 +115,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         ));
 
                     GeneralMethods.displayPrediction(p, context).then(
-                      (value) => updateMap(
-                        double.parse(value?.lattitud ?? "0.0"),
-                        double.parse(
-                          value?.longitude ?? "0.0",
-                        ),
-                      ),
+                      (value) {
+                        if (value != null) {
+                          updateMap(
+                            double.parse(value.lattitud ?? "0.0"),
+                            double.parse(
+                              value.longitude ?? "0.0",
+                            ),
+                            "",
+                          );
+                        }
+                      },
                     );
                   },
                   child: Container(
@@ -158,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: ColorsRes.appColor,
                   onPressed: () {
                     GeneralMethods.determinePosition().then((value) {
-                      updateMap(value.latitude, value.longitude);
+                      updateMap(value.latitude, value.longitude, "");
                     });
                   },
                   icon: Icon(
@@ -175,120 +193,150 @@ class _HomeScreenState extends State<HomeScreen> {
             end: 0,
             bottom: 20,
             child: Consumer<SellerListProvider>(
-              builder: (_, sellerListProvider, __) {
+              builder: (context, sellerListProvider, _) {
                 if (sellerListProvider.itemsState == SellerListState.loaded) {
                   return Container(
-                    height: 100, // Height of the container
-                    child: ListView.builder(
+                    height: 100,
+                    child: PageView.builder(
+                      physics: ClampingScrollPhysics(),
+                      onPageChanged: (value) {
+                        currentPage = value;
+                        updateMap(
+                          sellerListProvider
+                              .sellerListData[currentPage].latitude
+                              .toString()
+                              .toDouble,
+                          sellerListProvider
+                              .sellerListData[currentPage].longitude
+                              .toString()
+                              .toDouble,
+                          "seller",
+                        );
+                        setState(() {});
+                      },
+                      controller: pageController,
                       scrollDirection: Axis.horizontal,
                       itemCount: sellerListProvider.sellerListData.length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              productListScreen,
-                              arguments: [
-                                "seller",
-                                sellerListProvider.sellerListData[index].id
-                                    .toString(),
-                                getTranslatedValue(context, "seller"),
-                                sellerListProvider
-                                    .sellerListData[index].categories
-                                    .toString(),
-                                sellerListProvider
-                                    .sellerListData[index].storeName
-                                    .toString(),
-                                sellerListProvider.sellerListData[index].logoUrl
-                                    .toString()
-                              ],
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsetsDirectional.symmetric(
-                              horizontal: 10,
+                        SellerListData seller =
+                            sellerListProvider.sellerListData[index];
+                        return Container(
+                          margin: EdgeInsetsDirectional.symmetric(
+                            horizontal: 10,
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          height: 130,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.circular(
+                              10,
                             ),
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            height: 130,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.circular(
-                                10,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Widgets.getSizedBox(width: 10),
-                                ClipRRect(
-                                  child: Widgets.setNetworkImg(
-                                    image: sellerListProvider
-                                            .sellerListData[index].logoUrl ??
-                                        "",
+                          ),
+                          child: Row(
+                            children: [
+                              Widgets.getSizedBox(width: 10),
+                              ClipRRect(
+                                child: Widgets.setNetworkImg(
+                                    image: seller.logoUrl ?? "",
                                     height: 80,
                                     width: 80,
-                                  ),
-                                  borderRadius: BorderRadius.circular(7),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomTextLabel(
-                                          text: sellerListProvider
-                                              .sellerListData[index].name,
-                                          softWrap: true,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: ColorsRes.mainTextColor),
+                                    boxFit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CustomTextLabel(
+                                        text: seller.name,
+                                        softWrap: true,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: ColorsRes.mainTextColor),
+                                      ),
+                                      CustomTextLabel(
+                                        text: "${seller.distance} KM away",
+                                        softWrap: true,
+                                        style: TextStyle(
+                                          color:
+                                              ColorsRes.subTitleMainTextColor,
+                                          fontSize: 12,
                                         ),
-                                        CustomTextLabel(
-                                          text:
-                                              "${sellerListProvider.sellerListData[index].distance} KM away",
-                                          softWrap: true,
-                                          style: TextStyle(
-                                            color:
-                                                ColorsRes.subTitleMainTextColor,
-                                            fontSize: 12,
+                                      ),
+                                      Align(
+                                        alignment:
+                                            AlignmentDirectional.bottomEnd,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              productListScreen,
+                                              arguments: [
+                                                "seller",
+                                                seller.id.toString(),
+                                                getTranslatedValue(
+                                                    context, "seller"),
+                                                seller.categories.toString(),
+                                                seller.storeName.toString(),
+                                                seller.logoUrl.toString()
+                                              ],
+                                            );
+                                          },
+                                          child: Column(
+                                            children: [
+                                              CustomTextLabel(
+                                                jsonKey: "view",
+                                                style: TextStyle(
+                                                    color: ColorsRes
+                                                        .subTitleMainTextColor,
+                                                    fontWeight:
+                                                        ui.FontWeight.w500,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    decorationColor: ColorsRes
+                                                        .subTitleMainTextColor),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Row(
-                                          children: [
-                                            CustomTextLabel(
-                                              text: "4.5",
-                                              softWrap: true,
-                                              style: TextStyle(
-                                                color: ColorsRes
-                                                    .subTitleMainTextColor,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            Widgets.getSizedBox(
-                                              width: 5,
-                                            ),
-                                            RatingBarIndicator(
-                                              rating: 4.5,
-                                              itemCount: 5,
-                                              itemSize: 20.0,
-                                              physics: BouncingScrollPhysics(),
-                                              itemBuilder: (context, _) => Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                      )
+                                      // Row(
+                                      //   children: [
+                                      //     CustomTextLabel(
+                                      //       text: "4.5",
+                                      //       softWrap: true,
+                                      //       style: TextStyle(
+                                      //         color: ColorsRes
+                                      //             .subTitleMainTextColor,
+                                      //         fontSize: 12,
+                                      //       ),
+                                      //     ),
+                                      //     Widgets.getSizedBox(
+                                      //       width: 5,
+                                      //     ),
+                                      //     RatingBarIndicator(
+                                      //       rating: 4.5,
+                                      //       itemCount: 5,
+                                      //       itemSize: 20.0,
+                                      //       physics: BouncingScrollPhysics(),
+                                      //       itemBuilder: (context, _) => Icon(
+                                      //         Icons.star,
+                                      //         color: Colors.amber,
+                                      //       ),
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         );
                       },
@@ -318,7 +366,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
             ),
-          )
+          ),
         ],
       ),
     );
@@ -335,10 +383,9 @@ class _HomeScreenState extends State<HomeScreen> {
       initialCameraPosition: kGooglePlex,
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
+      zoomControlsEnabled: true,
       onTap: (value) async {
-        updateMap(value.latitude, value.longitude);
-        context.read<SellerListProvider>().storeMarkers.clear();
+        updateMap(value.latitude, value.longitude, "");
         context.read<SellerListProvider>().getSellerListProvider(
           params: {
             ApiAndParams.latitude: value.latitude.toString(),
@@ -348,7 +395,38 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
       onMapCreated: _onMapCreated,
-      markers: context.watch<SellerListProvider>().storeMarkers,
+      markers: context.read<SellerListProvider>().sellerListData.isNotEmpty
+          ? List.generate(
+              context.read<SellerListProvider>().sellerListData.length,
+              (index) {
+                SellerListData seller =
+                    context.read<SellerListProvider>().sellerListData[index];
+                return Marker(
+                  onTap: () {
+                    pageController.animateToPage(index,
+                        duration: const Duration(milliseconds: 1500),
+                        curve: Curves.easeInOut);
+                    currentPage = index;
+                    setState(() {});
+                  },
+                  anchor: ui.Offset(0, 0),
+                  infoWindow: InfoWindow(
+                      title: seller.storeName.toString(), snippet: seller.name),
+                  visible: true,
+                  zIndex: -1,
+                  consumeTapEvents: true,
+                  markerId: MarkerId(seller.storeName.toString()),
+                  position: LatLng(
+                    seller.latitude.toString().toDouble,
+                    seller.longitude.toString().toDouble,
+                  ),
+                  icon: BitmapDescriptor.fromBytes(
+                      currentPage == index ? currentMarkerIcon : markerIcon,
+                      size: Size(200, 200)),
+                );
+              },
+            ).toSet()
+          : Set(),
       buildingsEnabled: false,
       indoorViewEnabled: false,
 

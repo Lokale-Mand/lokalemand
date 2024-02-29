@@ -7,7 +7,6 @@ class ApiAndParams {
   static String apiCategories = "categories";
   static String apiBrands = "brands";
   static String apiProducts = "products";
-  static String apiFavorites = "favorites";
   static String apiAppSettings = "settings";
   static String apiTimeSlotsSettings = "$apiAppSettings/time_slots";
   static String apiPaymentMethodsSettings = "$apiAppSettings/payment_methods";
@@ -16,6 +15,9 @@ class ApiAndParams {
   static String apiFavorite = "favorites";
   static String apiAddProductToFavorite = "favorites/add";
   static String apiRemoveProductFromFavorite = "favorites/remove";
+  static String apiSellerFavorite = "favorites_seller";
+  static String apiAddSellerToFavorite = "favorites_seller/add";
+  static String apiRemoveSellerFromFavorite = "favorites_seller/remove";
   static String apiProductDetail = "product_by_id";
   static String apiFaq = "faqs";
   static String apiSellers = "sellers";
@@ -74,7 +76,7 @@ class ApiAndParams {
   static String apiSendMessageToCustomer =
       "${Constant.sellerBaseUrl}store_chat";
   static String apiSellerNotificationSettings = "${Constant.sellerBaseUrl}mail_settings";
-  static String apiSellerNotificationSettingsUpdate = "${Constant.sellerBaseUrl}$apiSellerNotificationSettings/save";
+  static String apiSellerNotificationSettingsUpdate = "${apiSellerNotificationSettings}/save";
 
 
 //============ api params ============

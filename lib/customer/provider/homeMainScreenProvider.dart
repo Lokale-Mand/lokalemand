@@ -41,7 +41,7 @@ class HomeMainScreenProvider extends ChangeNotifier {
           scrollController: scrollController[1],
         ),
       ),
-      // WishListScreen(
+      // ProductWishListScreen(
       //   scrollController: scrollController[2],
       // ),
       ProfileScreen(

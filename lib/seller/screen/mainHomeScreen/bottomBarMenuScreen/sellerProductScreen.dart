@@ -40,7 +40,8 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
         context.read<SellerProductListProvider>().products = [];
       }
 
-      Map<String, String> params = await Constant.getSellerProductsDefaultParams();
+      Map<String, String> params =
+          await Constant.getSellerProductsDefaultParams();
 
       params[ApiAndParams.sort] = ApiAndParams.productListSortTypes[
           context.read<SellerProductListProvider>().currentSortByOrderIndex ??
@@ -119,27 +120,18 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
             // setCartCounter(context: context),
           ],
           showBackButton: false),
-      body: Column(
-        children: [
-          getSearchWidget(
-            context: context,
-          ),
-          Expanded(
-            child: setRefreshIndicator(
-              refreshCallback: () async {
-                context.read<SellerProductListProvider>().offset = 0;
-                context.read<SellerProductListProvider>().products = [];
+      body: setRefreshIndicator(
+        refreshCallback: () async {
+          context.read<SellerProductListProvider>().offset = 0;
+          context.read<SellerProductListProvider>().products = [];
 
-                callApi(isReset: true);
-              },
-              child: SingleChildScrollView(
-                controller: scrollController,
-                physics: AlwaysScrollableScrollPhysics(),
-                child: productWidget(),
-              ),
-            ),
-          )
-        ],
+          callApi(isReset: true);
+        },
+        child: SingleChildScrollView(
+          controller: scrollController,
+          physics: AlwaysScrollableScrollPhysics(),
+          child: productWidget(),
+        ),
       ),
     );
   }
@@ -147,7 +139,6 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
   productWidget() {
     return Consumer<SellerProductListProvider>(
       builder: (context, sellerProductListProvider, _) {
-
         List<SellerProductListItem> products =
             sellerProductListProvider.products;
         if (sellerProductListProvider.sellerProductState ==
@@ -218,7 +209,7 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
               );
             },
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 1,
+              childAspectRatio: 0.8,
               crossAxisCount: 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,

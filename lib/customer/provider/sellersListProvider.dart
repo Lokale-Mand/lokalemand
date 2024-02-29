@@ -1,5 +1,6 @@
-import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'dart:ui' as ui;
+
+import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 enum SellerListState {
   initial,
@@ -17,28 +18,11 @@ class SellerListProvider extends ChangeNotifier {
   bool hasMoreData = false;
   int totalData = 0;
   int offset = 0;
-  Set<Marker>  storeMarkers = Set();
-
-  late Uint8List markerIcon;
-
-  static Future<Uint8List> getBytesFromAsset(String path, int width) async {
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-        .buffer
-        .asUint8List();
-  }
 
   Future getSellerListProvider({
     required Map<String, dynamic> params,
     required BuildContext context,
   }) async {
-    markerIcon = await getBytesFromAsset(
-        Constant.getAssetsPath(0, 'map.png'), 100);
-
-    storeMarkers.clear();
     if (offset == 0) {
       itemsState = SellerListState.loading;
     } else {
@@ -58,26 +42,7 @@ class SellerListProvider extends ChangeNotifier {
         sellerLists = SellerList.fromJson(getData);
         sellerListData = sellerLists.data ?? [];
         hasMoreData = totalData > sellerListData.length;
-        for (SellerListData sellers in sellerListData) {
-          storeMarkers.add(
-            Marker(
-              infoWindow: InfoWindow(
-                  title: sellers.storeName.toString(), snippet: sellers.name),
-              visible: true,
-              zIndex: -1,
-              markerId: MarkerId(sellers.storeName.toString()),
-              position: LatLng(
-                double.parse(
-                  sellers.latitude.toString(),
-                ),
-                double.parse(
-                  sellers.longitude.toString(),
-                ),
-              ),
-              icon: BitmapDescriptor.fromBytes(markerIcon, size: Size(200, 200)),
-            ),
-          );
-        }
+
         if (hasMoreData) {
           offset += Constant.defaultDataLoadLimitAtOnce;
         }

@@ -117,17 +117,28 @@ class GeneralMethods {
             params);
 
         response = await http.get(Uri.parse(mainUrl), headers: headersData);
-      }print(
-          "ERROR IS ${"$mainUrl,{$params},Status Code - ${response.statusCode}, ${response.body}"}");
+      }
 
+
+      Map<String, dynamic> data = jsonDecode(response.body);
+      if (data[ApiAndParams.message].toString().toLowerCase().contains("unauth")) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "un_authentication_error"),
+            MessageType.error);
+        Constant.session.logoutUserMethod(context);
+      }
 
       if (response.statusCode == 200) {
         if (response.body == "null") {
           return null;
         }
-        return isRequestedForInvoice == true
-            ? response.bodyBytes
-            : response.body;
+
+        if (isRequestedForInvoice == true) {
+          return response.bodyBytes;
+        } else {
+          return response.body;
+        }
       } else {
         if (kDebugMode) {
           print(

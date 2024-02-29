@@ -84,43 +84,56 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
         ],
         showBackButton: false,
       ),
-      body: Column(children: [
-        Consumer<SellerOrdersProvider>(
-          builder: (context, ordersProvider, child) {
-            if (ordersProvider.ordersState == SellerOrdersState.loaded ||
-                ordersProvider.ordersState == SellerOrdersState.loadingMore) {
-              return Expanded(
-                child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: ordersProvider.sellerOrdersList.length,
-                    itemBuilder: (context, index) {
-                      if (index == ordersProvider.sellerOrdersList.length - 1) {
-                        if (ordersProvider.ordersState ==
-                            SellerOrdersState.loadingMore) {
-                          return _buildOrderContainerShimmer();
+      body: setRefreshIndicator(
+        refreshCallback: () async {
+          context
+              .read<SellerOrdersProvider>()
+              .getSellerOrders(statusIndex: "0", context: context);
+        },
+        child: SingleChildScrollView(
+          controller: scrollController,
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Consumer<SellerOrdersProvider>(
+            builder: (context, ordersProvider, child) {
+              if (ordersProvider.ordersState == SellerOrdersState.loaded ||
+                  ordersProvider.ordersState == SellerOrdersState.loadingMore) {
+                return Expanded(
+                  child: ListView.builder(
+                      controller: scrollController,
+                      itemCount: ordersProvider.sellerOrdersList.length,
+                      itemBuilder: (context, index) {
+                        if (index ==
+                            ordersProvider.sellerOrdersList.length - 1) {
+                          if (ordersProvider.ordersState ==
+                              SellerOrdersState.loadingMore) {
+                            return _buildOrderContainerShimmer();
+                          }
                         }
-                      }
-                      return _buildOrderContainer(
-                          ordersProvider.sellerOrdersList[index],
-                          index.toString());
-                    }),
-              );
-            } else if (ordersProvider.ordersState == SellerOrdersState.loaded ||
-                ordersProvider.ordersState == SellerOrdersState.loading) {
-              return Expanded(
-                child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: 20,
-                    itemBuilder: (context, index) {
-                      return _buildOrderContainerShimmer();
-                    }),
-              );
-            } else {
-              return SizedBox.shrink();
-            }
-          },
-        )
-      ]),
+                        return _buildOrderContainer(
+                            ordersProvider.sellerOrdersList[index],
+                            index.toString());
+                      }),
+                );
+              } else if (ordersProvider.ordersState == SellerOrdersState.loading) {
+                return Expanded(
+                  child: ListView.builder(
+                      controller: scrollController,
+                      itemCount: 20,
+                      itemBuilder: (context, index) {
+                        return _buildOrderContainerShimmer();
+                      }),
+                );
+              } else {
+                return DefaultBlankItemMessageScreen(
+                  image: "no_order_icon",
+                  title: "opps_no_reservation_yet",
+                  description: "opps_no_reservation_yet_description",
+                );
+              }
+            },
+          ),
+        ),
+      ),
     );
   }
 
@@ -255,7 +268,8 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
               ],
             ),
             Text(
-              lblOrderStatusDisplayNames[int.parse(order.activeStatus.toString())-2],
+              lblOrderStatusDisplayNames[
+                  int.parse(order.activeStatus.toString()) - 2],
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,

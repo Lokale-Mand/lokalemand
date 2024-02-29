@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:lokale_mand/helper/generalWidgets/customCheckbox.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/model/sellerCategory.dart';
 import 'package:lokale_mand/seller/model/sellerCities.dart';
@@ -20,31 +21,27 @@ class SellerCreateAccountScreen extends StatefulWidget {
 class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
   PageController pageController = PageController();
   int currentPage = 0;
-  bool isLoading = false, isPasswordVisible = false;
+  bool isLoading = false,
+      isPasswordVisible = false,
+      isConfirmPasswordVisible = false;
   bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   late SellerCityByLatLongData cityByLatLongData;
 
   //PERSONAL DETAILS CONTROLLERS
   TextEditingController edtBankName = TextEditingController();
-  TextEditingController edtBankAcNumber =
-  TextEditingController();
-  TextEditingController edtBankAcName =
-  TextEditingController();
-  TextEditingController edtBankIbanSwiftCode =
-  TextEditingController();
-  TextEditingController edtNidNumber =
-  TextEditingController();
+  TextEditingController edtBankAcNumber = TextEditingController();
+  TextEditingController edtBankAcName = TextEditingController();
+  TextEditingController edtBankIbanSwiftCode = TextEditingController();
+  TextEditingController edtNidNumber = TextEditingController();
   String selectedAddressProofPath = "";
   String selectedNationalIdPath = "";
 
   //STORE DETAILS CONTROLLERS
   String selectedLogoPath = "";
-  TextEditingController edtStoreName =
-  TextEditingController();
+  TextEditingController edtStoreName = TextEditingController();
   TextEditingController edtStoreLocation = TextEditingController();
-  TextEditingController edtStoreDescription =
-  TextEditingController();
+  TextEditingController edtStoreDescription = TextEditingController();
   TextEditingController edtStoreCategories = TextEditingController();
   String selectedCategoriesIds = "";
   String cityId = "";
@@ -53,15 +50,11 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
 
   //User Account Details
   CountryCode? selectedCountryCode;
-  TextEditingController edtEmail =
-  TextEditingController();
+  TextEditingController edtEmail = TextEditingController();
   TextEditingController edtPassword = TextEditingController();
-  TextEditingController edtDuplicatePassword =
-  TextEditingController();
-  TextEditingController edtFullName =
-  TextEditingController();
-  TextEditingController edtPhoneNumber =
-  TextEditingController();
+  TextEditingController edtDuplicatePassword = TextEditingController();
+  TextEditingController edtFullName = TextEditingController();
+  TextEditingController edtPhoneNumber = TextEditingController();
 
   //STORE HOURS DETAILS CONTROLLERS
   List<StoreTime> storeTime = [
@@ -98,9 +91,9 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
       "store_name": edtStoreName.text.toString(),
       'categories_ids': selectedCategoriesIds,
       "pan_number": edtNidNumber.text.toString(),
-      "city_id": "3",
-      "latitude": "51.9691868",
-      "longitude": "5.6653948",
+      "city_id": cityId.toString(),
+      "latitude": latitude,
+      "longitude": longitude,
       "bank_name": edtBankName.text.toString(),
       "account_number": edtBankName.text.toString(),
       "ifsc_code": edtBankIbanSwiftCode.text.toString(),
@@ -151,7 +144,6 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
             return null;
           },
         );
-
         Navigator.pop(context);
       }
     });
@@ -398,19 +390,40 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                 color: ColorsRes.textFieldBorderColor,
               ),
               color: Theme.of(context).cardColor),
-          child: TextField(
-            controller: edtPassword,
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: ColorsRes.mainTextColor,
-            ),
-            obscureText: isPasswordVisible ? false : true,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              hintStyle: TextStyle(color: Colors.grey[300]),
-              hintText: "******",
-            ),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: edtPassword,
+                  keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(
+                    color: ColorsRes.mainTextColor,
+                  ),
+                  obscureText: isPasswordVisible ? false : true,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    hintStyle: TextStyle(color: Colors.grey[300]),
+                    hintText: "******",
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(
+                    () {
+                      isPasswordVisible = !isPasswordVisible;
+                    },
+                  );
+                },
+                child: Icon(
+                  isPasswordVisible
+                      ? Icons.visibility_off_rounded
+                      : Icons.visibility_rounded,
+                  color: ColorsRes.subTitleMainTextColor,
+                ),
+              ),
+            ],
           ),
         ),
         Widgets.getSizedBox(
@@ -434,44 +447,41 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                 color: ColorsRes.textFieldBorderColor,
               ),
               color: Theme.of(context).cardColor),
-          child: TextField(
-            controller: edtDuplicatePassword,
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: ColorsRes.mainTextColor,
-            ),
-            obscureText: isPasswordVisible ? false : true,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              hintStyle: TextStyle(color: Colors.grey[300]),
-              hintText: "******",
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Checkbox(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              value: isPasswordVisible,
-              activeColor: ColorsRes.appColor,
-              onChanged: (bool? val) {
-                setState(
-                  () {
-                    isPasswordVisible = val!;
-                  },
-                );
-              },
-            ),
-            Expanded(
-              child: CustomTextLabel(
-                jsonKey: isPasswordVisible ? "hide_password" : "show_password",
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: edtDuplicatePassword,
+                  keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(
+                    color: ColorsRes.mainTextColor,
+                  ),
+                  obscureText: isConfirmPasswordVisible ? false : true,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    hintStyle: TextStyle(color: Colors.grey[300]),
+                    hintText: "******",
+                  ),
+                ),
               ),
-            ),
-          ],
+              GestureDetector(
+                onTap: () {
+                  setState(
+                    () {
+                      isConfirmPasswordVisible = !isConfirmPasswordVisible;
+                    },
+                  );
+                },
+                child: Icon(
+                  isConfirmPasswordVisible
+                      ? Icons.visibility_off_rounded
+                      : Icons.visibility_rounded,
+                  color: ColorsRes.subTitleMainTextColor,
+                ),
+              ),
+            ],
+          ),
         ),
         Widgets.getSizedBox(
           height: Constant.size20,
@@ -1002,7 +1012,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                       children: [
                         Transform.scale(
                           scale: 1.2,
-                          child: Checkbox(
+                          child: CustomCheckbox(
                             value: storeTime[index].storeOpen == "true",
                             onChanged: (value) {
                               storeTime[index].storeOpen =

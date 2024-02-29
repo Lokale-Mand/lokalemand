@@ -34,7 +34,6 @@ class UserProfileProvider extends ChangeNotifier {
             if (value.isNotEmpty) {
               if (value[ApiAndParams.status].toString() == "1") {
                 loginApi(context: context, params: {
-
                   ApiAndParams.mobile:
                       Constant.session.getData(SessionManager.keyPhone),
                   ApiAndParams.email:
@@ -100,8 +99,7 @@ class UserProfileProvider extends ChangeNotifier {
           await context
               .read<AddressProvider>()
               .getAddressProvider(context: context)
-              .then((value) async {
-          });
+              .then((value) async {});
         } else {
           GeneralMethods.showMessage(
             context,
