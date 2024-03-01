@@ -394,7 +394,7 @@
   "product_name_validation_message": "Please set product name",
   "product_description_validation_message": "Please set product description",
   "please_select_dietary_type": "Please select dietary type",
-  "product_variant_title": "What will your product cost?",
+  "product_variant_title": "Your page will look like this:",
   "product_price": "Product price",
   "variant_blank_message": "Oops! Units not found!",
   "product_current_stock_availability_title": "Is this product currently in stock?",
@@ -508,5 +508,6 @@
   "un_authentication_error": "User deactivated or deleted, Please contact to admin or try to re-login.",
   "ready": "Ready!",
   "favorite": "Favorite",
-  "stores": "Stores"
+  "stores": "Stores",
+  "view": "View"
 }

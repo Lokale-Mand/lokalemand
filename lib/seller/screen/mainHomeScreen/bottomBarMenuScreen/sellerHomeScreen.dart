@@ -4,26 +4,26 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/flutterGooglePlaces.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
-class HomeScreen extends StatefulWidget {
+class SellerHomeScreen extends StatefulWidget {
   final ScrollController scrollController;
 
-  const HomeScreen({
+  const SellerHomeScreen({
     Key? key,
     required this.scrollController,
   }) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<SellerHomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<SellerHomeScreen> {
   @override
   void initState() {
     GeneralMethods.determinePosition().then((value) {
       updateMap(value.latitude, value.longitude, "");
     });
     Future.delayed(Duration.zero).then(
-      (value) async {
+        (value) async {
         markerIcon =
             await getBytesFromAsset(Constant.getAssetsPath(0, 'map.png'), 100);
         currentMarkerIcon = await getBytesFromAsset(
@@ -220,139 +220,123 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         SellerListData seller =
                             sellerListProvider.sellerListData[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              productListScreen,
-                              arguments: [
-                                "seller",
-                                seller.id.toString(),
-                                getTranslatedValue(context, "seller"),
-                                seller.categories.toString(),
-                                seller.storeName.toString(),
-                                seller.logoUrl.toString()
-                              ],
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsetsDirectional.symmetric(
-                              horizontal: 10,
+                        return Container(
+                          margin: EdgeInsetsDirectional.symmetric(
+                            horizontal: 10,
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          height: 130,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.circular(
+                              10,
                             ),
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            height: 130,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.circular(
-                                10,
+                          ),
+                          child: Row(
+                            children: [
+                              Widgets.getSizedBox(width: 10),
+                              ClipRRect(
+                                child: Widgets.setNetworkImg(
+                                    image: seller.logoUrl ?? "",
+                                    height: 80,
+                                    width: 80,
+                                    boxFit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(7),
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                Widgets.getSizedBox(width: 10),
-                                ClipRRect(
-                                  child: Widgets.setNetworkImg(
-                                      image: seller.logoUrl ?? "",
-                                      height: 80,
-                                      width: 80,
-                                      boxFit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(7),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomTextLabel(
-                                          text: seller.name,
-                                          softWrap: true,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: ColorsRes.mainTextColor),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CustomTextLabel(
+                                        text: seller.name,
+                                        softWrap: true,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: ColorsRes.mainTextColor),
+                                      ),
+                                      CustomTextLabel(
+                                        text: "${seller.distance} KM away",
+                                        softWrap: true,
+                                        style: TextStyle(
+                                          color:
+                                              ColorsRes.subTitleMainTextColor,
+                                          fontSize: 12,
                                         ),
-                                        CustomTextLabel(
-                                          text: "${seller.distance} KM away",
-                                          softWrap: true,
-                                          style: TextStyle(
-                                            color:
-                                                ColorsRes.subTitleMainTextColor,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment:
-                                              AlignmentDirectional.bottomEnd,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                productListScreen,
-                                                arguments: [
-                                                  "seller",
-                                                  seller.id.toString(),
-                                                  getTranslatedValue(
-                                                      context, "seller"),
-                                                  seller.categories.toString(),
-                                                  seller.storeName.toString(),
-                                                  seller.logoUrl.toString()
-                                                ],
-                                              );
-                                            },
-                                            child: Column(
-                                              children: [
-                                                CustomTextLabel(
-                                                  jsonKey: "view",
-                                                  style: TextStyle(
-                                                      color: ColorsRes.appColor,
-                                                      fontWeight:
-                                                          ui.FontWeight.bold,
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                      decorationThickness: 2,
-                                                      decorationColor:
-                                                          ColorsRes.appColor),
-                                                ),
+                                      ),
+                                      Align(
+                                        alignment:
+                                            AlignmentDirectional.bottomEnd,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              productListScreen,
+                                              arguments: [
+                                                "seller",
+                                                seller.id.toString(),
+                                                getTranslatedValue(
+                                                    context, "seller"),
+                                                seller.categories.toString(),
+                                                seller.storeName.toString(),
+                                                seller.logoUrl.toString()
                                               ],
-                                            ),
+                                            );
+                                          },
+                                          child: Column(
+                                            children: [
+                                              CustomTextLabel(
+                                                jsonKey: "view",
+                                                style: TextStyle(
+                                                    color: ColorsRes
+                                                        .subTitleMainTextColor,
+                                                    fontWeight:
+                                                        ui.FontWeight.w500,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    decorationColor: ColorsRes
+                                                        .subTitleMainTextColor),
+                                              ),
+                                            ],
                                           ),
-                                        )
-                                        // Row(
-                                        //   children: [
-                                        //     CustomTextLabel(
-                                        //       text: "4.5",
-                                        //       softWrap: true,
-                                        //       style: TextStyle(
-                                        //         color: ColorsRes
-                                        //             .subTitleMainTextColor,
-                                        //         fontSize: 12,
-                                        //       ),
-                                        //     ),
-                                        //     Widgets.getSizedBox(
-                                        //       width: 5,
-                                        //     ),
-                                        //     RatingBarIndicator(
-                                        //       rating: 4.5,
-                                        //       itemCount: 5,
-                                        //       itemSize: 20.0,
-                                        //       physics: BouncingScrollPhysics(),
-                                        //       itemBuilder: (context, _) => Icon(
-                                        //         Icons.star,
-                                        //         color: Colors.amber,
-                                        //       ),
-                                        //     ),
-                                        //   ],
-                                        // ),
-                                      ],
-                                    ),
+                                        ),
+                                      )
+                                      // Row(
+                                      //   children: [
+                                      //     CustomTextLabel(
+                                      //       text: "4.5",
+                                      //       softWrap: true,
+                                      //       style: TextStyle(
+                                      //         color: ColorsRes
+                                      //             .subTitleMainTextColor,
+                                      //         fontSize: 12,
+                                      //       ),
+                                      //     ),
+                                      //     Widgets.getSizedBox(
+                                      //       width: 5,
+                                      //     ),
+                                      //     RatingBarIndicator(
+                                      //       rating: 4.5,
+                                      //       itemCount: 5,
+                                      //       itemSize: 20.0,
+                                      //       physics: BouncingScrollPhysics(),
+                                      //       itemBuilder: (context, _) => Icon(
+                                      //         Icons.star,
+                                      //         color: Colors.amber,
+                                      //       ),
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         );
                       },

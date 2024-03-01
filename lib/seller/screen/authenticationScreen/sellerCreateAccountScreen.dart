@@ -3,7 +3,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:lokale_mand/helper/generalWidgets/customCheckbox.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/model/sellerCategory.dart';
-import 'package:lokale_mand/seller/model/sellerCities.dart';
 import 'package:lokale_mand/seller/model/sellerCityByLatLong.dart';
 import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
 import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCategoryItem.dart';
@@ -596,20 +595,40 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                         ),
                         IconButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, citiesListScreen).then(
-                              (value) {
-                                if (value is SellerCitiesData) {
-                                  edtStoreLocation.text = value.name ?? "";
-                                  cityId = value.id ?? "";
-                                  latitude = value.latitude ?? "";
-                                  longitude = value.longitude ?? "";
-                                  setState(() {});
+                            Navigator.pushNamed(
+                                    context, sellerConfirmLocationScreen,
+                                    arguments: "seller_register")
+                                .then((value) {
+                              if (value != null &&
+                                  value is SellerCityByLatLong) {
+                                /*
+
+                                {
+                                  'address': possibleLocations.first['formatted_address'],
+                                  'city': cityName,
+                                  'state': stateName,
+                                  'pin_code': pinCode,
+                                  'country': countryName,
+                                  'area': area,
+                                  'landmark': landmark,
+                                  'latitude': currentLocation.latitude,
+                                  'longitude': currentLocation.longitude,
                                 }
-                              },
-                            );
+
+                              */
+                                edtStoreLocation.text =
+                                    Constant.cityAddressMap["address"];
+                                cityId = value.data?.first.id.toString() ?? "0";
+                                latitude = Constant.cityAddressMap["latitude"]
+                                    .toString();
+                                longitude = Constant.cityAddressMap["longitude"]
+                                    .toString();
+                                setState(() {});
+                              }
+                            });
                           },
                           icon: Icon(
-                            Icons.mode_edit_outline_rounded,
+                            Icons.my_location_rounded,
                             color: ColorsRes.appColor,
                             size: 24,
                           ),

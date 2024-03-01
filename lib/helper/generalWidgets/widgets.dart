@@ -88,6 +88,7 @@ class Widgets {
   static List getHomeBottomNavigationBarIcons({required bool isActive}) {
     if (Constant.session.getBoolData(SessionManager.isSeller)) {
       return [
+        Icon(Icons.map_rounded),
         Icon(Icons.table_rows_outlined),
         Icon(Icons.chat_bubble_outline_rounded),
         Icon(Icons.storefront_sharp),

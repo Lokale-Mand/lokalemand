@@ -42,6 +42,8 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
 
       Map<String, String> params =
           await Constant.getSellerProductsDefaultParams();
+      params[ApiAndParams.sellerId] =
+          Constant.session.getData(SessionManager.keyUserId);
 
       params[ApiAndParams.sort] = ApiAndParams.productListSortTypes[
           context.read<SellerProductListProvider>().currentSortByOrderIndex ??
@@ -88,7 +90,8 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
       floatingActionButton: FloatingActionButton(
         shape: CircleBorder(side: BorderSide.none),
         onPressed: () {
-          Navigator.pushNamed(context, sellerAddOrUpdateProductScreen)
+          Navigator.pushNamed(context, sellerAddOrUpdateProductScreen,
+                  arguments: "0")
               .then((value) {
             if (value != null && value == true) {
               callApi(isReset: false);
@@ -103,23 +106,24 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
         ),
       ),
       appBar: getAppBar(
-          context: context,
-          title: CustomTextLabel(
-            text: getTranslatedValue(
-              context,
-              "products",
-            ),
-            softWrap: true,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: ColorsRes.mainTextColor,
-            ),
+        context: context,
+        title: CustomTextLabel(
+          text: getTranslatedValue(
+            context,
+            "products",
           ),
-          actions: [
-            // setCartCounter(context: context),
-          ],
-          showBackButton: false),
+          softWrap: true,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: ColorsRes.mainTextColor,
+          ),
+        ),
+        actions: [
+          // setCartCounter(context: context),
+        ],
+        showBackButton: false,
+      ),
       body: setRefreshIndicator(
         refreshCallback: () async {
           context.read<SellerProductListProvider>().offset = 0;
@@ -166,8 +170,21 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-                  return SellerProductGridItemContainer(
-                      product: products[index]);
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        sellerAddOrUpdateProductScreen,
+                        arguments: products[index].id,
+                      ).then((value) {
+                        if (value != null && value == true) {
+                          callApi(isReset: false);
+                        }
+                      });
+                    },
+                    child: SellerProductGridItemContainer(
+                        product: products[index]),
+                  );
                 },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 0.8,

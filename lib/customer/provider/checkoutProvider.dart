@@ -90,6 +90,10 @@ class CheckoutProvider extends ChangeNotifier {
 
   int availablePaymentMethods = 0;
 
+  String sellerId = "";
+  String storeName = "";
+  String storeLogo = "";
+
   Future setPaymentProcessState(bool value) async {
     isPaymentUnderProcessing = value;
     notifyListeners();
@@ -424,6 +428,13 @@ class CheckoutProvider extends ChangeNotifier {
         Map<String, dynamic> getPlaceOrderResponse =
             (await getPlaceOrderApi(context: context, params: params));
 
+        Map<String, dynamic> chatDetail =
+            getPlaceOrderResponse[ApiAndParams.data];
+
+        sellerId = chatDetail["id"].toString();
+        storeName = chatDetail["name"].toString();
+        storeLogo = chatDetail["logo_url"].toString();
+
         if (getPlaceOrderResponse[ApiAndParams.status].toString() == "1") {
           if (selectedPaymentMethod != "COD") {
             PlacedPrePaidOrder placedPrePaidOrder =
@@ -576,6 +587,15 @@ class CheckoutProvider extends ChangeNotifier {
 
   showOrderPlacedScreen(BuildContext context) {
     Navigator.popUntil(context, (route) => route.isFirst);
+    Navigator.pushNamed(
+      context,
+      chatDetailScreen,
+      arguments: [
+        sellerId,
+        storeName,
+        storeLogo,
+      ],
+    );
   }
 
   Future initiatePaypalTransaction({required BuildContext context}) async {

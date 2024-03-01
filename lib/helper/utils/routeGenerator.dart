@@ -11,9 +11,9 @@ import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerChatDetailProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerCityProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerDietaryProvider.dart';
+import 'package:lokale_mand/seller/provider/sellerProductDetailProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
 import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCitiesListScreen.dart';
-import 'package:lokale_mand/seller/screen/htmlEditorScreen.dart';
 import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
 import 'package:lokale_mand/seller/screen/sellerChatDetailScreen/sellerChatDetailScreen.dart';
 
@@ -63,7 +63,6 @@ const String sellerCreateAccountScreen = 'sellerCreateAccountScreen';
 const String sellerConfirmLocationScreen = 'sellerConfirmLocationScreen';
 const String sellerMainHomeScreen = 'sellerMainHomeScreen';
 const String sellerMenuScreen = 'sellerMenuScreen';
-// const String sellerMessageScreen = 'sellerMessageScreen';
 const String sellerProductScreen = 'sellerProductScreen';
 const String sellerAddOrUpdateProductScreen = 'sellerAddOrUpdateProductScreen';
 const String htmlEditorScreen = 'htmlEditorScreen';
@@ -476,16 +475,21 @@ class RouteGenerator {
               ChangeNotifierProvider(
                 create: (context) => SellerDietaryListProvider(),
               ),
+              ChangeNotifierProvider(
+                create: (context) => SellerProductDetailProvider(),
+              ),
             ],
-            child: const SellerAddOrUpdateProductScreen(),
+            child: SellerAddOrUpdateProductScreen(
+              productId: settings.arguments as String,
+            ),
           ),
         );
 
-      case htmlEditorScreen:
-        return CupertinoPageRoute(
-          builder: (_) =>
-              HtmlEditorScreen(htmlContent: settings.arguments as String),
-        );
+      // case htmlEditorScreen:
+      //   return CupertinoPageRoute(
+      //     builder: (_) =>
+      //         HtmlEditorScreen(htmlContent: settings.arguments as String),
+      //   );
 
       default:
         // If there is no such named route in the switch statement, e.g. /third

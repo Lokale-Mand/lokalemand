@@ -5,17 +5,22 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/model/sellerCategory.dart';
 import 'package:lokale_mand/seller/model/sellerDietary.dart';
+import 'package:lokale_mand/seller/model/sellerProductDetail.dart';
 import 'package:lokale_mand/seller/model/sellerProductUnit.dart';
 import 'package:lokale_mand/seller/provider/sellerAddProductProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerDietaryProvider.dart';
+import 'package:lokale_mand/seller/provider/sellerProductDetailProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerProductSliderImagesProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerProductUnitProvider.dart';
 import 'package:lokale_mand/seller/screen/sellerProductSliderImagesWidget.dart';
 
 class SellerAddOrUpdateProductScreen extends StatefulWidget {
+  final String productId;
+
   const SellerAddOrUpdateProductScreen({
     Key? key,
+    required this.productId,
   }) : super(key: key);
 
   @override
@@ -28,10 +33,11 @@ class _SellerAddOrUpdateProductScreenState
   PageController pageController = PageController();
   int currentPage = 0;
   late bool isLoading = false;
-  String selectedProductMainImage = "";
+  late SellerProductDetailData product;
 
-  // String htmlDescription = "";
+  String selectedProductMainImage = "";
   List<String?> selectedProductOtherImages = [];
+
   bool stockAvailableStatus = true;
   String selectedDietaryType = "";
   String selectedDietaryId = "";
@@ -44,6 +50,11 @@ class _SellerAddOrUpdateProductScreenState
   TextEditingController edtProductPrice = TextEditingController();
   TextEditingController edtProductUnit = TextEditingController();
   TextEditingController edtProductStock = TextEditingController();
+
+  // editProductParams
+
+  String productMainImage = "";
+  List<String?> productOtherImages = [];
 
 //   id:21
 //   name: Eiefregwsdwfrde efecwefe efdedescfescfededwedwd
@@ -137,22 +148,23 @@ class _SellerAddOrUpdateProductScreenState
       "deleteImageIds": "[]",
     };
 
-    List<String> otherImagesParamsNames = [];
-
-    for (int i = 0; i < selectedProductOtherImages.length; i++) {
-      otherImagesParamsNames.add("other_images[$i]");
+    if (widget.productId != "0" || widget.productId.isNotEmpty) {
+      params[ApiAndParams.id] = widget.productId;
+      params["variant_id[]"] = product.variants.first.id.toString();
     }
 
-    List<String> fileParamNames = [
-      "image",
-      ...otherImagesParamsNames,
-    ];
+    List<String?> fileParamsFilesPath = [];
+    List<String> fileParamNames = [];
 
-    List<String?> fileParamsFilesPath = [
-      selectedProductMainImage,
-      ...selectedProductOtherImages
-    ];
+    if (selectedProductMainImage.isNotEmpty) {
+      fileParamNames.add("image");
+      fileParamsFilesPath.add(selectedProductMainImage);
+    }
 
+    for (int i = 0; i < selectedProductOtherImages.length; i++) {
+      fileParamNames.add("other_images[$i]");
+      fileParamsFilesPath.add(selectedProductOtherImages[i]);
+    }
     await context
         .read<SellerAddUpdateProductProvider>()
         .addOrUpdateProducts(
@@ -160,7 +172,7 @@ class _SellerAddOrUpdateProductScreenState
             fileParamsNames: fileParamNames,
             fileParamsFilesPath: fileParamsFilesPath,
             context: context,
-            isAdd: true)
+            isAdd: widget.productId == "0")
         .then((value) async {
       if (value != null) {
         Navigator.pop(context, true);
@@ -180,14 +192,49 @@ class _SellerAddOrUpdateProductScreenState
     );
 
     Future.delayed(Duration.zero).then((value) async {
+      Map<String, String> params = await Constant.getProductsDefaultParams();
+      params[ApiAndParams.id] = widget.productId;
+
       await Future.wait([
         context
             .read<SellerCategoryListProvider>()
             .getCategoryApiProviderForRegistration(context: context),
         context
             .read<SellerDietaryListProvider>()
-            .getDietaryApiProvider(context: context)
-      ]);
+            .getDietaryApiProvider(context: context),
+        context
+            .read<SellerProductDetailProvider>()
+            .getSellerProductDetailProvider(context: context, params: params),
+      ]).then((value) {
+        product = context.read<SellerProductDetailProvider>().productData;
+
+        // Screen 1
+        selectedCategoryId = product.categoryId;
+        context
+            .read<SellerCategoryListProvider>()
+            .categorySingleSelection(id: selectedCategoryId);
+
+        // Screen 2
+        edtProductName.text = product.name;
+        edtProductDescription.text = product.description;
+
+        // Screen 3
+        edtProductPrice.text = product.variants.first.price;
+        edtProductUnit.text = product.variants.first.measurement;
+
+        stockAvailableStatus = product.status == "1";
+        edtProductStock.text = product.variants.first.stock;
+
+        edtProductUnit.text = product.variants.first.stockUnitName.toString();
+        selectedUnitId = product.variants.first.measurement;
+
+        context
+            .read<SellerDietaryListProvider>()
+            .dietarySingleSelection(id: product.indicator);
+
+        productMainImage = product.imageUrl;
+        productOtherImages = product.images;
+      });
     });
     super.initState();
   }
@@ -217,88 +264,91 @@ class _SellerAddOrUpdateProductScreenState
             thirdItemVoidCallback: () => pageChangeValidation(currentPage),
           ),
         ),
-        body: PageView(
-          physics: NeverScrollableScrollPhysics(),
-          onPageChanged: (value) {
-            currentPage = value;
-            setState(() {});
-          },
-          controller: pageController,
-          children: [
-            // 1. CATEGORY SCREEN
-            Container(
-              padding: EdgeInsetsDirectional.all(15),
-              alignment: Alignment.center,
-              child: Center(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  children: [
-                    productCategorySelectionWidgets(),
-                  ],
+        body: Consumer<SellerProductDetailProvider>(
+            builder: (context, sellerProductDetailProvider, _) {
+          return PageView(
+            physics: NeverScrollableScrollPhysics(),
+            onPageChanged: (value) {
+              currentPage = value;
+              setState(() {});
+            },
+            controller: pageController,
+            children: [
+              // 1. CATEGORY SCREEN
+              Container(
+                padding: EdgeInsetsDirectional.all(15),
+                alignment: Alignment.center,
+                child: Center(
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    children: [
+                      productCategorySelectionWidgets(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // 2. PRODUCT NAME AND DESCRIPTION SCREEN
-            Container(
-              padding: EdgeInsetsDirectional.all(15),
-              alignment: Alignment.center,
-              child: Center(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  children: [
-                    productDescription(),
-                  ],
+              // 2. PRODUCT NAME AND DESCRIPTION SCREEN
+              Container(
+                padding: EdgeInsetsDirectional.all(15),
+                alignment: Alignment.center,
+                child: Center(
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    children: [
+                      productDescription(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // 3. PRODUCT PRICE AND OTHER DETAILS SCREEN
-            Container(
-              padding: EdgeInsetsDirectional.all(15),
-              alignment: Alignment.center,
-              child: Center(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  children: [
-                    productVariantDetails(),
-                  ],
+              // 3. PRODUCT PRICE AND OTHER DETAILS SCREEN
+              Container(
+                padding: EdgeInsetsDirectional.all(15),
+                alignment: Alignment.center,
+                child: Center(
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    children: [
+                      productVariantDetails(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // 4. DIETARY TYPE SCREEN
-            Container(
-              padding: EdgeInsetsDirectional.all(15),
-              alignment: Alignment.center,
-              child: Center(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  children: [
-                    productDietarySelectionWidgets(),
-                  ],
+              // 4. DIETARY TYPE SCREEN
+              Container(
+                padding: EdgeInsetsDirectional.all(15),
+                alignment: Alignment.center,
+                child: Center(
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    children: [
+                      productDietarySelectionWidgets(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // 5. PRODUCT PHOTOS SCREEN
-            Container(
-              padding: EdgeInsetsDirectional.all(10),
-              alignment: Alignment.center,
-              child: Center(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  children: [
-                    productImagesSelectionWidgets(),
-                  ],
+              // 5. PRODUCT PHOTOS SCREEN
+              Container(
+                padding: EdgeInsetsDirectional.all(10),
+                alignment: Alignment.center,
+                child: Center(
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    children: [
+                      productImagesSelectionWidgets(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // 6. PRODUCT FINAL VIEW SCREEN
-            productFinalPreview(),
-          ],
-        ));
+              // 6. PRODUCT FINAL VIEW SCREEN
+              productFinalPreview(),
+            ],
+          );
+        }));
   }
 
   pageChangeValidation(int currentPage) {
@@ -488,11 +538,8 @@ class _SellerAddOrUpdateProductScreenState
                       onTap: () {
                         sellerDietaryListProvider.dietarySingleSelection(
                           id: dietary.id.toString(),
-                          name: dietary.name.toString(),
                         );
 
-                        selectedDietaryType = sellerDietaryListProvider
-                            .selectedDietaryNamesList[0];
                         selectedDietaryId =
                             sellerDietaryListProvider.selectedDietaryIdsList[0];
                       },
@@ -637,10 +684,26 @@ class _SellerAddOrUpdateProductScreenState
                 height: 105,
                 width: 105,
                 child: Center(
-                  child: imgWidget(selectedProductMainImage),
+                  child: imgWidget(fileName: selectedProductMainImage),
                 ),
               ),
-            if (selectedProductMainImage.isNotEmpty)
+            if (selectedProductMainImage.isEmpty && productMainImage.isNotEmpty)
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: ColorsRes.textFieldBorderColor,
+                    ),
+                    color: Theme.of(context).cardColor),
+                height: 105,
+                width: 105,
+                child: Center(
+                  child: editImgWidget(
+                      fileName: productMainImage, height: 97, width: 97),
+                ),
+              ),
+            if (selectedProductMainImage.isNotEmpty ||
+                productMainImage.isNotEmpty)
               Widgets.getSizedBox(width: 10),
             Expanded(
               child: GestureDetector(
@@ -761,28 +824,64 @@ class _SellerAddOrUpdateProductScreenState
           Widgets.getSizedBox(
             height: Constant.size15,
           ),
-        LayoutBuilder(
-          builder: (context, constraints) => Wrap(
-            runSpacing: 15,
-            spacing: constraints.maxWidth * 0.05,
-            children: List.generate(
-              selectedProductOtherImages.length,
-              (index) => Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: ColorsRes.textFieldBorderColor,
+        if (selectedProductOtherImages.isNotEmpty)
+          LayoutBuilder(
+            builder: (context, constraints) => Wrap(
+              runSpacing: 15,
+              spacing: constraints.maxWidth * 0.05,
+              children: List.generate(
+                selectedProductOtherImages.length,
+                (index) => Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: ColorsRes.textFieldBorderColor,
+                      ),
+                      color: Theme.of(context).cardColor),
+                  width: constraints.maxWidth * 0.3,
+                  height: constraints.maxWidth * 0.3,
+                  child: Center(
+                    child: imgWidget(
+                      fileName: selectedProductOtherImages[index]!,
+                      width: 115,
+                      height: 115,
                     ),
-                    color: Theme.of(context).cardColor),
-                width: constraints.maxWidth * 0.3,
-                height: constraints.maxWidth * 0.3,
-                child: Center(
-                  child: imgWidget(selectedProductOtherImages[index]!),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+
+        if (selectedProductOtherImages.isEmpty && productOtherImages.isNotEmpty)
+          Widgets.getSizedBox(
+            height: Constant.size15,
+          ),
+        if (selectedProductOtherImages.isEmpty && productOtherImages.isNotEmpty)
+          LayoutBuilder(
+            builder: (context, constraints) => Wrap(
+              runSpacing: 15,
+              spacing: constraints.maxWidth * 0.05,
+              children: List.generate(
+                selectedProductOtherImages.length,
+                (index) => Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: ColorsRes.textFieldBorderColor,
+                      ),
+                      color: Theme.of(context).cardColor),
+                  width: constraints.maxWidth * 0.3,
+                  height: constraints.maxWidth * 0.3,
+                  child: Center(
+                    child: editImgWidget(
+                        fileName: selectedProductOtherImages[index]!,
+                        width: 90,
+                        height: 90),
+                  ),
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -1009,7 +1108,8 @@ class _SellerAddOrUpdateProductScreenState
           height: Constant.size10,
         ),
         Container(
-          padding: EdgeInsetsDirectional.only(start: 10,end: 10,top: 5,bottom: 5),
+          padding:
+              EdgeInsetsDirectional.only(start: 10, end: 10, top: 5, bottom: 5),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
@@ -1413,8 +1513,12 @@ class _SellerAddOrUpdateProductScreenState
 
   Widget productFinalPreview() {
     List<String?> images = [
-      selectedProductMainImage,
-      ...selectedProductOtherImages,
+      selectedProductMainImage.isNotEmpty
+          ? selectedProductMainImage
+          : productMainImage,
+      ...selectedProductOtherImages.isNotEmpty
+          ? selectedProductOtherImages
+          : productOtherImages,
     ];
 
     return Scaffold(
@@ -1422,7 +1526,7 @@ class _SellerAddOrUpdateProductScreenState
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: MediaQuery.of(context).size.height * 0.40,
+            expandedHeight: MediaQuery.of(context).size.height * 0.41,
             pinned: true,
             centerTitle: true,
             title: CustomTextLabel(
@@ -1436,13 +1540,16 @@ class _SellerAddOrUpdateProductScreenState
             backgroundColor: Theme.of(context).cardColor,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
-              background: ChangeNotifierProvider(
-                create: (context) => SellerSliderImagesProvider(),
-                builder: (context, child) {
-                  return SellerProductSliderImagesWidgets(
-                    sliders: images,
-                  );
-                },
+              background: Padding(
+                padding: const EdgeInsetsDirectional.only(top: 75),
+                child: ChangeNotifierProvider(
+                  create: (context) => SellerSliderImagesProvider(),
+                  builder: (context, child) {
+                    return SellerProductSliderImagesWidgets(
+                      sliders: images,
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -1532,7 +1639,7 @@ class _SellerAddOrUpdateProductScreenState
     );
   }
 
-  imgWidget(String fileName) {
+  imgWidget({required String fileName, double? height, double? width}) {
     return GestureDetector(
       onTap: () {
         try {
@@ -1551,7 +1658,7 @@ class _SellerAddOrUpdateProductScreenState
               ),
             )
           : ClipRRect(
-              borderRadius: Constant.borderRadius10,
+              borderRadius: Constant.borderRadius7,
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Image(
                 image: FileImage(
@@ -1559,9 +1666,40 @@ class _SellerAddOrUpdateProductScreenState
                     fileName,
                   ),
                 ),
-                width: 90,
-                height: 90,
+                width: width ?? 90,
+                height: height ?? 90,
                 fit: BoxFit.fill,
+              ),
+            ),
+    );
+  }
+
+  editImgWidget({required String fileName, double? height, double? width}) {
+    return GestureDetector(
+      onTap: () {
+        try {
+          OpenFilex.open(fileName);
+        } catch (e) {
+          GeneralMethods.showMessage(
+              context, e.toString(), MessageType.warning);
+        }
+      },
+      child: fileName.split(".").last == "pdf"
+          ? Center(
+              child: Widgets.defaultImg(
+                image: "pdf",
+                height: 50,
+                width: 50,
+              ),
+            )
+          : ClipRRect(
+              borderRadius: Constant.borderRadius7,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Widgets.setNetworkImg(
+                image: fileName,
+                width: width ?? 90,
+                height: height ?? 90,
+                boxFit: BoxFit.fill,
               ),
             ),
     );
@@ -1664,7 +1802,7 @@ class _SellerAddOrUpdateProductScreenState
   // 5. PRODUCT PHOTOS SCREEN VALIDATION
   void productImageSelectionValidation() async {
     try {
-      if (selectedProductMainImage.isEmpty) {
+      if (selectedProductMainImage.isEmpty && productMainImage.isEmpty) {
         GeneralMethods.showMessage(
             context,
             getTranslatedValue(context, "please_select_main_image"),
@@ -1736,6 +1874,5 @@ class DecimalTextInputFormatter extends TextInputFormatter {
       selection: newSelection,
       composing: TextRange.empty,
     );
-    return newValue;
   }
 }

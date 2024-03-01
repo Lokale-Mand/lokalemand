@@ -21,16 +21,25 @@ class _SellerProductSliderImagesWidgetsState
     Future.delayed(Duration.zero).then((value) {
       Timer.periodic(Duration(seconds: 3), (timer) {
         if (mounted) {
-          if (context.read<SellerSliderImagesProvider>().currentSliderImageIndex <
+          if (context
+                  .read<SellerSliderImagesProvider>()
+                  .currentSliderImageIndex <
               (widget.sliders.length - 1)) {
-            context.read<SellerSliderImagesProvider>().setSellerSliderCurrentIndexImage(
-                (context.read<SellerSliderImagesProvider>().currentSliderImageIndex +
+            context
+                .read<SellerSliderImagesProvider>()
+                .setSellerSliderCurrentIndexImage((context
+                        .read<SellerSliderImagesProvider>()
+                        .currentSliderImageIndex +
                     1));
           } else {
-            context.read<SellerSliderImagesProvider>().setSellerSliderCurrentIndexImage(0);
+            context
+                .read<SellerSliderImagesProvider>()
+                .setSellerSliderCurrentIndexImage(0);
           }
           _pageController.animateToPage(
-              context.read<SellerSliderImagesProvider>().currentSliderImageIndex,
+              context
+                  .read<SellerSliderImagesProvider>()
+                  .currentSliderImageIndex,
               duration: Duration(milliseconds: 300),
               curve: Curves.easeInOut);
         }
@@ -66,20 +75,28 @@ class _SellerProductSliderImagesWidgetsState
                               return ClipRRect(
                                 borderRadius: Constant.borderRadius10,
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                                child: Image(
-                                  image: FileImage(
-                                    File(
-                                      widget.sliders[index] ?? "",
-                                    ),
-                                  ),
-                                  width: 90,
-                                  height: 90,
-                                  fit: BoxFit.fill,
-                                ),
+                                child: widget.sliders[index]!.startsWith("http")
+                                    ? Widgets.setNetworkImg(
+                                        image: widget.sliders[index] ?? "",
+                                        width: 90,
+                                        height: 90,
+                                        boxFit: BoxFit.fill,
+                                      )
+                                    : Image(
+                                        image: FileImage(
+                                          File(
+                                            widget.sliders[index] ?? "",
+                                          ),
+                                        ),
+                                        width: 90,
+                                        height: 90,
+                                        fit: BoxFit.fill,
+                                      ),
                               );
                             },
                             onPageChanged: (value) {
-                              sellerSliderImagesProvider.setSellerSliderCurrentIndexImage(value);
+                              sellerSliderImagesProvider
+                                  .setSellerSliderCurrentIndexImage(value);
                             },
                           ),
                         ),
@@ -111,12 +128,13 @@ class _SellerProductSliderImagesWidgetsState
                                         borderRadius:
                                             BorderRadius.circular(100),
                                         child: CircleAvatar(
-                                          backgroundColor: sellerSliderImagesProvider
-                                                      .currentSliderImageIndex ==
-                                                  index
-                                              ? Theme.of(context).cardColor
-                                              : Theme.of(context)
-                                                  .scaffoldBackgroundColor,
+                                          backgroundColor:
+                                              sellerSliderImagesProvider
+                                                          .currentSliderImageIndex ==
+                                                      index
+                                                  ? Theme.of(context).cardColor
+                                                  : Theme.of(context)
+                                                      .scaffoldBackgroundColor,
                                           radius: 5,
                                         ),
                                         elevation: sellerSliderImagesProvider

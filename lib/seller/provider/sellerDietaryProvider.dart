@@ -14,7 +14,6 @@ class SellerDietaryListProvider extends ChangeNotifier {
   String message = '';
   List<DietaryData> dietaries = [];
   List<String> selectedDietaryIdsList = [];
-  List<String> selectedDietaryNamesList = [];
   bool startedApiCalling = false;
 
   Future getDietaryApiProvider({required BuildContext context}) async {
@@ -43,15 +42,13 @@ class SellerDietaryListProvider extends ChangeNotifier {
     }
   }
 
-  dietarySingleSelection({required String id,required String name}) {
+  dietarySingleSelection({required String id}) {
+
     selectedDietaryIdsList.clear();
-    selectedDietaryNamesList.clear();
     if (selectedDietaryIdsList.contains(id)) {
       selectedDietaryIdsList.remove(id);
-      selectedDietaryNamesList.remove(name);
     } else {
       selectedDietaryIdsList.add(id);
-      selectedDietaryNamesList.add(name);
     }
     notifyListeners();
   }

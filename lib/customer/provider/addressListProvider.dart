@@ -136,8 +136,6 @@ class AddressProvider extends ChangeNotifier {
         getData = (await addAddressApi(context: context, params: params));
       }
 
-      print(
-          ">>>>>${params.containsKey(ApiAndParams.id) ? "old" : "new"} >>>  $getData");
 
       late AddressData tempAddress;
       if (getData[ApiAndParams.status].toString() == "1") {
@@ -146,9 +144,9 @@ class AddressProvider extends ChangeNotifier {
             jsonEncode(tempAddress.toJson()), false);
 
         Constant.session.setData(
-            SessionManager.keyLatitude, addresses[0].latitude.toString(), true);
+            SessionManager.keyLatitude, tempAddress.latitude.toString(), true);
         Constant.session.setData(SessionManager.keyLongitude,
-            addresses[0].longitude.toString(), true);
+            tempAddress.longitude.toString(), true);
 
         if (params.containsKey(ApiAndParams.id)) {
           addresses.remove(address);

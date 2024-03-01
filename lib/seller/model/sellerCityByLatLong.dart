@@ -2,7 +2,7 @@ class SellerCityByLatLong {
   String? status;
   String? message;
   String? total;
-  SellerCityByLatLongData? data;
+  List<SellerCityByLatLongData>? data;
 
   SellerCityByLatLong({this.status, this.message, this.total, this.data});
 
@@ -10,9 +10,12 @@ class SellerCityByLatLong {
     status = json['status'].toString();
     message = json['message'].toString();
     total = json['total'].toString();
-    data = json['data'] != null
-        ? new SellerCityByLatLongData.fromJson(json['data'])
-        : null;
+    if (json['data'] != null) {
+      data = <SellerCityByLatLongData>[];
+      json['data'].forEach((v) {
+        data!.add(new SellerCityByLatLongData.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -21,7 +24,7 @@ class SellerCityByLatLong {
     data['message'] = this.message;
     data['total'] = this.total;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -34,28 +37,14 @@ class SellerCityByLatLongData {
   String? formattedAddress;
   String? latitude;
   String? longitude;
-  String? minAmountForFreeDelivery;
-  String? deliveryChargeMethod;
-  String? fixedCharge;
-  String? perKmCharge;
-  String? timeToTravel;
-  String? maxDeliverableDistance;
-  String? distance;
 
   SellerCityByLatLongData(
       {this.id,
-      this.name,
-      this.state,
-      this.formattedAddress,
-      this.latitude,
-      this.longitude,
-      this.minAmountForFreeDelivery,
-      this.deliveryChargeMethod,
-      this.fixedCharge,
-      this.perKmCharge,
-      this.timeToTravel,
-      this.maxDeliverableDistance,
-      this.distance});
+        this.name,
+        this.state,
+        this.formattedAddress,
+        this.latitude,
+        this.longitude});
 
   SellerCityByLatLongData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -64,13 +53,6 @@ class SellerCityByLatLongData {
     formattedAddress = json['formatted_address'].toString();
     latitude = json['latitude'].toString();
     longitude = json['longitude'].toString();
-    minAmountForFreeDelivery = json['min_amount_for_free_delivery'].toString();
-    deliveryChargeMethod = json['delivery_charge_method'].toString();
-    fixedCharge = json['fixed_charge'].toString();
-    perKmCharge = json['per_km_charge'].toString();
-    timeToTravel = json['time_to_travel'].toString();
-    maxDeliverableDistance = json['max_deliverable_distance'].toString();
-    distance = json['distance'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -81,13 +63,6 @@ class SellerCityByLatLongData {
     data['formatted_address'] = this.formattedAddress;
     data['latitude'] = this.latitude;
     data['longitude'] = this.longitude;
-    data['min_amount_for_free_delivery'] = this.minAmountForFreeDelivery;
-    data['delivery_charge_method'] = this.deliveryChargeMethod;
-    data['fixed_charge'] = this.fixedCharge;
-    data['per_km_charge'] = this.perKmCharge;
-    data['time_to_travel'] = this.timeToTravel;
-    data['max_deliverable_distance'] = this.maxDeliverableDistance;
-    data['distance'] = this.distance;
     return data;
   }
 }

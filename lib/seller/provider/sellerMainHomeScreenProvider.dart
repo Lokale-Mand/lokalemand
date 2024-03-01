@@ -10,6 +10,7 @@ class SellerMainHomeScreenProvider extends ChangeNotifier {
     ScrollController(),
     ScrollController(),
     ScrollController(),
+    ScrollController(),
     ScrollController()
   ];
 
@@ -18,6 +19,23 @@ class SellerMainHomeScreenProvider extends ChangeNotifier {
 
   setPages() {
     pages = [
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ProductListProvider>(
+            create: (context) {
+              return ProductListProvider();
+            },
+          ),
+          ChangeNotifierProvider<SellerListProvider>(
+            create: (context) {
+              return SellerListProvider();
+            },
+          ),
+        ],
+        child: HomeScreen(
+          scrollController: scrollController[0],
+        ),
+      ),
       ChangeNotifierProvider(
         create: (context) => SellerOrdersProvider(),
         child: SellerOrderScreen(),
@@ -36,7 +54,7 @@ class SellerMainHomeScreenProvider extends ChangeNotifier {
         },
         child: SellerProductScreen(),
       ),
-      SellerMenuScreen()
+      SellerMenuScreen(),
     ];
   }
 

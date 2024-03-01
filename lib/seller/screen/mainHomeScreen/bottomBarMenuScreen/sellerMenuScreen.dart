@@ -58,19 +58,19 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
               padding: EdgeInsetsDirectional.all(20),
               children: [
                 SellerProfileHeader(),
-                Divider(color: ColorsRes.menuTitleColor),
-                Widgets.getSizedBox(height: 5),
-                CustomTextLabel(
-                  jsonKey: "store",
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    color: ColorsRes.menuTitleColor,
-                  ),
-                ),
-                MenuListItems(storeDataMenu),
+                // Divider(color: ColorsRes.menuTitleColor),
+                // Widgets.getSizedBox(height: 5),
+                // CustomTextLabel(
+                //   jsonKey: "store",
+                //   softWrap: true,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.w600,
+                //     fontSize: 12,
+                //     color: ColorsRes.menuTitleColor,
+                //   ),
+                // ),
+                // MenuListItems(storeDataMenu),
                 Widgets.getSizedBox(height: 5),
                 if (Constant.session.isUserLoggedIn())
                   Divider(color: ColorsRes.menuTitleColor),

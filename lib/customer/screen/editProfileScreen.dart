@@ -53,7 +53,7 @@ class _EditProfileState extends State<EditProfile> {
                   )
                 : getTranslatedValue(
                     context,
-                    "edit_profile",
+                    "profile",
                   ),
             style: TextStyle(
               fontSize: 16,
@@ -79,7 +79,8 @@ class _EditProfileState extends State<EditProfile> {
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   userInfoWidget(),
                   const SizedBox(height: 50),
-                  proceedBtn()
+                  if (!Constant.session.getBoolData(SessionManager.isSeller))
+                    proceedBtn()
                 ]),
               ),
             ),
@@ -114,24 +115,24 @@ class _EditProfileState extends State<EditProfile> {
                           .then(
                         (value) {
                           if (value as bool) {
-                              if (widget.from == "register" ||
-                                  widget.from == "header") {
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                  mainHomeScreen,
-                                  (Route<dynamic> route) => false,
-                                );
-                              } else if (widget.from == "add_to_cart") {
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              } else {
-                                GeneralMethods.showMessage(
-                                  context,
-                                  getTranslatedValue(
-                                      context, "profile_updated_successfully"),
-                                  MessageType.success,
-                                );
-                              }
+                            if (widget.from == "register" ||
+                                widget.from == "header") {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                mainHomeScreen,
+                                (Route<dynamic> route) => false,
+                              );
+                            } else if (widget.from == "add_to_cart") {
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            } else {
+                              GeneralMethods.showMessage(
+                                context,
+                                getTranslatedValue(
+                                    context, "profile_updated_successfully"),
+                                MessageType.success,
+                              );
+                            }
 
                             userProfileProvider.changeState();
                           } else {
@@ -237,34 +238,35 @@ class _EditProfileState extends State<EditProfile> {
                   ),
           ),
         ),
-        Positioned(
-          right: 0,
-          bottom: 0,
-          child: GestureDetector(
-            onTap: () async {
-              // Single file path
-              FilePicker.platform
-                  .pickFiles(
-                      allowMultiple: false,
-                      allowCompression: true,
-                      type: FileType.image,
-                      lockParentWindow: true)
-                  .then((value) {
-                cropImage(value!.paths.first.toString());
-              });
-            },
-            child: Container(
-              decoration: DesignConfig.boxGradient(5),
-              padding: const EdgeInsets.all(5),
-              margin: const EdgeInsetsDirectional.only(end: 8, top: 8),
-              child: Widgets.defaultImg(
-                  image: "edit_icon",
-                  iconColor: ColorsRes.mainIconColor,
-                  height: 15,
-                  width: 15),
+        if (!Constant.session.getBoolData(SessionManager.isSeller))
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: GestureDetector(
+              onTap: () async {
+                // Single file path
+                FilePicker.platform
+                    .pickFiles(
+                        allowMultiple: false,
+                        allowCompression: true,
+                        type: FileType.image,
+                        lockParentWindow: true)
+                    .then((value) {
+                  cropImage(value!.paths.first.toString());
+                });
+              },
+              child: Container(
+                decoration: DesignConfig.boxGradient(5),
+                padding: const EdgeInsets.all(5),
+                margin: const EdgeInsetsDirectional.only(end: 8, top: 8),
+                child: Widgets.defaultImg(
+                    image: "edit_icon",
+                    iconColor: ColorsRes.mainIconColor,
+                    height: 15,
+                    width: 15),
+              ),
             ),
-          ),
-        )
+          )
       ]),
     );
   }

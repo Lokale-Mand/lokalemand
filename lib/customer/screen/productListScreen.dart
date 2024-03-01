@@ -122,89 +122,92 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         ),
         actions: [
-          ChangeNotifierProvider<SellerAddOrRemoveFavoriteProvider>(
-            create: (context) => SellerAddOrRemoveFavoriteProvider(),
-            child: SellerWishListIcon(
-              sellerId: widget.id,
+          if (!Constant.session.getBoolData(SessionManager.isSeller))
+            ChangeNotifierProvider<SellerAddOrRemoveFavoriteProvider>(
+              create: (context) => SellerAddOrRemoveFavoriteProvider(),
+              child: SellerWishListIcon(
+                sellerId: widget.id,
+              ),
             ),
-          ),
         ],
       ),
-      bottomNavigationBar: PhysicalModel(
-        elevation: 10,
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(
-            15,
-          ),
-          topRight: Radius.circular(
-            15,
-          ),
-        ),
-        child: Container(
-          padding: EdgeInsetsDirectional.only(
-              bottom: 25, start: 10, end: 10, top: 10),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(
-                15,
-              ),
-              topRight: Radius.circular(
-                15,
-              ),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: CustomTextLabel(
-                  jsonKey: "do_you_have_any_questions",
+      bottomNavigationBar: Constant.session.getBoolData(SessionManager.isSeller)
+          ? SizedBox.shrink()
+          : PhysicalModel(
+              elevation: 10,
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(
+                  15,
+                ),
+                topRight: Radius.circular(
+                  15,
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    chatDetailScreen,
-                    arguments: [
-                      widget.id.toString(),
-                      widget.sellerName.toString(),
-                      widget.sellerLogo,
-                    ],
-                  );
-                },
-                child: Container(
-                  height: 50,
-                  alignment: Alignment.center,
-                  padding: EdgeInsetsDirectional.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: ColorsRes.appColor,
-                      width: 2,
+              child: Container(
+                padding: EdgeInsetsDirectional.only(
+                    bottom: 25, start: 10, end: 10, top: 10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                      15,
+                    ),
+                    topRight: Radius.circular(
+                      15,
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.chat_bubble_outline_rounded,
-                        color: ColorsRes.appColor,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: CustomTextLabel(
+                        jsonKey: "do_you_have_any_questions",
                       ),
-                      Widgets.getSizedBox(width: 10),
-                      CustomTextLabel(
-                        text:
-                            "${getTranslatedValue(context, "chat_with")} ${widget.title}",
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          chatDetailScreen,
+                          arguments: [
+                            widget.id.toString(),
+                            widget.sellerName.toString(),
+                            widget.sellerLogo,
+                          ],
+                        );
+                      },
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.center,
+                        padding: EdgeInsetsDirectional.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: ColorsRes.appColor,
+                            width: 2,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.chat_bubble_outline_rounded,
+                              color: ColorsRes.appColor,
+                            ),
+                            Widgets.getSizedBox(width: 10),
+                            CustomTextLabel(
+                              text:
+                                  "${getTranslatedValue(context, "chat_with")} ${widget.title}",
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
       body: Column(
         children: [
           getSearchWidget(

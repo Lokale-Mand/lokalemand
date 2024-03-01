@@ -63,80 +63,82 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: PhysicalModel(
-        elevation: 10,
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(
-            15,
-          ),
-          topRight: Radius.circular(
-            15,
-          ),
-        ),
-        child: Container(
-          padding: EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(
-                15,
-              ),
-              topRight: Radius.circular(
-                15,
-              ),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: CustomTextLabel(
-                  jsonKey: "do_you_have_any_questions",
+      bottomNavigationBar: Constant.session.getBoolData(SessionManager.isSeller)
+          ? SizedBox.shrink()
+          : PhysicalModel(
+              elevation: 10,
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(
+                  15,
+                ),
+                topRight: Radius.circular(
+                  15,
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    chatDetailScreen,
-                    arguments: [
-                      widget.sellerId.toString(),
-                      widget.storeName.toString(),
-                      widget.storeLogo,
-                    ],
-                  );
-                },
-                child: Container(
-                  height: 50,
-                  alignment: Alignment.center,
-                  padding: EdgeInsetsDirectional.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: ColorsRes.appColor,
-                      width: 2,
+              child: Container(
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                      15,
+                    ),
+                    topRight: Radius.circular(
+                      15,
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.chat_bubble_outline_rounded,
-                        color: ColorsRes.appColor,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: CustomTextLabel(
+                        jsonKey: "do_you_have_any_questions",
                       ),
-                      Widgets.getSizedBox(width: 10),
-                      CustomTextLabel(
-                        text:
-                            "${getTranslatedValue(context, "chat_with")} ${getTranslatedValue(context, "seller")}",
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          chatDetailScreen,
+                          arguments: [
+                            widget.sellerId.toString(),
+                            widget.storeName.toString(),
+                            widget.storeLogo,
+                          ],
+                        );
+                      },
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.center,
+                        padding: EdgeInsetsDirectional.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: ColorsRes.appColor,
+                            width: 2,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.chat_bubble_outline_rounded,
+                              color: ColorsRes.appColor,
+                            ),
+                            Widgets.getSizedBox(width: 10),
+                            CustomTextLabel(
+                              text:
+                                  "${getTranslatedValue(context, "chat_with")} ${getTranslatedValue(context, "seller")}",
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
       body: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
         child: CustomScrollView(
@@ -204,27 +206,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                     );
                   }),
-                  Widgets.getSizedBox(width: 5),
-                  Container(
-                    height: 50,
-                    width: 50,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Card(
-                        elevation: 0,
-                        color: Theme.of(context).cardColor,
-                        shape: DesignConfig.setRoundedBorder(100),
-                        child: ProductWishListIcon(
-                          product: Constant.session.isUserLoggedIn()
-                              ? widget.productListItem
-                              : null,
-                          isListing: false,
+                  if (!Constant.session.getBoolData(SessionManager.isSeller))
+                    Widgets.getSizedBox(width: 5),
+                  if (!Constant.session.getBoolData(SessionManager.isSeller))
+                    Container(
+                      height: 50,
+                      width: 50,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Card(
+                          elevation: 0,
+                          color: Theme.of(context).cardColor,
+                          shape: DesignConfig.setRoundedBorder(100),
+                          child: ProductWishListIcon(
+                            product: Constant.session.isUserLoggedIn()
+                                ? widget.productListItem
+                                : null,
+                            isListing: false,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                   Widgets.getSizedBox(width: 10),
                 ],
               ),
@@ -670,106 +674,111 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ],
                           ),
                         ),
-                        Widgets.getSizedBox(height: Constant.size10),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                try {
-                                  if (edtProductStock.text.isEmpty) {
-                                    edtProductStock.text = "0";
-                                  } else if (int.parse(
-                                          edtProductStock.text.toString()) >
-                                      0) {
-                                    edtProductStock.text = (int.parse(
-                                                edtProductStock.text
-                                                    .toString()) -
-                                            1)
-                                        .toString();
-                                  } else {
-                                    edtProductStock.text = "0";
-                                  }
-                                  setState(() {});
-                                } catch (e) {
-                                  GeneralMethods.showMessage(context,
-                                      e.toString(), MessageType.warning);
-                                }
-                              },
-                              icon: Icon(
-                                Icons.remove_circle_outline_rounded,
-                                color: ColorsRes.appColor,
-                                size: 40,
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                height: 40,
-                                padding: EdgeInsetsDirectional.only(
-                                    start: 10, end: 10),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30)),
-                                  border: Border.all(
-                                    color: ColorsRes.textFieldBorderColor,
-                                  ),
-                                  color: Theme.of(context).cardColor,
-                                ),
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  controller: edtProductStock,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-                                    CustomNumberTextInputFormatter()
-                                  ],
-                                  style: TextStyle(
-                                    color: ColorsRes.mainTextColor,
-                                  ),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    isDense: true,
-                                    hintStyle: TextStyle(
-                                      color: ColorsRes.menuTitleColor,
-                                    ),
-                                    hintText: context
-                                        .read<LanguageProvider>()
-                                        .currentLanguage["product_stock_hint"],
-                                  ),
-                                  onChanged: (value) {
-                                    if (value.isNotEmpty) {
-                                      edtProductStock.text = value;
+                        if (!Constant.session
+                            .getBoolData(SessionManager.isSeller))
+                          Widgets.getSizedBox(height: Constant.size10),
+                        if (!Constant.session
+                            .getBoolData(SessionManager.isSeller))
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  try {
+                                    if (edtProductStock.text.isEmpty) {
+                                      edtProductStock.text = "0";
+                                    } else if (int.parse(
+                                            edtProductStock.text.toString()) >
+                                        0) {
+                                      edtProductStock.text = (int.parse(
+                                                  edtProductStock.text
+                                                      .toString()) -
+                                              1)
+                                          .toString();
+                                    } else {
+                                      edtProductStock.text = "0";
                                     }
                                     setState(() {});
-                                  },
+                                  } catch (e) {
+                                    GeneralMethods.showMessage(context,
+                                        e.toString(), MessageType.warning);
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.remove_circle_outline_rounded,
+                                  color: ColorsRes.appColor,
+                                  size: 40,
                                 ),
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                try {
-                                  edtProductStock.text = (int.parse(
-                                              edtProductStock.text
-                                                      .toString()
-                                                      .isEmpty
-                                                  ? "0"
-                                                  : edtProductStock.text
-                                                      .toString()) +
-                                          1)
-                                      .toString();
-                                  setState(() {});
-                                } catch (e) {
-                                  GeneralMethods.showMessage(context,
-                                      e.toString(), MessageType.warning);
-                                }
-                              },
-                              icon: Icon(
-                                Icons.add_circle_outline_rounded,
-                                color: ColorsRes.appColor,
-                                size: 40,
+                              Expanded(
+                                child: Container(
+                                  height: 40,
+                                  padding: EdgeInsetsDirectional.only(
+                                      start: 10, end: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    border: Border.all(
+                                      color: ColorsRes.textFieldBorderColor,
+                                    ),
+                                    color: Theme.of(context).cardColor,
+                                  ),
+                                  child: TextField(
+                                    textAlign: TextAlign.center,
+                                    controller: edtProductStock,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      CustomNumberTextInputFormatter()
+                                    ],
+                                    style: TextStyle(
+                                      color: ColorsRes.mainTextColor,
+                                    ),
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      isDense: true,
+                                      hintStyle: TextStyle(
+                                        color: ColorsRes.menuTitleColor,
+                                      ),
+                                      hintText: context
+                                              .read<LanguageProvider>()
+                                              .currentLanguage[
+                                          "product_stock_hint"],
+                                    ),
+                                    onChanged: (value) {
+                                      if (value.isNotEmpty) {
+                                        edtProductStock.text = value;
+                                      }
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
                               ),
-                            )
-                          ],
-                        ),
+                              IconButton(
+                                onPressed: () {
+                                  try {
+                                    edtProductStock.text = (int.parse(
+                                                edtProductStock.text
+                                                        .toString()
+                                                        .isEmpty
+                                                    ? "0"
+                                                    : edtProductStock.text
+                                                        .toString()) +
+                                            1)
+                                        .toString();
+                                    setState(() {});
+                                  } catch (e) {
+                                    GeneralMethods.showMessage(context,
+                                        e.toString(), MessageType.warning);
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outline_rounded,
+                                  color: ColorsRes.appColor,
+                                  size: 40,
+                                ),
+                              )
+                            ],
+                          ),
                         if (edtProductStock.text.toString().isNotEmpty &&
                             int.parse(edtProductStock.text.toString()) > 0)
                           Widgets.getSizedBox(height: Constant.size10),

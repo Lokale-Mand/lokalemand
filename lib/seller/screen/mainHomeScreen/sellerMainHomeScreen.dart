@@ -28,6 +28,10 @@ class SellerMainHomeScreenState extends State<SellerMainHomeScreen> {
         .read<SellerMainHomeScreenProvider>()
         .scrollController[3]
         .removeListener(() {});
+    context
+        .read<SellerMainHomeScreenProvider>()
+        .scrollController[4]
+        .removeListener(() {});
     super.dispose();
   }
 
@@ -130,6 +134,10 @@ class SellerMainHomeScreenState extends State<SellerMainHomeScreen> {
   homeBottomNavigation(int selectedIndex, Function selectBottomMenu,
       int totalPage, BuildContext context) {
     List lblHomeBottomMenu = [
+      getTranslatedValue(
+        context,
+        "home_bottom_menu_search",
+      ),
       getTranslatedValue(
         context,
         "home_bottom_menu_orders",
