@@ -78,7 +78,7 @@ class SellerOrdersProvider extends ChangeNotifier {
       if (getData[ApiAndParams.status].toString() == "1") {
         if (Constant.session.getBoolData(SessionManager.isSeller) == true) {
           sellerOrderData = SellerOrder.fromJson(getData);
-          totalData = getData[ApiAndParams.total];
+          totalData = getData[ApiAndParams.total].toString().toInt;
           List<SellerOrdersListItem> tempOrders =
               sellerOrderData.data?.orders ?? [];
           List<SellerOrdersListProductItem> tempProductsOrders =
@@ -91,13 +91,14 @@ class SellerOrdersProvider extends ChangeNotifier {
           if (hasMoreData) {
             offset += Constant.defaultDataLoadLimitAtOnce;
           }
-        }
-        if (sellerOrdersList.length > 0) {
-          ordersState = SellerOrdersState.loaded;
-          notifyListeners();
-        } else {
-          ordersState = SellerOrdersState.error;
-          notifyListeners();
+
+          if (sellerOrdersList.isNotEmpty) {
+            ordersState = SellerOrdersState.loaded;
+            notifyListeners();
+          } else {
+            ordersState = SellerOrdersState.error;
+            notifyListeners();
+          }
         }
       } else {
         ordersState = SellerOrdersState.error;

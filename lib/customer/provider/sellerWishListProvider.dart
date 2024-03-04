@@ -98,9 +98,13 @@ class SellerWishListProvider extends ChangeNotifier {
           offset += Constant.defaultDataLoadLimitAtOnce;
         }
 
-        sellerWishListState = SellerWishListState.loaded;
-
-        notifyListeners();
+        if (wishlistSellers.isNotEmpty) {
+          sellerWishListState = SellerWishListState.loaded;
+          notifyListeners();
+        } else {
+          sellerWishListState = SellerWishListState.error;
+          notifyListeners();
+        }
       } else {
         sellerWishListState = SellerWishListState.error;
         notifyListeners();

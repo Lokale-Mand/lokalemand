@@ -148,7 +148,7 @@ class _SellerAddOrUpdateProductScreenState
       "deleteImageIds": "[]",
     };
 
-    if (widget.productId != "0" || widget.productId.isNotEmpty) {
+    if (widget.productId != "0" && widget.productId.isNotEmpty) {
       params[ApiAndParams.id] = widget.productId;
       params["variant_id[]"] = product.variants.first.id.toString();
     }

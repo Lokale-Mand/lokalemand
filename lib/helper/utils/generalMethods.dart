@@ -119,25 +119,29 @@ class GeneralMethods {
         response = await http.get(Uri.parse(mainUrl), headers: headersData);
       }
 
-
-      Map<String, dynamic> data = jsonDecode(response.body);
-      if (data[ApiAndParams.message].toString().toLowerCase().contains("unauth")) {
-        GeneralMethods.showMessage(
-            context,
-            getTranslatedValue(context, "un_authentication_error"),
-            MessageType.error);
-        Constant.session.logoutUserMethod(context);
-      }
-
-      if (response.statusCode == 200) {
-        if (response.body == "null") {
-          return null;
+      if (jsonDecode(response.body) is Map) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+        if (data[ApiAndParams.message]
+            .toString()
+            .toLowerCase()
+            .contains("unauth")) {
+          GeneralMethods.showMessage(
+              context,
+              getTranslatedValue(context, "un_authentication_error"),
+              MessageType.error);
+          Constant.session.logoutUserMethod(context);
         }
 
-        if (isRequestedForInvoice == true) {
-          return response.bodyBytes;
-        } else {
-          return response.body;
+        if (response.statusCode == 200) {
+          if (response.body == "null") {
+            return null;
+          }
+
+          if (isRequestedForInvoice == true) {
+            return response.bodyBytes;
+          } else {
+            return response.body;
+          }
         }
       } else {
         if (kDebugMode) {
@@ -147,6 +151,12 @@ class GeneralMethods {
             context,
             "$mainUrl,{$params},Status Code - ${response.statusCode}",
             MessageType.warning,
+          );
+        } else {
+          GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "something_went_wrong"),
+            MessageType.error,
           );
         }
         return null;

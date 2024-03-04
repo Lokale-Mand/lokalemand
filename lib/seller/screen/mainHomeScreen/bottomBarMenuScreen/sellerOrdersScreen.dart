@@ -10,11 +10,11 @@ class SellerOrderScreen extends StatefulWidget {
 }
 
 class _SellerOrderScreenState extends State<SellerOrderScreen> {
-  late ScrollController scrollController = ScrollController()
-    ..addListener(activeOrdersScrollListener);
+  late ScrollController scrollController = ScrollController();
+
   List lblOrderStatusDisplayNames = [];
 
-  void activeOrdersScrollListener() {
+  scrollListener() {
     // nextPageTrigger will have a value equivalent to 70% of the list size.
     var nextPageTrigger = 0.7 * scrollController.position.maxScrollExtent;
 
@@ -23,12 +23,12 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
       if (mounted) {
         if (context.read<SellerOrdersProvider>().hasMoreData) {
           context.read<SellerOrdersProvider>().getSellerOrders(
-                context: context,
-                statusIndex: context
-                    .read<SellerOrdersProvider>()
-                    .selectedStatus
-                    .toString(),
-              );
+            context: context,
+            statusIndex: context
+                .read<SellerOrdersProvider>()
+                .selectedStatus
+                .toString(),
+          );
         }
       }
     }
@@ -39,6 +39,7 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
     Map<String, String> params = {};
     params[ApiAndParams.status] = "1";
 
+    scrollController.addListener(scrollListener);
     Future.delayed(
       Duration.zero,
       () {
@@ -91,37 +92,42 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
               .getSellerOrders(statusIndex: "0", context: context);
         },
         child: SingleChildScrollView(
-          controller: scrollController,
-          physics: AlwaysScrollableScrollPhysics(),
           child: Consumer<SellerOrdersProvider>(
             builder: (context, ordersProvider, child) {
               if (ordersProvider.ordersState == SellerOrdersState.loaded ||
                   ordersProvider.ordersState == SellerOrdersState.loadingMore) {
-                return Expanded(
-                  child: ListView.builder(
-                      controller: scrollController,
-                      itemCount: ordersProvider.sellerOrdersList.length,
-                      itemBuilder: (context, index) {
-                        if (index ==
-                            ordersProvider.sellerOrdersList.length - 1) {
-                          if (ordersProvider.ordersState ==
-                              SellerOrdersState.loadingMore) {
-                            return _buildOrderContainerShimmer();
+
+                return Column(
+                  children: [
+                    ListView.builder(
+                        shrinkWrap: true,
+                        controller: scrollController,
+                        itemCount: ordersProvider.sellerOrdersList.length,
+                        itemBuilder: (context, index) {
+                          if (index ==
+                              ordersProvider.sellerOrdersList.length - 1) {
+                            if (ordersProvider.ordersState ==
+                                SellerOrdersState.loadingMore) {
+                              return _buildOrderContainerShimmer();
+                            }
                           }
-                        }
-                        return _buildOrderContainer(
-                            ordersProvider.sellerOrdersList[index],
-                            index.toString());
-                      }),
+                          return _buildOrderContainer(
+                              ordersProvider.sellerOrdersList[index],
+                              index.toString());
+                        }),
+                  ],
                 );
               } else if (ordersProvider.ordersState == SellerOrdersState.loading) {
-                return Expanded(
-                  child: ListView.builder(
-                      controller: scrollController,
-                      itemCount: 20,
-                      itemBuilder: (context, index) {
-                        return _buildOrderContainerShimmer();
-                      }),
+                return Column(
+                  children: [
+                    ListView.builder(
+                      shrinkWrap: true,
+                        controller: scrollController,
+                        itemCount: 20,
+                        itemBuilder: (context, index) {
+                          return _buildOrderContainerShimmer();
+                        }),
+                  ],
                 );
               } else {
                 return DefaultBlankItemMessageScreen(
@@ -151,6 +157,7 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
       getTranslatedValue(context, "order_status_display_names_cancelled"),
       getTranslatedValue(context, "order_status_display_names_returned"),
     ];
+
     return GestureDetector(
       onTap: () {
         // Navigator.pushNamed(
@@ -267,16 +274,16 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                 ),
               ],
             ),
-            Text(
-              lblOrderStatusDisplayNames[
-                  int.parse(order.activeStatus.toString()) - 2],
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: ColorsRes.mainTextColor,
-              ),
-              softWrap: true,
-            ),
+            // Text(
+            //   lblOrderStatusDisplayNames[
+            //       int.parse(order.activeStatus.toString()) - 2],
+            //   style: TextStyle(
+            //     fontSize: 15,
+            //     fontWeight: FontWeight.w600,
+            //     color: ColorsRes.mainTextColor,
+            //   ),
+            //   softWrap: true,
+            // ),
             Divider(
               color: ColorsRes.menuTitleColor,
             )

@@ -154,14 +154,30 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
                         ),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsetsDirectional.only(
+                          start: 10,
+                          end: 10,
+                          top: 10,
+                          bottom: 15,
+                        ),
                         child: TextField(
-                          decoration: null,
                           minLines: 1,
                           maxLines: 100,
                           controller: chatMessageTextEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                            border: InputBorder.none,
+                            alignLabelWithHint: true,
+                            hintText: context
+                                .read<LanguageProvider>()
+                                .currentLanguage["send_message"],
+                            hintStyle: TextStyle(
+                              color: ColorsRes.menuTitleColor,
+                            ),
+                          ),
                           style: TextStyle(
-                            color: ColorsRes.mainTextColor
+                            color: ColorsRes.mainTextColor,
                           ),
                         ),
                       ),

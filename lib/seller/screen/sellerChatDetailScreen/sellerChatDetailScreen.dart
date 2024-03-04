@@ -156,7 +156,17 @@ class _SellerChatDetailScreenState extends State<SellerChatDetailScreen> {
                       child: Padding(
                         padding: EdgeInsets.all(8.0),
                         child: TextField(
-                          decoration: null,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: context
+                                .read<LanguageProvider>()
+                                .currentLanguage["product_search_hint"],
+                            hintFadeDuration: Duration(milliseconds: 800),
+                            constraints: BoxConstraints(maxHeight: 20),
+                            hintStyle: TextStyle(
+                              color: ColorsRes.menuTitleColor,
+                            ),
+                          ),
                           minLines: 1,
                           maxLines: 100,
                           controller: chatMessageTextEditingController,

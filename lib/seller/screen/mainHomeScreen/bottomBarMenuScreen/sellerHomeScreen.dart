@@ -293,14 +293,14 @@ class _HomeScreenState extends State<SellerHomeScreen> {
                                               CustomTextLabel(
                                                 jsonKey: "view",
                                                 style: TextStyle(
-                                                    color: ColorsRes
-                                                        .subTitleMainTextColor,
+                                                    color: ColorsRes.appColor,
                                                     fontWeight:
-                                                        ui.FontWeight.w500,
+                                                    ui.FontWeight.bold,
                                                     decoration: TextDecoration
                                                         .underline,
-                                                    decorationColor: ColorsRes
-                                                        .subTitleMainTextColor),
+                                                    decorationThickness: 2,
+                                                    decorationColor:
+                                                    ColorsRes.appColor),
                                               ),
                                             ],
                                           ),

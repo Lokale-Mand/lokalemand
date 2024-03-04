@@ -103,118 +103,137 @@ class _ProductListScreenState extends State<SellerWishListScreen> {
             children: List.generate(wishlistSellers.length, (index) {
               SellerWishListData seller =
                   sellerWishlistProvider.wishlistSellers[index];
-              return Container(
-                margin: EdgeInsetsDirectional.symmetric(
-                  horizontal: 10,
-                  vertical: 5,
-                ),
-                width: MediaQuery.of(context).size.width,
-                height: 130,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(
-                    10,
+              return GestureDetector(
+
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    productListScreen,
+                    arguments: [
+                      "seller",
+                      seller.id.toString(),
+                      getTranslatedValue(context, "seller"),
+                      seller.seller?.categories.toString(),
+                      seller.seller?.storeName.toString(),
+                      seller.seller?.logoUrl.toString()
+                    ],
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsetsDirectional.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
                   ),
-                ),
-                child: Row(
-                  children: [
-                    Widgets.getSizedBox(width: 10),
-                    ClipRRect(
-                      child: Widgets.setNetworkImg(
-                          image: seller.seller?.logoUrl.toString() ?? "",
-                          height: 80,
-                          width: 80,
-                          boxFit: BoxFit.cover),
-                      borderRadius: BorderRadius.circular(7),
+                  width: MediaQuery.of(context).size.width,
+                  height: 130,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(
+                      10,
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomTextLabel(
-                              text: seller.seller?.name,
-                              softWrap: true,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: ColorsRes.mainTextColor),
-                            ),
-                            CustomTextLabel(
-                              text: "${"0"} KM away",
-                              // "${seller.seller?.distance.toString() ?? "0"} KM away",
-                              softWrap: true,
-                              style: TextStyle(
-                                color: ColorsRes.subTitleMainTextColor,
-                                fontSize: 12,
+                  ),
+                  child: Row(
+                    children: [
+                      Widgets.getSizedBox(width: 10),
+                      ClipRRect(
+                        child: Widgets.setNetworkImg(
+                            image: seller.seller?.logoUrl.toString() ?? "",
+                            height: 80,
+                            width: 80,
+                            boxFit: BoxFit.cover),
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomTextLabel(
+                                text: seller.seller?.name,
+                                softWrap: true,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: ColorsRes.mainTextColor),
                               ),
-                            ),
-                            Align(
-                              alignment: AlignmentDirectional.bottomEnd,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    productListScreen,
-                                    arguments: [
-                                      "seller",
-                                      seller.id.toString(),
-                                      getTranslatedValue(context, "seller"),
-                                      seller.seller?.categories.toString(),
-                                      seller.seller?.storeName.toString(),
-                                      seller.seller?.logoUrl.toString()
-                                    ],
-                                  );
-                                },
-                                child: Column(
-                                  children: [
-                                    CustomTextLabel(
-                                      jsonKey: "view",
-                                      style: TextStyle(
-                                          color:
-                                              ColorsRes.subTitleMainTextColor,
-                                          fontWeight: FontWeight.w500,
-                                          decoration: TextDecoration.underline,
-                                          decorationColor:
-                                              ColorsRes.subTitleMainTextColor),
-                                    ),
-                                  ],
+                              CustomTextLabel(
+                                text: "${"0"} KM away",
+                                // "${seller.seller?.distance.toString() ?? "0"} KM away",
+                                softWrap: true,
+                                style: TextStyle(
+                                  color: ColorsRes.subTitleMainTextColor,
+                                  fontSize: 12,
                                 ),
                               ),
-                            )
-                            // Row(
-                            //   children: [
-                            //     CustomTextLabel(
-                            //       text: "4.5",
-                            //       softWrap: true,
-                            //       style: TextStyle(
-                            //         color: ColorsRes
-                            //             .subTitleMainTextColor,
-                            //         fontSize: 12,
-                            //       ),
-                            //     ),
-                            //     Widgets.getSizedBox(
-                            //       width: 5,
-                            //     ),
-                            //     RatingBarIndicator(
-                            //       rating: 4.5,
-                            //       itemCount: 5,
-                            //       itemSize: 20.0,
-                            //       physics: BouncingScrollPhysics(),
-                            //       itemBuilder: (context, _) => Icon(
-                            //         Icons.star,
-                            //         color: Colors.amber,
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                          ],
+                              Align(
+                                alignment: AlignmentDirectional.bottomEnd,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      productListScreen,
+                                      arguments: [
+                                        "seller",
+                                        seller.id.toString(),
+                                        getTranslatedValue(context, "seller"),
+                                        seller.seller?.categories.toString(),
+                                        seller.seller?.storeName.toString(),
+                                        seller.seller?.logoUrl.toString()
+                                      ],
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CustomTextLabel(
+                                        jsonKey: "view",
+                                        style: TextStyle(
+                                            color: ColorsRes.appColor,
+                                            fontWeight:
+                                            FontWeight.bold,
+                                            decoration: TextDecoration
+                                                .underline,
+                                            decorationThickness: 2,
+                                            decorationColor:
+                                            ColorsRes.appColor),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              // Row(
+                              //   children: [
+                              //     CustomTextLabel(
+                              //       text: "4.5",
+                              //       softWrap: true,
+                              //       style: TextStyle(
+                              //         color: ColorsRes
+                              //             .subTitleMainTextColor,
+                              //         fontSize: 12,
+                              //       ),
+                              //     ),
+                              //     Widgets.getSizedBox(
+                              //       width: 5,
+                              //     ),
+                              //     RatingBarIndicator(
+                              //       rating: 4.5,
+                              //       itemCount: 5,
+                              //       itemSize: 20.0,
+                              //       physics: BouncingScrollPhysics(),
+                              //       itemBuilder: (context, _) => Icon(
+                              //         Icons.star,
+                              //         color: Colors.amber,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }),
@@ -222,8 +241,8 @@ class _ProductListScreenState extends State<SellerWishListScreen> {
         } else {
           return DefaultBlankItemMessageScreen(
             height: MediaQuery.sizeOf(context).height * 0.65,
-            title: "empty_wish_list_message",
-            description: "empty_wish_list_description",
+            title: "empty_seller_wish_list_message",
+            description: "empty_seller_wish_list_description",
             image: "no_wishlist_icon",
           );
         }
