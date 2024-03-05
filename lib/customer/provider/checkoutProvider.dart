@@ -382,7 +382,7 @@ class CheckoutProvider extends ChangeNotifier {
   }
 
   Future placeOrder({required BuildContext context}) async {
-    if (timeSlotsData!.timeSlots.isNotEmpty) {
+    if (timeSlotsData!.timeSlots.isNotEmpty && selectedAddress != null) {
       try {
         isPaymentUnderProcessing = true;
 
@@ -428,14 +428,14 @@ class CheckoutProvider extends ChangeNotifier {
         Map<String, dynamic> getPlaceOrderResponse =
             (await getPlaceOrderApi(context: context, params: params));
 
-        Map<String, dynamic> chatDetail =
-            getPlaceOrderResponse[ApiAndParams.data];
-
-        sellerId = chatDetail["id"].toString();
-        storeName = chatDetail["name"].toString();
-        storeLogo = chatDetail["logo_url"].toString();
-
         if (getPlaceOrderResponse[ApiAndParams.status].toString() == "1") {
+          Map<String, dynamic> chatDetail =
+              getPlaceOrderResponse[ApiAndParams.data];
+
+          sellerId = chatDetail["id"].toString();
+          storeName = chatDetail["name"].toString();
+          storeLogo = chatDetail["logo_url"].toString();
+
           if (selectedPaymentMethod != "COD") {
             PlacedPrePaidOrder placedPrePaidOrder =
                 PlacedPrePaidOrder.fromJson(getPlaceOrderResponse);
@@ -467,7 +467,7 @@ class CheckoutProvider extends ChangeNotifier {
         } else {
           GeneralMethods.showMessage(
             context,
-            getPlaceOrderResponse[ApiAndParams.message],
+            "${getTranslatedValue(context, "address_missing_alert")}",
             MessageType.warning,
           );
           checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderError;

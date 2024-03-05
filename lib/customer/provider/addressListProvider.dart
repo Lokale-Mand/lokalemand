@@ -136,7 +136,6 @@ class AddressProvider extends ChangeNotifier {
         getData = (await addAddressApi(context: context, params: params));
       }
 
-
       late AddressData tempAddress;
       if (getData[ApiAndParams.status].toString() == "1") {
         tempAddress = AddressData.fromJson(getData[ApiAndParams.data]);

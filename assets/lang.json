@@ -514,5 +514,6 @@
   "favorite": "Favorite",
   "stores": "Stores",
   "view": "View",
-  "send_message": "Send a message..."
+  "send_message": "Send a message...",
+  "address_missing_alert": "Something is missing in your address\nDon't forgot to fill address from menu, It helps you place order with proper address!"
 }
