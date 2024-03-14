@@ -24,6 +24,8 @@ class _ProductListScreenState extends State<ProductSearchScreen> {
         Map<String, String> params = await Constant.getProductsDefaultParams();
 
         params[ApiAndParams.search] = edtSearch.text.trim();
+        params[ApiAndParams.sellerId] =
+            Constant.session.getData(SessionManager.keyUserId);
 
         await context
             .read<ProductSearchProvider>()
