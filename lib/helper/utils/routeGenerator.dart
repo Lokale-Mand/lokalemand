@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lokale_mand/customer/provider/customerChatDetailProvider.dart';
 import 'package:lokale_mand/customer/provider/productRatingListProvider.dart';
+import 'package:lokale_mand/customer/provider/ratingProvider.dart';
 import 'package:lokale_mand/customer/screen/addressDetailScreen.dart';
 import 'package:lokale_mand/customer/screen/confirmLocationScreen/confirmLocationScreen.dart';
 import 'package:lokale_mand/customer/screen/customerChatDetailScreen/customerChatDetailScreen.dart';
+import 'package:lokale_mand/customer/screen/ratingAndReviewScreen/ratingAndReviewScreen.dart';
 import 'package:lokale_mand/customer/screen/wishlistScreen/wishlistScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/provider/sellerAddProductProvider.dart';
@@ -55,6 +57,7 @@ const String appUpdateScreen = 'appUpdateScreen';
 const String paypalPaymentScreen = 'paypalPaymentScreen';
 const String chatDetailScreen = 'chatDetailScreen';
 const String wishListScreen = 'wishListScreen';
+const String customerRatingAndReviewScreen = 'customerRatingAndReviewScreen';
 
 // SELLER SCREENS VARIABLES
 
@@ -365,6 +368,14 @@ class RouteGenerator {
               sellerName: chatDetailScreenArguments[1] as String,
               sellerLogo: chatDetailScreenArguments[2] as String,
             ),
+          ),
+        );
+
+      case customerRatingAndReviewScreen:
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<RatingListProvider>(
+            create: (context) => RatingListProvider(),
+            child: RatingAndReviewScreen(),
           ),
         );
 

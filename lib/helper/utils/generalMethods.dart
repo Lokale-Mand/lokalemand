@@ -136,6 +136,8 @@ class GeneralMethods {
           if (response.body == "null") {
             return null;
           }
+          print(
+              "ERROR IS ${"$mainUrl,{$params},Status Code - ${response.statusCode}, ${response.body}"}");
 
           if (isRequestedForInvoice == true) {
             return response.bodyBytes;
@@ -582,5 +584,28 @@ extension Precision on double {
   double toPrecision(int fractionDigits) {
     num mod = pow(10, fractionDigits.toDouble());
     return ((this * mod).round().toDouble() / mod);
+  }
+}
+
+extension StringToDateTimeFormatting on String {
+  DateTime toDate({String format = 'd MMM y, hh:mm a'}) {
+    try {
+      return DateTime.parse(this).toLocal();
+    } catch (e) {
+      print('Error parsing date: $e');
+      return DateTime.now();
+    }
+  }
+
+  String formatDate(
+      {String inputFormat = 'yyyy-MM-dd',
+        String outputFormat = 'd MMM y, hh:mm a'}) {
+    try {
+      DateTime dateTime = toDate(format: inputFormat);
+      return DateFormat(outputFormat).format(dateTime);
+    } catch (e) {
+      print('Error formatting date: $e');
+      return this; // Return the original string if there's an error
+    }
   }
 }

@@ -102,7 +102,20 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
           ],
         ),
         actions: [
-          // setCartCounter(context: context),
+          IconButton(
+            tooltip: getTranslatedValue(context, "ratings_and_reviews"),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                customerRatingAndReviewScreen,
+              );
+            },
+            icon: Icon(
+              Icons.star_rate_rounded,
+              color: Colors.amber,
+              size: 30,
+            ),
+          )
         ],
       ),
       bottomNavigationBar: Consumer<CustomerChatDetailProvider>(

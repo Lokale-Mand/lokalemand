@@ -53,6 +53,9 @@ class ApiAndParams {
   static String apiGetProductRatingList = "$apiProducts/ratings_list";
   static String apiGetProductRatingAdd = "$apiProducts/rating/add";
   static String apiGetProductRatingUpdate = "$apiProducts/rating/update";
+  static String apiCustomerRatingsList = "${Constant.customerBaseSellerUrl}ratings_list";
+  static String apiCustomerRatingAdd = "${Constant.customerBaseSellerUrl}rating/add";
+  static String apiCustomerRatingUpdate = "${Constant.customerBaseSellerUrl}rating/update";
 
   //Sellers api
   static String apiSellerRegister = "${Constant.customerBaseSellerUrl}save";
