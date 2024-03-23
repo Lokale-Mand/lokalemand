@@ -515,5 +515,15 @@
   "stores": "Stores",
   "view": "View",
   "send_message": "Send a message...",
-  "address_missing_alert": "Something is missing in your address\nDon't forgot to fill address from menu, It helps you place order with proper address!"
+  "address_missing_alert": "Something is missing in your address\nDon't forgot to fill address from menu, It helps you place order with proper address!",
+  "empty_rating_list_message": "No ratings available",
+  "empty_rating_list_description": "No ratings are available for display",
+  "ratings_and_reviews": "Ratings & Reviews",
+  "add_seller_rating": "Add seller rating",
+  "update_seller_rating": "Update seller rating",
+  "ratings": "Ratings",
+  "review": "Review",
+  "attachments":"Attachments",
+  "upload_images_here": "Upload images here...",
+  "km_away": "KM away"
 }

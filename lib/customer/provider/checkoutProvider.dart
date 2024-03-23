@@ -593,7 +593,7 @@ class CheckoutProvider extends ChangeNotifier {
       arguments: [
         sellerId,
         storeName,
-        storeLogo,
+        storeLogo,null,false,
       ],
     );
   }

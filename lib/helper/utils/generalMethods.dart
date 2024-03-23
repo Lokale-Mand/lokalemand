@@ -1,3 +1,4 @@
+import 'package:device_info/device_info.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:http/http.dart' as http;
@@ -36,6 +37,11 @@ class GeneralMethods {
       check = true;
     }
     return check;
+  }
+
+
+  static optionalValidation(String val) {
+    return null;
   }
 
   static NetworkStatus getNetworkStatus(ConnectivityResult status) {
@@ -121,16 +127,16 @@ class GeneralMethods {
 
       if (jsonDecode(response.body) is Map) {
         Map<String, dynamic> data = jsonDecode(response.body);
-        if (data[ApiAndParams.message]
-            .toString()
-            .toLowerCase()
-            .contains("unauth")) {
-          GeneralMethods.showMessage(
-              context,
-              getTranslatedValue(context, "un_authentication_error"),
-              MessageType.error);
-          Constant.session.logoutUserMethod(context);
-        }
+        // if (data[ApiAndParams.message]
+        //     .toString()
+        //     .toLowerCase()
+        //     .contains("unauth")) {
+        //   GeneralMethods.showMessage(
+        //       context,
+        //       getTranslatedValue(context, "un_authentication_error"),
+        //       MessageType.error);
+        //   Constant.session.logoutUserMethod(context);
+        // }
 
         if (response.statusCode == 200) {
           if (response.body == "null") {
@@ -138,6 +144,9 @@ class GeneralMethods {
           }
           print(
               "ERROR IS ${"$mainUrl,{$params},Status Code - ${response.statusCode}, ${response.body}"}");
+
+          print(
+              ">${token}");
 
           if (isRequestedForInvoice == true) {
             return response.bodyBytes;
@@ -537,6 +546,40 @@ class GeneralMethods {
             decimalDigits: int.parse(Constant.decimalPoints.toString()),
             name: Constant.currencyCode)
         .format(amount);
+  }
+
+
+  static Future<bool> hasStoragePermissionGiven() async {
+    try {
+      if (Platform.isIOS) {
+        bool permissionGiven = await Permission.storage.isGranted;
+        if (!permissionGiven) {
+          permissionGiven = (await Permission.storage.request()).isGranted;
+          return permissionGiven;
+        }
+        return permissionGiven;
+      }
+//if it is for android
+      final deviceInfoPlugin = DeviceInfoPlugin();
+      final androidDeviceInfo = await deviceInfoPlugin.androidInfo;
+      if (androidDeviceInfo.version.sdkInt < 33) {
+        bool permissionGiven = await Permission.storage.isGranted;
+        if (!permissionGiven) {
+          permissionGiven = (await Permission.storage.request()).isGranted;
+          return permissionGiven;
+        }
+        return permissionGiven;
+      } else {
+        bool permissionGiven = await Permission.photos.isGranted;
+        if (!permissionGiven) {
+          permissionGiven = (await Permission.photos.request()).isGranted;
+          return permissionGiven;
+        }
+        return permissionGiven;
+      }
+    } catch (e) {
+      return false;
+    }
   }
 }
 

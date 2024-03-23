@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:lokale_mand/customer/models/productRating.dart';
+import 'package:lokale_mand/customer/models/sellerRating.dart';
 import 'package:lokale_mand/customer/provider/productRatingListProvider.dart';
 import 'package:lokale_mand/customer/screen/productDetailScreen/widget/sliderImageWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
@@ -12,16 +13,18 @@ class ProductDetailScreen extends StatefulWidget {
   final String sellerId;
   final String storeLogo;
   final String storeName;
+  final SellerRatingData? rating;
 
-  const ProductDetailScreen(
-      {Key? key,
-      this.title,
-      required this.id,
-      this.productListItem,
-      required this.sellerId,
-      required this.storeLogo,
-      required this.storeName})
-      : super(key: key);
+  const ProductDetailScreen({
+    Key? key,
+    this.title,
+    required this.id,
+    this.productListItem,
+    required this.sellerId,
+    required this.storeLogo,
+    required this.storeName,
+    this.rating,
+  }) : super(key: key);
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -106,6 +109,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             widget.sellerId.toString(),
                             widget.storeName.toString(),
                             widget.storeLogo,
+                            widget.rating,false,
                           ],
                         );
                       },

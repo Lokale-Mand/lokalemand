@@ -18,12 +18,13 @@ class RatingBuilderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return totalRatings != 0
         ? Column(
+      mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(width: 5),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: List.generate(

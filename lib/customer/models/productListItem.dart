@@ -19,28 +19,33 @@ class ProductListItem {
   bool? isFavorite;
   List<Variants>? variants;
   String? imageUrl;
+  String? ratingCount;
+  String? averageRating;
 
-  ProductListItem(
-      {this.id,
-      this.name,
-      this.taxId,
-      this.brandId,
-      this.slug,
-      this.categoryId,
-      this.indicator,
-      this.manufacturer,
-      this.madeIn,
-      this.status,
-      this.isUnlimitedStock,
-      this.totalAllowedQuantity,
-      this.taxIncludedInPrice,
-      this.longitude,
-      this.latitude,
-      this.maxDeliverableDistance,
-      this.isDeliverable,
-      this.isFavorite,
-      this.variants,
-      this.imageUrl});
+  ProductListItem({
+    this.id,
+    this.name,
+    this.taxId,
+    this.brandId,
+    this.slug,
+    this.categoryId,
+    this.indicator,
+    this.manufacturer,
+    this.madeIn,
+    this.status,
+    this.isUnlimitedStock,
+    this.totalAllowedQuantity,
+    this.taxIncludedInPrice,
+    this.longitude,
+    this.latitude,
+    this.maxDeliverableDistance,
+    this.isDeliverable,
+    this.isFavorite,
+    this.variants,
+    this.imageUrl,
+    this.ratingCount,
+    this.averageRating,
+  });
 
   ProductListItem.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -68,6 +73,8 @@ class ProductListItem {
       });
     }
     imageUrl = json['image_url'].toString();
+    ratingCount = json['rating_count'].toString();
+    averageRating = json['average_rating'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -90,6 +97,8 @@ class ProductListItem {
     data['max_deliverable_distance'] = this.maxDeliverableDistance;
     data['is_deliverable'] = this.isDeliverable;
     data['is_favorite'] = this.isFavorite;
+    data['rating_count'] = this.ratingCount;
+    data['average_rating'] = this.averageRating;
     if (this.variants != null) {
       data['variants'] = this.variants!.map((v) => v.toJson()).toList();
     }

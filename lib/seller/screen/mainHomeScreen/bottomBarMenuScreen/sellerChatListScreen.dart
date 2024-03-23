@@ -143,6 +143,11 @@ class _SellerChatListScreenState extends State<SellerChatListScreen> {
                                           chat.customerId.toString(),
                                           chat.customerName.toString(),
                                           chat.customerLogo,
+                                          (chat.rating != null &&
+                                              chat.rating!.isNotEmpty)
+                                              ? chat.rating![0]
+                                              : null,
+                                          chat.isEligibleRating != "0"
                                         ],
                                       );
                                     },
@@ -156,10 +161,11 @@ class _SellerChatListScreenState extends State<SellerChatListScreen> {
                                         border: Border(
                                           top: index == 0
                                               ? BorderSide(
-                                            width: 1.5,
-                                            color: ColorsRes.menuTitleColor
-                                                .withOpacity(0.1),
-                                          )
+                                                  width: 1.5,
+                                                  color: ColorsRes
+                                                      .menuTitleColor
+                                                      .withOpacity(0.1),
+                                                )
                                               : BorderSide.none,
                                           bottom: BorderSide(
                                             width: 1.5,
@@ -171,47 +177,51 @@ class _SellerChatListScreenState extends State<SellerChatListScreen> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           ClipRRect(
                                             child: Widgets.setNetworkImg(
-                                                image: chat.customerLogo.toString(),
+                                                image: chat.customerLogo
+                                                    .toString(),
                                                 height: 60,
                                                 width: 60,
                                                 boxFit: BoxFit.cover),
                                             borderRadius:
-                                            BorderRadius.circular(100),
+                                                BorderRadius.circular(100),
                                           ),
                                           Widgets.getSizedBox(width: 10),
                                           Expanded(
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 CustomTextLabel(
-                                                  text:
-                                                  chat.customerName.toString(),
+                                                  text: chat.customerName
+                                                      .toString(),
                                                   style: TextStyle(
-                                                      color:
-                                                      ColorsRes.mainTextColor,
+                                                      color: ColorsRes
+                                                          .mainTextColor,
                                                       fontSize: 16,
                                                       fontWeight:
-                                                      FontWeight.w500),
-                                                  overflow: TextOverflow.ellipsis,
+                                                          FontWeight.w500),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                                 Widgets.getSizedBox(height: 5),
                                                 CustomTextLabel(
                                                   text: chat.message.toString(),
                                                   style: TextStyle(
-                                                    color:
-                                                    ColorsRes.menuTitleColor,
+                                                    color: ColorsRes
+                                                        .menuTitleColor,
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w400,
                                                   ),
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                               ],
                                             ),

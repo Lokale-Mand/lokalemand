@@ -10,7 +10,10 @@ Widget editBoxWidget(
     {Widget? tailIcon,
     bool? isLastField,
     bool? isEditable = true,
-    List<TextInputFormatter>? inputFormatters}) {
+    List<TextInputFormatter>? inputFormatters,
+    TextInputAction? optionalTextInputAction,
+    int? minLines,
+    int? maxLines}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -20,8 +23,10 @@ Widget editBoxWidget(
           color: ColorsRes.mainTextColor,
         ),
         controller: edtController,
-        textInputAction:
-            isLastField == true ? TextInputAction.done : TextInputAction.next,
+        maxLines: maxLines,
+        minLines: minLines,
+        textInputAction: optionalTextInputAction ??
+            (isLastField == true ? TextInputAction.done : TextInputAction.next),
         decoration: InputDecoration(
           suffixIcon: tailIcon,
           fillColor: Theme.of(context).cardColor,
@@ -42,7 +47,7 @@ Widget editBoxWidget(
               Radius.circular(8),
             ),
             borderSide: BorderSide(
-              color: ColorsRes.subTitleMainTextColor,
+              color: ColorsRes.menuTitleColor,
               width: 1,
               style: BorderStyle.solid,
               strokeAlign: BorderSide.strokeAlignCenter,
@@ -64,7 +69,7 @@ Widget editBoxWidget(
               Radius.circular(8),
             ),
             borderSide: BorderSide(
-              color: ColorsRes.subTitleMainTextColor,
+              color: ColorsRes.menuTitleColor,
               width: 1,
               style: BorderStyle.solid,
               strokeAlign: BorderSide.strokeAlignCenter,
@@ -75,17 +80,17 @@ Widget editBoxWidget(
               Radius.circular(8),
             ),
             borderSide: BorderSide(
-              color: ColorsRes.subTitleMainTextColor.withOpacity(0.5),
+              color: ColorsRes.menuTitleColor.withOpacity(0.5),
               width: 1,
               style: BorderStyle.solid,
               strokeAlign: BorderSide.strokeAlignCenter,
             ),
           ),
           labelText: label,
-          labelStyle: TextStyle(color: ColorsRes.subTitleMainTextColor),
+          labelStyle: TextStyle(color: ColorsRes.menuTitleColor),
           isDense: true,
           floatingLabelStyle: MaterialStateTextStyle.resolveWith(
-                (Set<MaterialState> states) {
+            (Set<MaterialState> states) {
               final Color color = states.contains(MaterialState.error)
                   ? Theme.of(context).colorScheme.error
                   : ColorsRes.appColor;

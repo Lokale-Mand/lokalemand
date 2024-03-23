@@ -77,6 +77,7 @@ class _CustomerChatListScreenState extends State<CustomerChatListScreen> {
       ),
       body: Consumer<CustomerChatListProvider>(
         builder: (context, customerChatListProvider, _) {
+          print(">>> ${customerChatListProvider.customerChatListState}");
           return setRefreshIndicator(
             refreshCallback: () async {
               callApi(isReset: true);
@@ -143,6 +144,11 @@ class _CustomerChatListScreenState extends State<CustomerChatListScreen> {
                                           chat.sellerId.toString(),
                                           chat.sellerName.toString(),
                                           chat.sellerLogo,
+                                          (chat.rating != null &&
+                                                  chat.rating!.isNotEmpty)
+                                              ? chat.rating![0]
+                                              : null,
+                                          chat.isEligibleRating != "0",
                                         ],
                                       );
                                     },

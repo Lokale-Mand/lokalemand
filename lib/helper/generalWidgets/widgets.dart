@@ -6,6 +6,7 @@ class Widgets {
       String title = "",
       Widget? otherWidgets,
       double? height,
+      double? width,
       Color? color1,
       Color? color2}) {
     return GestureDetector(
@@ -14,6 +15,7 @@ class Widgets {
       },
       child: Container(
         height: height ?? 65,
+        width: width,
         alignment: Alignment.center,
         decoration: DesignConfig.boxGradient(
           borderRadius,

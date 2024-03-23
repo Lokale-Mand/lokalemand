@@ -80,6 +80,9 @@ class ApiAndParams {
       "${Constant.sellerBaseUrl}store_chat";
   static String apiSellerNotificationSettings = "${Constant.sellerBaseUrl}mail_settings";
   static String apiSellerNotificationSettingsUpdate = "${apiSellerNotificationSettings}/save";
+  static String apiSellerRatingsList = "${Constant.sellerBaseUrl}ratings_list";
+  static String apiSellerRatingAdd = "${Constant.sellerBaseUrl}rating/add";
+  static String apiSellerRatingUpdate = "${Constant.sellerBaseUrl}rating/update";
 
 
 //============ api params ============
@@ -122,6 +125,7 @@ class ApiAndParams {
   static String sectionId = "section_id";
   static String brandId = "brand_id";
   static String sellerId = "seller_id";
+  static String userId = "user_id";
   static String cartItemsCount = "cart_items_count";
   static String productId = "product_id";
   static String productVariantId = "product_variant_id";
@@ -198,4 +202,9 @@ class ApiAndParams {
   // Orders params
   static String active = "1";
   static String previous = "0";
+
+  //Rating Add Update
+  static String rate = "rate";
+  static String review = "review";
+  static String deleteImageIds = "deleteImageIds";
 }

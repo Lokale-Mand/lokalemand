@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:google_maps_webservice/places.dart';
 import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/flutterGooglePlaces.dart';
+import 'package:lokale_mand/helper/generalWidgets/ratingBuilderWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -240,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               horizontal: 10,
                             ),
                             width: MediaQuery.of(context).size.width * 0.7,
-                            height: 130,
+                            height: 150,
                             decoration: BoxDecoration(
                               color: Theme.of(context).cardColor,
                               borderRadius: BorderRadius.circular(
@@ -263,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     padding: EdgeInsets.all(10.0),
                                     child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -276,7 +277,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: ColorsRes.mainTextColor),
                                         ),
                                         CustomTextLabel(
-                                          text: "${seller.distance} KM away",
+                                          text:
+                                              "${seller.distance} ${getTranslatedValue(context, "km_away")}",
                                           softWrap: true,
                                           style: TextStyle(
                                             color:
@@ -284,69 +286,49 @@ class _HomeScreenState extends State<HomeScreen> {
                                             fontSize: 12,
                                           ),
                                         ),
-                                        Align(
-                                          alignment:
-                                              AlignmentDirectional.bottomEnd,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                productListScreen,
-                                                arguments: [
-                                                  "seller",
-                                                  seller.id.toString(),
-                                                  getTranslatedValue(
-                                                      context, "seller"),
-                                                  seller.categories.toString(),
-                                                  seller.storeName.toString(),
-                                                  seller.logoUrl.toString()
-                                                ],
-                                              );
-                                            },
-                                            child: Column(
-                                              children: [
-                                                CustomTextLabel(
-                                                  jsonKey: "view",
-                                                  style: TextStyle(
-                                                      color: ColorsRes.appColor,
-                                                      fontWeight:
-                                                          ui.FontWeight.bold,
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                      decorationThickness: 2,
-                                                      decorationColor:
-                                                          ColorsRes.appColor),
-                                                ),
-                                              ],
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: RatingBuilderWidget(
+                                                averageRating: 4.3,
+                                                totalRatings: 20,
+                                                size: 17,
+                                                spacing: 0,
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                        // Row(
-                                        //   children: [
-                                        //     CustomTextLabel(
-                                        //       text: "4.5",
-                                        //       softWrap: true,
-                                        //       style: TextStyle(
-                                        //         color: ColorsRes
-                                        //             .subTitleMainTextColor,
-                                        //         fontSize: 12,
-                                        //       ),
-                                        //     ),
-                                        //     Widgets.getSizedBox(
-                                        //       width: 5,
-                                        //     ),
-                                        //     RatingBarIndicator(
-                                        //       rating: 4.5,
-                                        //       itemCount: 5,
-                                        //       itemSize: 20.0,
-                                        //       physics: BouncingScrollPhysics(),
-                                        //       itemBuilder: (context, _) => Icon(
-                                        //         Icons.star,
-                                        //         color: Colors.amber,
-                                        //       ),
-                                        //     ),
-                                        //   ],
-                                        // ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  productListScreen,
+                                                  arguments: [
+                                                    "seller",
+                                                    seller.id.toString(),
+                                                    getTranslatedValue(
+                                                        context, "seller"),
+                                                    seller.categories
+                                                        .toString(),
+                                                    seller.storeName.toString(),
+                                                    seller.logoUrl.toString()
+                                                  ],
+                                                );
+                                              },
+                                              child: CustomTextLabel(
+                                                jsonKey: "view",
+                                                style: TextStyle(
+                                                  color: ColorsRes.appColor,
+                                                  fontWeight:
+                                                      ui.FontWeight.bold,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                  decorationThickness: 2,
+                                                  decorationColor:
+                                                      ColorsRes.appColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ],
                                     ),
                                   ),

@@ -73,7 +73,7 @@ class CustomerChatListProvider extends ChangeNotifier {
             customerChatListState = CustomerChatListState.loaded;
             notifyListeners();
           } else {
-            customerChatListState = CustomerChatListState.error;
+            customerChatListState = CustomerChatListState.empty;
             notifyListeners();
           }
         }

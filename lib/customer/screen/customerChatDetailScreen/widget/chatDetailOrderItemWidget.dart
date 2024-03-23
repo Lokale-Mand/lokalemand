@@ -1,14 +1,20 @@
 import 'package:intl/intl.dart';
 import 'package:lokale_mand/customer/models/chatDetail.dart';
 import 'package:lokale_mand/customer/provider/productRatingProvider.dart';
+import 'package:lokale_mand/customer/provider/ratingProvider.dart';
+import 'package:lokale_mand/customer/screen/customerChatDetailScreen/widget/productSubmitRatingWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
 
 class ChatDetailOrderItemWidget extends StatefulWidget {
   final CustomerChatDetailData? orderData;
+  final VoidCallback voidCallback;
 
-
-  const ChatDetailOrderItemWidget({super.key, required this.orderData});
+  ChatDetailOrderItemWidget({
+    super.key,
+    required this.orderData,
+    required this.voidCallback,
+  });
 
   @override
   State<ChatDetailOrderItemWidget> createState() =>
@@ -157,216 +163,86 @@ class _ChatDetailOrderItemWidgetState extends State<ChatDetailOrderItemWidget> {
                 ),
               ),
             ),
-            if (widget.orderData?.productRating?.rate != null ||
+            if (widget.orderData!.productRating != null ||
                 widget.orderData?.order?.activeStatus.toString() == "6")
-              Expanded(
-                child: Container(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: RatingBar.builder(
-                    initialRating: double.tryParse(
-                          widget.orderData?.productRating?.rate.toString() ??
-                              "0.0",
-                        ) ??
-                        0.0,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    maxRating: 5,
-                    updateOnDrag: true,
-                    itemSize: 20,
-                    itemCount: 5,
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {
-                      showModalBottomSheet(
-                        enableDrag: true,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) {
-                          double ratings = widget.orderData?.productRating?.rate
-                                  .toString()
-                                  .toDouble ??
-                              0.0;
-                          TextEditingController
-                              ratingsMessageTextEditingController =
-                              TextEditingController(
-                                  text: widget.orderData?.productRating?.review
-                                              .toString() ==
-                                          "null"
-                                      ? ""
-                                      : widget.orderData?.productRating?.review
-                                          .toString());
-
-                          return ChangeNotifierProvider<ProductRatingProvider>(
-                            create: (context) => ProductRatingProvider(),
-                            child: Consumer<ProductRatingProvider>(builder:
-                                (context, productRatingProvider, child) {
-                              return Container(
-                                width: MediaQuery.sizeOf(context).width,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).cardColor,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
+              SizedBox(width: 10),
+            if (widget.orderData!.productRating != null ||
+                widget.orderData?.order?.activeStatus.toString() == "6")
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: (widget.orderData!.productRating != null)
+                    ? (widget.orderData!.productRating?.rate.toString() != "0")
+                        ? GestureDetector(
+                            onTap: () {
+                              if (widget.orderData!.productRating != null ||
+                                  widget.orderData?.order?.activeStatus.toString() == "6") {
+                                openRatingDialog().then((value) {
+                                  widget.voidCallback;
+                                });
+                              }
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.star_rate_rounded,
+                                  color: Colors.amber,
+                                ),
+                                SizedBox(width: 5),
+                                CustomTextLabel(
+                                  text: (widget.orderData!.productRating != null)
+                                      ? widget.orderData!.productRating?.rate.toString()
+                                      : "0",
+                                  style: TextStyle(
+                                    color: ColorsRes.subTitleMainTextColor,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                padding: EdgeInsetsDirectional.only(
-                                  start: 20,
-                                  end: 20,
-                                  top: 10,
-                                  bottom:
-                                      MediaQuery.of(context).viewInsets.bottom,
-                                ),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      CustomTextLabel(
-                                        jsonKey: "rate_the_product",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: ColorsRes.mainTextColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Widgets.getSizedBox(height: 10),
-                                      RatingBar.builder(
-                                        initialRating: double.tryParse(
-                                              widget.orderData?.productRating
-                                                      ?.rate
-                                                      .toString() ??
-                                                  "0.0",
-                                            ) ??
-                                            0.0,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: true,
-                                        maxRating: 5,
-                                        updateOnDrag: true,
-                                        itemSize: 35,
-                                        itemCount: 5,
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          ratings = rating;
-                                        },
-                                      ),
-                                      Widgets.getSizedBox(height: 10),
-                                      Container(
-                                        width: MediaQuery.sizeOf(context).width,
-                                        constraints: BoxConstraints(
-                                          minHeight: 40,
-                                          maxHeight: 120,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          border: Border.all(
-                                            color: ColorsRes.menuTitleColor
-                                                .withOpacity(0.2),
-                                            width: 2,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: TextField(
-                                            decoration: null,
-                                            minLines: 1,
-                                            maxLines: 100,
-                                            controller:
-                                                ratingsMessageTextEditingController,
-                                            focusNode: FocusNode(
-                                              canRequestFocus: true,
-                                            ),
-                                            keyboardType: TextInputType.text,
-                                          ),
-                                        ),
-                                      ),
-                                      Widgets.getSizedBox(height: 10),
-                                      Widgets.gradientBtnWidget(
-                                        context,
-                                        10,
-                                        callback: () {
-                                          Map<String, String> params = {
-                                            "product_id": widget
-                                                    .orderData
-                                                    ?.order
-                                                    ?.items?[0]
-                                                    .productVariant
-                                                    ?.productId
-                                                    .toString()
-                                                    .toString() ??
-                                                "",
-                                            "user_id": Constant.session.getData(
-                                                SessionManager.keyUserId),
-                                            "rate": ratings.toString(),
-                                            "review":
-                                                ratingsMessageTextEditingController
-                                                    .text,
-                                          };
-
-                                          if (widget.orderData?.productRating
-                                                  ?.review
-                                                  .toString() !=
-                                              "null") {
-                                            params["id"] = widget.orderData
-                                                    ?.productRating?.id
-                                                    .toString() ??
-                                                "";
-                                          }
-
-                                          productRatingProvider
-                                              .addOrUpdateProductRating(
-                                                  params: params,
-                                                  context: context,
-                                                  isAdd: widget
-                                                          .orderData
-                                                          ?.productRating
-                                                          ?.review
-                                                          .toString() ==
-                                                      "null")
-                                              .then((value) =>
-                                                  Navigator.pop(context));
-                                        },
-                                        height: 40,
-                                        otherWidgets: productRatingProvider
-                                                    .productRatingState ==
-                                                ProductRatingState.loading
-                                            ? Container(
-                                                height: 25,
-                                                width: 25,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color:
-                                                      ColorsRes.appColorWhite,
-                                                ),
-                                              )
-                                            : CustomTextLabel(
-                                                jsonKey: "rate_now",
-                                                style: TextStyle(
-                                                  color:
-                                                      ColorsRes.appColorWhite,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                      ),
-                                      Widgets.getSizedBox(height: 40),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                          );
+                              ],
+                            ),
+                          )
+                        : Widgets.gradientBtnWidget(
+                            context,
+                            5,
+                            callback: () {
+                              if (widget.orderData!.productRating != null ||
+                                  widget.orderData?.order?.activeStatus.toString() == "6") {
+                                openRatingDialog().then((value) {
+                                  widget.voidCallback;
+                                });
+                              }
+                            },
+                            otherWidgets: CustomTextLabel(
+                              jsonKey: "write_a_review",
+                              style: TextStyle(
+                                color: ColorsRes.appColorWhite,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            height: 30,
+                            width: context.width * 0.30,
+                          )
+                    : Widgets.gradientBtnWidget(
+                        context,
+                        5,
+                        callback: () {
+                          if (widget.orderData!.productRating != null ||
+                              widget.orderData?.order?.activeStatus.toString() == "6") {
+                            openRatingDialog().then((value) {
+                              widget.voidCallback;
+                            });
+                          }
                         },
-                      );
-                    },
-                  ),
-                ),
+                        otherWidgets: CustomTextLabel(
+                          jsonKey: "write_a_review",
+                          style: TextStyle(
+                            color: ColorsRes.appColorWhite,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        height: 30,
+                        width: context.width * 0.30,
+                      ),
               ),
           ],
         ),
@@ -391,5 +267,90 @@ class _ChatDetailOrderItemWidgetState extends State<ChatDetailOrderItemWidget> {
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
+  }
+
+  Future openRatingDialog() {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      constraints: BoxConstraints(maxHeight: context.height * 0.7),
+      shape: DesignConfig.setRoundedBorderSpecific(20, istop: true),
+      backgroundColor: Theme.of(context).cardColor,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Container(
+            constraints: BoxConstraints(
+              minHeight: context.height * 0.5,
+            ),
+            padding: EdgeInsetsDirectional.only(
+                start: Constant.size15,
+                end: Constant.size15,
+                top: Constant.size15,
+                bottom: Constant.size15),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Widgets.defaultImg(
+                            image: "ic_arrow_back",
+                            iconColor: ColorsRes.mainTextColor,
+                            height: 15,
+                            width: 15,
+                          ),
+                        ),
+                      ),
+                      CustomTextLabel(
+                        jsonKey: "ratings",
+                        softWrap: true,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium!.merge(
+                              TextStyle(
+                                letterSpacing: 0.5,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: ColorsRes.mainTextColor,
+                              ),
+                            ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: SizedBox(
+                          height: 15,
+                          width: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider<ProductRatingProvider>(
+                        create: (BuildContext context) {
+                          return ProductRatingProvider();
+                        },
+                      )
+                    ],
+                    child: ProductSubmitRatingWidget(
+                      size: 100,
+                      order: widget.orderData!,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

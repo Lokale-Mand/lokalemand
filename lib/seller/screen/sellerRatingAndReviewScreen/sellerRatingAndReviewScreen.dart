@@ -1,26 +1,28 @@
 import 'package:lokale_mand/customer/models/sellerRating.dart';
-import 'package:lokale_mand/customer/provider/ratingProvider.dart';
 import 'package:lokale_mand/customer/screen/ratingAndReviewScreen/widget/expandableText.dart';
-import 'package:lokale_mand/customer/screen/ratingAndReviewScreen/widget/submitRatingWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/model/customerRating.dart';
+import 'package:lokale_mand/seller/provider/sellerRatingProvider.dart';
+import 'package:lokale_mand/seller/screen/sellerRatingAndReviewScreen/widget/sellerSubmitRatingWidget.dart';
 
-class RatingAndReviewScreen extends StatefulWidget {
+class SellerRatingAndReviewScreen extends StatefulWidget {
   var ratings;
-  final String sellerId;
+  final String customerId;
   final bool eligibleForRating;
 
-  RatingAndReviewScreen({
+  SellerRatingAndReviewScreen({
     Key? key,
     required this.ratings,
-    required this.sellerId,
+    required this.customerId,
     required this.eligibleForRating,
   }) : super(key: key);
 
   @override
-  State<RatingAndReviewScreen> createState() => _RatingAndReviewScreenState();
+  State<SellerRatingAndReviewScreen> createState() =>
+      _RatingAndReviewScreenState();
 }
 
-class _RatingAndReviewScreenState extends State<RatingAndReviewScreen> {
+class _RatingAndReviewScreenState extends State<SellerRatingAndReviewScreen> {
   ScrollController scrollController = ScrollController();
 
   scrollListener() {
@@ -30,7 +32,7 @@ class _RatingAndReviewScreenState extends State<RatingAndReviewScreen> {
 // _scrollController fetches the next paginated data when the current position of the user on the screen has surpassed
     if (scrollController.position.pixels > nextPageTrigger) {
       if (mounted) {
-        if (context.read<RatingListProvider>().hasMoreData) {
+        if (context.read<SellerRatingListProvider>().hasMoreData) {
           callApi(true);
         }
       }
@@ -39,11 +41,11 @@ class _RatingAndReviewScreenState extends State<RatingAndReviewScreen> {
 
   Future callApi(bool? resetData) async {
     if (resetData == true) {
-      context.read<RatingListProvider>().offset = 0;
-      context.read<RatingListProvider>().sellerRatingData = [];
+      context.read<SellerRatingListProvider>().offset = 0;
+      context.read<SellerRatingListProvider>().customerRatingData = [];
     }
-    return context.read<RatingListProvider>().getRatingApiProvider(
-        params: {ApiAndParams.sellerId: widget.sellerId}, context: context);
+    return context.read<SellerRatingListProvider>().getSellerRatingApiProvider(
+        params: {ApiAndParams.customerId: widget.customerId}, context: context);
   }
 
   @override
@@ -86,9 +88,10 @@ class _RatingAndReviewScreenState extends State<RatingAndReviewScreen> {
         child: Column(
           children: [
             Expanded(
-              child: Consumer<RatingListProvider>(
+              child: Consumer<SellerRatingListProvider>(
                 builder: (context, ratingListProvider, child) {
-                  if (ratingListProvider.ratingState == RatingState.loading) {
+                  if (ratingListProvider.sellerRatingState ==
+                      SellerRatingState.loading) {
                     return ListView(
                       children: [
                         CustomShimmer(
@@ -149,15 +152,16 @@ class _RatingAndReviewScreenState extends State<RatingAndReviewScreen> {
                         )
                       ],
                     );
-                  } else if (ratingListProvider.ratingState ==
-                      RatingState.loaded) {
-                    return ListView(
+                  } else if (ratingListProvider.sellerRatingState ==
+                      SellerRatingState.loaded) {
+                                        return ListView(
                       shrinkWrap: true,
                       controller: scrollController,
                       children: List.generate(
-                          ratingListProvider.sellerRatingData.length, (index) {
-                        SellerRatingData rating =
-                            ratingListProvider.sellerRatingData[index];
+                          ratingListProvider.customerRatingData.length,
+                          (index) {
+                        CustomerRatingData rating =
+                            ratingListProvider.customerRatingData[index];
                         return Card(
                           color: Theme.of(context).cardColor,
                           surfaceTintColor: Theme.of(context).cardColor,
@@ -202,8 +206,7 @@ class _RatingAndReviewScreenState extends State<RatingAndReviewScreen> {
                                     ),
                                     SizedBox(width: 7),
                                     CustomTextLabel(
-                                      text:
-                                          rating.seller?.name?.toString() ?? "",
+                                      text: rating.user?.name?.toString() ?? "",
                                       style: TextStyle(
                                           color: ColorsRes.mainTextColor,
                                           fontWeight: FontWeight.w800,
@@ -294,7 +297,7 @@ class _RatingAndReviewScreenState extends State<RatingAndReviewScreen> {
                 },
               ),
             ),
-            if (widget.eligibleForRating)
+            if (widget.eligibleForRating == true)
               Padding(
                 padding:
                     EdgeInsetsDirectional.only(start: 10, end: 10, bottom: 20),
@@ -372,16 +375,16 @@ class _RatingAndReviewScreenState extends State<RatingAndReviewScreen> {
                                   child: MultiProvider(
                                     providers: [
                                       ChangeNotifierProvider<
-                                          RatingListProvider>(
+                                          SellerRatingListProvider>(
                                         create: (BuildContext context) {
-                                          return RatingListProvider();
+                                          return SellerRatingListProvider();
                                         },
                                       )
                                     ],
-                                    child: SubmitRatingWidget(
+                                    child: SellerSubmitRatingWidget(
                                       size: 100,
                                       ratings: widget.ratings,
-                                      sellerId: widget.sellerId,
+                                      customerId: widget.customerId,
                                     ),
                                   ),
                                 ),

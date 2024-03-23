@@ -1,9 +1,19 @@
-import 'package:lokale_mand/customer/models/sellerRating.dart';
-import 'package:lokale_mand/customer/repositories/ratingsAndReview.dart';
+import 'package:lokale_mand/seller/model/customerRating.dart';
+import 'package:lokale_mand/seller/repositories/sellerRatingsAndReview.dart';
 
 import '../../helper/utils/generalImports.dart';
 
-enum RatingState {
+enum SellerRatingState {
+  initial,
+  loading,
+  silentLoading,
+  loaded,
+  loadingMore,
+  empty,
+  error,
+}
+
+enum SellerRatingAddUpdateState {
   initial,
   loading,
   loaded,
@@ -12,31 +22,13 @@ enum RatingState {
   error,
 }
 
-enum RatingImagesState {
-  initial,
-  loading,
-  loaded,
-  loadingMore,
-  empty,
-  error,
-}
-
-enum RatingAddUpdateState {
-  initial,
-  loading,
-  loaded,
-  loadingMore,
-  empty,
-  error,
-}
-
-class RatingListProvider extends ChangeNotifier {
-  RatingState ratingState = RatingState.initial;
-  RatingImagesState ratingImagesState = RatingImagesState.initial;
-  RatingAddUpdateState ratingAddUpdateState = RatingAddUpdateState.initial;
+class SellerRatingListProvider extends ChangeNotifier {
+  SellerRatingState sellerRatingState = SellerRatingState.initial;
+  SellerRatingAddUpdateState sellerRatingAddUpdateState =
+      SellerRatingAddUpdateState.initial;
   String message = '';
-  List<SellerRatingData> sellerRatingData = [];
-  late SellerRating sellerRating;
+  List<CustomerRatingData> customerRatingData = [];
+  late CustomerRating customerRating;
   bool hasMoreData = false;
   int totalData = 0;
   int offset = 0;
@@ -46,15 +38,15 @@ class RatingListProvider extends ChangeNotifier {
   int totalImages = 0;
   bool hasMoreImages = false;
 
-  Future getRatingApiProvider({
+  Future getSellerRatingApiProvider({
     required Map<String, String> params,
     required BuildContext context,
     String? limit,
   }) async {
     if (offset == 0) {
-      ratingState = RatingState.loading;
+      sellerRatingState = SellerRatingState.loading;
     } else {
-      ratingState = RatingState.loadingMore;
+      sellerRatingState = SellerRatingState.loadingMore;
     }
     notifyListeners();
 
@@ -64,53 +56,53 @@ class RatingListProvider extends ChangeNotifier {
       params[ApiAndParams.offset] = offset.toString();
 
       Map<String, dynamic> ratingData =
-          await getRatingsList(context: context, params: params);
+          await getSellerRatingsList(context: context, params: params);
 
       if (ratingData[ApiAndParams.status].toString() == "1") {
         totalData = int.parse(ratingData[ApiAndParams.total].toString());
-        SellerRating sellerRating = SellerRating.fromJson(ratingData);
+        CustomerRating customerRating = CustomerRating.fromJson(ratingData);
 
-        List<SellerRatingData> tempRatings = sellerRating.data ?? [];
+        List<CustomerRatingData> tempRatings = customerRating.data ?? [];
 
-        sellerRatingData.addAll(tempRatings);
+        customerRatingData.addAll(tempRatings);
 
-        hasMoreData = totalData > sellerRatingData.length;
+        hasMoreData = totalData > customerRatingData.length;
         if (hasMoreData) {
           offset += Constant.defaultDataLoadLimitAtOnce;
         }
 
-        if (sellerRatingData.isNotEmpty) {
-          ratingState = RatingState.loaded;
+        if (customerRatingData.isNotEmpty) {
+          sellerRatingState = SellerRatingState.loaded;
           notifyListeners();
         } else {
-          ratingState = RatingState.empty;
+          sellerRatingState = SellerRatingState.empty;
           notifyListeners();
         }
       } else {
         message = ratingData[ApiAndParams.message];
-        ratingState = RatingState.empty;
+        sellerRatingState = SellerRatingState.empty;
         notifyListeners();
       }
     } catch (e) {
       message = e.toString();
-      ratingState = RatingState.error;
+      sellerRatingState = SellerRatingState.error;
       notifyListeners();
       rethrow;
     }
   }
 
-  Future addOrUpdateRating({
+  Future addOrUpdateSellerRating({
     required BuildContext context,
     required List<String> fileParamsFilesPath,
     required List<String> fileParamsNames,
     required Map<String, String> params,
     required bool isAdd,
   }) async {
-    ratingAddUpdateState = RatingAddUpdateState.loading;
+    sellerRatingAddUpdateState = SellerRatingAddUpdateState.loading;
     notifyListeners();
 
     try {
-      Map<String, dynamic> ratingData = await getRatingsAddUpdate(
+      Map<String, dynamic> ratingData = await getSellerRatingsAddUpdate(
           context: context,
           params: params,
           fileParamsFilesPath: fileParamsFilesPath,
@@ -118,7 +110,7 @@ class RatingListProvider extends ChangeNotifier {
           isAdd: isAdd);
 
       if (ratingData[ApiAndParams.status].toString() == "1") {
-        ratingAddUpdateState = RatingAddUpdateState.loaded;
+        sellerRatingAddUpdateState = SellerRatingAddUpdateState.loaded;
         notifyListeners();
 
         GeneralMethods.showMessage(
@@ -132,14 +124,14 @@ class RatingListProvider extends ChangeNotifier {
       } else {
         message = ratingData[ApiAndParams.message];
         GeneralMethods.showMessage(context, message, MessageType.warning);
-        ratingAddUpdateState = RatingAddUpdateState.empty;
+        sellerRatingAddUpdateState = SellerRatingAddUpdateState.empty;
         notifyListeners();
         return null;
       }
     } catch (e) {
       message = e.toString();
       GeneralMethods.showMessage(context, message, MessageType.warning);
-      ratingAddUpdateState = RatingAddUpdateState.error;
+      sellerRatingAddUpdateState = SellerRatingAddUpdateState.error;
       notifyListeners();
       rethrow;
     }

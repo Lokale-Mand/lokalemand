@@ -8,12 +8,15 @@ class SellerChatDetailScreen extends StatefulWidget {
   final String customerId;
   final String customerName;
   final String customerProfile;
+  var rating;
+  final bool isEligibleForRating;
 
   SellerChatDetailScreen({
     super.key,
     required this.customerId,
     required this.customerName,
     required this.customerProfile,
+    this.rating, required this.isEligibleForRating,
   });
 
   @override
@@ -102,7 +105,25 @@ class _SellerChatDetailScreenState extends State<SellerChatDetailScreen> {
           ],
         ),
         actions: [
-          // setCartCounter(context: context),
+          IconButton(
+            tooltip: getTranslatedValue(context, "ratings_and_reviews"),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                sellerRatingAndReviewScreen,
+                arguments: [
+                  widget.rating,
+                  widget.customerId,
+                  widget.isEligibleForRating
+                ],
+              );
+            },
+            icon: Icon(
+              Icons.star_rate_rounded,
+              color: Colors.amber,
+              size: 30,
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: Consumer<SellerChatDetailProvider>(

@@ -1,5 +1,6 @@
 import 'package:lokale_mand/customer/models/sellerWishList.dart';
 import 'package:lokale_mand/customer/provider/sellerWishListProvider.dart';
+import 'package:lokale_mand/helper/generalWidgets/ratingBuilderWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class SellerWishListScreen extends StatefulWidget {
@@ -104,7 +105,6 @@ class _ProductListScreenState extends State<SellerWishListScreen> {
               SellerWishListData seller =
                   sellerWishlistProvider.wishlistSellers[index];
               return GestureDetector(
-
                 onTap: () {
                   Navigator.pushNamed(
                     context,
@@ -159,13 +159,18 @@ class _ProductListScreenState extends State<SellerWishListScreen> {
                                     color: ColorsRes.mainTextColor),
                               ),
                               CustomTextLabel(
-                                text: "${"0"} KM away",
-                                // "${seller.seller?.distance.toString() ?? "0"} KM away",
+                                text: "${seller.distance.toString()} ${getTranslatedValue(context, "km_away")}",
                                 softWrap: true,
                                 style: TextStyle(
                                   color: ColorsRes.subTitleMainTextColor,
                                   fontSize: 12,
                                 ),
+                              ),
+                              RatingBuilderWidget(
+                                averageRating: 4.3,
+                                totalRatings: 20,
+                                size: 20,
+                                spacing: 0,
                               ),
                               Align(
                                 alignment: AlignmentDirectional.bottomEnd,
@@ -190,13 +195,12 @@ class _ProductListScreenState extends State<SellerWishListScreen> {
                                         jsonKey: "view",
                                         style: TextStyle(
                                             color: ColorsRes.appColor,
-                                            fontWeight:
-                                            FontWeight.bold,
-                                            decoration: TextDecoration
-                                                .underline,
+                                            fontWeight: FontWeight.bold,
+                                            decoration:
+                                                TextDecoration.underline,
                                             decorationThickness: 2,
                                             decorationColor:
-                                            ColorsRes.appColor),
+                                                ColorsRes.appColor),
                                       ),
                                     ],
                                   ),

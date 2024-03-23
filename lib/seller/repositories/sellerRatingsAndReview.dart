@@ -1,11 +1,11 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
-Future getRatingsList(
+Future getSellerRatingsList(
     {required BuildContext context,
     required Map<String, String> params}) async {
   try {
     var response = await GeneralMethods.sendApiRequest(
-        apiName: ApiAndParams.apiCustomerRatingsList,
+        apiName: ApiAndParams.apiSellerRatingsList,
         params: params,
         isPost: false,
         context: context);
@@ -15,7 +15,7 @@ Future getRatingsList(
   }
 }
 
-Future getRatingsAddUpdate({
+Future getSellerRatingsAddUpdate({
   required BuildContext context,
   required Map<String, String> params,
   required List<String> fileParamsNames,
@@ -25,8 +25,8 @@ Future getRatingsAddUpdate({
   try {
     var response = await GeneralMethods.sendApiMultiPartRequest(
         apiName: isAdd
-            ? ApiAndParams.apiCustomerRatingAdd
-            : ApiAndParams.apiCustomerRatingUpdate,
+            ? ApiAndParams.apiSellerRatingAdd
+            : ApiAndParams.apiSellerRatingUpdate,
         params: params,
         fileParamsFilesPath: fileParamsFilesPath,
         fileParamsNames: fileParamsNames,

@@ -1,3 +1,5 @@
+import 'package:lokale_mand/customer/models/sellerRating.dart';
+
 class SellerChatList {
   String? status;
   String? message;
@@ -41,6 +43,8 @@ class SellerChatListData {
   String? customerId;
   String? customerName;
   String? customerLogo;
+  String? isEligibleRating;
+  List<SellerRatingData>? rating;
 
   SellerChatListData(
       {this.id,
@@ -52,7 +56,9 @@ class SellerChatListData {
         this.createdAt,
         this.customerId,
         this.customerName,
-        this.customerLogo});
+        this.customerLogo,
+        this.isEligibleRating,
+        this.rating});
 
   SellerChatListData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -65,6 +71,13 @@ class SellerChatListData {
     customerId = json['customer_id'].toString();
     customerName = json['customer_name'].toString();
     customerLogo = json['customer_logo'].toString();
+    isEligibleRating = json['is_eligible_rating'].toString();
+    if (json['rating'] != null) {
+      rating = <SellerRatingData>[];
+      json['rating'].forEach((v) {
+        rating!.add(new SellerRatingData.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +92,10 @@ class SellerChatListData {
     data['customer_id'] = this.customerId;
     data['customer_name'] = this.customerName;
     data['customer_logo'] = this.customerLogo;
+    data['is_eligible_rating'] = this.isEligibleRating;
+    if (this.rating != null) {
+      data['rating'] = this.rating!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

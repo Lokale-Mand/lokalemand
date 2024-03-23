@@ -39,7 +39,7 @@ class CustomerChatDetailData {
   String? message;
   String? createdAt;
   CustomerChatDetailOrder? order;
-  ProductRating? productRating;
+  CustomerChatDetailProductRating? productRating;
 
   CustomerChatDetailData(
       {this.id,
@@ -62,7 +62,7 @@ class CustomerChatDetailData {
     createdAt = json['created_at'].toString();
     order = json['order'] != null ? new CustomerChatDetailOrder.fromJson(json['order']) : null;
     productRating = json['product_rating'] != null
-        ? new ProductRating.fromJson(json['product_rating'])
+        ? new CustomerChatDetailProductRating.fromJson(json['product_rating'])
         : null;
   }
 
@@ -503,7 +503,7 @@ class User {
   }
 }
 
-class ProductRating {
+class CustomerChatDetailProductRating {
   String? id;
   String? productId;
   String? userId;
@@ -512,7 +512,7 @@ class ProductRating {
   String? status;
   String? updatedAt;
 
-  ProductRating(
+  CustomerChatDetailProductRating(
       {this.id,
         this.productId,
         this.userId,
@@ -521,7 +521,7 @@ class ProductRating {
         this.status,
         this.updatedAt});
 
-  ProductRating.fromJson(Map<String, dynamic> json) {
+  CustomerChatDetailProductRating.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
     productId = json['product_id'].toString();
     userId = json['user_id'].toString();

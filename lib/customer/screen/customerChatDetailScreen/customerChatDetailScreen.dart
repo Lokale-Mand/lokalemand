@@ -8,12 +8,16 @@ class CustomerChatDetailScreen extends StatefulWidget {
   final String sellerId;
   final String sellerName;
   final String sellerLogo;
+  var rating;
+  final bool isEligibleForRating;
 
   CustomerChatDetailScreen({
     super.key,
     required this.sellerId,
     required this.sellerName,
     required this.sellerLogo,
+    this.rating,
+    required this.isEligibleForRating,
   });
 
   @override
@@ -108,6 +112,11 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
               Navigator.pushNamed(
                 context,
                 customerRatingAndReviewScreen,
+                arguments: [
+                  widget.rating,
+                  widget.sellerId,
+                  widget.isEligibleForRating,
+                ],
               );
             },
             icon: Icon(
@@ -115,7 +124,7 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
               color: Colors.amber,
               size: 30,
             ),
-          )
+          ),
         ],
       ),
       bottomNavigationBar: Consumer<CustomerChatDetailProvider>(
@@ -339,6 +348,9 @@ class _CustomerChatDetailScreenState extends State<CustomerChatDetailScreen> {
                                               ),
                                               ChatDetailOrderItemWidget(
                                                 orderData: chat,
+                                                voidCallback: () {
+                                                  callApi(isReset: true);
+                                                },
                                               )
                                             ],
                                           )

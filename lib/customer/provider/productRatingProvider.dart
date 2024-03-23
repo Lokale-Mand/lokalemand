@@ -35,7 +35,7 @@ class ProductRatingProvider extends ChangeNotifier {
         );
         productRatingState = ProductRatingState.loaded;
         notifyListeners();
-      }else{
+      } else {
         GeneralMethods.showMessage(
           context,
           getData[ApiAndParams.message].toString(),

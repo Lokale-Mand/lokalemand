@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:google_maps_webservice/places.dart';
 import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widget/flutterGooglePlaces.dart';
+import 'package:lokale_mand/helper/generalWidgets/ratingBuilderWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class SellerHomeScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _HomeScreenState extends State<SellerHomeScreen> {
       updateMap(value.latitude, value.longitude, "");
     });
     Future.delayed(Duration.zero).then(
-        (value) async {
+      (value) async {
         markerIcon =
             await getBytesFromAsset(Constant.getAssetsPath(0, 'map.png'), 100);
         currentMarkerIcon = await getBytesFromAsset(
@@ -261,13 +262,19 @@ class _HomeScreenState extends State<SellerHomeScreen> {
                                             color: ColorsRes.mainTextColor),
                                       ),
                                       CustomTextLabel(
-                                        text: "${seller.distance} KM away",
+                                        text: "${seller.distance} ${getTranslatedValue(context, "km_away")}",
                                         softWrap: true,
                                         style: TextStyle(
                                           color:
                                               ColorsRes.subTitleMainTextColor,
                                           fontSize: 12,
                                         ),
+                                      ),
+                                      RatingBuilderWidget(
+                                        averageRating: 4.3,
+                                        totalRatings: 20,
+                                        size: 20,
+                                        spacing: 0,
                                       ),
                                       Align(
                                         alignment:
@@ -295,12 +302,12 @@ class _HomeScreenState extends State<SellerHomeScreen> {
                                                 style: TextStyle(
                                                     color: ColorsRes.appColor,
                                                     fontWeight:
-                                                    ui.FontWeight.bold,
+                                                        ui.FontWeight.bold,
                                                     decoration: TextDecoration
                                                         .underline,
                                                     decorationThickness: 2,
                                                     decorationColor:
-                                                    ColorsRes.appColor),
+                                                        ColorsRes.appColor),
                                               ),
                                             ],
                                           ),

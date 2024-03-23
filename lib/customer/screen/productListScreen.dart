@@ -1,3 +1,4 @@
+import 'package:lokale_mand/customer/models/sellerRating.dart';
 import 'package:lokale_mand/customer/provider/sellerWishListProvider.dart';
 import 'package:lokale_mand/helper/generalWidgets/sellerWishListIcon.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
@@ -9,6 +10,7 @@ class ProductListScreen extends StatefulWidget {
   final categories;
   final String sellerLogo;
   final String sellerName;
+  final SellerRatingData? rating;
 
   const ProductListScreen({
     Key? key,
@@ -17,7 +19,7 @@ class ProductListScreen extends StatefulWidget {
     required this.id,
     this.categories,
     required this.sellerLogo,
-    required this.sellerName,
+    required this.sellerName, this.rating,
   }) : super(key: key);
 
   @override
@@ -175,6 +177,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             widget.id.toString(),
                             widget.sellerName.toString(),
                             widget.sellerLogo,
+                            widget.rating,false,
                           ],
                         );
                       },

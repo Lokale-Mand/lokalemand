@@ -15,9 +15,11 @@ import 'package:lokale_mand/seller/provider/sellerCityProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerDietaryProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerProductDetailProvider.dart';
 import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
+import 'package:lokale_mand/seller/provider/sellerRatingProvider.dart';
 import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCitiesListScreen.dart';
 import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
 import 'package:lokale_mand/seller/screen/sellerChatDetailScreen/sellerChatDetailScreen.dart';
+import 'package:lokale_mand/seller/screen/sellerRatingAndReviewScreen/sellerRatingAndReviewScreen.dart';
 
 // CUSTOMER SCREENS VARIABLES
 
@@ -71,6 +73,7 @@ const String sellerAddOrUpdateProductScreen = 'sellerAddOrUpdateProductScreen';
 const String htmlEditorScreen = 'htmlEditorScreen';
 const String sellerChatDetailScreen = 'sellerChatDetailScreen';
 const String citiesListScreen = 'citiesListScreen';
+const String sellerRatingAndReviewScreen = 'sellerRatingAndReviewScreen';
 
 String currentRoute = splashScreen;
 
@@ -367,15 +370,23 @@ class RouteGenerator {
               sellerId: chatDetailScreenArguments[0] as String,
               sellerName: chatDetailScreenArguments[1] as String,
               sellerLogo: chatDetailScreenArguments[2] as String,
+              rating: chatDetailScreenArguments[3],
+              isEligibleForRating: chatDetailScreenArguments[4],
             ),
           ),
         );
 
       case customerRatingAndReviewScreen:
+        List<dynamic> customerRatingAndReviewScreenArguments =
+            settings.arguments as List<dynamic>;
         return CupertinoPageRoute(
           builder: (_) => ChangeNotifierProvider<RatingListProvider>(
             create: (context) => RatingListProvider(),
-            child: RatingAndReviewScreen(),
+            child: RatingAndReviewScreen(
+              ratings: customerRatingAndReviewScreenArguments[0],
+              sellerId: customerRatingAndReviewScreenArguments[1] as String,
+              eligibleForRating: customerRatingAndReviewScreenArguments[2],
+            ),
           ),
         );
 
@@ -431,6 +442,8 @@ class RouteGenerator {
               customerId: sellerChatDetailScreenArguments[0] as String,
               customerName: sellerChatDetailScreenArguments[1] as String,
               customerProfile: sellerChatDetailScreenArguments[2] as String,
+              rating: sellerChatDetailScreenArguments[3],
+              isEligibleForRating: sellerChatDetailScreenArguments[4],
             ),
           ),
         );
@@ -443,6 +456,19 @@ class RouteGenerator {
           ),
         );
 
+      case sellerRatingAndReviewScreen:
+        List<dynamic> sellerRatingAndReviewScreenArguments =
+            settings.arguments as List<dynamic>;
+        return CupertinoPageRoute(
+          builder: (_) => ChangeNotifierProvider<SellerRatingListProvider>(
+            create: (context) => SellerRatingListProvider(),
+            child: SellerRatingAndReviewScreen(
+              ratings: sellerRatingAndReviewScreenArguments[0],
+              customerId: sellerRatingAndReviewScreenArguments[1],
+              eligibleForRating: sellerRatingAndReviewScreenArguments[2],
+            ),
+          ),
+        );
       // case sellerMessageScreen:
       //   return CupertinoPageRoute(
       //     builder: (_) => ChangeNotifierProvider<SellerCityByLatLongProvider>(
