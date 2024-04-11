@@ -70,6 +70,7 @@ class SellerWishListData {
     ratingCount = json['rating_count'].toString();
     averageRating = json['average_rating'].toString();
     imageUrl = json['image_url'].toString();
+
     seller =
     json['seller'] != null ? new SellerWishListSeller.fromJson(json['seller']) : null;
   }
@@ -98,6 +99,7 @@ class SellerWishListSeller {
   String? id;
   String? adminId;
   String? name;
+  String? type;
   String? storeName;
   String? slug;
   String? email;
@@ -147,6 +149,7 @@ class SellerWishListSeller {
       {this.id,
         this.adminId,
         this.name,
+        this.type,
         this.storeName,
         this.slug,
         this.email,
@@ -196,6 +199,7 @@ class SellerWishListSeller {
     id = json['id'].toString();
     adminId = json['admin_id'].toString();
     name = json['name'].toString();
+    type = json['type'].toString();
     storeName = json['store_name'].toString();
     slug = json['slug'].toString();
     email = json['email'].toString();
@@ -252,6 +256,7 @@ class SellerWishListSeller {
     data['id'] = this.id;
     data['admin_id'] = this.adminId;
     data['name'] = this.name;
+    data['type'] = this.type;
     data['store_name'] = this.storeName;
     data['slug'] = this.slug;
     data['email'] = this.email;

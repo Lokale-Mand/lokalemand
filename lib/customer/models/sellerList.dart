@@ -41,6 +41,9 @@ class SellerListData {
   String? distance;
   String? maxDeliverableDistance;
   String? logoUrl;
+  String? type;
+  String? ratingCount;
+  String? averageRating;
 
   SellerListData(
       {this.id,
@@ -52,7 +55,10 @@ class SellerListData {
       this.storeHours,
       this.distance,
       this.maxDeliverableDistance,
-      this.logoUrl});
+      this.logoUrl,
+      this.type,
+        this.ratingCount,
+        this.averageRating,});
 
   SellerListData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -65,6 +71,9 @@ class SellerListData {
     distance = json['distance'].toString();
     maxDeliverableDistance = json['max_deliverable_distance'].toString();
     logoUrl = json['logo_url'].toString();
+    type = json['type'].toString();
+    ratingCount = json['rating_count'].toString();
+    averageRating = json['average_rating'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +88,9 @@ class SellerListData {
     data['distance'] = this.distance;
     data['max_deliverable_distance'] = this.maxDeliverableDistance;
     data['logo_url'] = this.logoUrl;
+    data['type'] = this.type;
+    data['rating_count'] = this.ratingCount;
+    data['average_rating'] = this.averageRating;
     return data;
   }
 }

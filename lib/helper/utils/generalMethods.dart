@@ -142,11 +142,12 @@ class GeneralMethods {
           if (response.body == "null") {
             return null;
           }
-          print(
-              "ERROR IS ${"$mainUrl,{$params},Status Code - ${response.statusCode}, ${response.body}"}");
+          if(kDebugMode){
+            print(
+                "API IS ${"$mainUrl,{$params},Status Code - ${response.statusCode}, ${response.body}"}");
 
-          print(
-              ">${token}");
+            print(">${token}");
+          }
 
           if (isRequestedForInvoice == true) {
             return response.bodyBytes;

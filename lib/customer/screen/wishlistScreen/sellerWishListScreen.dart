@@ -159,6 +159,17 @@ class _ProductListScreenState extends State<SellerWishListScreen> {
                                     color: ColorsRes.mainTextColor),
                               ),
                               CustomTextLabel(
+                                overflow: TextOverflow.ellipsis,
+                                jsonKey: seller.seller?.type == "2"
+                                    ? "organic_seller"
+                                    : "regular_seller",
+                                softWrap: true,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: ColorsRes.appColorGreen,
+                                ),
+                              ),
+                              CustomTextLabel(
                                 text: "${seller.distance.toString()} ${getTranslatedValue(context, "km_away")}",
                                 softWrap: true,
                                 style: TextStyle(
@@ -167,8 +178,8 @@ class _ProductListScreenState extends State<SellerWishListScreen> {
                                 ),
                               ),
                               RatingBuilderWidget(
-                                averageRating: 4.3,
-                                totalRatings: 20,
+                                averageRating: double.parse(seller.averageRating.toString()),
+                                totalRatings: int.parse(seller.ratingCount.toString()),
                                 size: 20,
                                 spacing: 0,
                               ),

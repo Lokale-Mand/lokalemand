@@ -69,7 +69,6 @@ dependencies:
   vibration: ^1.7.6
   google_fonts: ^4.0.4
   image_cropper: ^4.0.1
-  firebase_crashlytics: ^3.3.4
   pinput: ^3.0.1
   flutter_rating_bar: ^4.0.1
   flutter_swiper_view: ^1.1.8

@@ -272,9 +272,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                           text: seller.name,
                                           softWrap: true,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: ColorsRes.mainTextColor),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: ColorsRes.mainTextColor,
+                                          ),
+                                        ),
+                                        CustomTextLabel(
+                                          overflow: TextOverflow.ellipsis,
+                                          jsonKey: seller.type == "2"
+                                              ? "organic_seller"
+                                              : "regular_seller",
+                                          softWrap: true,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: ColorsRes.appColorGreen,
+                                          ),
                                         ),
                                         CustomTextLabel(
                                           text:
@@ -290,8 +302,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             Expanded(
                                               child: RatingBuilderWidget(
-                                                averageRating: 4.3,
-                                                totalRatings: 20,
+                                                averageRating: double.parse(
+                                                    seller.averageRating
+                                                        .toString()),
+                                                totalRatings: int.parse(seller
+                                                    .ratingCount
+                                                    .toString()),
                                                 size: 17,
                                                 spacing: 0,
                                               ),
