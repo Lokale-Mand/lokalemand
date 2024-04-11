@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:lokale_mand/helper/generalWidgets/customCheckbox.dart';
+import 'package:lokale_mand/helper/generalWidgets/customRadio.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/model/sellerCategory.dart';
 import 'package:lokale_mand/seller/model/sellerCityByLatLong.dart';
@@ -16,6 +17,8 @@ class SellerCreateAccountScreen extends StatefulWidget {
   State<SellerCreateAccountScreen> createState() =>
       _SellerCreateAccountScreenState();
 }
+
+enum SellerType { RegularSeller, OrganicSeller }
 
 class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
   PageController pageController = PageController();
@@ -35,6 +38,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
   TextEditingController edtNidNumber = TextEditingController();
   String selectedAddressProofPath = "";
   String selectedNationalIdPath = "";
+
+  SellerType sellerType = SellerType.RegularSeller;
 
   //STORE DETAILS CONTROLLERS
   String selectedLogoPath = "";
@@ -103,6 +108,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
       "assign_delivery_boy": "0",
       "status": "1",
       "store_hours": jsonString,
+      "type": sellerType == SellerType.RegularSeller ? "1" : "2",
     };
 
     List<String> fileParamNames = [
@@ -313,7 +319,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: ColorsRes.menuTitleColor,
+                color: Colors.grey[300],
               ),
               hintText: "Lokale Mand",
             ),
@@ -419,7 +425,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   isPasswordVisible
                       ? Icons.visibility_off_rounded
                       : Icons.visibility_rounded,
-                  color: ColorsRes.subTitleMainTextColor,
+                  color: Colors.grey[300],
                 ),
               ),
             ],
@@ -476,7 +482,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   isConfirmPasswordVisible
                       ? Icons.visibility_off_rounded
                       : Icons.visibility_rounded,
-                  color: ColorsRes.subTitleMainTextColor,
+                  color: Colors.grey[300],
                 ),
               ),
             ],
@@ -534,11 +540,109 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: ColorsRes.menuTitleColor,
+                color: Colors.grey[300],
               ),
               hintText: "Lokale Mand",
             ),
           ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size20,
+        ),
+        CustomTextLabel(
+          jsonKey: "store_type",
+          style: TextStyle(
+            color: ColorsRes.mainTextColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size10,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  sellerType = SellerType.RegularSeller;
+                  setState(() {});
+                },
+                child: Container(
+                  padding: EdgeInsetsDirectional.all(8),
+                  child: Row(
+                    children: [
+                      CustomRadio(
+                        inactiveColor: ColorsRes.subTitleMainTextColor,
+                        value: sellerType,
+                        groupValue: SellerType.RegularSeller,
+                        activeColor: ColorsRes.appColor,
+                        onChanged: (value) {
+                          sellerType = SellerType.RegularSeller;
+                          setState(() {});
+                        },
+                      ),
+                      Expanded(
+                        child: CustomTextLabel(
+                          jsonKey: "regular_seller",
+                        ),
+                      )
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(
+                      color: Colors.grey[300]!,
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  sellerType = SellerType.OrganicSeller;
+                  setState(() {});
+                },
+                child: Container(
+                  padding: EdgeInsetsDirectional.all(8),
+                  child: Row(
+                    children: [
+                      CustomRadio(
+                        inactiveColor: ColorsRes.subTitleMainTextColor,
+                        value: sellerType,
+                        groupValue: SellerType.OrganicSeller,
+                        activeColor: ColorsRes.appColor,
+                        onChanged: (value) {
+                          sellerType = SellerType.OrganicSeller;
+                          setState(() {});
+                        },
+                      ),
+                      Expanded(
+                        child: CustomTextLabel(
+                          jsonKey: "organic_seller",
+                        ),
+                      )
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(
+                      color: Colors.grey[300]!,
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
         Widgets.getSizedBox(
           height: Constant.size20,
@@ -587,7 +691,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                               border: InputBorder.none,
                               isDense: true,
                               hintStyle: TextStyle(
-                                color: ColorsRes.menuTitleColor,
+                                color: Colors.grey[300],
                               ),
                               hintText: "Wageningen",
                             ),
@@ -678,14 +782,14 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                               border: InputBorder.none,
                               isDense: true,
                               hintStyle: TextStyle(
-                                color: ColorsRes.menuTitleColor,
+                                color: Colors.grey[300],
                               ),
                               hintText: "Select Categories",
                             ),
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {
+                        GestureDetector(
+                          onTap: () {
                             showModalBottomSheet<void>(
                               context: context,
                               isScrollControlled: true,
@@ -853,10 +957,13 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                               },
                             );
                           },
-                          icon: Icon(
-                            Icons.mode_edit_outline_rounded,
-                            color: ColorsRes.appColor,
-                            size: 24,
+                          child: Container(
+                            padding: EdgeInsetsDirectional.all(9),
+                            child: Icon(
+                              Icons.mode_edit_outline_rounded,
+                              color: ColorsRes.appColor,
+                              size: 25,
+                            ),
                           ),
                         ),
                       ],
@@ -900,7 +1007,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: ColorsRes.menuTitleColor,
+                color: Colors.grey[300],
               ),
               hintText: "Store description goes here...",
             ),
@@ -925,11 +1032,12 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
             if (selectedLogoPath.isNotEmpty)
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: ColorsRes.textFieldBorderColor,
-                    ),
-                    color: Theme.of(context).cardColor),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: ColorsRes.textFieldBorderColor,
+                  ),
+                  color: Theme.of(context).cardColor,
+                ),
                 height: 105,
                 width: 105,
                 child: Center(
@@ -943,19 +1051,24 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   // Single file path
                   FilePicker.platform
                       .pickFiles(
-                          allowMultiple: false,
-                          allowCompression: true,
-                          type: FileType.image,
-                          lockParentWindow: true)
-                      .then((value) {
-                    cropImage(value!.paths.first.toString());
-                  });
+                    allowMultiple: false,
+                    allowCompression: true,
+                    type: FileType.image,
+                    lockParentWindow: true,
+                  )
+                      .then(
+                    (value) {
+                      cropImage(
+                        value!.paths.first.toString(),
+                      );
+                    },
+                  );
                 },
                 child: DottedBorder(
                   dashPattern: [5],
                   strokeWidth: 2,
                   strokeCap: StrokeCap.round,
-                  color: ColorsRes.menuTitleColor,
+                  color: Colors.grey[300]!,
                   radius: Radius.circular(10),
                   borderType: BorderType.RRect,
                   child: Container(
@@ -967,7 +1080,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                         children: [
                           Widgets.defaultImg(
                             image: "upload",
-                            iconColor: ColorsRes.menuTitleColor,
+                            iconColor: Colors.grey[300],
                             height: 40,
                             width: 40,
                           ),
@@ -975,7 +1088,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                             jsonKey: "upload_logo_file_here",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              color: ColorsRes.menuTitleColor,
+                              color: Colors.grey[300],
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -1459,7 +1572,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: ColorsRes.menuTitleColor,
+                color: Colors.grey[300],
               ),
               hintText: "Lokale Mand",
             ),
@@ -1497,7 +1610,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: ColorsRes.menuTitleColor,
+                color: Colors.grey[300],
               ),
               hintText: "Lokale Mand",
             ),
@@ -1535,7 +1648,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: ColorsRes.menuTitleColor,
+                color: Colors.grey[300],
               ),
               hintText: "Lokale Mand",
             ),
@@ -1573,7 +1686,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: ColorsRes.menuTitleColor,
+                color: Colors.grey[300],
               ),
               hintText: "Lokale Mand",
             ),
@@ -1611,7 +1724,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: ColorsRes.menuTitleColor,
+                color: Colors.grey[300],
               ),
               hintText: "Lokale Mand",
             ),
