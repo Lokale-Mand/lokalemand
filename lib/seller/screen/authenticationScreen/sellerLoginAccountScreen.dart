@@ -35,6 +35,7 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: getAppBar(context: context, title: SizedBox.shrink()),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Container(
         padding: EdgeInsetsDirectional.all(20),

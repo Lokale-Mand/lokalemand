@@ -137,20 +137,25 @@ class _CustomerChatListScreenState extends State<CustomerChatListScreen> {
 
                                   return GestureDetector(
                                     onTap: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        chatDetailScreen,
-                                        arguments: [
-                                          chat.sellerId.toString(),
-                                          chat.sellerName.toString(),
-                                          chat.sellerLogo,
-                                          (chat.rating != null &&
-                                                  chat.rating!.isNotEmpty)
-                                              ? chat.rating![0]
-                                              : null,
-                                          chat.isEligibleRating != "0",
-                                        ],
-                                      );
+                                      if (Constant.session.isUserLoggedIn()) {
+                                        Navigator.pushNamed(
+                                          context,
+                                          chatDetailScreen,
+                                          arguments: [
+                                            chat.sellerId.toString(),
+                                            chat.sellerName.toString(),
+                                            chat.sellerLogo,
+                                            (chat.rating != null &&
+                                                    chat.rating!.isNotEmpty)
+                                                ? chat.rating![0]
+                                                : null,
+                                            chat.isEligibleRating != "0",
+                                          ],
+                                        );
+                                      } else {
+                                        Widgets.loginUserAccount(
+                                            context, "chat");
+                                      }
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(10),

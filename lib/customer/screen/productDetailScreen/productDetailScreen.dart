@@ -102,16 +102,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          chatDetailScreen,
-                          arguments: [
-                            widget.sellerId.toString(),
-                            widget.storeName.toString(),
-                            widget.storeLogo,
-                            widget.rating,false,
-                          ],
-                        );
+                        if (Constant.session.isUserLoggedIn()) {
+                          Navigator.pushNamed(
+                            context,
+                            chatDetailScreen,
+                            arguments: [
+                              widget.sellerId.toString(),
+                              widget.storeName.toString(),
+                              widget.storeLogo,
+                              widget.rating,
+                              false,
+                            ],
+                          );
+                        } else {
+                          Widgets.loginUserAccount(context, "chat");
+                        }
                       },
                       child: Container(
                         height: 50,

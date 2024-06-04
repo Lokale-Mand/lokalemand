@@ -8,13 +8,38 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   late PackageInfo packageInfo;
   String currentAppVersion = "1.0.0";
+
+  late Animation<double> animation;
+  late AnimationController controller;
 
   @override
   void initState() {
     super.initState();
+
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1500),
+      upperBound: 0.5,
+    );
+    animation = Tween<double>(
+      begin: 0,
+      end: 600,
+    ).animate(controller)
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          controller.stop();
+        }
+      });
+
+    controller.forward();
+
     Future.delayed(Duration.zero).then(
       (value) {
         callAllApis();
@@ -78,15 +103,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   startTime() async {
-    return Timer(
-      const Duration(seconds: 1),
-      () async {
-        if (Constant.appMaintenanceMode == "1") {
-          Navigator.pushReplacementNamed(context, underMaintenanceScreen);
-        } else if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
-            Constant.session.getBoolData(SessionManager.isSeller)) {
-          Navigator.pushReplacementNamed(context, sellerMainHomeScreen);
-        } else if (Platform.isAndroid) {
+    if (Constant.appMaintenanceMode == "1") {
+      Navigator.pushReplacementNamed(context, underMaintenanceScreen);
+    } else if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
+        Constant.session.getBoolData(SessionManager.isSeller)) {
+      Navigator.pushReplacementNamed(context, sellerMainHomeScreen);
+    } else if (Platform.isAndroid) {
 /*          if (!Constant.session.getBoolData(SessionManager.introSlider)) {
             if ((Constant.isVersionSystemOn == "1" ||
                     Constant.currentRequiredAppVersion.isNotEmpty) &&
@@ -110,85 +132,78 @@ class _SplashScreenState extends State<SplashScreen> {
               Navigator.pushReplacementNamed(context, introSliderScreen);
             }
           } else */
-          if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
-              Constant.session.getIntData(SessionManager.keyUserStatus) == 2) {
+      if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
+          Constant.session.getIntData(SessionManager.keyUserStatus) == 2) {
+        if (Constant.isVersionSystemOn == "1" &&
+            (Version.parse(Constant.currentRequiredAppVersion) >
+                Version.parse(currentAppVersion))) {
+          if (Constant.requiredForceUpdate == "1") {
+            Navigator.pushReplacementNamed(context, editProfileScreen,
+                arguments: "register");
+            Navigator.pushReplacementNamed(context, appUpdateScreen,
+                arguments: true);
+          } else {
+            Navigator.pushReplacementNamed(context, editProfileScreen,
+                arguments: "register");
+            Navigator.pushNamed(context, appUpdateScreen, arguments: false);
+          }
+        } else {
+          Navigator.pushReplacementNamed(context, editProfileScreen,
+              arguments: "register");
+        }
+      } else {
+        if (Constant.session.getBoolData(SessionManager.keySkipLogin) ||
+            Constant.session.getBoolData(SessionManager.isUserLogin)) {
+          if (Constant.session.getData(SessionManager.keyLatitude) == "0" &&
+              Constant.session.getData(SessionManager.keyLongitude) == "0") {
             if (Constant.isVersionSystemOn == "1" &&
                 (Version.parse(Constant.currentRequiredAppVersion) >
                     Version.parse(currentAppVersion))) {
               if (Constant.requiredForceUpdate == "1") {
-                Navigator.pushReplacementNamed(context, editProfileScreen,
-                    arguments: "register");
+                Navigator.pushReplacementNamed(context, mainHomeScreen);
                 Navigator.pushReplacementNamed(context, appUpdateScreen,
                     arguments: true);
               } else {
-                Navigator.pushReplacementNamed(context, editProfileScreen,
-                    arguments: "register");
+                Navigator.pushReplacementNamed(context, mainHomeScreen);
                 Navigator.pushNamed(context, appUpdateScreen, arguments: false);
               }
             } else {
-              Navigator.pushReplacementNamed(context, editProfileScreen,
-                  arguments: "register");
+              Navigator.pushReplacementNamed(context, mainHomeScreen);
             }
           } else {
-            if (Constant.session.getBoolData(SessionManager.keySkipLogin) ||
-                Constant.session.getBoolData(SessionManager.isUserLogin)) {
-              if (Constant.session.getData(SessionManager.keyLatitude) == "0" &&
-                  Constant.session.getData(SessionManager.keyLongitude) ==
-                      "0") {
-                if (Constant.isVersionSystemOn == "1" &&
-                    (Version.parse(Constant.currentRequiredAppVersion) >
-                        Version.parse(currentAppVersion))) {
-                  if (Constant.requiredForceUpdate == "1") {
-                    Navigator.pushReplacementNamed(context, mainHomeScreen);
-                    Navigator.pushReplacementNamed(context, appUpdateScreen,
-                        arguments: true);
-                  } else {
-                    Navigator.pushReplacementNamed(context, mainHomeScreen);
-                    Navigator.pushNamed(context, appUpdateScreen,
-                        arguments: false);
-                  }
-                } else {
-                  Navigator.pushReplacementNamed(context, mainHomeScreen);
-                }
+            if (Constant.isVersionSystemOn == "1" &&
+                (Version.parse(Constant.currentRequiredAppVersion) >
+                    Version.parse(currentAppVersion))) {
+              if (Constant.requiredForceUpdate == "1") {
+                Navigator.pushReplacementNamed(context, mainHomeScreen);
+                Navigator.pushReplacementNamed(context, appUpdateScreen,
+                    arguments: true);
               } else {
-                if (Constant.isVersionSystemOn == "1" &&
-                    (Version.parse(Constant.currentRequiredAppVersion) >
-                        Version.parse(currentAppVersion))) {
-                  if (Constant.requiredForceUpdate == "1") {
-                    Navigator.pushReplacementNamed(context, mainHomeScreen);
-                    Navigator.pushReplacementNamed(context, appUpdateScreen,
-                        arguments: true);
-                  } else {
-                    Navigator.pushReplacementNamed(context, mainHomeScreen);
-                    Navigator.pushNamed(context, appUpdateScreen,
-                        arguments: false);
-                  }
-                } else {
-                  Navigator.pushReplacementNamed(context, mainHomeScreen);
-                }
+                Navigator.pushReplacementNamed(context, mainHomeScreen);
+                Navigator.pushNamed(context, appUpdateScreen, arguments: false);
               }
             } else {
-              if (Constant.isVersionSystemOn == "1" &&
-                  (Version.parse(Constant.currentRequiredAppVersion) >
-                      Version.parse(currentAppVersion))) {
-                if (Constant.requiredForceUpdate == "1") {
-                  Navigator.pushReplacementNamed(
-                      context, userTypeSelectionScreen);
-                  Navigator.pushReplacementNamed(context, appUpdateScreen,
-                      arguments: true);
-                } else {
-                  Navigator.pushReplacementNamed(
-                      context, userTypeSelectionScreen);
-                  Navigator.pushNamed(context, appUpdateScreen,
-                      arguments: false);
-                }
-              } else {
-                Navigator.pushReplacementNamed(
-                    context, userTypeSelectionScreen);
-              }
+              Navigator.pushReplacementNamed(context, mainHomeScreen);
             }
           }
-        } else if (Platform.isIOS) {
+        } else {
+          if (Constant.isVersionSystemOn == "1" &&
+              (Version.parse(Constant.currentRequiredAppVersion) >
+                  Version.parse(currentAppVersion))) {
+            if (Constant.requiredForceUpdate == "1") {
+              Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+              Navigator.pushReplacementNamed(context, appUpdateScreen,
+                  arguments: true);
+            } else {
+              Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+              Navigator.pushNamed(context, appUpdateScreen, arguments: false);
+            }
+          } else {
+            Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+          }
+        }
+      }
+    } else if (Platform.isIOS) {
 /*          if (!Constant.session.getBoolData(SessionManager.introSlider)) {
             if ((Constant.isIosVersionSystemOn == "1" ||
                     Constant.currentRequiredIosAppVersion.isNotEmpty) &&
@@ -212,79 +227,70 @@ class _SplashScreenState extends State<SplashScreen> {
               Navigator.pushReplacementNamed(context, introSliderScreen);
             }
           } else */
-          if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
-              Constant.session.getIntData(SessionManager.keyUserStatus) == 2) {
+      if (Constant.session.getBoolData(SessionManager.isUserLogin) &&
+          Constant.session.getIntData(SessionManager.keyUserStatus) == 2) {
+        if (await versionInformationAvailable()) {
+          if (Constant.requiredIosForceUpdate == "1") {
+            Navigator.pushReplacementNamed(context, editProfileScreen,
+                arguments: "register");
+            Navigator.pushReplacementNamed(context, appUpdateScreen,
+                arguments: true);
+          } else {
+            Navigator.pushReplacementNamed(context, editProfileScreen,
+                arguments: "register");
+            Navigator.pushNamed(context, appUpdateScreen, arguments: false);
+          }
+        } else {
+          Navigator.pushReplacementNamed(context, editProfileScreen,
+              arguments: "register");
+        }
+      } else {
+        if (Constant.session.getBoolData(SessionManager.keySkipLogin) ||
+            Constant.session.getBoolData(SessionManager.isUserLogin)) {
+          if (Constant.session.getData(SessionManager.keyLatitude) == "0" &&
+              Constant.session.getData(SessionManager.keyLongitude) == "0") {
             if (await versionInformationAvailable()) {
               if (Constant.requiredIosForceUpdate == "1") {
-                Navigator.pushReplacementNamed(context, editProfileScreen,
-                    arguments: "register");
+                Navigator.pushReplacementNamed(context, mainHomeScreen);
                 Navigator.pushReplacementNamed(context, appUpdateScreen,
                     arguments: true);
               } else {
-                Navigator.pushReplacementNamed(context, editProfileScreen,
-                    arguments: "register");
+                Navigator.pushReplacementNamed(context, mainHomeScreen);
                 Navigator.pushNamed(context, appUpdateScreen, arguments: false);
               }
             } else {
-              Navigator.pushReplacementNamed(context, editProfileScreen,
-                  arguments: "register");
+              Navigator.pushReplacementNamed(context, mainHomeScreen);
             }
           } else {
-            if (Constant.session.getBoolData(SessionManager.keySkipLogin) ||
-                Constant.session.getBoolData(SessionManager.isUserLogin)) {
-              if (Constant.session.getData(SessionManager.keyLatitude) == "0" &&
-                  Constant.session.getData(SessionManager.keyLongitude) ==
-                      "0") {
-                if (await versionInformationAvailable()) {
-                  if (Constant.requiredIosForceUpdate == "1") {
-                    Navigator.pushReplacementNamed(context, mainHomeScreen);
-                    Navigator.pushReplacementNamed(context, appUpdateScreen,
-                        arguments: true);
-                  } else {
-                    Navigator.pushReplacementNamed(context, mainHomeScreen);
-                    Navigator.pushNamed(context, appUpdateScreen,
-                        arguments: false);
-                  }
-                } else {
-                  Navigator.pushReplacementNamed(context, mainHomeScreen);
-                }
+            if (await versionInformationAvailable()) {
+              if (Constant.requiredIosForceUpdate == "1") {
+                Navigator.pushReplacementNamed(context, mainHomeScreen);
+                Navigator.pushReplacementNamed(context, appUpdateScreen,
+                    arguments: true);
               } else {
-                if (await versionInformationAvailable()) {
-                  if (Constant.requiredIosForceUpdate == "1") {
-                    Navigator.pushReplacementNamed(context, mainHomeScreen);
-                    Navigator.pushReplacementNamed(context, appUpdateScreen,
-                        arguments: true);
-                  } else {
-                    Navigator.pushReplacementNamed(context, mainHomeScreen);
-                    Navigator.pushNamed(context, appUpdateScreen,
-                        arguments: false);
-                  }
-                } else {
-                  Navigator.pushReplacementNamed(context, mainHomeScreen);
-                }
+                Navigator.pushReplacementNamed(context, mainHomeScreen);
+                Navigator.pushNamed(context, appUpdateScreen, arguments: false);
               }
             } else {
-              if (await versionInformationAvailable()) {
-                if (Constant.requiredIosForceUpdate == "1") {
-                  Navigator.pushReplacementNamed(
-                      context, userTypeSelectionScreen);
-                  Navigator.pushReplacementNamed(context, appUpdateScreen,
-                      arguments: true);
-                } else {
-                  Navigator.pushReplacementNamed(
-                      context, userTypeSelectionScreen);
-                  Navigator.pushNamed(context, appUpdateScreen,
-                      arguments: false);
-                }
-              } else {
-                Navigator.pushReplacementNamed(
-                    context, userTypeSelectionScreen);
-              }
+              Navigator.pushReplacementNamed(context, mainHomeScreen);
             }
           }
+        } else {
+          if (await versionInformationAvailable()) {
+            if (Constant.requiredIosForceUpdate == "1") {
+              Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+              Navigator.pushReplacementNamed(context, appUpdateScreen,
+                  arguments: true);
+            } else {
+              Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+              Navigator.pushNamed(context, appUpdateScreen, arguments: false);
+            }
+          } else {
+            Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
+          }
         }
-      },
-    );
+      }
+    }
   }
 
   Future<bool> versionInformationAvailable() async {
@@ -331,10 +337,21 @@ class _SplashScreenState extends State<SplashScreen> {
               );
             } else {
               return Scaffold(
-                body: Container(
-                  padding: EdgeInsets.all(30),
-                  alignment: Alignment.center,
-                  child: Widgets.defaultImg(image: 'logo'),
+                body: Align(
+                  alignment: FractionalOffset(
+                    controller.value,
+                    controller.value,
+                  ),
+                  child: Transform.scale(
+                    alignment: FractionalOffset(
+                      controller.value,
+                      controller.value,
+                    ),
+                    scale: controller.value,
+                    child: Widgets.defaultImg(
+                      image: 'logo',
+                    ),
+                  ),
                 ),
               );
             }

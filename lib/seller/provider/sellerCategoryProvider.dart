@@ -22,7 +22,7 @@ class SellerCategoryListProvider extends ChangeNotifier {
 
       sellerCategoryState = SellerCategoryState.loading;
       notifyListeners();
-      var getCategoryData = await getMainCategoryListRepository(context);
+      Map<String, dynamic> getCategoryData = await getMainCategoryListRepository(context);
 
       if (getCategoryData[ApiAndParams.status].toString() == "1") {
         CategoryList category = CategoryList.fromJson(getCategoryData);
@@ -37,7 +37,6 @@ class SellerCategoryListProvider extends ChangeNotifier {
       }
     } catch (e) {
       message = e.toString();
-      Navigator.pop(context);
       sellerCategoryState = SellerCategoryState.error;
       GeneralMethods.showMessage(context, message, MessageType.warning);
       notifyListeners();

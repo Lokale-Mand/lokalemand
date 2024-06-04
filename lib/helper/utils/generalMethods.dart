@@ -127,6 +127,7 @@ class GeneralMethods {
 
       if (jsonDecode(response.body) is Map) {
         Map<String, dynamic> data = jsonDecode(response.body);
+        print(">>>>>>>> ${data}");
         // if (data[ApiAndParams.message]
         //     .toString()
         //     .toLowerCase()

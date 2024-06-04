@@ -19,7 +19,8 @@ class ProductListScreen extends StatefulWidget {
     required this.id,
     this.categories,
     required this.sellerLogo,
-    required this.sellerName, this.rating,
+    required this.sellerName,
+    this.rating,
   }) : super(key: key);
 
   @override
@@ -170,16 +171,21 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          chatDetailScreen,
-                          arguments: [
-                            widget.id.toString(),
-                            widget.sellerName.toString(),
-                            widget.sellerLogo,
-                            widget.rating,false,
-                          ],
-                        );
+                        if (Constant.session.isUserLoggedIn()) {
+                          Navigator.pushNamed(
+                            context,
+                            chatDetailScreen,
+                            arguments: [
+                              widget.id.toString(),
+                              widget.sellerName.toString(),
+                              widget.sellerLogo,
+                              widget.rating,
+                              false,
+                            ],
+                          );
+                        } else {
+                          Widgets.loginUserAccount(context, "chat");
+                        }
                       },
                       child: Container(
                         height: 50,

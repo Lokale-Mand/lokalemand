@@ -20,9 +20,6 @@ class SellerHomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<SellerHomeScreen> {
   @override
   void initState() {
-    GeneralMethods.determinePosition().then((value) {
-      updateMap(value.latitude, value.longitude, "");
-    });
     Future.delayed(Duration.zero).then(
       (value) async {
         markerIcon =
@@ -31,6 +28,9 @@ class _HomeScreenState extends State<SellerHomeScreen> {
             Constant.getAssetsPath(0, 'current_map.png'), 100);
 
         await getAppSettings(context: context);
+        GeneralMethods.determinePosition().then((value) {
+          updateMap(value.latitude, value.longitude, "");
+        });
       },
     );
     super.initState();

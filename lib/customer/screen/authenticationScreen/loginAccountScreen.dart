@@ -41,7 +41,6 @@ class _LoginAccountState extends State<LoginAccount> {
         actions: [
           skipLoginText(),
         ],
-        showBackButton: false,
       ),
       body: Container(
         padding: EdgeInsetsDirectional.all(20),
@@ -256,7 +255,7 @@ class _LoginAccountState extends State<LoginAccount> {
               GestureDetector(
                 onTap: () {
                   setState(
-                        () {
+                    () {
                       isPasswordVisible = !isPasswordVisible;
                     },
                   );
@@ -462,7 +461,6 @@ class _LoginAccountState extends State<LoginAccount> {
   }
 
   getRedirection({String? status}) async {
-
     Constant.session.setData(SessionManager.keyEmail, edtEmail.text, false);
     Constant.session
         .setData(SessionManager.keyPassword, edtPassword.text, false);

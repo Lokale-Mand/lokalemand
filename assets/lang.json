@@ -527,5 +527,6 @@
   "upload_images_here": "Upload images here...",
   "km_away": "KM away",
   "regular_seller": "Regular Seller",
-  "organic_seller": "Organic Seller"
+  "organic_seller": "Organic Seller",
+  "required_login_message_for_chat": "Oops! You need to login first to contact with seller!"
 }
