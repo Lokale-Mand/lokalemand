@@ -104,6 +104,8 @@ class GeneralMethods {
         "accept": "application/json",
       };
 
+      print(">>> ${token}");
+
       if (token.trim().isNotEmpty) {
         headersData["Authorization"] = "Bearer $token";
       }
@@ -125,6 +127,12 @@ class GeneralMethods {
         response = await http.get(Uri.parse(mainUrl), headers: headersData);
       }
 
+      if(kDebugMode){
+        print(
+            "API IS ${"$mainUrl,{$params},Status Code - ${response.statusCode}, ${response.body}"}");
+
+        print(">${token}");
+      }
       if (jsonDecode(response.body) is Map) {
         Map<String, dynamic> data = jsonDecode(response.body);
         print(">>>>>>>> ${data}");

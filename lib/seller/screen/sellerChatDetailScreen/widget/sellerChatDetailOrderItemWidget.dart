@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:lokale_mand/customer/provider/productRatingProvider.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/model/sellerChatDetail.dart';
 import 'package:lokale_mand/seller/provider/ordersProvider.dart';
@@ -47,6 +46,8 @@ class _SellerChatDetailOrderItemWidgetState
       // More than yesterday
       createdAt = DateFormat('dd/MM/yyyy').format(dateTime);
     }
+
+    print(">>>>>>> ${widget.orderData?.order?.activeStatus.toString()}");
 
     return Column(
       children: [
@@ -181,24 +182,18 @@ class _SellerChatDetailOrderItemWidgetState
                       Icons.star,
                       color: Colors.amber,
                     ),
-                    onRatingUpdate: (rating) {
-
-                    },
+                    onRatingUpdate: (rating) {},
                   ),
                 ),
               ),
           ],
         ),
         if (int.tryParse(
-                widget.orderData?.order?.activeStatus.toString() ?? "0")! <
+                widget.orderData?.order?.activeStatus.toString() ?? "0")! ==
             1)
-          Divider(
-            color: ColorsRes.menuTitleColor,
-            indent: 10,
-            endIndent: 10,
-          ),
+          Widgets.getSizedBox(height: 10),
         if (int.tryParse(
-                widget.orderData?.order?.activeStatus.toString() ?? "0")! <
+                widget.orderData?.order?.activeStatus.toString() ?? "0")! ==
             1)
           Row(
             children: [
@@ -214,7 +209,7 @@ class _SellerChatDetailOrderItemWidgetState
                         Map<String, String> params = {};
                         params[ApiAndParams.orderId] =
                             widget.orderData?.orderId.toString() ?? "0";
-                        params[ApiAndParams.statusId] = "1";
+                        params[ApiAndParams.statusId] = "2";
                         sellerOrdersProvider
                             .updateSellerOrdersStatus(
                                 params: params,

@@ -1,4 +1,5 @@
 import 'package:lokale_mand/customer/provider/customerChatListProvider.dart';
+import 'package:lokale_mand/customer/screen/mainHomeScreen/orderHistoryScreen.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class HomeMainScreenProvider extends ChangeNotifier {
@@ -33,19 +34,29 @@ class HomeMainScreenProvider extends ChangeNotifier {
           scrollController: scrollController[0],
         ),
       ),
+      ChangeNotifierProvider<ActiveOrdersProvider>(
+        create: (context) {
+          return ActiveOrdersProvider();
+        },
+        child: OrderHistoryScreen(
+        ),
+      ),
+      // ProductWishListScreen(
+      //   scrollController: scrollController[2],
+      // ),
       ChangeNotifierProvider<CustomerChatListProvider>(
         create: (context) {
           return CustomerChatListProvider();
         },
         child: CustomerChatListScreen(
-          scrollController: scrollController[1],
+          scrollController: scrollController[2],
         ),
       ),
       // ProductWishListScreen(
       //   scrollController: scrollController[2],
       // ),
       ProfileScreen(
-        scrollController: scrollController[2],
+        scrollController: scrollController[3],
       )
     ];
   }

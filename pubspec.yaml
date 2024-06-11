@@ -82,6 +82,7 @@ dependencies:
 
 dependency_overrides:
   intl: ^0.17.0
+  google_maps_flutter_ios: 2.5.2
 
   flutter_lints: ^2.0.1
 

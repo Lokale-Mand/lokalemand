@@ -203,6 +203,37 @@ class SellerOrdersProvider extends ChangeNotifier {
     }
   }
 
+  Future updateSellerOrdersStatusFromList({
+    required Map<String, String> params,
+    required BuildContext context,
+    required SellerOrdersListItem? order,
+  }) async {
+    try {
+      ordersStatusState = OrderUpdateStatusState.updating;
+      notifyListeners();
+
+      Map<String, dynamic> getUpdatedOrderData =
+          await updateSellerOrderStatusRepository(
+              params: params, context: context);
+
+      if (getUpdatedOrderData[ApiAndParams.status].toString() == "1") {
+        order?.copyWith(activeStatus: params[ApiAndParams.statusId]);
+        ordersStatusState = OrderUpdateStatusState.loaded;
+        notifyListeners();
+      } else {
+        ordersStatusState = OrderUpdateStatusState.error;
+        GeneralMethods.showMessage(context,
+            getUpdatedOrderData[ApiAndParams.message], MessageType.warning);
+        notifyListeners();
+      }
+    } catch (e) {
+      message = e.toString();
+      ordersStatusState = OrderUpdateStatusState.error;
+      GeneralMethods.showMessage(context, message, MessageType.warning);
+      notifyListeners();
+    }
+  }
+
   String getVariantImageFromOrderId(String orderId) {
     String imageLink = "";
     for (int i = 0; i < sellerOrdersProductsList.length; i++) {

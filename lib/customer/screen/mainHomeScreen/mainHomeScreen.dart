@@ -132,6 +132,10 @@ class HomeMainScreenState extends State<HomeMainScreen> {
       ),
       getTranslatedValue(
         context,
+        "home_bottom_menu_orders",
+      ),
+      getTranslatedValue(
+        context,
         "home_bottom_menu_report",
       ),
       getTranslatedValue(

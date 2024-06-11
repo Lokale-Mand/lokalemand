@@ -21,11 +21,11 @@ class _HomeScreenState extends State<SellerHomeScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero).then(
-      (value) async {
-        markerIcon =
-            await getBytesFromAsset(Constant.getAssetsPath(0, 'map.png'), 100);
-        currentMarkerIcon = await getBytesFromAsset(
-            Constant.getAssetsPath(0, 'current_map.png'), 100);
+          (value) async {
+        regularSeller =
+        await getBytesFromAsset(Constant.getAssetsPath(0, 'regular_seller_map_icon.png'), 100);
+        organicSeller = await getBytesFromAsset(
+            Constant.getAssetsPath(0, 'organic_seller_map_icon.png'), 100);
 
         await getAppSettings(context: context);
         GeneralMethods.determinePosition().then((value) {
@@ -44,8 +44,8 @@ class _HomeScreenState extends State<SellerHomeScreen> {
     viewportFraction: 0.9,
   );
 
-  late Uint8List markerIcon;
-  late Uint8List currentMarkerIcon;
+  late Uint8List regularSeller;
+  late Uint8List organicSeller;
 
   static Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
@@ -439,7 +439,7 @@ class _HomeScreenState extends State<SellerHomeScreen> {
                     seller.longitude.toString().toDouble,
                   ),
                   icon: BitmapDescriptor.fromBytes(
-                      currentPage == index ? currentMarkerIcon : markerIcon,
+                      seller.type == "2" ? organicSeller : regularSeller,
                       size: Size(200, 200)),
                 );
               },

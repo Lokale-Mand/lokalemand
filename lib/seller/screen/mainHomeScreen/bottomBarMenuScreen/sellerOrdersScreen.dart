@@ -23,12 +23,12 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
       if (mounted) {
         if (context.read<SellerOrdersProvider>().hasMoreData) {
           context.read<SellerOrdersProvider>().getSellerOrders(
-            context: context,
-            statusIndex: context
-                .read<SellerOrdersProvider>()
-                .selectedStatus
-                .toString(),
-          );
+                context: context,
+                statusIndex: context
+                    .read<SellerOrdersProvider>()
+                    .selectedStatus
+                    .toString(),
+              );
         }
       }
     }
@@ -96,7 +96,6 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
             builder: (context, ordersProvider, child) {
               if (ordersProvider.ordersState == SellerOrdersState.loaded ||
                   ordersProvider.ordersState == SellerOrdersState.loadingMore) {
-
                 return Column(
                   children: [
                     ListView.builder(
@@ -117,11 +116,12 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                         }),
                   ],
                 );
-              } else if (ordersProvider.ordersState == SellerOrdersState.loading) {
+              } else if (ordersProvider.ordersState ==
+                  SellerOrdersState.loading) {
                 return Column(
                   children: [
                     ListView.builder(
-                      shrinkWrap: true,
+                        shrinkWrap: true,
                         controller: scrollController,
                         itemCount: 20,
                         itemBuilder: (context, index) {
@@ -181,7 +181,7 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    "${order.sellerName}",
+                    "${order.userName}",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -274,16 +274,100 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                 ),
               ],
             ),
-            // Text(
-            //   lblOrderStatusDisplayNames[
-            //       int.parse(order.activeStatus.toString()) - 2],
-            //   style: TextStyle(
-            //     fontSize: 15,
-            //     fontWeight: FontWeight.w600,
-            //     color: ColorsRes.mainTextColor,
-            //   ),
-            //   softWrap: true,
-            // ),
+            Text(
+              int.parse(order.activeStatus.toString()) >= 9
+                  ? lblOrderStatusDisplayNames[
+                      int.parse(order.activeStatus.toString()) - 3]
+                  : lblOrderStatusDisplayNames[
+                      int.parse(order.activeStatus.toString())],
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: ColorsRes.mainTextColor,
+              ),
+              softWrap: true,
+            ),
+            if (int.tryParse(order.activeStatus.toString())! == 1)
+              Widgets.getSizedBox(height: 10),
+            if (int.tryParse(order.activeStatus.toString())! == 1)
+              Row(
+                children: [
+                  ChangeNotifierProvider(
+                    create: (context) => SellerOrdersProvider(),
+                    child: Expanded(
+                      child: Consumer<SellerOrdersProvider>(
+                          builder: (context, sellerOrdersProvider, child) {
+                        return Widgets.gradientBtnWidget(
+                          context,
+                          7,
+                          callback: () {
+                            Map<String, String> params = {};
+                            params[ApiAndParams.orderId] =
+                                order.id.toString() ?? "0";
+                            params[ApiAndParams.statusId] = "2";
+                            sellerOrdersProvider
+                                .updateSellerOrdersStatusFromList(
+                              params: params,
+                              context: context,
+                              order: order,
+                            )
+                                .then(
+                              (value) {
+                                context.read<SellerOrdersProvider>().offset = 0;
+                                context
+                                    .read<SellerOrdersProvider>()
+                                    .getSellerOrders(
+                                        statusIndex: "0", context: context);
+                              },
+                            );
+                            },
+                          title: getTranslatedValue(context, "accept"),
+                          height: 30,
+                          color1: Colors.green,
+                          color2: Colors.green,
+                        );
+                      }),
+                    ),
+                  ),
+                  Widgets.getSizedBox(width: 10),
+                  ChangeNotifierProvider(
+                    create: (context) => SellerOrdersProvider(),
+                    child: Expanded(
+                      child: Consumer<SellerOrdersProvider>(
+                          builder: (context, sellerOrdersProvider, child) {
+                        return Widgets.gradientBtnWidget(
+                          context,
+                          7,
+                          callback: () {
+                            Map<String, String> params = {};
+                            params[ApiAndParams.orderId] =
+                                order.id.toString() ?? "0";
+                            params[ApiAndParams.statusId] = "7";
+                            sellerOrdersProvider
+                                .updateSellerOrdersStatusFromList(
+                                    params: params,
+                                    context: context,
+                                    order: order)
+                                .then(
+                              (value) {
+                                context.read<SellerOrdersProvider>().offset = 0;
+                                context
+                                    .read<SellerOrdersProvider>()
+                                    .getSellerOrders(
+                                        statusIndex: "0", context: context);
+                              },
+                            );
+                          },
+                          title: getTranslatedValue(context, "reject"),
+                          height: 30,
+                          color1: Colors.red,
+                          color2: Colors.red,
+                        );
+                      }),
+                    ),
+                  ),
+                ],
+              ),
             Divider(
               color: ColorsRes.menuTitleColor,
             )

@@ -71,6 +71,7 @@ class ApiAndParams {
   static String apiSellerOrderById = "${Constant.sellerBaseUrl}order_by_id";
   static String apiSellerOrdersHistory = "${Constant.sellerBaseUrl}orders";
   static String apiOrderStatuses = "${Constant.sellerBaseUrl}order_statuses";
+  static String apiUpdateSellerOrderStatus = "${Constant.sellerBaseUrl}update_status";
   static String apiSellerLogin = "${Constant.hostUrl}api/login";
   static String getSellerChatListApi =
       "${Constant.sellerBaseUrl}getSellerChatList";

@@ -43,7 +43,7 @@ Future<Map<String, dynamic>> updateSellerOrderStatusRepository(
   try {
     final response = await GeneralMethods.sendApiRequest(
         context: context,
-        apiName: ApiAndParams.apiUpdateOrderStatus,
+        apiName: ApiAndParams.apiUpdateSellerOrderStatus,
         params: params,
         isPost: true);
 

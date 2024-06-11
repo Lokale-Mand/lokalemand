@@ -240,7 +240,7 @@ class SellerChatDetailOrder {
       longitude: this.longitude,
       deliveryTime: this.deliveryTime,
       status: this.status,
-      activeStatus: this.activeStatus,
+      activeStatus: activeStatus ?? this.activeStatus,
       orderFrom: this.orderFrom,
       pincodeId: this.pincodeId,
       addressId: this.addressId,

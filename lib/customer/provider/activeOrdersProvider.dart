@@ -74,4 +74,27 @@ class ActiveOrdersProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  String getVariantImageFromOrderId(String orderId) {
+    String imageLink = "";
+    for (int i = 0; i < orders.length; i++) {
+      if (orders[i].id.toString() == orderId.toString()) {
+        imageLink =
+            "${Constant.hostUrl}storage/${orders[i].items[0].imageUrl.toString()}";
+      }
+    }
+
+    return imageLink;
+  }
+
+  String getVariantProductNameFromOrderId(String orderId) {
+    String productName = "";
+    for (int i = 0; i < orders.length; i++) {
+      if (orders[i].id.toString() == orderId.toString()) {
+        productName = orders[i].items[0].productName.toString();
+      }
+    }
+
+    return productName;
+  }
 }

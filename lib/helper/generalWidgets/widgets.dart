@@ -99,6 +99,7 @@ class Widgets {
     } else {
       return [
         Icon(Icons.map_rounded),
+        Icon(Icons.table_rows_outlined),
         Icon(Icons.chat_bubble_outline_rounded),
         Icon(Icons.person_outline),
       ];
