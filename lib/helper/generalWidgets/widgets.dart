@@ -381,9 +381,10 @@ class Widgets {
       builder: (BuildContext context) => AlertDialog(
         content: CustomTextLabel(
           jsonKey: from == "cart"
-              ?"required_login_message_for_cart" : from == "chat"
-              ? "required_login_message_for_chat"
-              : "required_login_message_for_wish_list",
+              ? "required_login_message_for_cart"
+              : from == "chat"
+                  ? "required_login_message_for_chat"
+                  : "required_login_message_for_wish_list",
           softWrap: true,
         ),
         actions: <Widget>[

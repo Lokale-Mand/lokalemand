@@ -10,7 +10,9 @@ class SellerProfile {
     status = json['status'].toString();
     message = json['message'].toString();
     total = json['total'].toString();
-    data = json['data'] != null ? new SellerProfileData.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? new SellerProfileData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -32,7 +34,9 @@ class SellerProfileData {
   SellerProfileData({this.user, this.accessToken});
 
   SellerProfileData.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? new SellerProfileUser.fromJson(json['user']) : null;
+    user = json['user'] != null
+        ? new SellerProfileUser.fromJson(json['user'])
+        : null;
     accessToken = json['access_token'].toString();
   }
 

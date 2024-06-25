@@ -22,10 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     Future.delayed(Duration.zero).then(
       (value) async {
-        regularSeller =
-            await getBytesFromAsset(Constant.getAssetsPath(0, 'regular_seller_map_icon.png'), 100);
+        regularSeller = await getBytesFromAsset(
+            Constant.getAssetsPath(0, 'regular_seller_map_icon.png'), 200);
         organicSeller = await getBytesFromAsset(
-            Constant.getAssetsPath(0, 'organic_seller_map_icon.png'), 100);
+            Constant.getAssetsPath(0, 'organic_seller_map_icon.png'), 200);
 
         await getAppSettings(context: context);
         GeneralMethods.determinePosition().then((value) {
@@ -171,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Widgets.getSizedBox(height: 10),
                 IconButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith(
+                      backgroundColor: WidgetStateProperty.resolveWith(
                           (states) => ColorsRes.appColor)),
                   padding: EdgeInsets.all(10),
                   color: ColorsRes.appColor,
@@ -409,38 +409,38 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
       onMapCreated: _onMapCreated,
-      markers: context.read<SellerListProvider>().sellerListData.isNotEmpty
-          ? List.generate(
-              context.read<SellerListProvider>().sellerListData.length,
-              (index) {
-                SellerListData seller =
-                    context.read<SellerListProvider>().sellerListData[index];
-                return Marker(
-                  onTap: () {
-                    pageController.animateToPage(index,
-                        duration: const Duration(milliseconds: 1500),
-                        curve: Curves.easeInOut);
-                    currentPage = index;
-                    setState(() {});
-                  },
-                  anchor: ui.Offset(0, 0),
-                  infoWindow: InfoWindow(
-                      title: seller.storeName.toString(), snippet: seller.name),
-                  visible: true,
-                  zIndex: -1,
-                  consumeTapEvents: true,
-                  markerId: MarkerId(seller.storeName.toString()),
-                  position: LatLng(
-                    seller.latitude.toString().toDouble,
-                    seller.longitude.toString().toDouble,
-                  ),
-                  icon: BitmapDescriptor.fromBytes(
-                      seller.type == "2" ? organicSeller : regularSeller,
-                      size: Size(200, 200)),
-                );
-              },
-            ).toSet()
-          : Set(),
+      markers: List.generate(
+        context.watch<SellerListProvider>().sellerListData.length,
+        (index) {
+          SellerListData seller =
+              context.watch<SellerListProvider>().sellerListData[index];
+          return Marker(
+            onTap: () {
+              pageController.animateToPage(index,
+                  duration: const Duration(milliseconds: 1500),
+                  curve: Curves.easeInOut);
+              currentPage = index;
+              setState(() {});
+            },
+            anchor: ui.Offset(0, 0),
+            infoWindow: InfoWindow(
+                title: seller.storeName.toString(), snippet: seller.name),
+            visible: true,
+            zIndex: -1,
+            consumeTapEvents: true,
+            markerId: MarkerId(seller.storeName.toString()),
+            position: LatLng(
+              seller.latitude.toString().toDouble,
+              seller.longitude.toString().toDouble,
+            ),
+            icon: BitmapDescriptor.bytes(
+              seller.type == "2" ? organicSeller : regularSeller,
+              height: 512 / 9,
+              width: 341 / 9,
+            ),
+          );
+        },
+      ).toSet(),
       buildingsEnabled: false,
       indoorViewEnabled: false,
 

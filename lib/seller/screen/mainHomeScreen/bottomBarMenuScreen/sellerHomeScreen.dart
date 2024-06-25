@@ -21,9 +21,9 @@ class _HomeScreenState extends State<SellerHomeScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero).then(
-          (value) async {
-        regularSeller =
-        await getBytesFromAsset(Constant.getAssetsPath(0, 'regular_seller_map_icon.png'), 100);
+      (value) async {
+        regularSeller = await getBytesFromAsset(
+            Constant.getAssetsPath(0, 'regular_seller_map_icon.png'), 100);
         organicSeller = await getBytesFromAsset(
             Constant.getAssetsPath(0, 'organic_seller_map_icon.png'), 100);
 
@@ -171,7 +171,7 @@ class _HomeScreenState extends State<SellerHomeScreen> {
                 Widgets.getSizedBox(height: 10),
                 IconButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith(
+                      backgroundColor: WidgetStateProperty.resolveWith(
                           (states) => ColorsRes.appColor)),
                   padding: EdgeInsets.all(10),
                   color: ColorsRes.appColor,
@@ -273,7 +273,8 @@ class _HomeScreenState extends State<SellerHomeScreen> {
                                         ),
                                       ),
                                       CustomTextLabel(
-                                        text: "${seller.distance} ${getTranslatedValue(context, "km_away")}",
+                                        text:
+                                            "${seller.distance} ${getTranslatedValue(context, "km_away")}",
                                         softWrap: true,
                                         style: TextStyle(
                                           color:
@@ -282,8 +283,10 @@ class _HomeScreenState extends State<SellerHomeScreen> {
                                         ),
                                       ),
                                       RatingBuilderWidget(
-                                        averageRating: double.parse(seller.averageRating.toString()),
-                                        totalRatings: int.parse(seller.ratingCount.toString()),
+                                        averageRating: double.parse(
+                                            seller.averageRating.toString()),
+                                        totalRatings: int.parse(
+                                            seller.ratingCount.toString()),
                                         size: 20,
                                         spacing: 0,
                                       ),
@@ -413,12 +416,11 @@ class _HomeScreenState extends State<SellerHomeScreen> {
         );
       },
       onMapCreated: _onMapCreated,
-      markers: context.read<SellerListProvider>().sellerListData.isNotEmpty
-          ? List.generate(
-              context.read<SellerListProvider>().sellerListData.length,
+      markers: List.generate(
+              context.watch<SellerListProvider>().sellerListData.length,
               (index) {
                 SellerListData seller =
-                    context.read<SellerListProvider>().sellerListData[index];
+                    context.watch<SellerListProvider>().sellerListData[index];
                 return Marker(
                   onTap: () {
                     pageController.animateToPage(index,
@@ -438,13 +440,14 @@ class _HomeScreenState extends State<SellerHomeScreen> {
                     seller.latitude.toString().toDouble,
                     seller.longitude.toString().toDouble,
                   ),
-                  icon: BitmapDescriptor.fromBytes(
-                      seller.type == "2" ? organicSeller : regularSeller,
-                      size: Size(200, 200)),
+                  icon: BitmapDescriptor.bytes(
+                    seller.type == "2" ? organicSeller : regularSeller,
+                    height: 512/9,
+                    width: 341/9,
+                  ),
                 );
               },
-            ).toSet()
-          : Set(),
+            ).toSet(),
       buildingsEnabled: false,
       indoorViewEnabled: false,
 

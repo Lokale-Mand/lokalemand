@@ -13,6 +13,7 @@ Widget MessageContainer({
       child: Container(
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
             // using gradient to apply one side dark color in container
             gradient: LinearGradient(
               stops: const [0.02, 0.02],

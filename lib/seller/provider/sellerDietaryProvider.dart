@@ -43,7 +43,6 @@ class SellerDietaryListProvider extends ChangeNotifier {
   }
 
   dietarySingleSelection({required String id}) {
-
     selectedDietaryIdsList.clear();
     if (selectedDietaryIdsList.contains(id)) {
       selectedDietaryIdsList.remove(id);

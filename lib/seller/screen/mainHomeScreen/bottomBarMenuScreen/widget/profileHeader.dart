@@ -26,22 +26,22 @@ class SellerProfileHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(35),
                   child: Constant.session.isUserLoggedIn()
                       ? Consumer<UserProfileProvider>(
-                    builder: (context, value, child) {
-                      return Widgets.setNetworkImg(
-                        height: 48,
-                        width: 48,
-                        boxFit: BoxFit.fill,
-                        image: Constant.session.getData(
-                          SessionManager.keyUserImage,
-                        ),
-                      );
-                    },
-                  )
+                          builder: (context, value, child) {
+                            return Widgets.setNetworkImg(
+                              height: 48,
+                              width: 48,
+                              boxFit: BoxFit.fill,
+                              image: Constant.session.getData(
+                                SessionManager.keyUserImage,
+                              ),
+                            );
+                          },
+                        )
                       : Widgets.defaultImg(
-                    height: 48,
-                    width: 48,
-                    image: "default_user",
-                  ),
+                          height: 48,
+                          width: 48,
+                          image: "default_user",
+                        ),
                 ),
               ),
             ),
@@ -55,30 +55,30 @@ class SellerProfileHeader extends StatelessWidget {
                     Consumer<UserProfileProvider>(
                       builder: (context, userProfileProvide, _) =>
                           CustomTextLabel(
-                            text: Constant.session.isUserLoggedIn()
-                                ? userProfileProvide.getUserDetailBySessionKey(
-                              isBool: false,
-                              key: SessionManager.keyUserName,
-                            )
-                                : getTranslatedValue(
-                              context,
-                              "welcome",
-                            ),
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: ColorsRes.mainTextColor,
-                            ),
-                          ),
+                        text: Constant.session.isUserLoggedIn()
+                            ? userProfileProvide.getUserDetailBySessionKey(
+                                isBool: false,
+                                key: SessionManager.keyUserName,
+                              )
+                            : getTranslatedValue(
+                                context,
+                                "welcome",
+                              ),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: ColorsRes.mainTextColor,
+                        ),
+                      ),
                     ),
                     Widgets.getSizedBox(height: 5),
                     CustomTextLabel(
                       jsonKey: Constant.session.isUserLoggedIn()
                           ? Constant.session.getData(
-                        SessionManager.keyPhone,
-                      )
+                              SessionManager.keyPhone,
+                            )
                           : "login",
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,

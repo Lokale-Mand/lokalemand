@@ -53,9 +53,12 @@ class ApiAndParams {
   static String apiGetProductRatingList = "$apiProducts/ratings_list";
   static String apiGetProductRatingAdd = "$apiProducts/rating/add";
   static String apiGetProductRatingUpdate = "$apiProducts/rating/update";
-  static String apiCustomerRatingsList = "${Constant.customerBaseSellerUrl}ratings_list";
-  static String apiCustomerRatingAdd = "${Constant.customerBaseSellerUrl}rating/add";
-  static String apiCustomerRatingUpdate = "${Constant.customerBaseSellerUrl}rating/update";
+  static String apiCustomerRatingsList =
+      "${Constant.customerBaseSellerUrl}ratings_list";
+  static String apiCustomerRatingAdd =
+      "${Constant.customerBaseSellerUrl}rating/add";
+  static String apiCustomerRatingUpdate =
+      "${Constant.customerBaseSellerUrl}rating/update";
 
   //Sellers api
   static String apiSellerRegister = "${Constant.customerBaseSellerUrl}save";
@@ -71,7 +74,8 @@ class ApiAndParams {
   static String apiSellerOrderById = "${Constant.sellerBaseUrl}order_by_id";
   static String apiSellerOrdersHistory = "${Constant.sellerBaseUrl}orders";
   static String apiOrderStatuses = "${Constant.sellerBaseUrl}order_statuses";
-  static String apiUpdateSellerOrderStatus = "${Constant.sellerBaseUrl}update_status";
+  static String apiUpdateSellerOrderStatus =
+      "${Constant.sellerBaseUrl}update_status";
   static String apiSellerLogin = "${Constant.hostUrl}api/login";
   static String getSellerChatListApi =
       "${Constant.sellerBaseUrl}getSellerChatList";
@@ -79,12 +83,14 @@ class ApiAndParams {
       "${Constant.sellerBaseUrl}getSellerAllMessage";
   static String apiSendMessageToCustomer =
       "${Constant.sellerBaseUrl}store_chat";
-  static String apiSellerNotificationSettings = "${Constant.sellerBaseUrl}mail_settings";
-  static String apiSellerNotificationSettingsUpdate = "${apiSellerNotificationSettings}/save";
+  static String apiSellerNotificationSettings =
+      "${Constant.sellerBaseUrl}mail_settings";
+  static String apiSellerNotificationSettingsUpdate =
+      "${apiSellerNotificationSettings}/save";
   static String apiSellerRatingsList = "${Constant.sellerBaseUrl}ratings_list";
   static String apiSellerRatingAdd = "${Constant.sellerBaseUrl}rating/add";
-  static String apiSellerRatingUpdate = "${Constant.sellerBaseUrl}rating/update";
-
+  static String apiSellerRatingUpdate =
+      "${Constant.sellerBaseUrl}rating/update";
 
 //============ api params ============
 

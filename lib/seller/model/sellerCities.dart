@@ -40,11 +40,11 @@ class SellerCitiesData {
 
   SellerCitiesData(
       {this.id,
-        this.name,
-        this.state,
-        this.formattedAddress,
-        this.latitude,
-        this.longitude});
+      this.name,
+      this.state,
+      this.formattedAddress,
+      this.latitude,
+      this.longitude});
 
   SellerCitiesData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

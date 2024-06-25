@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:lokale_mand/helper/utils/apiAndParams.dart';
 import 'package:lokale_mand/helper/utils/generalMethods.dart';
 import 'package:lokale_mand/seller/model/orderDetail.dart';
 import 'package:lokale_mand/seller/repositories/orderDetailApi.dart';
+
 enum OrderDetailState {
   initial,
   loading,
@@ -28,7 +28,7 @@ class OrderDetailProvider extends ChangeNotifier {
       params[ApiAndParams.orderId] = orderId;
 
       Map<String, dynamic> getData =
-          (await getOrderDetailRepository(params: params,context:context));
+          (await getOrderDetailRepository(params: params, context: context));
       if (getData[ApiAndParams.status].toString() == "1") {
         orderDetail = OrderDetail.fromJson(getData);
 
@@ -37,12 +37,13 @@ class OrderDetailProvider extends ChangeNotifier {
       } else {
         orderDetailState = OrderDetailState.error;
         notifyListeners();
-        GeneralMethods.showMessage(context, getData[ApiAndParams.message],MessageType.warning);
+        GeneralMethods.showMessage(
+            context, getData[ApiAndParams.message], MessageType.warning);
       }
     } catch (e) {
       message = e.toString();
       orderDetailState = OrderDetailState.error;
-      GeneralMethods.showMessage(context, message,MessageType.warning);
+      GeneralMethods.showMessage(context, message, MessageType.warning);
       notifyListeners();
     }
   }

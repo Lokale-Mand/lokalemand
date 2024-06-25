@@ -14,12 +14,11 @@ class SellerCitiesListProvider extends ChangeNotifier {
   SellerCitiesState sellerCitiesState = SellerCitiesState.initial;
   String message = '';
   List<SellerCitiesData> cities = [];
-  
+
   bool startedApiCalling = false;
 
   Future getCitiesApiProvider({required BuildContext context}) async {
     try {
-
       sellerCitiesState = SellerCitiesState.loading;
       notifyListeners();
       var getCitiesData = await getCityListRepository(context);
@@ -31,8 +30,8 @@ class SellerCitiesListProvider extends ChangeNotifier {
         notifyListeners();
       } else {
         sellerCitiesState = SellerCitiesState.error;
-        GeneralMethods.showMessage(context,
-            getCitiesData[ApiAndParams.message], MessageType.warning);
+        GeneralMethods.showMessage(
+            context, getCitiesData[ApiAndParams.message], MessageType.warning);
         notifyListeners();
       }
     } catch (e) {

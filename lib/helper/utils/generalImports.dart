@@ -130,7 +130,6 @@ export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/scr
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/transactionListScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/screens/webViewScreen.dart';
 export 'package:lokale_mand/customer/screen/mainHomeScreen/profileMenuScreen/widget/profileHeader.dart';
-export 'package:lokale_mand/customer/screen/wishlistScreen/productWishListScreen.dart';
 export 'package:lokale_mand/customer/screen/orderPlacedScreen.dart';
 export 'package:lokale_mand/customer/screen/orderSummaryScreen/orderSummaryScreen.dart';
 export 'package:lokale_mand/customer/screen/orderSummaryScreen/widgets/cancelProductDialog.dart';
@@ -151,6 +150,7 @@ export 'package:lokale_mand/customer/screen/productListScreen.dart';
 export 'package:lokale_mand/customer/screen/searchProductScreen.dart';
 export 'package:lokale_mand/customer/screen/subCategoryListScreen.dart';
 export 'package:lokale_mand/customer/screen/underMaintenanceScreen.dart';
+export 'package:lokale_mand/customer/screen/wishlistScreen/productWishListScreen.dart';
 export 'package:lokale_mand/firebase_options.dart';
 export 'package:lokale_mand/helper/generalWidgets/OrderTrackingHistoryBottomSheet.dart';
 export 'package:lokale_mand/helper/generalWidgets/bottomSheetLanguageListContainer.dart';
@@ -182,9 +182,21 @@ export 'package:lokale_mand/helper/utils/constant.dart';
 export 'package:lokale_mand/helper/utils/generalMethods.dart';
 export 'package:lokale_mand/helper/utils/routeGenerator.dart';
 export 'package:lokale_mand/helper/utils/stripeService.dart';
+//SELLER SCREENS
+
+export 'package:lokale_mand/seller/provider/SellerCityByLatLongProvider.dart';
+export 'package:lokale_mand/seller/provider/sellerMainHomeScreenProvider.dart';
+export 'package:lokale_mand/seller/provider/sellerProfileProvider.dart';
+export 'package:lokale_mand/seller/provider/sellerRegisterProvider.dart';
 export 'package:lokale_mand/seller/repositories/sellerRegiserApi.dart';
 export 'package:lokale_mand/seller/screen/authenticationScreen/sellerCreateAccountScreen.dart';
 export 'package:lokale_mand/seller/screen/authenticationScreen/sellerLoginAccountScreen.dart';
+export 'package:lokale_mand/seller/screen/confirmLocationScreen/sellerConfirmLocationScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerChatListScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerMenuScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerOrdersScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerProductScreen.dart';
+export 'package:lokale_mand/seller/screen/mainHomeScreen/sellerMainHomeScreen.dart';
 export 'package:lokale_mand/splashScreen.dart';
 export 'package:lokale_mand/userTypeSelectionScreen.dart';
 export 'package:open_filex/open_filex.dart';
@@ -207,16 +219,3 @@ export 'package:speech_to_text/speech_to_text.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:version/version.dart';
 export 'package:webview_flutter/webview_flutter.dart';
-
-//SELLER SCREENS
-
-export 'package:lokale_mand/seller/provider/SellerCityByLatLongProvider.dart';
-export 'package:lokale_mand/seller/provider/sellerMainHomeScreenProvider.dart';
-export 'package:lokale_mand/seller/provider/sellerProfileProvider.dart';
-export 'package:lokale_mand/seller/provider/sellerRegisterProvider.dart';
-export 'package:lokale_mand/seller/screen/confirmLocationScreen/sellerConfirmLocationScreen.dart';
-export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerMenuScreen.dart';
-export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerChatListScreen.dart';
-export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerProductScreen.dart';
-export 'package:lokale_mand/seller/screen/mainHomeScreen/sellerMainHomeScreen.dart';
-export 'package:lokale_mand/seller/screen/mainHomeScreen/bottomBarMenuScreen/sellerOrdersScreen.dart';

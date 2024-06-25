@@ -390,10 +390,7 @@ class CheckoutProvider extends ChangeNotifier {
           selectedPaymentMethod = "Wallet";
         }
 
-        final orderStatus = (selectedPaymentMethod == "COD" ||
-                selectedPaymentMethod == "Wallet")
-            ? "2"
-            : "1";
+        final orderStatus = "1";
 
         Map<String, String> params = {};
         params[ApiAndParams.productVariantId] =
@@ -593,7 +590,9 @@ class CheckoutProvider extends ChangeNotifier {
       arguments: [
         sellerId,
         storeName,
-        storeLogo,null,false,
+        storeLogo,
+        null,
+        false,
       ],
     );
   }

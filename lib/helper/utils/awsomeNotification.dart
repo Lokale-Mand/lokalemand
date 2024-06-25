@@ -7,7 +7,7 @@ class LocalAwesomeNotification {
   static FirebaseMessaging messagingInstance = FirebaseMessaging.instance;
 
   static LocalAwesomeNotification localNotification =
-  LocalAwesomeNotification();
+      LocalAwesomeNotification();
 
   static late StreamSubscription<RemoteMessage> foregroundStream;
   static late StreamSubscription<RemoteMessage> onMessageOpen;
@@ -39,9 +39,7 @@ class LocalAwesomeNotification {
     try {
       AwesomeNotifications().setListeners(
           onNotificationCreatedMethod: (receivedNotification) async {},
-          onActionReceivedMethod: (ReceivedAction event) async {
-
-          });
+          onActionReceivedMethod: (ReceivedAction event) async {});
     } catch (e) {
       rethrow;
     }
@@ -52,7 +50,7 @@ class LocalAwesomeNotification {
       {required RemoteMessage notificationData, required bool isLocked}) async {
     try {
       Map<String, dynamic> data =
-      jsonDecode(notificationData.data["data"].toString());
+          jsonDecode(notificationData.data["data"].toString());
       await notification.createNotification(
         content: NotificationContent(
           id: Random().nextInt(5000),
@@ -80,7 +78,7 @@ class LocalAwesomeNotification {
       {required RemoteMessage notificationData, required bool isLocked}) async {
     try {
       Map<String, dynamic> data =
-      jsonDecode(notificationData.data["data"].toString());
+          jsonDecode(notificationData.data["data"].toString());
 
       await notification.createNotification(
         content: NotificationContent(
@@ -122,32 +120,30 @@ class LocalAwesomeNotification {
         localNotification.createImageNotification(
             isLocked: false, notificationData: message);
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   @pragma('vm:entry-point')
   static foregroundNotificationHandler() async {
     foregroundStream =
         FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-          try {
-            Map<String, dynamic> data = jsonDecode(message.data["data"].toString());
-            if (data["image"] == "" || data["image"] == null) {
-              localNotification.createNotification(
-                  isLocked: false, notificationData: message);
-            } else {
-              localNotification.createImageNotification(
-                  isLocked: false, notificationData: message);
-            }
-          } catch (e) {
-          }
-        });
+      try {
+        Map<String, dynamic> data = jsonDecode(message.data["data"].toString());
+        if (data["image"] == "" || data["image"] == null) {
+          localNotification.createNotification(
+              isLocked: false, notificationData: message);
+        } else {
+          localNotification.createImageNotification(
+              isLocked: false, notificationData: message);
+        }
+      } catch (e) {}
+    });
   }
 
   @pragma('vm:entry-point')
   static terminatedStateNotificationHandler() {
     FirebaseMessaging.instance.getInitialMessage().then(
-          (RemoteMessage? message) {
+      (RemoteMessage? message) {
         if (message == null) {
           return;
         }
@@ -171,7 +167,6 @@ class LocalAwesomeNotification {
     await foregroundNotificationHandler();
     await terminatedStateNotificationHandler();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-
       if (message.notification != null) {
         LocalAwesomeNotification.onBackgroundMessageHandler(message);
       }

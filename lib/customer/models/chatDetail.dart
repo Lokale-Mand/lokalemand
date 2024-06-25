@@ -43,14 +43,14 @@ class CustomerChatDetailData {
 
   CustomerChatDetailData(
       {this.id,
-        this.senderId,
-        this.senderType,
-        this.receiverId,
-        this.orderId,
-        this.message,
-        this.createdAt,
-        this.order,
-        this.productRating});
+      this.senderId,
+      this.senderType,
+      this.receiverId,
+      this.orderId,
+      this.message,
+      this.createdAt,
+      this.order,
+      this.productRating});
 
   CustomerChatDetailData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -60,7 +60,9 @@ class CustomerChatDetailData {
     orderId = json['order_id'].toString();
     message = json['message'].toString();
     createdAt = json['created_at'].toString();
-    order = json['order'] != null ? new CustomerChatDetailOrder.fromJson(json['order']) : null;
+    order = json['order'] != null
+        ? new CustomerChatDetailOrder.fromJson(json['order'])
+        : null;
     productRating = json['product_rating'] != null
         ? new CustomerChatDetailProductRating.fromJson(json['product_rating'])
         : null;
@@ -125,41 +127,41 @@ class CustomerChatDetailOrder {
 
   CustomerChatDetailOrder(
       {this.id,
-        this.userId,
-        this.deliveryBoyId,
-        this.deliveryBoyBonusDetails,
-        this.deliveryBoyBonusAmount,
-        this.transactionId,
-        this.ordersId,
-        this.otp,
-        this.mobile,
-        this.orderNote,
-        this.total,
-        this.deliveryCharge,
-        this.taxAmount,
-        this.taxPercentage,
-        this.walletBalance,
-        this.discount,
-        this.promoCodeId,
-        this.promoCode,
-        this.promoDiscount,
-        this.finalTotal,
-        this.paymentMethod,
-        this.address,
-        this.latitude,
-        this.longitude,
-        this.deliveryTime,
-        this.status,
-        this.activeStatus,
-        this.orderFrom,
-        this.pincodeId,
-        this.addressId,
-        this.areaId,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt,
-        this.items,
-        this.user});
+      this.userId,
+      this.deliveryBoyId,
+      this.deliveryBoyBonusDetails,
+      this.deliveryBoyBonusAmount,
+      this.transactionId,
+      this.ordersId,
+      this.otp,
+      this.mobile,
+      this.orderNote,
+      this.total,
+      this.deliveryCharge,
+      this.taxAmount,
+      this.taxPercentage,
+      this.walletBalance,
+      this.discount,
+      this.promoCodeId,
+      this.promoCode,
+      this.promoDiscount,
+      this.finalTotal,
+      this.paymentMethod,
+      this.address,
+      this.latitude,
+      this.longitude,
+      this.deliveryTime,
+      this.status,
+      this.activeStatus,
+      this.orderFrom,
+      this.pincodeId,
+      this.addressId,
+      this.areaId,
+      this.createdAt,
+      this.updatedAt,
+      this.deletedAt,
+      this.items,
+      this.user});
 
   CustomerChatDetailOrder.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -279,29 +281,29 @@ class Items {
 
   Items(
       {this.id,
-        this.userId,
-        this.orderId,
-        this.ordersId,
-        this.productName,
-        this.variantName,
-        this.productVariantId,
-        this.deliveryBoyId,
-        this.quantity,
-        this.price,
-        this.discountedPrice,
-        this.taxAmount,
-        this.taxPercentage,
-        this.discount,
-        this.subTotal,
-        this.status,
-        this.activeStatus,
-        this.sellerId,
-        this.isCredited,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt,
-        this.imageUrl,
-        this.productVariant});
+      this.userId,
+      this.orderId,
+      this.ordersId,
+      this.productName,
+      this.variantName,
+      this.productVariantId,
+      this.deliveryBoyId,
+      this.quantity,
+      this.price,
+      this.discountedPrice,
+      this.taxAmount,
+      this.taxPercentage,
+      this.discount,
+      this.subTotal,
+      this.status,
+      this.activeStatus,
+      this.sellerId,
+      this.isCredited,
+      this.createdAt,
+      this.updatedAt,
+      this.deletedAt,
+      this.imageUrl,
+      this.productVariant});
 
   Items.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -378,15 +380,15 @@ class ProductVariant {
 
   ProductVariant(
       {this.id,
-        this.productId,
-        this.type,
-        this.status,
-        this.measurement,
-        this.price,
-        this.discountedPrice,
-        this.stock,
-        this.stockUnitId,
-        this.product});
+      this.productId,
+      this.type,
+      this.status,
+      this.measurement,
+      this.price,
+      this.discountedPrice,
+      this.stock,
+      this.stockUnitId,
+      this.product});
 
   ProductVariant.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -399,7 +401,7 @@ class ProductVariant {
     stock = json['stock'].toString();
     stockUnitId = json['stock_unit_id'].toString();
     product =
-    json['product'] != null ? new Product.fromJson(json['product']) : null;
+        json['product'] != null ? new Product.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -458,17 +460,17 @@ class User {
 
   User(
       {this.id,
-        this.name,
-        this.email,
-        this.profile,
-        this.countryCode,
-        this.mobile,
-        this.balance,
-        this.referralCode,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt});
+      this.name,
+      this.email,
+      this.profile,
+      this.countryCode,
+      this.mobile,
+      this.balance,
+      this.referralCode,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.deletedAt});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -514,12 +516,12 @@ class CustomerChatDetailProductRating {
 
   CustomerChatDetailProductRating(
       {this.id,
-        this.productId,
-        this.userId,
-        this.rate,
-        this.review,
-        this.status,
-        this.updatedAt});
+      this.productId,
+      this.userId,
+      this.rate,
+      this.review,
+      this.status,
+      this.updatedAt});
 
   CustomerChatDetailProductRating.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

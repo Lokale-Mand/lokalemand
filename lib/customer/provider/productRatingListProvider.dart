@@ -13,7 +13,8 @@ enum ProductRatingListState {
 }
 
 class ProductRatingListProvider extends ChangeNotifier {
-  ProductRatingListState productRatingListState = ProductRatingListState.initial;
+  ProductRatingListState productRatingListState =
+      ProductRatingListState.initial;
   String message = '';
   List<ProductRatingData> ratings = [];
   bool hasMoreData = false;

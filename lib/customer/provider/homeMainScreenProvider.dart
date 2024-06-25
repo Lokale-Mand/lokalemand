@@ -38,8 +38,7 @@ class HomeMainScreenProvider extends ChangeNotifier {
         create: (context) {
           return ActiveOrdersProvider();
         },
-        child: OrderHistoryScreen(
-        ),
+        child: OrderHistoryScreen(),
       ),
       // ProductWishListScreen(
       //   scrollController: scrollController[2],

@@ -160,11 +160,11 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
 
     return GestureDetector(
       onTap: () {
-        // Navigator.pushNamed(
-        //   context,
-        //   orderDetail,
-        //   arguments: order.orderId.toString(),
-        // );
+        Navigator.pushNamed(
+          context,
+          orderDetailScreen,
+          arguments: order.orderId.toString(),
+        );
       },
       child: Container(
         padding: EdgeInsetsDirectional.only(
@@ -275,11 +275,8 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
               ],
             ),
             Text(
-              int.parse(order.activeStatus.toString()) >= 9
-                  ? lblOrderStatusDisplayNames[
-                      int.parse(order.activeStatus.toString()) - 3]
-                  : lblOrderStatusDisplayNames[
-                      int.parse(order.activeStatus.toString())],
+              lblOrderStatusDisplayNames[
+                  int.parse(order.activeStatus.toString()) - 1],
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
@@ -320,7 +317,7 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                                         statusIndex: "0", context: context);
                               },
                             );
-                            },
+                          },
                           title: getTranslatedValue(context, "accept"),
                           height: 30,
                           color1: Colors.green,

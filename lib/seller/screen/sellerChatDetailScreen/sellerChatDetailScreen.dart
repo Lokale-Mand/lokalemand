@@ -16,7 +16,8 @@ class SellerChatDetailScreen extends StatefulWidget {
     required this.customerId,
     required this.customerName,
     required this.customerProfile,
-    this.rating, required this.isEligibleForRating,
+    this.rating,
+    required this.isEligibleForRating,
   });
 
   @override
@@ -338,6 +339,7 @@ class _SellerChatDetailScreenState extends State<SellerChatDetailScreen> {
                                               ),
                                               SellerChatDetailOrderItemWidget(
                                                 orderData: chat,
+                                                customerName: widget.customerName,
                                               )
                                             ],
                                           )

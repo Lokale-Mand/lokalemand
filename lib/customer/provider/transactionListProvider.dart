@@ -56,7 +56,6 @@ class TransactionProvider extends ChangeNotifier {
         itemsState = TransactionState.error;
         notifyListeners();
       }
-
     } catch (e) {
       message = e.toString();
       itemsState = TransactionState.error;

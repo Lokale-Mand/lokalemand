@@ -1,7 +1,6 @@
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
-Future<Map<String, dynamic>> getDietaryRepository(
-    BuildContext context) async {
+Future<Map<String, dynamic>> getDietaryRepository(BuildContext context) async {
   var response = await GeneralMethods.sendApiRequest(
       apiName: ApiAndParams.apiProductDietaries,
       params: {},

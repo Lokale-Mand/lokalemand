@@ -43,14 +43,14 @@ class ProductRatingData {
 
   ProductRatingData(
       {this.id,
-        this.productId,
-        this.userId,
-        this.rate,
-        this.review,
-        this.updatedAt,
-        this.status,
-        this.user,
-        this.images});
+      this.productId,
+      this.userId,
+      this.rate,
+      this.review,
+      this.updatedAt,
+      this.status,
+      this.user,
+      this.images});
 
   ProductRatingData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

@@ -37,7 +37,8 @@ class ProductUnitData {
   int? parentId;
   int? conversion;
 
-  ProductUnitData({this.id, this.name, this.shortCode, this.parentId, this.conversion});
+  ProductUnitData(
+      {this.id, this.name, this.shortCode, this.parentId, this.conversion});
 
   ProductUnitData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

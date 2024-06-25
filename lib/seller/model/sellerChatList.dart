@@ -48,17 +48,17 @@ class SellerChatListData {
 
   SellerChatListData(
       {this.id,
-        this.senderId,
-        this.senderType,
-        this.receiverId,
-        this.orderId,
-        this.message,
-        this.createdAt,
-        this.customerId,
-        this.customerName,
-        this.customerLogo,
-        this.isEligibleRating,
-        this.rating});
+      this.senderId,
+      this.senderType,
+      this.receiverId,
+      this.orderId,
+      this.message,
+      this.createdAt,
+      this.customerId,
+      this.customerName,
+      this.customerLogo,
+      this.isEligibleRating,
+      this.rating});
 
   SellerChatListData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

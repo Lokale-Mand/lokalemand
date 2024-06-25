@@ -154,7 +154,7 @@ class _RatingAndReviewScreenState extends State<SellerRatingAndReviewScreen> {
                     );
                   } else if (ratingListProvider.sellerRatingState ==
                       SellerRatingState.loaded) {
-                                        return ListView(
+                    return ListView(
                       shrinkWrap: true,
                       controller: scrollController,
                       children: List.generate(

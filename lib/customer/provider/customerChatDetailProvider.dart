@@ -106,7 +106,6 @@ class CustomerChatDetailProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-
       Map<String, dynamic> getData = await getCustomerSendMessageToSellerApi(
         context: context,
         params: params,

@@ -701,10 +701,9 @@ class _ProductListScreenState extends State<ProductSearchScreen> {
   /// Each time to start a speech recognition session
   void _startListening() async {
     await _speechToText.listen(
-        onResult: _onSpeechResult,
-        listenFor: const Duration(seconds: 60),
-        cancelOnError: true,
-        listenMode: ListenMode.search);
+      onResult: _onSpeechResult,
+      listenFor: const Duration(seconds: 60),
+    );
     setState(() {});
   }
 

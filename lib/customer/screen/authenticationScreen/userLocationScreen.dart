@@ -308,9 +308,7 @@ class _UserLocationScreenState extends State<UserLocationScreen> {
   getRedirection() async {
     if (Constant.session.getBoolData(SessionManager.keySkipLogin) ||
         Constant.session.getBoolData(SessionManager.isUserLogin)) {
-      if (Constant.session
-          .getData(SessionManager.keyUserName)
-          .isNotEmpty) {
+      if (Constant.session.getData(SessionManager.keyUserName).isNotEmpty) {
         Navigator.pushReplacementNamed(
           context,
           mainHomeScreen,

@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({Key? key}) : super(key: key);
 
   @override
-  State<OrderHistoryScreen> createState() =>
-      _OrderHistoryScreenState();
+  State<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
 }
 
 class _OrderHistoryScreenState extends State<OrderHistoryScreen>
@@ -41,8 +39,9 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      context.read<ActiveOrdersProvider>().getOrders(
-          params: {}, context: context);
+      context
+          .read<ActiveOrdersProvider>()
+          .getOrders(params: {}, context: context);
     });
   }
 
@@ -59,6 +58,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
   }
 
   _buildOrderContainer(Order order, String index) {
+    print(">>>>>>> ${order.activeStatus}");
     DateTime dateTime = DateTime.parse(order.createdAt.toString());
 
     List lblOrderStatusDisplayNames = [
@@ -75,11 +75,11 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
 
     return GestureDetector(
       onTap: () {
-        // Navigator.pushNamed(
-        //   context,
-        //   orderDetail,
-        //   arguments: order.orderId.toString(),
-        // );
+        Navigator.pushNamed(
+          context,
+          orderDetailScreen,
+          arguments: order,
+        );
       },
       child: Container(
         padding: EdgeInsetsDirectional.only(
@@ -128,8 +128,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                     image: context
                         .read<ActiveOrdersProvider>()
                         .getVariantImageFromOrderId(
-                      order.id.toString(),
-                    ),
+                          order.id.toString(),
+                        ),
                     height: 75,
                     width: 75,
                     boxFit: BoxFit.cover,
@@ -145,8 +145,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                         context
                             .read<ActiveOrdersProvider>()
                             .getVariantProductNameFromOrderId(
-                          order.id.toString(),
-                        ),
+                              order.id.toString(),
+                            ),
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
@@ -175,7 +175,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                 Container(
                   decoration: BoxDecoration(
                       border:
-                      Border.all(color: ColorsRes.menuTitleColor, width: 1),
+                          Border.all(color: ColorsRes.menuTitleColor, width: 1),
                       borderRadius: BorderRadius.circular(20)),
                   padding: EdgeInsetsDirectional.only(
                       start: 25, end: 25, top: 3, bottom: 3),
@@ -192,11 +192,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
               ],
             ),
             Text(
-              int.parse(order.activeStatus.toString()) >= 9
-                  ? lblOrderStatusDisplayNames[
-              int.parse(order.activeStatus.toString()) - 3]
-                  : lblOrderStatusDisplayNames[
-              int.parse(order.activeStatus.toString())],
+              lblOrderStatusDisplayNames[
+                  int.parse(order.activeStatus.toString()) - 1],
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
@@ -237,9 +234,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                   Column(
                     children: List.generate(
                       provider.orders.length,
-                          (index) => _buildOrderContainer(
-                        provider.orders[index],index.toString()
-                      ),
+                      (index) => _buildOrderContainer(
+                          provider.orders[index], index.toString()),
                     ),
                   ),
                   if (provider.activeOrdersState ==

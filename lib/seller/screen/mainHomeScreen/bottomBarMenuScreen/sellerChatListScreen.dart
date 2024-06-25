@@ -144,7 +144,7 @@ class _SellerChatListScreenState extends State<SellerChatListScreen> {
                                           chat.customerName.toString(),
                                           chat.customerLogo,
                                           (chat.rating != null &&
-                                              chat.rating!.isNotEmpty)
+                                                  chat.rating!.isNotEmpty)
                                               ? chat.rating![0]
                                               : null,
                                           chat.isEligibleRating != "0"

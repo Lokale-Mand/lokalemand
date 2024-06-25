@@ -10,7 +10,8 @@ enum SellerProductUnitState {
 }
 
 class SellerProductUnitListProvider extends ChangeNotifier {
-  SellerProductUnitState sellerProductUnitState = SellerProductUnitState.initial;
+  SellerProductUnitState sellerProductUnitState =
+      SellerProductUnitState.initial;
   String message = '';
   List<ProductUnitData> productUnits = [];
   List<String> selectedProductUnitIdsList = [];
@@ -22,7 +23,7 @@ class SellerProductUnitListProvider extends ChangeNotifier {
       sellerProductUnitState = SellerProductUnitState.loading;
       notifyListeners();
 
-      var getProductUnitData = await  getProductUnitRepository(context);
+      var getProductUnitData = await getProductUnitRepository(context);
 
       if (getProductUnitData[ApiAndParams.status].toString() == "1") {
         ProductUnit productUnit = ProductUnit.fromJson(getProductUnitData);
@@ -31,8 +32,8 @@ class SellerProductUnitListProvider extends ChangeNotifier {
         notifyListeners();
       } else {
         sellerProductUnitState = SellerProductUnitState.error;
-        GeneralMethods.showMessage(
-            context, getProductUnitData[ApiAndParams.message], MessageType.warning);
+        GeneralMethods.showMessage(context,
+            getProductUnitData[ApiAndParams.message], MessageType.warning);
         notifyListeners();
       }
     } catch (e) {
@@ -44,7 +45,7 @@ class SellerProductUnitListProvider extends ChangeNotifier {
     }
   }
 
-  productUnitSingleSelection({required String id,required String name}) {
+  productUnitSingleSelection({required String id, required String name}) {
     selectedProductUnitIdsList.clear();
     selectedProductUnitNamesList.clear();
     if (selectedProductUnitIdsList.contains(id)) {

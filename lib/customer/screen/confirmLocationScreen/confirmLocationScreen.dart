@@ -50,7 +50,7 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
       GeneralMethods.determinePosition().then((value) async {
         updateMap(value.latitude, value.longitude);
       });
-        }
+    }
 
     setMarkerIcon();
     super.initState();
@@ -74,7 +74,11 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
           customMarkers.add(Marker(
             markerId: MarkerId("$i"),
             position: kMapCenter,
-            icon: BitmapDescriptor.fromBytes(bmp),
+            icon: BitmapDescriptor.bytes(
+              bmp,
+              height: 512,
+              width: 341,
+            ),
           ));
         });
       });
@@ -87,7 +91,6 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
         widget.from == "seller_register" ||
         widget.from == "address_detail") {
       Map<String, dynamic> params = {};
-      // params[ApiAndParams.cityName] = Constant.cityAddressMap["city"];
 
       params[ApiAndParams.longitude] = kMapCenter.longitude.toString();
       params[ApiAndParams.latitude] = kMapCenter.latitude.toString();

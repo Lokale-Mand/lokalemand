@@ -36,7 +36,7 @@ class ColorsRes {
   static Color mainIconColor = Colors.white;
 
   static Color bgColorLight = const Color(0xfffcfcfc);
-    static Color bgColorDark = const Color(0xff131313);
+  static Color bgColorDark = const Color(0xff131313);
 
   static Color cardColorLight = const Color(0xffffffff);
   static Color cardColorDark = const Color(0xff101010);
@@ -81,6 +81,7 @@ class ColorsRes {
     brightness: Brightness.light,
     scaffoldBackgroundColor: bgColorLight,
     cardColor: cardColorLight,
+    bottomAppBarTheme: BottomAppBarTheme(color: ColorsRes.bgColorLight),
     iconTheme: IconThemeData(
       color: grey,
     ),
@@ -92,7 +93,7 @@ class ColorsRes {
     ),
     colorScheme:
         ColorScheme.fromSwatch(primarySwatch: ColorsRes.appColor).copyWith(
-      background: bgColorLight,
+      surface: bgColorLight,
       brightness: Brightness.light,
     ),
   );
@@ -102,6 +103,7 @@ class ColorsRes {
     brightness: Brightness.dark,
     scaffoldBackgroundColor: bgColorDark,
     cardColor: cardColorDark,
+    bottomAppBarTheme: BottomAppBarTheme(color: ColorsRes.bgColorDark),
     iconTheme: IconThemeData(
       color: grey,
     ),
@@ -113,7 +115,7 @@ class ColorsRes {
     ),
     colorScheme:
         ColorScheme.fromSwatch(primarySwatch: ColorsRes.appColor).copyWith(
-      background: bgColorDark,
+      surface: bgColorDark,
       brightness: Brightness.dark,
     ),
   );
@@ -139,7 +141,8 @@ class ColorsRes {
 
     if (isDark) {
       if (!isDarkTheme) {
-        Constant.session.setSystemTheme(SessionManager.isDarkTheme, false, false);
+        Constant.session
+            .setSystemTheme(SessionManager.isDarkTheme, false, false);
       }
       mainTextColor = darkThemeTextColor;
       subTitleMainTextColor = subTitleTextColorDark;
@@ -151,7 +154,8 @@ class ColorsRes {
       return darkTheme;
     } else {
       if (isDarkTheme) {
-        Constant.session.setSystemTheme(SessionManager.isDarkTheme, true, false);
+        Constant.session
+            .setSystemTheme(SessionManager.isDarkTheme, true, false);
       }
       mainTextColor = lightThemeTextColor;
       subTitleMainTextColor = subTitleTextColorLight;

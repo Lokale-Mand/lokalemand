@@ -31,10 +31,10 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
   late SellerCityByLatLongData cityByLatLongData;
 
   //PERSONAL DETAILS CONTROLLERS
-  TextEditingController edtBankName = TextEditingController();
-  TextEditingController edtBankAcNumber = TextEditingController();
-  TextEditingController edtBankAcName = TextEditingController();
-  TextEditingController edtBankIbanSwiftCode = TextEditingController();
+  TextEditingController edtBankName = TextEditingController(text: "0");
+  TextEditingController edtBankAcNumber = TextEditingController(text: "0");
+  TextEditingController edtBankAcName = TextEditingController(text: "0");
+  TextEditingController edtBankIbanSwiftCode = TextEditingController(text: "0");
   TextEditingController edtNidNumber = TextEditingController();
   String selectedAddressProofPath = "";
   String selectedNationalIdPath = "";
@@ -1551,147 +1551,147 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        Widgets.getSizedBox(
-          height: Constant.size10,
-        ),
-        Container(
-          padding: EdgeInsetsDirectional.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: ColorsRes.textFieldBorderColor,
-              ),
-              color: Theme.of(context).cardColor),
-          child: TextField(
-            controller: edtBankName,
-            keyboardType: TextInputType.name,
-            style: TextStyle(
-              color: ColorsRes.mainTextColor,
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              hintStyle: TextStyle(
-                color: Colors.grey[300],
-              ),
-              hintText: "Lokale Mand",
-            ),
-          ),
-        ),
-        Widgets.getSizedBox(
-          height: Constant.size20,
-        ),
-        //Bank Account Name
-        CustomTextLabel(
-          jsonKey: "bank_account_name",
-          style: TextStyle(
-            color: ColorsRes.mainTextColor,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        Widgets.getSizedBox(
-          height: Constant.size10,
-        ),
-        Container(
-          padding: EdgeInsetsDirectional.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: ColorsRes.textFieldBorderColor,
-              ),
-              color: Theme.of(context).cardColor),
-          child: TextField(
-            controller: edtBankAcName,
-            keyboardType: TextInputType.name,
-            style: TextStyle(
-              color: ColorsRes.mainTextColor,
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              hintStyle: TextStyle(
-                color: Colors.grey[300],
-              ),
-              hintText: "Lokale Mand",
-            ),
-          ),
-        ),
-        Widgets.getSizedBox(
-          height: Constant.size20,
-        ),
-        //Bank Account Number
-        CustomTextLabel(
-          jsonKey: "bank_account_name",
-          style: TextStyle(
-            color: ColorsRes.mainTextColor,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        Widgets.getSizedBox(
-          height: Constant.size10,
-        ),
-        Container(
-          padding: EdgeInsetsDirectional.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: ColorsRes.textFieldBorderColor,
-              ),
-              color: Theme.of(context).cardColor),
-          child: TextField(
-            controller: edtBankAcNumber,
-            keyboardType: TextInputType.name,
-            style: TextStyle(
-              color: ColorsRes.mainTextColor,
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              hintStyle: TextStyle(
-                color: Colors.grey[300],
-              ),
-              hintText: "Lokale Mand",
-            ),
-          ),
-        ),
-        Widgets.getSizedBox(
-          height: Constant.size20,
-        ),
-        // IBAN or SWIFT code
-        CustomTextLabel(
-          jsonKey: "bank_iban_or_swift_code",
-          style: TextStyle(
-            color: ColorsRes.mainTextColor,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        Widgets.getSizedBox(
-          height: Constant.size10,
-        ),
-        Container(
-          padding: EdgeInsetsDirectional.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: ColorsRes.textFieldBorderColor,
-              ),
-              color: Theme.of(context).cardColor),
-          child: TextField(
-            controller: edtBankIbanSwiftCode,
-            keyboardType: TextInputType.name,
-            style: TextStyle(
-              color: ColorsRes.mainTextColor,
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              hintStyle: TextStyle(
-                color: Colors.grey[300],
-              ),
-              hintText: "Lokale Mand",
-            ),
-          ),
-        ),
+        // Widgets.getSizedBox(
+        //   height: Constant.size10,
+        // ),
+        // Container(
+        //   padding: EdgeInsetsDirectional.all(10),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       border: Border.all(
+        //         color: ColorsRes.textFieldBorderColor,
+        //       ),
+        //       color: Theme.of(context).cardColor),
+        //   child: TextField(
+        //     controller: edtBankName,
+        //     keyboardType: TextInputType.name,
+        //     style: TextStyle(
+        //       color: ColorsRes.mainTextColor,
+        //     ),
+        //     decoration: InputDecoration(
+        //       border: InputBorder.none,
+        //       isDense: true,
+        //       hintStyle: TextStyle(
+        //         color: Colors.grey[300],
+        //       ),
+        //       hintText: "Lokale Mand",
+        //     ),
+        //   ),
+        // ),
+        // Widgets.getSizedBox(
+        //   height: Constant.size20,
+        // ),
+        // //Bank Account Name
+        // CustomTextLabel(
+        //   jsonKey: "bank_account_name",
+        //   style: TextStyle(
+        //     color: ColorsRes.mainTextColor,
+        //     fontWeight: FontWeight.w500,
+        //   ),
+        // ),
+        // Widgets.getSizedBox(
+        //   height: Constant.size10,
+        // ),
+        // Container(
+        //   padding: EdgeInsetsDirectional.all(10),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       border: Border.all(
+        //         color: ColorsRes.textFieldBorderColor,
+        //       ),
+        //       color: Theme.of(context).cardColor),
+        //   child: TextField(
+        //     controller: edtBankAcName,
+        //     keyboardType: TextInputType.name,
+        //     style: TextStyle(
+        //       color: ColorsRes.mainTextColor,
+        //     ),
+        //     decoration: InputDecoration(
+        //       border: InputBorder.none,
+        //       isDense: true,
+        //       hintStyle: TextStyle(
+        //         color: Colors.grey[300],
+        //       ),
+        //       hintText: "Lokale Mand",
+        //     ),
+        //   ),
+        // ),
+        // Widgets.getSizedBox(
+        //   height: Constant.size20,
+        // ),
+        // //Bank Account Number
+        // CustomTextLabel(
+        //   jsonKey: "bank_account_name",
+        //   style: TextStyle(
+        //     color: ColorsRes.mainTextColor,
+        //     fontWeight: FontWeight.w500,
+        //   ),
+        // ),
+        // Widgets.getSizedBox(
+        //   height: Constant.size10,
+        // ),
+        // Container(
+        //   padding: EdgeInsetsDirectional.all(10),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       border: Border.all(
+        //         color: ColorsRes.textFieldBorderColor,
+        //       ),
+        //       color: Theme.of(context).cardColor),
+        //   child: TextField(
+        //     controller: edtBankAcNumber,
+        //     keyboardType: TextInputType.name,
+        //     style: TextStyle(
+        //       color: ColorsRes.mainTextColor,
+        //     ),
+        //     decoration: InputDecoration(
+        //       border: InputBorder.none,
+        //       isDense: true,
+        //       hintStyle: TextStyle(
+        //         color: Colors.grey[300],
+        //       ),
+        //       hintText: "Lokale Mand",
+        //     ),
+        //   ),
+        // ),
+        // Widgets.getSizedBox(
+        //   height: Constant.size20,
+        // ),
+        // // IBAN or SWIFT code
+        // CustomTextLabel(
+        //   jsonKey: "bank_iban_or_swift_code",
+        //   style: TextStyle(
+        //     color: ColorsRes.mainTextColor,
+        //     fontWeight: FontWeight.w500,
+        //   ),
+        // ),
+        // Widgets.getSizedBox(
+        //   height: Constant.size10,
+        // ),
+        // Container(
+        //   padding: EdgeInsetsDirectional.all(10),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       border: Border.all(
+        //         color: ColorsRes.textFieldBorderColor,
+        //       ),
+        //       color: Theme.of(context).cardColor),
+        //   child: TextField(
+        //     controller: edtBankIbanSwiftCode,
+        //     keyboardType: TextInputType.name,
+        //     style: TextStyle(
+        //       color: ColorsRes.mainTextColor,
+        //     ),
+        //     decoration: InputDecoration(
+        //       border: InputBorder.none,
+        //       isDense: true,
+        //       hintStyle: TextStyle(
+        //         color: Colors.grey[300],
+        //       ),
+        //       hintText: "Lokale Mand",
+        //     ),
+        //   ),
+        // ),
         Widgets.getSizedBox(
           height: Constant.size20,
         ),
@@ -1913,7 +1913,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
 
   void personalInformationValidation() async {
     try {
-      if (edtBankName.text.isEmpty &&
+      /*if (edtBankName.text.isEmpty &&
           GeneralMethods.emptyValidation(edtBankName.text) != null) {
         GeneralMethods.showMessage(
             context,
@@ -1940,7 +1940,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
             getTranslatedValue(
                 context, "enter_valid_personal_info_bank_ac_iban_swift_code"),
             MessageType.warning);
-      } else if (edtNidNumber.text.isEmpty &&
+      } else*/
+      if (edtNidNumber.text.isEmpty &&
           GeneralMethods.emptyValidation(edtNidNumber.text) != null) {
         GeneralMethods.showMessage(
             context,
@@ -2024,10 +2025,10 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
 
   @override
   void dispose() {
-    edtBankName.dispose();
-    edtBankAcNumber.dispose();
-    edtBankAcName.dispose();
-    edtBankIbanSwiftCode.dispose();
+    // edtBankName.dispose();
+    // edtBankAcNumber.dispose();
+    // edtBankAcName.dispose();
+    // edtBankIbanSwiftCode.dispose();
     edtNidNumber.dispose();
     edtStoreName.dispose();
     edtStoreLocation.dispose();

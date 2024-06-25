@@ -89,9 +89,9 @@ Widget editBoxWidget(
           labelText: label,
           labelStyle: TextStyle(color: ColorsRes.menuTitleColor),
           isDense: true,
-          floatingLabelStyle: MaterialStateTextStyle.resolveWith(
-            (Set<MaterialState> states) {
-              final Color color = states.contains(MaterialState.error)
+          floatingLabelStyle: WidgetStateTextStyle.resolveWith(
+            (Set<WidgetState> states) {
+              final Color color = states.contains(WidgetState.error)
                   ? Theme.of(context).colorScheme.error
                   : ColorsRes.appColor;
               return TextStyle(color: color, letterSpacing: 1.3);

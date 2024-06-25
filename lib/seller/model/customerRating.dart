@@ -43,14 +43,14 @@ class CustomerRatingData {
 
   CustomerRatingData(
       {this.id,
-        this.userId,
-        this.sellerId,
-        this.rate,
-        this.review,
-        this.status,
-        this.updatedAt,
-        this.user,
-        this.images});
+      this.userId,
+      this.sellerId,
+      this.rate,
+      this.review,
+      this.status,
+      this.updatedAt,
+      this.user,
+      this.images});
 
   CustomerRatingData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -60,7 +60,9 @@ class CustomerRatingData {
     review = json['review'].toString();
     status = json['status'].toString();
     updatedAt = json['updated_at'].toString();
-    user = json['user'] != null ? new CustomerRatingUser.fromJson(json['user']) : null;
+    user = json['user'] != null
+        ? new CustomerRatingUser.fromJson(json['user'])
+        : null;
     if (json['images'] != null) {
       images = <CustomerRatingImages>[];
       json['images'].forEach((v) {

@@ -42,7 +42,6 @@ class SellerChatListProvider extends ChangeNotifier {
     }
     notifyListeners();
 
-
     try {
       params[ApiAndParams.limit] =
           Constant.defaultDataLoadLimitAtOnce.toString();

@@ -170,7 +170,8 @@ class _ProductListScreenState extends State<SellerWishListScreen> {
                                 ),
                               ),
                               CustomTextLabel(
-                                text: "${seller.distance.toString()} ${getTranslatedValue(context, "km_away")}",
+                                text:
+                                    "${seller.distance.toString()} ${getTranslatedValue(context, "km_away")}",
                                 softWrap: true,
                                 style: TextStyle(
                                   color: ColorsRes.subTitleMainTextColor,
@@ -178,8 +179,10 @@ class _ProductListScreenState extends State<SellerWishListScreen> {
                                 ),
                               ),
                               RatingBuilderWidget(
-                                averageRating: double.parse(seller.averageRating.toString()),
-                                totalRatings: int.parse(seller.ratingCount.toString()),
+                                averageRating: double.parse(
+                                    seller.averageRating.toString()),
+                                totalRatings:
+                                    int.parse(seller.ratingCount.toString()),
                                 size: 20,
                                 spacing: 0,
                               ),

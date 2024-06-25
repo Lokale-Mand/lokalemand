@@ -1,5 +1,5 @@
-import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/helper/generalWidgets/customRadio.dart';
+import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 getPaymentMethods(
     PaymentMethodsData? paymentMethodsData, BuildContext context) {
@@ -55,10 +55,9 @@ getPaymentMethods(
                 CustomTextLabel(
                   jsonKey: "payment_method_description",
                   style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: ColorsRes.subTitleMainTextColor
-                  ),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: ColorsRes.subTitleMainTextColor),
                 ),
                 Widgets.getSizedBox(
                   height: Constant.size10,
@@ -102,8 +101,8 @@ getPaymentMethods(
                                   ),
                                 ),
                               ),
-                               CustomRadio(
-                              inactiveColor: ColorsRes.subTitleMainTextColor,
+                              CustomRadio(
+                                inactiveColor: ColorsRes.subTitleMainTextColor,
                                 value: "COD",
                                 groupValue: context
                                     .read<CheckoutProvider>()
@@ -159,8 +158,8 @@ getPaymentMethods(
                                   ),
                                 ),
                               ),
-                               CustomRadio(
-                              inactiveColor: ColorsRes.subTitleMainTextColor,
+                              CustomRadio(
+                                inactiveColor: ColorsRes.subTitleMainTextColor,
                                 value: "Razorpay",
                                 groupValue: context
                                     .read<CheckoutProvider>()
@@ -216,8 +215,8 @@ getPaymentMethods(
                                   ),
                                 ),
                               ),
-                               CustomRadio(
-                              inactiveColor: ColorsRes.subTitleMainTextColor,
+                              CustomRadio(
+                                inactiveColor: ColorsRes.subTitleMainTextColor,
                                 value: "Paystack",
                                 groupValue: context
                                     .read<CheckoutProvider>()
@@ -276,8 +275,8 @@ getPaymentMethods(
                                   ),
                                 ),
                               ),
-                               CustomRadio(
-                              inactiveColor: ColorsRes.subTitleMainTextColor,
+                              CustomRadio(
+                                inactiveColor: ColorsRes.subTitleMainTextColor,
                                 value: "Stripe",
                                 groupValue: context
                                     .read<CheckoutProvider>()
@@ -333,8 +332,8 @@ getPaymentMethods(
                                   ),
                                 ),
                               ),
-                               CustomRadio(
-                              inactiveColor: ColorsRes.subTitleMainTextColor,
+                              CustomRadio(
+                                inactiveColor: ColorsRes.subTitleMainTextColor,
                                 value: "Paytm",
                                 groupValue: context
                                     .read<CheckoutProvider>()
@@ -389,8 +388,8 @@ getPaymentMethods(
                                   ),
                                 ),
                               ),
-                               CustomRadio(
-                              inactiveColor: ColorsRes.subTitleMainTextColor,
+                              CustomRadio(
+                                inactiveColor: ColorsRes.subTitleMainTextColor,
                                 value: "Paypal",
                                 groupValue: context
                                     .read<CheckoutProvider>()

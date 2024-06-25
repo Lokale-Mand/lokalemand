@@ -1,5 +1,5 @@
-import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/helper/generalWidgets/customCheckbox.dart';
+import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 getSizeWidget(List<Sizes> sizes, BuildContext context) {
   return ListView(

@@ -72,7 +72,7 @@ class _SellerConfirmLocationState extends State<SellerConfirmLocation> {
           customMarkers.add(Marker(
             markerId: MarkerId("$i"),
             position: kMapCenter,
-            icon: BitmapDescriptor.fromBytes(bmp),
+            icon: BitmapDescriptor.bytes(bmp),
           ));
         });
       });
@@ -300,7 +300,9 @@ class _SellerConfirmLocationState extends State<SellerConfirmLocation> {
                   Navigator.pop(context, cityByLatLong);
                 }
               }),
-            SizedBox(height: 10,)
+            SizedBox(
+              height: 10,
+            )
           ],
         ));
   }

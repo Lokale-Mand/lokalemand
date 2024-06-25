@@ -191,12 +191,10 @@ class IntroSliderScreenState extends State<IntroSliderScreen> {
       onTap: () {
         if (Constant.session.getBoolData(SessionManager.keySkipLogin) ||
             Constant.session.getBoolData(SessionManager.isUserLogin)) {
-
-            Navigator.pushReplacementNamed(
-              context,
-              mainHomeScreen,
-            );
-
+          Navigator.pushReplacementNamed(
+            context,
+            mainHomeScreen,
+          );
         } else {
           Navigator.pushReplacementNamed(context, userTypeSelectionScreen);
         }

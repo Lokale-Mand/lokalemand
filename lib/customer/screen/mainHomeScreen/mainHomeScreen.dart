@@ -149,6 +149,7 @@ class HomeMainScreenState extends State<HomeMainScreen> {
     ];
 
     return BottomNavigationBar(
+      backgroundColor: Theme.of(context).cardColor,
       items: List.generate(
         totalPage,
         (index) => BottomNavigationBarItem(

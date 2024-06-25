@@ -45,20 +45,21 @@ class SellerListData {
   String? ratingCount;
   String? averageRating;
 
-  SellerListData(
-      {this.id,
-      this.name,
-      this.storeName,
-      this.latitude,
-      this.longitude,
-      this.categories,
-      this.storeHours,
-      this.distance,
-      this.maxDeliverableDistance,
-      this.logoUrl,
-      this.type,
-        this.ratingCount,
-        this.averageRating,});
+  SellerListData({
+    this.id,
+    this.name,
+    this.storeName,
+    this.latitude,
+    this.longitude,
+    this.categories,
+    this.storeHours,
+    this.distance,
+    this.maxDeliverableDistance,
+    this.logoUrl,
+    this.type,
+    this.ratingCount,
+    this.averageRating,
+  });
 
   SellerListData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

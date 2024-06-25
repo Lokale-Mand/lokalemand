@@ -254,7 +254,7 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
     ];
   }
 
-  setDeleteMenuItem(){
+  setDeleteMenuItem() {
     deleteAccountMenuItem = [];
     deleteAccountMenuItem = [
       if (Constant.session.isUserLoggedIn())

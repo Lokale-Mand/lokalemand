@@ -46,17 +46,17 @@ class SellerWishListData {
 
   SellerWishListData(
       {this.id,
-        this.userId,
-        this.sellerId,
-        this.createdAt,
-        this.updatedAt,
-        this.distance,
-        this.maxDeliverableDistance,
-        this.isFavorite,
-        this.ratingCount,
-        this.averageRating,
-        this.imageUrl,
-        this.seller});
+      this.userId,
+      this.sellerId,
+      this.createdAt,
+      this.updatedAt,
+      this.distance,
+      this.maxDeliverableDistance,
+      this.isFavorite,
+      this.ratingCount,
+      this.averageRating,
+      this.imageUrl,
+      this.seller});
 
   SellerWishListData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -66,13 +66,14 @@ class SellerWishListData {
     updatedAt = json['updated_at'].toString();
     distance = json['distance'].toString();
     maxDeliverableDistance = json['max_deliverable_distance'].toString();
-    isFavorite = json['is_favorite']??false;
+    isFavorite = json['is_favorite'] ?? false;
     ratingCount = json['rating_count'].toString();
     averageRating = json['average_rating'].toString();
     imageUrl = json['image_url'].toString();
 
-    seller =
-    json['seller'] != null ? new SellerWishListSeller.fromJson(json['seller']) : null;
+    seller = json['seller'] != null
+        ? new SellerWishListSeller.fromJson(json['seller'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -147,53 +148,53 @@ class SellerWishListSeller {
 
   SellerWishListSeller(
       {this.id,
-        this.adminId,
-        this.name,
-        this.type,
-        this.storeName,
-        this.slug,
-        this.email,
-        this.mobile,
-        this.balance,
-        this.storeUrl,
-        this.logo,
-        this.storeDescription,
-        this.street,
-        this.pincodeId,
-        this.cityId,
-        this.state,
-        this.categories,
-        this.accountNumber,
-        this.bankIfscCode,
-        this.accountName,
-        this.bankName,
-        this.commission,
-        this.status,
-        this.requireProductsApproval,
-        this.fcmId,
-        this.nationalIdentityCard,
-        this.addressProof,
-        this.panNumber,
-        this.taxName,
-        this.taxNumber,
-        this.customerPrivacy,
-        this.latitude,
-        this.longitude,
-        this.placeName,
-        this.formattedAddress,
-        this.forgotPasswordCode,
-        this.viewOrderOtp,
-        this.assignDeliveryBoy,
-        this.fssaiLicNo,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt,
-        this.remark,
-        this.changeOrderStatusDelivered,
-        this.storeHours,
-        this.logoUrl,
-        this.nationalIdentityCardUrl,
-        this.addressProofUrl});
+      this.adminId,
+      this.name,
+      this.type,
+      this.storeName,
+      this.slug,
+      this.email,
+      this.mobile,
+      this.balance,
+      this.storeUrl,
+      this.logo,
+      this.storeDescription,
+      this.street,
+      this.pincodeId,
+      this.cityId,
+      this.state,
+      this.categories,
+      this.accountNumber,
+      this.bankIfscCode,
+      this.accountName,
+      this.bankName,
+      this.commission,
+      this.status,
+      this.requireProductsApproval,
+      this.fcmId,
+      this.nationalIdentityCard,
+      this.addressProof,
+      this.panNumber,
+      this.taxName,
+      this.taxNumber,
+      this.customerPrivacy,
+      this.latitude,
+      this.longitude,
+      this.placeName,
+      this.formattedAddress,
+      this.forgotPasswordCode,
+      this.viewOrderOtp,
+      this.assignDeliveryBoy,
+      this.fssaiLicNo,
+      this.createdAt,
+      this.updatedAt,
+      this.deletedAt,
+      this.remark,
+      this.changeOrderStatusDelivered,
+      this.storeHours,
+      this.logoUrl,
+      this.nationalIdentityCardUrl,
+      this.addressProofUrl});
 
   SellerWishListSeller.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -239,7 +240,8 @@ class SellerWishListSeller {
     updatedAt = json['updated_at'].toString();
     deletedAt = json['deleted_at'].toString();
     remark = json['remark'].toString();
-    changeOrderStatusDelivered = json['change_order_status_delivered'].toString();
+    changeOrderStatusDelivered =
+        json['change_order_status_delivered'].toString();
     if (json['store_hours'] != null) {
       storeHours = <SellerWishListStoreHours>[];
       json['store_hours'].forEach((v) {
@@ -313,7 +315,8 @@ class SellerWishListStoreHours {
   String? openTime;
   String? closeTime;
 
-  SellerWishListStoreHours({this.storeOpen, this.day, this.openTime, this.closeTime});
+  SellerWishListStoreHours(
+      {this.storeOpen, this.day, this.openTime, this.closeTime});
 
   SellerWishListStoreHours.fromJson(Map<String, dynamic> json) {
     storeOpen = json['store_open'].toString();

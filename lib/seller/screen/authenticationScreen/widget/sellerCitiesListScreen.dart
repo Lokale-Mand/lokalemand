@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/model/sellerCities.dart';
@@ -32,8 +31,9 @@ class _CitiesListScreenState extends State<CitiesListScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((value) =>
-        context.read<SellerCitiesListProvider>().getCitiesApiProvider(context: context));
+    Future.delayed(Duration.zero).then((value) => context
+        .read<SellerCitiesListProvider>()
+        .getCitiesApiProvider(context: context));
     super.initState();
   }
 
@@ -48,11 +48,12 @@ class _CitiesListScreenState extends State<CitiesListScreen> {
       ),
       body: Consumer<SellerCitiesListProvider>(
         builder: (context, sellerCitiesListProvider, child) {
-          if (sellerCitiesListProvider.sellerCitiesState == SellerCitiesState.loading) {
+          if (sellerCitiesListProvider.sellerCitiesState ==
+              SellerCitiesState.loading) {
             return ListView(
               children: List.generate(
                 20,
-                    (index) => CustomShimmer(
+                (index) => CustomShimmer(
                   height: 60,
                   width: MediaQuery.sizeOf(context).width,
                   borderRadius: 10,
@@ -66,9 +67,9 @@ class _CitiesListScreenState extends State<CitiesListScreen> {
               // controller: scrollController,
               children: List.generate(
                 sellerCitiesListProvider.cities.length,
-                    (index) {
+                (index) {
                   SellerCitiesData? sellerCitiesData =
-                  sellerCitiesListProvider.cities[index];
+                      sellerCitiesListProvider.cities[index];
                   return Column(
                     children: [
                       GestureDetector(

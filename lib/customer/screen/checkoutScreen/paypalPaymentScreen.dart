@@ -1,5 +1,5 @@
-import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class PayPalPaymentScreen extends StatefulWidget {
   final String paymentUrl;

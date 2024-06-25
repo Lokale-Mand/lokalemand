@@ -17,12 +17,13 @@ class SellerCategoryListProvider extends ChangeNotifier {
   bool startedApiCalling = false;
   List<String> selectedCategoriesNames = [];
 
-  Future getCategoryApiProviderForRegistration({required BuildContext context}) async {
+  Future getCategoryApiProviderForRegistration(
+      {required BuildContext context}) async {
     try {
-
       sellerCategoryState = SellerCategoryState.loading;
       notifyListeners();
-      Map<String, dynamic> getCategoryData = await getMainCategoryListRepository(context);
+      Map<String, dynamic> getCategoryData =
+          await getMainCategoryListRepository(context);
 
       if (getCategoryData[ApiAndParams.status].toString() == "1") {
         CategoryList category = CategoryList.fromJson(getCategoryData);

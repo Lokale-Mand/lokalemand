@@ -1,7 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:lokale_mand/customer/models/chatDetail.dart';
 import 'package:lokale_mand/customer/provider/productRatingProvider.dart';
-import 'package:lokale_mand/customer/provider/ratingProvider.dart';
 import 'package:lokale_mand/customer/screen/customerChatDetailScreen/widget/productSubmitRatingWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
@@ -53,213 +52,232 @@ class _ChatDetailOrderItemWidgetState extends State<ChatDetailOrderItemWidget> {
       createdAt = DateFormat('dd/MM/yyyy').format(dateTime);
     }
 
-    return Column(
-      children: [
-        Widgets.getSizedBox(height: 10),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Widgets.setNetworkImg(
-                image: widget.orderData?.order?.items?[0].productVariant
-                        ?.product?.imageUrl
-                        ?.toString() ??
-                    "",
-                height: 50,
-                width: 50,
-                boxFit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          orderDetailScreen,
+          arguments: widget.orderData?.order,
+        );
+      },
+      child: Column(
+        children: [
+          Widgets.getSizedBox(height: 10),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Widgets.setNetworkImg(
+                  image: widget.orderData?.order?.items?[0].productVariant
+                          ?.product?.imageUrl
+                          ?.toString() ??
+                      "",
+                  height: 50,
+                  width: 50,
+                  boxFit: BoxFit.cover,
+                ),
               ),
-            ),
-            Widgets.getSizedBox(width: 20),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomTextLabel(
-                    text: widget.orderData?.order?.items?[0].productName ?? "",
-                    softWrap: true,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: ColorsRes.mainTextColor,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.only(end: 5),
-                    child: CustomTextLabel(
-                      text: double.parse(
-                                  widget.orderData?.order?.items?[0].price ??
-                                      "0.0") !=
-                              0
-                          ? GeneralMethods.getCurrencyFormat(
-                              double.parse(
-                                  widget.orderData?.order?.items?[0].price ??
-                                      "0.0"),
-                            )
-                          : GeneralMethods.getCurrencyFormat(
-                              double.parse(
-                                widget.orderData?.order?.items?[0].price ??
-                                    "0.0",
-                              ),
-                            ),
+              Widgets.getSizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomTextLabel(
+                      text:
+                          widget.orderData?.order?.items?[0].productName ?? "",
                       softWrap: true,
-                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: ColorsRes.subTitleMainTextColor,
-                        decoration: TextDecoration.none,
+                        color: ColorsRes.mainTextColor,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        Widgets.getSizedBox(height: 10),
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                padding: EdgeInsetsDirectional.only(start: 10, end: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  border: Border.all(
-                    color: ColorsRes.textFieldBorderColor,
-                  ),
-                  color: Theme.of(context).cardColor,
-                ),
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  controller: edtProductStock,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    CustomNumberTextInputFormatter()
-                  ],
-                  enabled: false,
-                  style: TextStyle(
-                    color: ColorsRes.mainTextColor,
-                  ),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    isDense: true,
-                    hintStyle: TextStyle(
-                      color: ColorsRes.menuTitleColor,
-                    ),
-                    hintText: context
-                        .read<LanguageProvider>()
-                        .currentLanguage["product_stock_hint"],
-                  ),
-                  onChanged: (value) {
-                    if (value.isNotEmpty) {
-                      edtProductStock.text = value;
-                    }
-                  },
-                ),
-              ),
-            ),
-            if (widget.orderData!.productRating != null ||
-                widget.orderData?.order?.activeStatus.toString() == "6")
-              SizedBox(width: 10),
-            if (widget.orderData!.productRating != null ||
-                widget.orderData?.order?.activeStatus.toString() == "6")
-              Align(
-                alignment: AlignmentDirectional.centerEnd,
-                child: (widget.orderData!.productRating != null)
-                    ? (widget.orderData!.productRating?.rate.toString() != "0")
-                        ? GestureDetector(
-                            onTap: () {
-                              if (widget.orderData!.productRating != null ||
-                                  widget.orderData?.order?.activeStatus.toString() == "6") {
-                                openRatingDialog().then((value) {
-                                  widget.voidCallback;
-                                });
-                              }
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.star_rate_rounded,
-                                  color: Colors.amber,
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(end: 5),
+                      child: CustomTextLabel(
+                        text: double.parse(
+                                    widget.orderData?.order?.items?[0].price ??
+                                        "0.0") !=
+                                0
+                            ? GeneralMethods.getCurrencyFormat(
+                                double.parse(
+                                    widget.orderData?.order?.items?[0].price ??
+                                        "0.0"),
+                              )
+                            : GeneralMethods.getCurrencyFormat(
+                                double.parse(
+                                  widget.orderData?.order?.items?[0].price ??
+                                      "0.0",
                                 ),
-                                SizedBox(width: 5),
-                                CustomTextLabel(
-                                  text: (widget.orderData!.productRating != null)
-                                      ? widget.orderData!.productRating?.rate.toString()
-                                      : "0",
-                                  style: TextStyle(
-                                    color: ColorsRes.subTitleMainTextColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Widgets.gradientBtnWidget(
-                            context,
-                            5,
-                            callback: () {
-                              if (widget.orderData!.productRating != null ||
-                                  widget.orderData?.order?.activeStatus.toString() == "6") {
-                                openRatingDialog().then((value) {
-                                  widget.voidCallback;
-                                });
-                              }
-                            },
-                            otherWidgets: CustomTextLabel(
-                              jsonKey: "write_a_review",
-                              style: TextStyle(
-                                color: ColorsRes.appColorWhite,
-                                fontWeight: FontWeight.bold,
                               ),
-                            ),
-                            height: 30,
-                            width: context.width * 0.30,
-                          )
-                    : Widgets.gradientBtnWidget(
-                        context,
-                        5,
-                        callback: () {
-                          if (widget.orderData!.productRating != null ||
-                              widget.orderData?.order?.activeStatus.toString() == "6") {
-                            openRatingDialog().then((value) {
-                              widget.voidCallback;
-                            });
-                          }
-                        },
-                        otherWidgets: CustomTextLabel(
-                          jsonKey: "write_a_review",
-                          style: TextStyle(
-                            color: ColorsRes.appColorWhite,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: ColorsRes.subTitleMainTextColor,
+                          decoration: TextDecoration.none,
                         ),
-                        height: 30,
-                        width: context.width * 0.30,
                       ),
+                    ),
+                  ],
+                ),
               ),
-          ],
-        ),
-        Widgets.getSizedBox(height: 10),
-        Align(
-          child: CustomTextLabel(
-            text: createdAt.toString(),
-            style: TextStyle(
-              color: ColorsRes.menuTitleColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-            overflow: TextOverflow.ellipsis,
+            ],
           ),
-          alignment: AlignmentDirectional.centerEnd,
-        ),
-      ],
+          Widgets.getSizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: EdgeInsetsDirectional.only(start: 10, end: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    border: Border.all(
+                      color: ColorsRes.textFieldBorderColor,
+                    ),
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    controller: edtProductStock,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      CustomNumberTextInputFormatter()
+                    ],
+                    enabled: false,
+                    style: TextStyle(
+                      color: ColorsRes.mainTextColor,
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      isDense: true,
+                      hintStyle: TextStyle(
+                        color: ColorsRes.menuTitleColor,
+                      ),
+                      hintText: context
+                          .read<LanguageProvider>()
+                          .currentLanguage["product_stock_hint"],
+                    ),
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        edtProductStock.text = value;
+                      }
+                    },
+                  ),
+                ),
+              ),
+              if (widget.orderData!.productRating != null ||
+                  widget.orderData?.order?.activeStatus.toString() == "6")
+                SizedBox(width: 10),
+              if (widget.orderData!.productRating != null ||
+                  widget.orderData?.order?.activeStatus.toString() == "6")
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: (widget.orderData!.productRating != null)
+                      ? (widget.orderData!.productRating?.rate.toString() !=
+                              "0")
+                          ? GestureDetector(
+                              onTap: () {
+                                if (widget.orderData!.productRating != null ||
+                                    widget.orderData?.order?.activeStatus
+                                            .toString() ==
+                                        "6") {
+                                  openRatingDialog().then((value) {
+                                    widget.voidCallback;
+                                  });
+                                }
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.star_rate_rounded,
+                                    color: Colors.amber,
+                                  ),
+                                  SizedBox(width: 5),
+                                  CustomTextLabel(
+                                    text: (widget.orderData!.productRating !=
+                                            null)
+                                        ? widget.orderData!.productRating?.rate
+                                            .toString()
+                                        : "0",
+                                    style: TextStyle(
+                                      color: ColorsRes.subTitleMainTextColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Widgets.gradientBtnWidget(
+                              context,
+                              5,
+                              callback: () {
+                                if (widget.orderData!.productRating != null ||
+                                    widget.orderData?.order?.activeStatus
+                                            .toString() ==
+                                        "6") {
+                                  openRatingDialog().then((value) {
+                                    widget.voidCallback;
+                                  });
+                                }
+                              },
+                              otherWidgets: CustomTextLabel(
+                                jsonKey: "write_a_review",
+                                style: TextStyle(
+                                  color: ColorsRes.appColorWhite,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              height: 30,
+                              width: context.width * 0.30,
+                            )
+                      : Widgets.gradientBtnWidget(
+                          context,
+                          5,
+                          callback: () {
+                            if (widget.orderData!.productRating != null ||
+                                widget.orderData?.order?.activeStatus
+                                        .toString() ==
+                                    "6") {
+                              openRatingDialog().then((value) {
+                                widget.voidCallback;
+                              });
+                            }
+                          },
+                          otherWidgets: CustomTextLabel(
+                            jsonKey: "write_a_review",
+                            style: TextStyle(
+                              color: ColorsRes.appColorWhite,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          height: 30,
+                          width: context.width * 0.30,
+                        ),
+                ),
+            ],
+          ),
+          Widgets.getSizedBox(height: 10),
+          Align(
+            child: CustomTextLabel(
+              text: createdAt.toString(),
+              style: TextStyle(
+                color: ColorsRes.menuTitleColor,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+            alignment: AlignmentDirectional.centerEnd,
+          ),
+        ],
+      ),
     );
   }
 

@@ -157,6 +157,7 @@ class SellerMainHomeScreenState extends State<SellerMainHomeScreen> {
     ];
 
     return BottomNavigationBar(
+      backgroundColor: Theme.of(context).cardColor,
       items: List.generate(
         totalPage,
         (index) => BottomNavigationBarItem(

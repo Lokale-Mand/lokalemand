@@ -43,14 +43,14 @@ class SellerRatingData {
 
   SellerRatingData(
       {this.id,
-        this.sellerId,
-        this.userId,
-        this.rate,
-        this.review,
-        this.status,
-        this.updatedAt,
-        this.seller,
-        this.images});
+      this.sellerId,
+      this.userId,
+      this.rate,
+      this.review,
+      this.status,
+      this.updatedAt,
+      this.seller,
+      this.images});
 
   SellerRatingData.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -60,8 +60,9 @@ class SellerRatingData {
     review = json['review'].toString();
     status = json['status'].toString();
     updatedAt = json['updated_at'].toString();
-    seller =
-    json['seller'] != null ? new SellerRatingSeller.fromJson(json['seller']) : null;
+    seller = json['seller'] != null
+        ? new SellerRatingSeller.fromJson(json['seller'])
+        : null;
     if (json['images'] != null) {
       images = <SellerRatingImages>[];
       json['images'].forEach((v) {
@@ -98,10 +99,10 @@ class SellerRatingSeller {
 
   SellerRatingSeller(
       {this.id,
-        this.name,
-        this.logoUrl,
-        this.nationalIdentityCardUrl,
-        this.addressProofUrl});
+      this.name,
+      this.logoUrl,
+      this.nationalIdentityCardUrl,
+      this.addressProofUrl});
 
   SellerRatingSeller.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

@@ -39,7 +39,6 @@ class GeneralMethods {
     return check;
   }
 
-
   static optionalValidation(String val) {
     return null;
   }
@@ -127,7 +126,7 @@ class GeneralMethods {
         response = await http.get(Uri.parse(mainUrl), headers: headersData);
       }
 
-      if(kDebugMode){
+      if (kDebugMode) {
         print(
             "API IS ${"$mainUrl,{$params},Status Code - ${response.statusCode}, ${response.body}"}");
 
@@ -151,7 +150,7 @@ class GeneralMethods {
           if (response.body == "null") {
             return null;
           }
-          if(kDebugMode){
+          if (kDebugMode) {
             print(
                 "API IS ${"$mainUrl,{$params},Status Code - ${response.statusCode}, ${response.body}"}");
 
@@ -558,7 +557,6 @@ class GeneralMethods {
         .format(amount);
   }
 
-
   static Future<bool> hasStoragePermissionGiven() async {
     try {
       if (Platform.isIOS) {
@@ -652,7 +650,7 @@ extension StringToDateTimeFormatting on String {
 
   String formatDate(
       {String inputFormat = 'yyyy-MM-dd',
-        String outputFormat = 'd MMM y, hh:mm a'}) {
+      String outputFormat = 'd MMM y, hh:mm a'}) {
     try {
       DateTime dateTime = toDate(format: inputFormat);
       return DateFormat(outputFormat).format(dateTime);
