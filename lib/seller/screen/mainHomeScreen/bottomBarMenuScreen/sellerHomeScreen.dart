@@ -156,14 +156,6 @@ class _HomeScreenState extends State<SellerHomeScreen> {
                             style: TextStyle(color: ColorsRes.menuTitleColor),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Icon(
-                            Icons.filter_list_rounded,
-                            color: ColorsRes.mainTextColor,
-                            size: 30,
-                          ),
-                        )
                       ],
                     ),
                   ),
@@ -417,37 +409,37 @@ class _HomeScreenState extends State<SellerHomeScreen> {
       },
       onMapCreated: _onMapCreated,
       markers: List.generate(
-              context.watch<SellerListProvider>().sellerListData.length,
-              (index) {
-                SellerListData seller =
-                    context.watch<SellerListProvider>().sellerListData[index];
-                return Marker(
-                  onTap: () {
-                    pageController.animateToPage(index,
-                        duration: const Duration(milliseconds: 1500),
-                        curve: Curves.easeInOut);
-                    currentPage = index;
-                    setState(() {});
-                  },
-                  anchor: ui.Offset(0, 0),
-                  infoWindow: InfoWindow(
-                      title: seller.storeName.toString(), snippet: seller.name),
-                  visible: true,
-                  zIndex: -1,
-                  consumeTapEvents: true,
-                  markerId: MarkerId(seller.storeName.toString()),
-                  position: LatLng(
-                    seller.latitude.toString().toDouble,
-                    seller.longitude.toString().toDouble,
-                  ),
-                  icon: BitmapDescriptor.bytes(
-                    seller.type == "2" ? organicSeller : regularSeller,
-                    height: 512/9,
-                    width: 341/9,
-                  ),
-                );
-              },
-            ).toSet(),
+        context.watch<SellerListProvider>().sellerListData.length,
+        (index) {
+          SellerListData seller =
+              context.watch<SellerListProvider>().sellerListData[index];
+          return Marker(
+            onTap: () {
+              pageController.animateToPage(index,
+                  duration: const Duration(milliseconds: 1500),
+                  curve: Curves.easeInOut);
+              currentPage = index;
+              setState(() {});
+            },
+            anchor: ui.Offset(0, 0),
+            infoWindow: InfoWindow(
+                title: seller.storeName.toString(), snippet: seller.name),
+            visible: true,
+            zIndex: -1,
+            consumeTapEvents: true,
+            markerId: MarkerId(seller.storeName.toString()),
+            position: LatLng(
+              seller.latitude.toString().toDouble,
+              seller.longitude.toString().toDouble,
+            ),
+            icon: BitmapDescriptor.bytes(
+              seller.type == "2" ? organicSeller : regularSeller,
+              height: 512 / 9,
+              width: 341 / 9,
+            ),
+          );
+        },
+      ).toSet(),
       buildingsEnabled: false,
       indoorViewEnabled: false,
 

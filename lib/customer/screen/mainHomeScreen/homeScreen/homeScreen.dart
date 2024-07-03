@@ -5,6 +5,8 @@ import 'package:lokale_mand/helper/generalWidgets/bottomSheetLocationSearch/widg
 import 'package:lokale_mand/helper/generalWidgets/ratingBuilderWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
+enum SearchType { location, product }
+
 class HomeScreen extends StatefulWidget {
   final ScrollController scrollController;
 
@@ -18,6 +20,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  SearchType searchType = SearchType.location;
+
   @override
   void initState() {
     Future.delayed(Duration.zero).then(
@@ -102,7 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 GestureDetector(
                   onTap: () async {
-                    Prediction? p = await PlacesAutocomplete.show(
+                    if (searchType == SearchType.location) {
+                      Prediction? p = await PlacesAutocomplete.show(
                         context: context,
                         apiKey: Constant.googleApiKey,
                         decoration: InputDecoration(
@@ -113,21 +118,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         textStyle: TextStyle(
                           color: ColorsRes.mainTextColor,
-                        ));
+                        ),
+                      );
 
-                    GeneralMethods.displayPrediction(p, context).then(
-                      (value) {
-                        if (value != null) {
-                          updateMap(
-                            double.parse(value.lattitud ?? "0.0"),
-                            double.parse(
-                              value.longitude ?? "0.0",
-                            ),
-                            "",
-                          );
-                        }
-                      },
-                    );
+                      GeneralMethods.displayPrediction(p, context).then(
+                        (value) {
+                          if (value != null) {
+                            updateMap(
+                              double.parse(value.lattitud ?? "0.0"),
+                              double.parse(
+                                value.longitude ?? "0.0",
+                              ),
+                              "",
+                            );
+                          }
+                        },
+                      );
+                    } else if (searchType == SearchType.product) {
+                      Navigator.pushNamed(context, productSearchScreen);
+                    }
                   },
                   child: Container(
                     height: 55,
@@ -152,16 +161,123 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Expanded(
                           child: CustomTextLabel(
-                            jsonKey: "search_location_hint",
+                            jsonKey: searchType == SearchType.product
+                                ? "search_product_hint"
+                                : "search_location_hint",
                             style: TextStyle(color: ColorsRes.menuTitleColor),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Icon(
-                            Icons.filter_list_rounded,
-                            color: ColorsRes.mainTextColor,
-                            size: 30,
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      topRight: Radius.circular(15))),
+                              context: context,
+                              builder: (context) => ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  Widgets.getSizedBox(
+                                    height: 20,
+                                  ),
+                                  Center(
+                                    child: CustomTextLabel(
+                                      jsonKey: "search_by",
+                                      softWrap: true,
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium!
+                                          .merge(
+                                            TextStyle(
+                                              letterSpacing: 0.5,
+                                              color: ColorsRes.mainTextColor,
+                                            ),
+                                          ),
+                                    ),
+                                  ),
+                                  Widgets.getSizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.only(
+                                      start: 10,
+                                      end: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: ListView(
+                                      shrinkWrap: true,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            searchType = SearchType.location;
+                                            Navigator.pop(context);
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: CustomTextLabel(
+                                                  jsonKey: "search_location",
+                                                ),
+                                              ),
+                                              Icon(
+                                                searchType ==
+                                                        SearchType.location
+                                                    ? Icons
+                                                        .radio_button_on_rounded
+                                                    : Icons
+                                                        .radio_button_off_rounded,
+                                                color: ColorsRes.appColor,
+                                                size: 20,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            searchType = SearchType.product;
+                                            Navigator.pop(context);
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: CustomTextLabel(
+                                                  jsonKey: "search_product",
+                                                ),
+                                              ),
+                                              Icon(
+                                                searchType == SearchType.product
+                                                    ? Icons
+                                                        .radio_button_on_rounded
+                                                    : Icons
+                                                        .radio_button_off_rounded,
+                                                color: ColorsRes.appColor,
+                                                size: 20,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ).then(
+                              (value) => setState(() {}),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Icon(
+                              Icons.filter_list_rounded,
+                              color: ColorsRes.mainTextColor,
+                              size: 30,
+                            ),
                           ),
                         )
                       ],
@@ -230,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "seller",
                                 seller.id.toString(),
                                 getTranslatedValue(context, "seller"),
-                                seller.categories.toString(),
+                                "0",
                                 seller.storeName.toString(),
                                 seller.logoUrl.toString()
                               ],
@@ -322,8 +438,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     seller.id.toString(),
                                                     getTranslatedValue(
                                                         context, "seller"),
-                                                    seller.categories
-                                                        .toString(),
+                                                    "0",
                                                     seller.storeName.toString(),
                                                     seller.logoUrl.toString()
                                                   ],
@@ -452,15 +567,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
-    if (Constant.session.getBoolData(SessionManager.isDarkTheme)) {
-      controller.setMapStyle(
-          await rootBundle.loadString('assets/mapTheme/nightMode.json'));
-      setState(() {});
-    } else {
-      controller.setMapStyle(
-          await rootBundle.loadString('assets/mapTheme/dayMode.json'));
-      setState(() {});
-    }
+    try {
+      if (Constant.session.getBoolData(SessionManager.isDarkTheme)) {
+        controller.setMapStyle(
+            await rootBundle.loadString('assets/mapTheme/nightMode.json'));
+        setState(() {});
+      } else {
+        controller.setMapStyle(
+            await rootBundle.loadString('assets/mapTheme/dayMode.json'));
+        setState(() {});
+      }
+    } catch (_) {}
   }
 
   Future<void> _onMapCreated(GoogleMapController controllerParam) async {

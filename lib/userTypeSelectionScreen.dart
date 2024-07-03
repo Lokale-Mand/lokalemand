@@ -64,7 +64,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen> {
                     style: TextStyle(
                       color: ColorsRes.appColorWhite,
                       fontWeight: FontWeight.bold,
-                      fontSize: 30,
+                      fontSize: 32,
                       wordSpacing: 3,
                       height: 1.1,
                     ),
@@ -77,7 +77,7 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen> {
                     style: TextStyle(
                       color: ColorsRes.appColorBlack,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 16,
                       wordSpacing: 3,
                       height: 1.1,
                     ),
@@ -115,8 +115,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen> {
                               maxLines: 1,
                               style: TextStyle(
                                 color: ColorsRes.appColorWhite,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
                                 wordSpacing: 3,
                                 height: 1.1,
                               ),
@@ -159,8 +159,8 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen> {
                               maxLines: 1,
                               style: TextStyle(
                                 color: ColorsRes.appColorWhite,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
                                 wordSpacing: 3,
                                 height: 1.1,
                               ),

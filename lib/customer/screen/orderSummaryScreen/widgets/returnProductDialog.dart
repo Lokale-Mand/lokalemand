@@ -1,3 +1,4 @@
+import 'package:lokale_mand/customer/models/order.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class ReturnProductDialog extends StatelessWidget {

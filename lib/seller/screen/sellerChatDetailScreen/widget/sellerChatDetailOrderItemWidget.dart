@@ -316,29 +316,3 @@ class _SellerChatDetailOrderItemWidgetState
         date1.day == date2.day;
   }
 }
-
-getPaymentOptionWidget(BuildContext context, String paymentMethod) {
-  print(">>>>>>> ${paymentMethod}");
-  switch (paymentMethod.toLowerCase()) {
-    case "cod":
-      return Row(
-        children: [
-          Widgets.defaultImg(image: "ic_cod", height: 24, width: 24),
-          Expanded(
-              child: CustomTextLabel(
-            jsonKey: "cash_on_delivery",
-          ))
-        ],
-      );
-    // case "stripe":
-    //   return StripePaymentOptionWidget();
-    // case "paystack":
-    //   return PaystackPaymentOptionWidget();
-    // case "paypal":
-    //   return PaypalPaymentOptionWidget();
-    // case "razorpay":
-    //   return RazorpayPaymentOptionWidget();
-    default:
-      return Text("Unknown payment method");
-  }
-}

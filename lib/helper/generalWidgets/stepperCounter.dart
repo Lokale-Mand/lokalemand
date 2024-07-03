@@ -28,6 +28,7 @@ class StepperCounter extends StatelessWidget {
           child: GestureDetector(
             onTap: firstItemVoidCallback,
             child: Container(
+              color: Colors.transparent,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -75,6 +76,7 @@ class StepperCounter extends StatelessWidget {
           child: GestureDetector(
             onTap: thirdItemVoidCallback,
             child: Container(
+              color: Colors.transparent,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,

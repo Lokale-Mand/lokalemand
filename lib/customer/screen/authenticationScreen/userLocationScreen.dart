@@ -118,7 +118,7 @@ class _UserLocationScreenState extends State<UserLocationScreen> {
             decoration: InputDecoration(
               border: InputBorder.none,
               isDense: true,
-              hintStyle: TextStyle(color: Colors.grey[300]),
+              hintStyle: TextStyle(color: ColorsRes.mainTextColor.withOpacity(0.3)),
               hintText: "9999999999",
             ),
           ),
@@ -170,7 +170,7 @@ class _UserLocationScreenState extends State<UserLocationScreen> {
             decoration: InputDecoration(
               border: InputBorder.none,
               isDense: true,
-              hintStyle: TextStyle(color: Colors.grey[300]),
+              hintStyle: TextStyle(color: ColorsRes.mainTextColor.withOpacity(0.3)),
               hintText: "Lokale Mand",
             ),
           ),
@@ -218,7 +218,7 @@ class _UserLocationScreenState extends State<UserLocationScreen> {
         //             decoration: InputDecoration(
         //               border: InputBorder.none,
         //               isDense: true,
-        //               hintStyle: TextStyle(color: Colors.grey[300]),
+        //               hintStyle: TextStyle(color: ColorsRes.mainTextColor.withOpacity(0.3)),
         //               hintText: "Current Position",
         //             ),
         //           ),

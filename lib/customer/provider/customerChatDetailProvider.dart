@@ -89,11 +89,11 @@ class CustomerChatDetailProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       customerChatDetailState = CustomerChatDetailState.error;
-      GeneralMethods.showMessage(
-        context,
-        message,
-        MessageType.warning,
-      );
+      // GeneralMethods.showMessage(
+      //   context,
+      //   message,
+      //   MessageType.warning,
+      // );
       notifyListeners();
     }
   }

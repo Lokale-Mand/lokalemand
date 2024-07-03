@@ -76,8 +76,8 @@ class _SellerConfirmLocationState extends State<ConfirmLocation> {
             position: kMapCenter,
             icon: BitmapDescriptor.bytes(
               bmp,
-              height: 512,
-              width: 341,
+              height: 24,
+              width: 24,
             ),
           ));
         });

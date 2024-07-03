@@ -1,4 +1,3 @@
-import 'package:lokale_mand/helper/generalWidgets/customCheckbox.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class SellerLoginAccountScreen extends StatefulWidget {
@@ -12,7 +11,7 @@ class SellerLoginAccountScreen extends StatefulWidget {
 }
 
 class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
-  bool isLoading = false, isAcceptedTerms = false, isPasswordVisible = false;
+  bool isLoading = false, isPasswordVisible = false;
 
   TextEditingController edtEmail = TextEditingController();
   TextEditingController edtPassword = TextEditingController();
@@ -90,12 +89,6 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
                     getTranslatedValue(
                         context, "password_should_not_contain_space"),
                     MessageType.warning);
-              } else if (!isAcceptedTerms) {
-                setLoader(false);
-                GeneralMethods.showMessage(
-                    context,
-                    getTranslatedValue(context, "accept_terms_and_condition"),
-                    MessageType.warning);
               } else {
                 try {
                   UserCredential userCredential =
@@ -171,7 +164,8 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
             decoration: InputDecoration(
               border: InputBorder.none,
               isDense: true,
-              hintStyle: TextStyle(color: Colors.grey[300]),
+              hintStyle:
+                  TextStyle(color: ColorsRes.mainTextColor.withOpacity(0.3)),
               hintText: "lokale-mand@mail.com",
             ),
           ),
@@ -210,7 +204,8 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
-                    hintStyle: TextStyle(color: Colors.grey[300]),
+                    hintStyle: TextStyle(
+                        color: ColorsRes.mainTextColor.withOpacity(0.3)),
                     hintText: "******",
                   ),
                 ),
@@ -268,111 +263,49 @@ class _SellerLoginAccountScreenState extends State<SellerLoginAccountScreen> {
         Widgets.getSizedBox(
           height: Constant.size20,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomCheckbox(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              value: isAcceptedTerms,
-              activeColor: ColorsRes.appColor,
-              onChanged: (bool? val) {
-                setState(
-                  () {
-                    isAcceptedTerms = val!;
-                  },
-                );
-              },
-            ),
-            Expanded(
-              child: RichText(
-                softWrap: true,
-                textAlign: TextAlign.start,
-                text: TextSpan(
-                  style: Theme.of(context).textTheme.titleSmall!.merge(
-                        TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: ColorsRes.mainTextColor,
-                        ),
-                      ),
-                  text: "${getTranslatedValue(
-                    context,
-                    "agreement_message_1",
-                  )}\t",
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: context
-                          .read<LanguageProvider>()
-                          .currentLanguage["terms_of_service"],
-                      style: TextStyle(
-                        color: ColorsRes.appColor,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pushNamed(
-                            context,
-                            webViewScreen,
-                            arguments: getTranslatedValue(
-                              context,
-                              "terms_and_conditions",
-                            ),
-                          );
-                        },
-                    ),
-                    TextSpan(
-                        text: "\t${getTranslatedValue(
-                          context,
-                          "and",
-                        )}\t",
-                        style: TextStyle(
-                          color: ColorsRes.mainTextColor,
-                        )),
-                    TextSpan(
-                      text: context
-                          .read<LanguageProvider>()
-                          .currentLanguage["privacy_policy"],
-                      style: TextStyle(
-                        color: ColorsRes.appColor,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pushNamed(
-                            context,
-                            webViewScreen,
-                            arguments: getTranslatedValue(
-                              context,
-                              "privacy_policy",
-                            ),
-                          );
-                        },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+        proceedButtonWidget(),
+        Widgets.getSizedBox(height: 20),
         Widgets.getSizedBox(
           height: Constant.size20,
         ),
-        proceedButtonWidget(),
-        Widgets.getSizedBox(height: 20),
-        Widgets.gradientBtnWidget(
-          context,
-          10,
-          title: getTranslatedValue(
-            context,
-            "register",
-          ).toUpperCase(),
-          height: 55,
-          callback: () {
-            Navigator.pushNamed(
-              context,
-              sellerCreateAccountScreen,
-            );
-          },
-        ),
+        Align(
+          alignment: AlignmentDirectional.center,
+          child: RichText(
+            softWrap: true,
+            textAlign: TextAlign.start,
+            text: TextSpan(
+              style: Theme.of(context).textTheme.titleSmall!.merge(
+                    TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: ColorsRes.mainTextColor,
+                    ),
+                  ),
+              text: "${getTranslatedValue(
+                context,
+                "does_not_have_account",
+              )}\t\t",
+              children: <TextSpan>[
+                TextSpan(
+                  text: context
+                      .read<LanguageProvider>()
+                      .currentLanguage["register"],
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: ColorsRes.appColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.pushNamed(
+                        context,
+                        sellerCreateAccountScreen,
+                      );
+                    },
+                ),
+              ],
+            ),
+          ),
+        )
       ],
     );
   }

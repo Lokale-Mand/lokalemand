@@ -89,6 +89,10 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
         refreshCallback: () async {
           context
               .read<SellerOrdersProvider>()
+              .sellerOrdersList.clear();
+          context.read<SellerOrdersProvider>().offset = 0;
+          context
+              .read<SellerOrdersProvider>()
               .getSellerOrders(statusIndex: "0", context: context);
         },
         child: SingleChildScrollView(
@@ -111,8 +115,9 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                             }
                           }
                           return _buildOrderContainer(
-                              ordersProvider.sellerOrdersList[index],
-                              index.toString());
+                            ordersProvider.sellerOrdersList[index],
+                            index.toString(),
+                          );
                         }),
                   ],
                 );
@@ -157,6 +162,8 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
       getTranslatedValue(context, "order_status_display_names_cancelled"),
       getTranslatedValue(context, "order_status_display_names_returned"),
     ];
+
+    print(">>> ${order.activeStatus}");
 
     return GestureDetector(
       onTap: () {
@@ -263,7 +270,14 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                   padding: EdgeInsetsDirectional.only(
                       start: 25, end: 25, top: 3, bottom: 3),
                   child: Text(
-                    "10",
+                    context
+                        .read<SellerOrdersProvider>()
+                        .sellerOrderData
+                        .data!
+                        .ordersItems!
+                        .first
+                        .quantity
+                        .toString(),
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
@@ -274,16 +288,44 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                 ),
               ],
             ),
-            Text(
-              lblOrderStatusDisplayNames[
-                  int.parse(order.activeStatus.toString()) - 1],
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: ColorsRes.mainTextColor,
+            Widgets.getSizedBox(height: 10),
+            if (lblOrderStatusDisplayNames[
+                    int.parse(order.activeStatus.toString()) - 1] !=
+                getTranslatedValue(
+                    context, "order_status_display_names_awaiting"))
+              Text(
+                lblOrderStatusDisplayNames[
+                    int.parse(order.activeStatus.toString()) - 1],
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: ColorsRes.mainTextColor,
+                ),
+                softWrap: true,
               ),
-              softWrap: true,
+            Widgets.getSizedBox(height: 10),
+            Divider(color: ColorsRes.subTitleMainTextColor.withOpacity(0.2)),
+            Widgets.getSizedBox(height: 10),
+            Container(
+              width: MediaQuery.sizeOf(context).width,
+              child: CustomTextLabel(
+                text:
+                    "${order.userName}'s ${getTranslatedValue(context, "payment_method_")}",
+                style: TextStyle(
+                  color: ColorsRes.mainTextColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
+            Widgets.getSizedBox(height: 10),
+            Container(
+              width: MediaQuery.sizeOf(context).width,
+              child: getPaymentOptionWidget(
+                context,
+                order.paymentMethod ?? "",
+              ),
+            ),
+            Widgets.getSizedBox(height: 10),
             if (int.tryParse(order.activeStatus.toString())! == 1)
               Widgets.getSizedBox(height: 10),
             if (int.tryParse(order.activeStatus.toString())! == 1)
@@ -299,8 +341,7 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                           7,
                           callback: () {
                             Map<String, String> params = {};
-                            params[ApiAndParams.orderId] =
-                                order.id.toString() ?? "0";
+                            params[ApiAndParams.orderId] = order.id.toString();
                             params[ApiAndParams.statusId] = "2";
                             sellerOrdersProvider
                                 .updateSellerOrdersStatusFromList(
@@ -310,11 +351,13 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                             )
                                 .then(
                               (value) {
+                                context
+                                    .read<SellerOrdersProvider>()
+                                    .sellerOrdersList.clear();
                                 context.read<SellerOrdersProvider>().offset = 0;
                                 context
                                     .read<SellerOrdersProvider>()
-                                    .getSellerOrders(
-                                        statusIndex: "0", context: context);
+                                    .getSellerOrders(statusIndex: "0", context: context);
                               },
                             );
                           },
@@ -337,8 +380,7 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                           7,
                           callback: () {
                             Map<String, String> params = {};
-                            params[ApiAndParams.orderId] =
-                                order.id.toString() ?? "0";
+                            params[ApiAndParams.orderId] = order.id.toString();
                             params[ApiAndParams.statusId] = "7";
                             sellerOrdersProvider
                                 .updateSellerOrdersStatusFromList(
@@ -347,11 +389,13 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                                     order: order)
                                 .then(
                               (value) {
+                                context
+                                    .read<SellerOrdersProvider>()
+                                    .sellerOrdersList.clear();
                                 context.read<SellerOrdersProvider>().offset = 0;
                                 context
                                     .read<SellerOrdersProvider>()
-                                    .getSellerOrders(
-                                        statusIndex: "0", context: context);
+                                    .getSellerOrders(statusIndex: "0", context: context);
                               },
                             );
                           },
@@ -364,6 +408,45 @@ class _SellerOrderScreenState extends State<SellerOrderScreen> {
                     ),
                   ),
                 ],
+              ),
+            if (int.tryParse(order.activeStatus.toString())! == 2)
+              Widgets.getSizedBox(height: 10),
+            if (int.tryParse(order.activeStatus.toString())! == 2)
+              ChangeNotifierProvider(
+                create: (context) => SellerOrdersProvider(),
+                child: Consumer<SellerOrdersProvider>(
+                    builder: (context, sellerOrdersProvider, child) {
+                  return Widgets.gradientBtnWidget(
+                    context,
+                    7,
+                    callback: () {
+                      Map<String, String> params = {};
+                      params[ApiAndParams.orderId] = order.id.toString();
+                      params[ApiAndParams.statusId] = "6";
+                      sellerOrdersProvider
+                          .updateSellerOrdersStatusFromList(
+                        params: params,
+                        context: context,
+                        order: order,
+                      )
+                          .then(
+                        (value) {
+                          context
+                              .read<SellerOrdersProvider>()
+                              .sellerOrdersList.clear();
+                          context.read<SellerOrdersProvider>().offset = 0;
+                          context
+                              .read<SellerOrdersProvider>()
+                              .getSellerOrders(statusIndex: "0", context: context);
+                        },
+                      );
+                    },
+                    title: getTranslatedValue(context, "product_delivered"),
+                    height: 30,
+                    color1: Colors.green,
+                    color2: Colors.green,
+                  );
+                }),
               ),
             Divider(
               color: ColorsRes.menuTitleColor,

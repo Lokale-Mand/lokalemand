@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 enum SellerListState {

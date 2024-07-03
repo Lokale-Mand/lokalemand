@@ -1,6 +1,5 @@
 import 'package:lokale_mand/customer/models/productRating.dart';
 import 'package:lokale_mand/customer/repositories/productRatingListApi.dart';
-import 'package:lokale_mand/customer/repositories/productRatingListApi.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 enum ProductRatingListState {

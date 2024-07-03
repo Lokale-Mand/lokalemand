@@ -427,23 +427,23 @@ class _SellerAddOrUpdateProductScreenState
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
                             color: ColorsRes.appColor,
-                            width: 2,
+
                           ),
                         ),
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.storefront,
-                              color: (sellerCategoryListProvider
-                                          .selectedCategoryIdsList.isNotEmpty &&
-                                      category.id ==
-                                          sellerCategoryListProvider
-                                              .selectedCategoryIdsList[0])
-                                  ? ColorsRes.appColorWhite
-                                  : ColorsRes.appColor,
-                              size: 35,
-                            ),
-                            Widgets.getSizedBox(width: 20),
+                            // Icon(
+                            //   Icons.storefront,
+                            //   color: (sellerCategoryListProvider
+                            //               .selectedCategoryIdsList.isNotEmpty &&
+                            //           category.id ==
+                            //               sellerCategoryListProvider
+                            //                   .selectedCategoryIdsList[0])
+                            //       ? ColorsRes.appColorWhite
+                            //       : ColorsRes.appColor,
+                            //   size: 35,
+                            // ),
+                            // Widgets.getSizedBox(width: 20),
                             Expanded(
                               child: CustomTextLabel(
                                 text: sellerCategoryListProvider
@@ -470,7 +470,6 @@ class _SellerAddOrUpdateProductScreenState
                               Icon(
                                 Icons.check_circle,
                                 color: ColorsRes.appColorWhite,
-                                size: 35,
                               )
                           ],
                         ),

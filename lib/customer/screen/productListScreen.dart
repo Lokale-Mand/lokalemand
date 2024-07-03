@@ -63,7 +63,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         params[ApiAndParams.categoryId] = widget.id.toString();
       } else if (widget.from == "seller") {
         params[ApiAndParams.sellerId] = widget.id.toString();
-        params[ApiAndParams.categoryId] = widget.categories.toString();
+        // params[ApiAndParams.categoryId] = widget.categories.toString();
       } else if (widget.from == "brand") {
         params[ApiAndParams.brandId] = widget.id.toString();
       } else {

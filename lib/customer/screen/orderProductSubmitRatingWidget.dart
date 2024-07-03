@@ -1,24 +1,25 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:lokale_mand/customer/models/chatDetail.dart';
+import 'package:lokale_mand/customer/models/order.dart';
 import 'package:lokale_mand/customer/provider/productRatingProvider.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
-class ProductSubmitRatingWidget extends StatefulWidget {
+class OrderProductSubmitRatingWidget extends StatefulWidget {
   final double? size;
-  final CustomerChatDetailData order;
+  final Order order;
 
-  ProductSubmitRatingWidget({
+  OrderProductSubmitRatingWidget({
     super.key,
     this.size,
     required this.order,
   });
 
   @override
-  State<ProductSubmitRatingWidget> createState() =>
-      _ProductSubmitRatingWidgetState();
+  State<OrderProductSubmitRatingWidget> createState() =>
+      _OrderProductSubmitRatingWidgetState();
 }
 
-class _ProductSubmitRatingWidgetState extends State<ProductSubmitRatingWidget> {
+class _OrderProductSubmitRatingWidgetState
+    extends State<OrderProductSubmitRatingWidget> {
   TextEditingController productReview = TextEditingController();
   double rate = 0;
   List<String> selectedProductOtherImages = [];
@@ -26,17 +27,17 @@ class _ProductSubmitRatingWidgetState extends State<ProductSubmitRatingWidget> {
   List<String> fileParamsNames = [];
 
   // List<ItemRatingImages> productRatingImages = [];
-  late CustomerChatDetailProductRating? ratings;
+  late ItemRating? ratings;
 
   @override
   void initState() {
     try {
-      ratings = widget.order.productRating!;
+      ratings = widget.order.items?.first.itemRating?.first;
 
       if (ratings != null) {
-        productReview.text = ratings?.review.toString()??"";
+        productReview.text = ratings?.review.toString() ?? "";
         // productRatingImages = ratings.images ?? [];
-        rate = ratings?.rate.toString().toDouble??0;
+        rate = ratings?.rate.toString().toDouble ?? 0.0;
       } else {
         productReview.text = "";
         rate = 0.0;
@@ -293,18 +294,15 @@ class _ProductSubmitRatingWidgetState extends State<ProductSubmitRatingWidget> {
             height: 45,
             callback: () {
               Map<String, String> params = {
-                ApiAndParams.productId: widget
-                        .order.order?.items?[0].productVariant?.productId
-                        .toString() ??
-                    "",
-                ApiAndParams.userId:
-                    widget.order.order?.userId.toString() ?? "",
+                ApiAndParams.productId:
+                    widget.order.items.first.productId.toString() ?? "0",
+                ApiAndParams.userId: widget.order.userId.toString(),
                 ApiAndParams.rate: rate.toString(),
                 ApiAndParams.review: productReview.text.toString(),
               };
 
               if (ratings != null) {
-                params[ApiAndParams.id] = ratings?.id.toString()??"";
+                params[ApiAndParams.id] = ratings?.id.toString() ?? "0";
               }
 
               if (productDeletedOtherImages.isNotEmpty) {

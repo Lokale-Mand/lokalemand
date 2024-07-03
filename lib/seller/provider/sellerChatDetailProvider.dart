@@ -88,11 +88,11 @@ class SellerChatDetailProvider extends ChangeNotifier {
     } catch (e) {
       message = e.toString();
       sellerChatDetailState = SellerChatDetailState.error;
-      GeneralMethods.showMessage(
-        context,
-        message,
-        MessageType.warning,
-      );
+      // GeneralMethods.showMessage(
+      //   context,
+      //   message,
+      //   MessageType.warning,
+      // );
       notifyListeners();
     }
   }

@@ -6,7 +6,8 @@ class SellerProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap:
+          null /*() {
         Navigator.pushNamed(
           context,
           Constant.session.isUserLoggedIn()
@@ -14,7 +15,8 @@ class SellerProfileHeader extends StatelessWidget {
               : userTypeSelectionScreen,
           arguments: "header",
         );
-      },
+      }*/
+      ,
       child: Stack(
         children: [
           Row(children: [

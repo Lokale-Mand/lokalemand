@@ -10,7 +10,6 @@ class SellerMenuScreen extends StatefulWidget {
 
 class _SellerMenuScreenState extends State<SellerMenuScreen> {
   List personalDataMenu = [];
-  List storeDataMenu = [];
   List legalDataMenu = [];
   List settingsDataMenu = [];
   List deleteAccountMenuItem = [];
@@ -20,7 +19,7 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
     Future.delayed(Duration.zero).then((value) {
       setLegalDataMenuList();
       setSettingsDataMenuList();
-      setPersonalDataMenuList();
+      // setPersonalDataMenuList();
       setDeleteMenuItem();
     });
     super.initState();
@@ -49,10 +48,10 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
         ),
         body: Consumer<UserProfileProvider>(
           builder: (context, userProfileProvider, _) {
-            setStoreDataMenuList();
+            // setStoreDataMenuList();
             setLegalDataMenuList();
             setSettingsDataMenuList();
-            setPersonalDataMenuList();
+            // setPersonalDataMenuList();
             setDeleteMenuItem();
             return ListView(
               padding: EdgeInsetsDirectional.all(20),
@@ -71,24 +70,24 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
                 //   ),
                 // ),
                 // MenuListItems(storeDataMenu),
-                Widgets.getSizedBox(height: 5),
-                if (Constant.session.isUserLoggedIn())
-                  Divider(color: ColorsRes.menuTitleColor),
-                if (Constant.session.isUserLoggedIn())
-                  Widgets.getSizedBox(height: 5),
-                if (Constant.session.isUserLoggedIn())
-                  CustomTextLabel(
-                    jsonKey: "personal_data",
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      color: ColorsRes.menuTitleColor,
-                    ),
-                  ),
-                if (Constant.session.isUserLoggedIn())
-                  Widgets.getSizedBox(height: 15),
+                // Widgets.getSizedBox(height: 5),
+                // if (Constant.session.isUserLoggedIn())
+                //   Divider(color: ColorsRes.menuTitleColor),
+                // if (Constant.session.isUserLoggedIn())
+                //   Widgets.getSizedBox(height: 5),
+                // if (Constant.session.isUserLoggedIn())
+                //   CustomTextLabel(
+                //     jsonKey: "personal_data",
+                //     softWrap: true,
+                //     overflow: TextOverflow.ellipsis,
+                //     style: TextStyle(
+                //       fontWeight: FontWeight.w600,
+                //       fontSize: 12,
+                //       color: ColorsRes.menuTitleColor,
+                //     ),
+                //   ),
+                // if (Constant.session.isUserLoggedIn())
+                //   Widgets.getSizedBox(height: 15),
                 if (Constant.session.isUserLoggedIn())
                   MenuListItems(personalDataMenu),
                 Divider(color: ColorsRes.menuTitleColor),
@@ -174,41 +173,41 @@ class _SellerMenuScreenState extends State<SellerMenuScreen> {
     );
   }
 
-  setStoreDataMenuList() {
-    storeDataMenu = [];
-    storeDataMenu = [
-      {
-        "icon": "notification_icon",
-        "label": "open_a_shop",
-        "clickFunction": (context) {},
-        "isResetLabel": false
-      },
-    ];
-  }
+  // setStoreDataMenuList() {
+  //   storeDataMenu = [];
+  //   storeDataMenu = [
+  //     {
+  //       "icon": "notification_icon",
+  //       "label": "open_a_shop",
+  //       "clickFunction": (context) {},
+  //       "isResetLabel": false
+  //     },
+  //   ];
+  // }
 
-  setPersonalDataMenuList() {
-    personalDataMenu = [];
-    personalDataMenu = [
-      if (Constant.session.isUserLoggedIn())
-        {
-          "icon": "notification_icon",
-          "label": "notification",
-          "clickFunction": (context) {
-            Navigator.pushNamed(context, notificationListScreen);
-          },
-          "isResetLabel": false
-        },
-      // if (Constant.session.isUserLoggedIn())
-      //   {
-      //     "icon": "transaction_icon",
-      //     "label": "transaction_history",
-      //     "clickFunction": (context) {
-      //       Navigator.pushNamed(context, transactionListScreen);
-      //     },
-      //     "isResetLabel": false
-      //   },
-    ];
-  }
+  // setPersonalDataMenuList() {
+  //   personalDataMenu = [];
+  //   personalDataMenu = [
+  //     if (Constant.session.isUserLoggedIn())
+  //       {
+  //         "icon": "notification_icon",
+  //         "label": "notification",
+  //         "clickFunction": (context) {
+  //           Navigator.pushNamed(context, notificationListScreen);
+  //         },
+  //         "isResetLabel": false
+  //       },
+  //     if (Constant.session.isUserLoggedIn())
+  //       {
+  //         "icon": "transaction_icon",
+  //         "label": "transaction_history",
+  //         "clickFunction": (context) {
+  //           Navigator.pushNamed(context, transactionListScreen);
+  //         },
+  //         "isResetLabel": false
+  //       },
+  //   ];
+  // }
 
   setSettingsDataMenuList() {
     settingsDataMenu = [];
