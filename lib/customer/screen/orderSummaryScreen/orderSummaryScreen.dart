@@ -1,5 +1,6 @@
 import 'dart:io' as io;
 
+import 'package:lokale_mand/customer/models/order.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class OrderSummaryScreen extends StatefulWidget {
@@ -135,7 +136,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
     );
   }
 
-  Widget _buildCancelItemButton(OrderItem orderItem) {
+  Widget _buildCancelItemButton(ProductOrderItem orderItem) {
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -178,7 +179,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
     );
   }
 
-  Widget _buildReturnItemButton(OrderItem orderItem) {
+  Widget _buildReturnItemButton(ProductOrderItem orderItem) {
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -296,7 +297,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
     );
   }
 
-  Widget _buildOrderItemContainer(OrderItem orderItem) {
+  Widget _buildOrderItemContainer(ProductOrderItem orderItem) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(10),
@@ -436,7 +437,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
     );
   }
 
-  Widget _buildOrderItemsDetails() {
+  Widget _buildOrderItemDetails() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -733,7 +734,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                 child: Column(
                   children: [
                     _buildOrderStatusContainer(),
-                    _buildOrderItemsDetails(),
+                    _buildOrderItemDetails(),
                     _buildDeliveryInformationContainer(),
                     _buildBillDetails()
                   ],

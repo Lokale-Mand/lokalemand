@@ -1,3 +1,4 @@
+import 'package:lokale_mand/customer/models/order.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 enum UpdateOrderStatus { initial, inProgress, success, failure }

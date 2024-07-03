@@ -64,10 +64,10 @@ class Order {
   late final String userName;
   late final String discountRupees;
   late final String createdAt;
-  late final List<OrderItem> items;
+  late final List<ProductOrderItem> items;
 
   Order copyWith(
-      {List<OrderItem>? orderItems,
+      {List<ProductOrderItem>? ProductOrderItem,
       String? updatedActiveStatus,
       String? newTotal,
       String? newFinalTotal}) {
@@ -101,7 +101,7 @@ class Order {
       bankTransferStatus: bankTransferStatus,
       userName: userName,
       discountRupees: discountRupees,
-      items: orderItems ?? items,
+      items: ProductOrderItem ?? items,
       createdAt: createdAt,
       status: status,
     );
@@ -144,15 +144,16 @@ class Order {
         .toList();
 
     items = ((json['items'] ?? []) as List)
-        .map((orderItem) => OrderItem.fromJson(Map.from(orderItem ?? {})))
+        .map((orderItem) => ProductOrderItem.fromJson(Map.from(orderItem ?? {})))
         .toList();
   }
 }
 
-class OrderItem {
-  OrderItem({
+class ProductOrderItem {
+  ProductOrderItem({
     required this.id,
     required this.userId,
+    required this.productId,
     required this.orderId,
     required this.productName,
     required this.variantName,
@@ -176,10 +177,12 @@ class OrderItem {
     required this.returnStatus,
     required this.sellerName,
     required this.tillStatus,
+    required this.itemRating,
   });
 
   late final String id;
   late final String userId;
+  late final String productId;
   late final String orderId;
   late final String productName;
   late final String variantName;
@@ -203,39 +206,44 @@ class OrderItem {
   late final String returnStatus;
   late final String tillStatus;
   late final String sellerName;
+  List<ItemRating>? itemRating;
 
-  OrderItem updateStatus(String itemActiveStatus) {
-    return OrderItem(
-        id: id,
-        userId: userId,
-        orderId: orderId,
-        productName: productName,
-        variantName: variantName,
-        productVariantId: productVariantId,
-        quantity: quantity,
-        price: price,
-        taxAmount: taxAmount,
-        taxPercentage: taxPercentage,
-        subTotal: subTotal,
-        status: status,
-        activeStatus: itemActiveStatus,
-        sellerId: sellerId,
-        variantId: variantId,
-        name: name,
-        manufacturer: manufacturer,
-        madeIn: madeIn,
-        measurement: measurement,
-        unit: unit,
-        imageUrl: imageUrl,
-        cancelStatus: cancelStatus,
-        returnStatus: returnStatus,
-        sellerName: sellerName,
-        tillStatus: tillStatus);
+  ProductOrderItem updateStatus(String itemActiveStatus) {
+    return ProductOrderItem(
+      id: id,
+      userId: userId,
+      productId: productId,
+      orderId: orderId,
+      productName: productName,
+      variantName: variantName,
+      productVariantId: productVariantId,
+      quantity: quantity,
+      price: price,
+      taxAmount: taxAmount,
+      taxPercentage: taxPercentage,
+      subTotal: subTotal,
+      status: status,
+      activeStatus: itemActiveStatus,
+      sellerId: sellerId,
+      variantId: variantId,
+      name: name,
+      manufacturer: manufacturer,
+      madeIn: madeIn,
+      measurement: measurement,
+      unit: unit,
+      imageUrl: imageUrl,
+      cancelStatus: cancelStatus,
+      returnStatus: returnStatus,
+      sellerName: sellerName,
+      tillStatus: tillStatus,
+      itemRating: itemRating,
+    );
   }
 
-  OrderItem.fromJson(Map<String, dynamic> json) {
+  ProductOrderItem.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
     userId = json['user_id'].toString();
+    productId = json['product_id'].toString();
     returnStatus = json['return_status'].toString();
     cancelStatus = json['cancelable_status'].toString();
     tillStatus = json['till_status'].toString();
@@ -259,5 +267,116 @@ class OrderItem {
     unit = json['unit'].toString();
     imageUrl = json['image_url'].toString();
     sellerName = json['seller_name'].toString();
+    if (json['item_rating'] != null) {
+      itemRating = <ItemRating>[];
+      json['item_rating'].forEach((v) {
+        itemRating!.add(new ItemRating.fromJson(v));
+      });
+    }
+  }
+}
+
+class ItemRating {
+  String? id;
+  String? productId;
+  String? userId;
+  String? rate;
+  String? review;
+  String? status;
+  String? updatedAt;
+  User? user;
+  List<Images>? images;
+
+  ItemRating(
+      {this.id,
+      this.productId,
+      this.userId,
+      this.rate,
+      this.review,
+      this.status,
+      this.updatedAt,
+      this.user,
+      this.images});
+
+  ItemRating.fromJson(Map<String, dynamic> json) {
+    id = json['id'].toString();
+    productId = json['product_id'].toString();
+    userId = json['user_id'].toString();
+    rate = json['rate'].toString();
+    review = json['review'].toString();
+    status = json['status'].toString();
+    updatedAt = json['updated_at'].toString();
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    if (json['images'] != null) {
+      images = <Images>[];
+      json['images'].forEach((v) {
+        images!.add(new Images.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['product_id'] = this.productId;
+    data['user_id'] = this.userId;
+    data['rate'] = this.rate;
+    data['review'] = this.review;
+    data['status'] = this.status;
+    data['updated_at'] = this.updatedAt;
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    if (this.images != null) {
+      data['images'] = this.images!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class User {
+  String? id;
+  String? name;
+  String? profile;
+
+  User({this.id, this.name, this.profile});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'].toString();
+    name = json['name'].toString();
+    profile = json['profile'].toString();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['profile'] = this.profile;
+    return data;
+  }
+}
+
+class Images {
+  String? id;
+  String? productRatingId;
+  String? image;
+  String? imageUrl;
+
+  Images({this.id, this.productRatingId, this.image, this.imageUrl});
+
+  Images.fromJson(Map<String, dynamic> json) {
+    id = json['id'].toString();
+    productRatingId = json['product_rating_id'].toString();
+    image = json['image'].toString();
+    imageUrl = json['image_url'].toString();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['product_rating_id'] = this.productRatingId;
+    data['image'] = this.image;
+    data['image_url'] = this.imageUrl;
+    return data;
   }
 }

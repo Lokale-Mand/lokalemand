@@ -760,3 +760,49 @@ getOutOfStockWidget(
     ),
   );
 }
+
+getPaymentOptionWidget(BuildContext context, String paymentMethod) {
+  switch (paymentMethod.toLowerCase()) {
+    case "cod":
+      return getPaymentOptionUiRow("ic_cod", "cash_on_delivery", context);
+    case "razorpay":
+      return getPaymentOptionUiRow("ic_razorpay", "razorpay", context);
+    case "paystack":
+      return getPaymentOptionUiRow("ic_paystack", "paystack", context);
+    case "stripe":
+      return getPaymentOptionUiRow("ic_stripe", "stripe", context);
+    case "paytm":
+      return getPaymentOptionUiRow("ic_paytm", "paytm", context);
+    case "paypal":
+      return getPaymentOptionUiRow("ic_paypal", "paypal", context);
+    default:
+      return getPaymentOptionUiRow("ic_cod", "cash_on_delivery", context);
+  }
+}
+
+getPaymentOptionUiRow(String icon, String jsonKey, BuildContext context) {
+  return Row(
+    children: [
+      Widgets.defaultImg(
+        image: icon,
+        height: 24,
+        width: 24,
+      ),
+      Expanded(
+        child: Padding(
+          padding: EdgeInsetsDirectional.only(start: Constant.size10),
+          child: Text(
+            getTranslatedValue(
+              context,
+              jsonKey,
+            ),
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: ColorsRes.mainTextColor,
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}

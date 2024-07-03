@@ -1,29 +1,10 @@
-import 'package:flutter/cupertino.dart';
-import 'package:lokale_mand/customer/provider/customerChatDetailProvider.dart';
-import 'package:lokale_mand/customer/provider/productRatingListProvider.dart';
-import 'package:lokale_mand/customer/provider/ratingProvider.dart';
-import 'package:lokale_mand/customer/screen/addressDetailScreen.dart';
-import 'package:lokale_mand/customer/screen/confirmLocationScreen/confirmLocationScreen.dart';
-import 'package:lokale_mand/customer/screen/customerChatDetailScreen/customerChatDetailScreen.dart';
-import 'package:lokale_mand/customer/screen/ratingAndReviewScreen/ratingAndReviewScreen.dart';
-import 'package:lokale_mand/customer/screen/wishlistScreen/wishlistScreen.dart';
-import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/seller/provider/sellerAddProductProvider.dart';
-import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
-import 'package:lokale_mand/seller/provider/sellerChatDetailProvider.dart';
-import 'package:lokale_mand/seller/provider/sellerCityProvider.dart';
-import 'package:lokale_mand/seller/provider/sellerDietaryProvider.dart';
-import 'package:lokale_mand/seller/provider/sellerProductDetailProvider.dart';
-import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
-import 'package:lokale_mand/seller/provider/sellerRatingProvider.dart';
-import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCitiesListScreen.dart';
-import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
-import 'package:lokale_mand/seller/screen/sellerChatDetailScreen/sellerChatDetailScreen.dart';
-import 'package:lokale_mand/seller/screen/sellerRatingAndReviewScreen/sellerRatingAndReviewScreen.dart';
-
 // CUSTOMER SCREENS VARIABLES
 
 // const String introSliderScreen = 'introSliderScreen';
+import 'package:flutter/cupertino.dart';
+import 'package:lokale_mand/customer/models/order.dart';
+import 'package:lokale_mand/helper/utils/generalImports.dart';
+
 const String splashScreen = 'splashScreen';
 const String loginScreen = 'loginScreen';
 const String userTypeSelectionScreen = 'userTypeSelectionScreen';

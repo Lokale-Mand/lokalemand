@@ -1,3 +1,5 @@
+import 'package:lokale_mand/seller/model/orderDetail.dart';
+
 class OrderDetail {
   String? status;
   String? message;
@@ -29,17 +31,17 @@ class OrderDetail {
 
 class OrderDetailData {
   Order? order;
-  List<OrderItems>? orderItems;
+  List<OrderItem>? orderItem;
   List<DeliveryBoys>? deliveryBoys;
 
-  OrderDetailData({this.order, this.orderItems, this.deliveryBoys});
+  OrderDetailData({this.order, this.orderItem, this.deliveryBoys});
 
   OrderDetailData.fromJson(Map<String, dynamic> json) {
     order = json['order'] != null ? new Order.fromJson(json['order']) : null;
     if (json['order_items'] != null) {
-      orderItems = <OrderItems>[];
+      orderItem = <OrderItem>[];
       json['order_items'].forEach((v) {
-        orderItems!.add(new OrderItems.fromJson(v));
+        orderItem!.add(new OrderItem.fromJson(v));
       });
     }
     if (json['deliveryBoys'] != null) {
@@ -55,8 +57,8 @@ class OrderDetailData {
     if (this.order != null) {
       data['order'] = this.order!.toJson();
     }
-    if (this.orderItems != null) {
-      data['order_items'] = this.orderItems!.map((v) => v.toJson()).toList();
+    if (this.orderItem != null) {
+      data['order_items'] = this.orderItem!.map((v) => v.toJson()).toList();
     }
     if (this.deliveryBoys != null) {
       data['deliveryBoys'] = this.deliveryBoys!.map((v) => v.toJson()).toList();
@@ -402,7 +404,7 @@ class Order {
   }
 }
 
-class OrderItems {
+class OrderItem {
   String? id;
   String? userId;
   String? orderId;
@@ -441,7 +443,7 @@ class OrderItems {
   String? productId;
   String? statusName;
 
-  OrderItems(
+  OrderItem(
       {this.id,
       this.userId,
       this.orderId,
@@ -480,7 +482,7 @@ class OrderItems {
       this.productId,
       this.statusName});
 
-  OrderItems.fromJson(Map<String, dynamic> json) {
+  OrderItem.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
     userId = json['user_id'].toString();
     orderId = json['order_id'].toString();

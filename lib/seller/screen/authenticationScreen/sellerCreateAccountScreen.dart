@@ -5,7 +5,6 @@ import 'package:lokale_mand/helper/generalWidgets/customRadio.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/model/sellerCategory.dart';
 import 'package:lokale_mand/seller/model/sellerCityByLatLong.dart';
-import 'package:lokale_mand/seller/provider/sellerCategoryProvider.dart';
 import 'package:lokale_mand/seller/screen/authenticationScreen/widget/sellerCategoryItem.dart';
 
 class SellerCreateAccountScreen extends StatefulWidget {
@@ -24,6 +23,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
   PageController pageController = PageController();
   int currentPage = 0;
   bool isLoading = false,
+      isAcceptedTerms = false,
       isPasswordVisible = false,
       isConfirmPasswordVisible = false;
   bool isDark = Constant.session.getBoolData(SessionManager.isDarkTheme);
@@ -319,7 +319,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: Colors.grey[300],
+                color: ColorsRes.mainTextColor.withOpacity(0.3),
               ),
               hintText: "Lokale Mand",
             ),
@@ -369,7 +369,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
             decoration: InputDecoration(
               border: InputBorder.none,
               isDense: true,
-              hintStyle: TextStyle(color: Colors.grey[300]),
+              hintStyle:
+                  TextStyle(color: ColorsRes.mainTextColor.withOpacity(0.3)),
               hintText: "lokale-mand@mail.com",
             ),
           ),
@@ -408,7 +409,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
-                    hintStyle: TextStyle(color: Colors.grey[300]),
+                    hintStyle: TextStyle(
+                        color: ColorsRes.mainTextColor.withOpacity(0.3)),
                     hintText: "******",
                   ),
                 ),
@@ -425,7 +427,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   isPasswordVisible
                       ? Icons.visibility_off_rounded
                       : Icons.visibility_rounded,
-                  color: Colors.grey[300],
+                  color: ColorsRes.subTitleMainTextColor,
                 ),
               ),
             ],
@@ -465,7 +467,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
-                    hintStyle: TextStyle(color: Colors.grey[300]),
+                    hintStyle: TextStyle(
+                        color: ColorsRes.mainTextColor.withOpacity(0.3)),
                     hintText: "******",
                   ),
                 ),
@@ -482,7 +485,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   isConfirmPasswordVisible
                       ? Icons.visibility_off_rounded
                       : Icons.visibility_rounded,
-                  color: Colors.grey[300],
+                  color: ColorsRes.subTitleMainTextColor,
                 ),
               ),
             ],
@@ -540,7 +543,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: Colors.grey[300],
+                color: ColorsRes.mainTextColor.withOpacity(0.3),
               ),
               hintText: "Lokale Mand",
             ),
@@ -591,7 +594,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     border: Border.all(
-                      color: Colors.grey[300]!,
+                      color: ColorsRes.mainTextColor.withOpacity(0.3),
                     ),
                     borderRadius: BorderRadius.all(
                       Radius.circular(10),
@@ -633,7 +636,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     border: Border.all(
-                      color: Colors.grey[300]!,
+                      color: ColorsRes.mainTextColor.withOpacity(0.3),
                     ),
                     borderRadius: BorderRadius.all(
                       Radius.circular(10),
@@ -691,7 +694,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                               border: InputBorder.none,
                               isDense: true,
                               hintStyle: TextStyle(
-                                color: Colors.grey[300],
+                                color: ColorsRes.mainTextColor.withOpacity(0.3),
                               ),
                               hintText: "Wageningen",
                             ),
@@ -782,7 +785,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                               border: InputBorder.none,
                               isDense: true,
                               hintStyle: TextStyle(
-                                color: Colors.grey[300],
+                                color: ColorsRes.mainTextColor.withOpacity(0.3),
                               ),
                               hintText: "Select Categories",
                             ),
@@ -1007,7 +1010,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: Colors.grey[300],
+                color: ColorsRes.mainTextColor.withOpacity(0.3),
               ),
               hintText: "Store description goes here...",
             ),
@@ -1068,7 +1071,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   dashPattern: [5],
                   strokeWidth: 2,
                   strokeCap: StrokeCap.round,
-                  color: Colors.grey[300]!,
+                  color: ColorsRes.mainTextColor.withOpacity(0.3),
                   radius: Radius.circular(10),
                   borderType: BorderType.RRect,
                   child: Container(
@@ -1080,7 +1083,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                         children: [
                           Widgets.defaultImg(
                             image: "upload",
-                            iconColor: Colors.grey[300],
+                            iconColor: ColorsRes.mainTextColor.withOpacity(0.3),
                             height: 40,
                             width: 40,
                           ),
@@ -1088,7 +1091,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                             jsonKey: "upload_logo_file_here",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              color: Colors.grey[300],
+                              color: ColorsRes.mainTextColor.withOpacity(0.3),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -1402,24 +1405,64 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CountryCodePicker(
-            onInit: (countryCode) {
-              selectedCountryCode = countryCode;
-            },
-            onChanged: (countryCode) {
-              selectedCountryCode = countryCode;
-            },
-            initialSelection: Constant.initialCountryCode,
-            textOverflow: TextOverflow.ellipsis,
-            showCountryOnly: false,
-            alignLeft: false,
-            backgroundColor: Theme.of(context).cardColor,
-            textStyle: TextStyle(color: ColorsRes.mainTextColor),
-            dialogBackgroundColor: Theme.of(context).cardColor,
-            dialogSize: Size(MediaQuery.sizeOf(context).width,
-                MediaQuery.sizeOf(context).height * 0.9),
-            showDropDownButton: true,
-            padding: EdgeInsets.zero,
+          IgnorePointer(
+            ignoring: isLoading,
+            child: CountryCodePicker(
+              onInit: (countryCode) {
+                selectedCountryCode = countryCode;
+              },
+              onChanged: (countryCode) {
+                selectedCountryCode = countryCode;
+              },
+              initialSelection: Constant.initialCountryCode,
+              textOverflow: TextOverflow.ellipsis,
+              showCountryOnly: false,
+              alignLeft: false,
+              backgroundColor: Theme.of(context).cardColor,
+              textStyle: TextStyle(color: ColorsRes.mainTextColor),
+              dialogBackgroundColor: Theme.of(context).cardColor,
+              dialogSize: Size(context.width, context.height),
+              barrierColor: ColorsRes.subTitleMainTextColor,
+              padding: EdgeInsets.zero,
+              searchDecoration: InputDecoration(
+                iconColor: ColorsRes.subTitleMainTextColor,
+                fillColor: Theme.of(context).cardColor,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide:
+                      BorderSide(color: ColorsRes.subTitleMainTextColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide:
+                      BorderSide(color: ColorsRes.subTitleMainTextColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide:
+                      BorderSide(color: ColorsRes.subTitleMainTextColor),
+                ),
+                focusColor: Theme.of(context).scaffoldBackgroundColor,
+                prefixIcon: Icon(
+                  Icons.search_rounded,
+                  color: ColorsRes.subTitleMainTextColor,
+                ),
+              ),
+              searchStyle: TextStyle(
+                color: ColorsRes.subTitleMainTextColor,
+              ),
+              dialogTextStyle: TextStyle(
+                color: ColorsRes.mainTextColor,
+              ),
+            ),
+          ),
+          Icon(
+            Icons.keyboard_arrow_down,
+            color: ColorsRes.grey,
+            size: 15,
+          ),
+          SizedBox(
+            width: Constant.size10,
           ),
           Expanded(
             child: TextField(
@@ -1434,7 +1477,8 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 isDense: true,
-                hintStyle: TextStyle(color: Colors.grey[300]),
+                hintStyle:
+                    TextStyle(color: ColorsRes.mainTextColor.withOpacity(0.3)),
                 hintText: "9999999999",
               ),
             ),
@@ -1544,13 +1588,13 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
           height: Constant.size20,
         ),
         //Bank Name
-        CustomTextLabel(
-          jsonKey: "bank_name",
-          style: TextStyle(
-            color: ColorsRes.mainTextColor,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        // CustomTextLabel(
+        //   jsonKey: "bank_name",
+        //   style: TextStyle(
+        //     color: ColorsRes.mainTextColor,
+        //     fontWeight: FontWeight.w500,
+        //   ),
+        // ),
         // Widgets.getSizedBox(
         //   height: Constant.size10,
         // ),
@@ -1572,7 +1616,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         //       border: InputBorder.none,
         //       isDense: true,
         //       hintStyle: TextStyle(
-        //         color: Colors.grey[300],
+        //         color: ColorsRes.mainTextColor.withOpacity(0.3),
         //       ),
         //       hintText: "Lokale Mand",
         //     ),
@@ -1610,7 +1654,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         //       border: InputBorder.none,
         //       isDense: true,
         //       hintStyle: TextStyle(
-        //         color: Colors.grey[300],
+        //         color: ColorsRes.mainTextColor.withOpacity(0.3),
         //       ),
         //       hintText: "Lokale Mand",
         //     ),
@@ -1648,7 +1692,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         //       border: InputBorder.none,
         //       isDense: true,
         //       hintStyle: TextStyle(
-        //         color: Colors.grey[300],
+        //         color: ColorsRes.mainTextColor.withOpacity(0.3),
         //       ),
         //       hintText: "Lokale Mand",
         //     ),
@@ -1686,7 +1730,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
         //       border: InputBorder.none,
         //       isDense: true,
         //       hintStyle: TextStyle(
-        //         color: Colors.grey[300],
+        //         color: ColorsRes.mainTextColor.withOpacity(0.3),
         //       ),
         //       hintText: "Lokale Mand",
         //     ),
@@ -1724,7 +1768,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
               border: InputBorder.none,
               isDense: true,
               hintStyle: TextStyle(
-                color: Colors.grey[300],
+                color: ColorsRes.mainTextColor.withOpacity(0.3),
               ),
               hintText: "Lokale Mand",
             ),
@@ -1768,11 +1812,12 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                   // Single file path
                   FilePicker.platform
                       .pickFiles(
-                          allowMultiple: false,
-                          allowCompression: true,
-                          type: FileType.custom,
-                          allowedExtensions: ["pdf", "jpg", "jpeg", "png"],
-                          lockParentWindow: true)
+                    allowMultiple: false,
+                    allowCompression: true,
+                    type: FileType.custom,
+                    allowedExtensions: ["pdf"],
+                    lockParentWindow: true,
+                  )
                       .then((value) {
                     if (value != null) {
                       selectedNationalIdPath = value.paths.first.toString();
@@ -1858,7 +1903,7 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                           allowMultiple: false,
                           allowCompression: true,
                           type: FileType.custom,
-                          allowedExtensions: ["pdf", "jpg", "jpeg", "png"],
+                          allowedExtensions: ["pdf"],
                           lockParentWindow: true)
                       .then((value) {
                     if (value != null) {
@@ -1899,6 +1944,94 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
                       ),
                     ),
                   ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Widgets.getSizedBox(
+          height: Constant.size50,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomCheckbox(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              value: isAcceptedTerms,
+              activeColor: ColorsRes.appColor,
+              onChanged: (bool? val) {
+                setState(
+                  () {
+                    isAcceptedTerms = val!;
+                  },
+                );
+              },
+            ),
+            Expanded(
+              child: RichText(
+                softWrap: true,
+                textAlign: TextAlign.start,
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.titleSmall!.merge(
+                        TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: ColorsRes.mainTextColor,
+                        ),
+                      ),
+                  text: "${getTranslatedValue(
+                    context,
+                    "agreement_message_1",
+                  )}\t",
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: context
+                          .read<LanguageProvider>()
+                          .currentLanguage["terms_of_service"],
+                      style: TextStyle(
+                        color: ColorsRes.appColor,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pushNamed(
+                            context,
+                            webViewScreen,
+                            arguments: getTranslatedValue(
+                              context,
+                              "terms_and_conditions",
+                            ),
+                          );
+                        },
+                    ),
+                    TextSpan(
+                        text: "\t${getTranslatedValue(
+                          context,
+                          "and",
+                        )}\t",
+                        style: TextStyle(
+                          color: ColorsRes.mainTextColor,
+                        )),
+                    TextSpan(
+                      text: context
+                          .read<LanguageProvider>()
+                          .currentLanguage["privacy_policy"],
+                      style: TextStyle(
+                        color: ColorsRes.appColor,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pushNamed(
+                            context,
+                            webViewScreen,
+                            arguments: getTranslatedValue(
+                              context,
+                              "privacy_policy",
+                            ),
+                          );
+                        },
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -1957,6 +2090,11 @@ class _SellerCreateAccountScreenState extends State<SellerCreateAccountScreen> {
             context,
             getTranslatedValue(
                 context, "enter_valid_personal_info_address_proof"),
+            MessageType.warning);
+      } else if (!isAcceptedTerms) {
+        GeneralMethods.showMessage(
+            context,
+            getTranslatedValue(context, "accept_terms_and_condition"),
             MessageType.warning);
       } else {
         backendApiProcess();

@@ -134,7 +134,6 @@
   "order_tracking": "Order tracking",
   "orders_history": "Orders history",
   "payment_method": "Payment Method",
-  "payment_method_": "payment method",
   "paypal_payment": "Paypal Payment",
   "privacy_policy": "Privacy Policy",
   "product_detail": "Product Detail",
@@ -358,8 +357,8 @@
   "personal_information_title": "Personal information!",
   "wrong_shop_closing_time_message": "The store closing time should not be before its opening time. Please enter a valid time!",
   "upload_logo_file_here": "Upload logo file here ( jpg, jpeg, png only)",
-  "upload_nid_file_here": "Upload national id file here ( pdf, jpg, jpeg, png only)",
-  "upload_address_proof_file_here": "Upload address proof file here ( pdf, jpg, jpeg, png only)",
+  "upload_nid_file_here": "Upload national id file here ( pdf only)",
+  "upload_address_proof_file_here": "Upload address proof file here ( pdf only)",
   "bank_name": "Bank Name",
   "bank_account_name": "Bank A/C Name",
   "bank_account_number": "Bank A/C Number",
@@ -529,5 +528,9 @@
   "km_away": "KM away",
   "regular_seller": "Regular Seller",
   "organic_seller": "Organic Seller",
-  "required_login_message_for_chat": "Oops! You need to login first to contact with seller!"
+  "required_login_message_for_chat": "Oops! You need to login first to contact with seller!",
+  "your_payment_method": "Your payment method",
+  "payment_method_": "payment method",
+  "store_type": "Store Type",
+  "does_not_have_account": "Don't have an account?"
 }

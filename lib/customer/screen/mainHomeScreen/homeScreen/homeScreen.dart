@@ -452,15 +452,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
-    if (Constant.session.getBoolData(SessionManager.isDarkTheme)) {
-      controller.setMapStyle(
-          await rootBundle.loadString('assets/mapTheme/nightMode.json'));
-      setState(() {});
-    } else {
-      controller.setMapStyle(
-          await rootBundle.loadString('assets/mapTheme/dayMode.json'));
-      setState(() {});
-    }
+    try {
+      if (Constant.session.getBoolData(SessionManager.isDarkTheme)) {
+        controller.setMapStyle(
+            await rootBundle.loadString('assets/mapTheme/nightMode.json'));
+        setState(() {});
+      } else {
+        controller.setMapStyle(
+            await rootBundle.loadString('assets/mapTheme/dayMode.json'));
+        setState(() {});
+      }
+    } catch (_) {}
   }
 
   Future<void> _onMapCreated(GoogleMapController controllerParam) async {

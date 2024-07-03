@@ -1,3 +1,4 @@
+import 'package:lokale_mand/customer/models/order.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 
 class PreviousOrdersHistoryScreen extends StatefulWidget {
@@ -45,13 +46,13 @@ class _PreviousOrdersHistoryScreenState
     });
   }
 
-  String getOrderedItemNames(List<OrderItem> orderItems) {
+  String getOrderedItemNames(List<ProductOrderItem> ProductOrderItem) {
     String itemNames = "";
-    for (var i = 0; i < orderItems.length; i++) {
-      if (i == orderItems.length - 1) {
-        itemNames = itemNames + orderItems[i].productName;
+    for (var i = 0; i < ProductOrderItem.length; i++) {
+      if (i == ProductOrderItem.length - 1) {
+        itemNames = itemNames + ProductOrderItem[i].productName!;
       } else {
-        itemNames = "${orderItems[i].productName}, ";
+        itemNames = "${ProductOrderItem[i].productName}, ";
       }
     }
     return itemNames;
@@ -129,7 +130,7 @@ class _PreviousOrdersHistoryScreenState
                   text: "${getTranslatedValue(
                     context,
                     "placed_order_on",
-                  )} ${GeneralMethods.formatDate(DateTime.parse(order.createdAt))}",
+                  )} ${GeneralMethods.formatDate(DateTime.parse(order.createdAt!))}",
                   style: TextStyle(
                       fontSize: 12.5, color: ColorsRes.subTitleMainTextColor),
                 ),
@@ -137,7 +138,7 @@ class _PreviousOrdersHistoryScreenState
                   height: 5.0,
                 ),
                 CustomTextLabel(
-                  text: getOrderedItemNames(order.items),
+                  text: getOrderedItemNames(order.items!),
                   style: TextStyle(
                     fontSize: 12.5,
                     color: ColorsRes.mainTextColor,
@@ -162,7 +163,7 @@ class _PreviousOrdersHistoryScreenState
                 ),
                 CustomTextLabel(
                   text: GeneralMethods.getCurrencyFormat(
-                      double.parse(order.finalTotal)),
+                      double.parse(order.finalTotal!)),
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: ColorsRes.mainTextColor,

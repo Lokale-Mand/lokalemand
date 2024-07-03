@@ -8,6 +8,7 @@ Widget MessageContainer({
   required MessageType type,
 }) {
   return Material(
+    color: Theme.of(context).cardColor,
     child: ToastAnimation(
       delay: Constant.messageDisplayDuration,
       child: Container(

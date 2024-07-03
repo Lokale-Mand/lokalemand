@@ -51,7 +51,7 @@ class _ChatDetailOrderItemWidgetState extends State<ChatDetailOrderItemWidget> {
       // More than yesterday
       createdAt = DateFormat('dd/MM/yyyy').format(dateTime);
     }
-
+    
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
@@ -262,6 +262,27 @@ class _ChatDetailOrderItemWidgetState extends State<ChatDetailOrderItemWidget> {
                         ),
                 ),
             ],
+          ),
+          Widgets.getSizedBox(height: 10),
+          Divider(color: ColorsRes.subTitleMainTextColor.withOpacity(0.2)),
+          Widgets.getSizedBox(height: 10),
+          Container(
+            width: MediaQuery.sizeOf(context).width,
+            child: CustomTextLabel(
+              jsonKey: "your_payment_method",
+              style: TextStyle(
+                color: ColorsRes.mainTextColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Widgets.getSizedBox(height: 10),
+          Container(
+            width: MediaQuery.sizeOf(context).width,
+            child: getPaymentOptionWidget(
+              context,
+              widget.orderData?.order?.paymentMethod ?? "",
+            ),
           ),
           Widgets.getSizedBox(height: 10),
           Align(
