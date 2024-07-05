@@ -234,10 +234,20 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                                           null ||
                                       order.activeStatus.toString() == "6") {
                                     openRatingDialog(order).then((value) {
-                                      return context
-                                          .read<ActiveOrdersProvider>()
-                                          .getOrders(
-                                              params: {}, context: context);
+                                      print("value is not null 2 $value");
+                                      if (value != null) {
+                                        context
+                                            .read<ActiveOrdersProvider>()
+                                            .orders
+                                            .clear();
+                                        context
+                                            .read<ActiveOrdersProvider>()
+                                            .offset = 0;
+                                        return context
+                                            .read<ActiveOrdersProvider>()
+                                            .getOrders(
+                                                params: {}, context: context);
+                                      }
                                     });
                                   }
                                 },
@@ -265,10 +275,20 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                                 callback: () {
                                   if (order.activeStatus.toString() == "6") {
                                     openRatingDialog(order).then((value) {
-                                      context
-                                          .read<ActiveOrdersProvider>()
-                                          .getOrders(
-                                              params: {}, context: context);
+                                      print("value is not null 1 $value");
+                                      if (value != null) {
+                                        context
+                                            .read<ActiveOrdersProvider>()
+                                            .orders
+                                            .clear();
+                                        context
+                                            .read<ActiveOrdersProvider>()
+                                            .offset = 0;
+                                        return context
+                                            .read<ActiveOrdersProvider>()
+                                            .getOrders(
+                                                params: {}, context: context);
+                                      }
                                     });
                                   }
                                 },

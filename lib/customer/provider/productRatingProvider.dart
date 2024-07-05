@@ -35,6 +35,7 @@ class ProductRatingProvider extends ChangeNotifier {
         );
         productRatingState = ProductRatingState.loaded;
         notifyListeners();
+        return true;
       } else {
         GeneralMethods.showMessage(
           context,
@@ -43,6 +44,7 @@ class ProductRatingProvider extends ChangeNotifier {
         );
         productRatingState = ProductRatingState.error;
         notifyListeners();
+        return false;
       }
     } catch (e) {
       message = e.toString();
@@ -53,6 +55,7 @@ class ProductRatingProvider extends ChangeNotifier {
         MessageType.warning,
       );
       notifyListeners();
+      return false;
     }
   }
 }

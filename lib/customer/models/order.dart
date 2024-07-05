@@ -284,7 +284,7 @@ class ItemRating {
   String? review;
   String? status;
   String? updatedAt;
-  User? user;
+  ItemRatingUser? user;
   List<Images>? images;
 
   ItemRating(
@@ -306,7 +306,7 @@ class ItemRating {
     review = json['review'].toString();
     status = json['status'].toString();
     updatedAt = json['updated_at'].toString();
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? new ItemRatingUser.fromJson(json['user']) : null;
     if (json['images'] != null) {
       images = <Images>[];
       json['images'].forEach((v) {
@@ -334,14 +334,14 @@ class ItemRating {
   }
 }
 
-class User {
+class ItemRatingUser {
   String? id;
   String? name;
   String? profile;
 
-  User({this.id, this.name, this.profile});
+  ItemRatingUser({this.id, this.name, this.profile});
 
-  User.fromJson(Map<String, dynamic> json) {
+  ItemRatingUser.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
     name = json['name'].toString();
     profile = json['profile'].toString();
