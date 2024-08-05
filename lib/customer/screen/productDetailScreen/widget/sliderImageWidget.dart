@@ -55,7 +55,7 @@ class _ProductSliderImagesWidgetsState
                       Padding(
                         padding: EdgeInsets.only(top: 40),
                         child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.34,
+                          height: MediaQuery.sizeOf(context).height * 0.33,
                           width: MediaQuery.sizeOf(context).width,
                           child: PageView.builder(
                             controller: _pageController,

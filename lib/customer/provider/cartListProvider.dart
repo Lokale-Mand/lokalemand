@@ -251,6 +251,7 @@ class CartListProvider extends ChangeNotifier {
   }
 
   Future clearCart({required BuildContext context}) async {
+    cartListState = CartListState.loading;
     cartList.clear();
     notifyListeners();
     await removeItemFromCartApi(

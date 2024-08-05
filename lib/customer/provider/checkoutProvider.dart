@@ -382,89 +382,102 @@ class CheckoutProvider extends ChangeNotifier {
   }
 
   Future placeOrder({required BuildContext context}) async {
-    if (timeSlotsData!.timeSlots.isNotEmpty && selectedAddress != null) {
-      try {
-        isPaymentUnderProcessing = true;
+    if(!isPaymentUnderProcessing){
+      if (timeSlotsData!.timeSlots.isNotEmpty && selectedAddress != null) {
+        try {
+          isPaymentUnderProcessing = true;
 
-        if (totalAmount == 0.0) {
-          selectedPaymentMethod = "Wallet";
-        }
-
-        final orderStatus = "1";
-
-        Map<String, String> params = {};
-        params[ApiAndParams.productVariantId] =
-            deliveryChargeData?.productVariantId.toString() ?? "0";
-        params[ApiAndParams.quantity] =
-            deliveryChargeData?.quantity.toString() ?? "0";
-        params[ApiAndParams.total] =
-            (deliveryChargeData?.subTotal.toString() ?? "0")
-                .toDouble
-                .toPrecision(2)
-                .toString();
-        params[ApiAndParams.deliveryCharge] =
-            (deliveryChargeData?.deliveryCharge?.totalDeliveryCharge ?? "0")
-                .toDouble
-                .toPrecision(2)
-                .toString();
-        params[ApiAndParams.finalTotal] =
-            totalAmount.toString().toDouble.toPrecision(2).toString();
-        params[ApiAndParams.paymentMethod] = selectedPaymentMethod.toString();
-        params[ApiAndParams.addressId] = selectedAddress!.id.toString();
-        if (isTimeSlotsEnabled) {
-          params[ApiAndParams.deliveryTime] =
-              "$selectedDate ${timeSlotsData?.timeSlots[selectedTime].title}";
-        } else {
-          params[ApiAndParams.deliveryTime] = "N/A";
-        }
-        params[ApiAndParams.status] = orderStatus;
-        if (Constant.isPromoCodeApplied) {
-          params[ApiAndParams.promoCodeId] = Constant.selectedPromoCodeId;
-        }
-
-        Map<String, dynamic> getPlaceOrderResponse =
-            (await getPlaceOrderApi(context: context, params: params));
-
-        if (getPlaceOrderResponse[ApiAndParams.status].toString() == "1") {
-          Map<String, dynamic> chatDetail =
-              getPlaceOrderResponse[ApiAndParams.data];
-
-          sellerId = chatDetail["id"].toString();
-          storeName = chatDetail["name"].toString();
-          storeLogo = chatDetail["logo_url"].toString();
-
-          if (selectedPaymentMethod != "COD") {
-            PlacedPrePaidOrder placedPrePaidOrder =
-                PlacedPrePaidOrder.fromJson(getPlaceOrderResponse);
-            placedOrderId = placedPrePaidOrder.data.orderId.toString();
+          if (totalAmount == 0.0) {
+            selectedPaymentMethod = "Wallet";
           }
 
-          if (selectedPaymentMethod == "Razorpay" ||
-              selectedPaymentMethod == "Stripe") {
-          } else if (selectedPaymentMethod == "Paystack") {
-            payStackReference =
-                "Charged_From_${GeneralMethods.setFirstLetterUppercase(Platform.operatingSystem)}_${DateTime.now().millisecondsSinceEpoch}";
-            transactionId = payStackReference;
-          } else if (selectedPaymentMethod == "COD" ||
-              selectedPaymentMethod == "Wallet") {
-            showOrderPlacedScreen(context);
-          } else if (selectedPaymentMethod == "Paytm") {
-            initiatePaytmTransaction(context: context).then((value) {
-              return value;
-            });
-          } else if (selectedPaymentMethod == "Paypal") {
-            initiatePaypalTransaction(context: context).then((value) {
-              return value;
-            });
+          final orderStatus = "1";
+
+          Map<String, String> params = {};
+          params[ApiAndParams.productVariantId] =
+              deliveryChargeData?.productVariantId.toString() ?? "0";
+          params[ApiAndParams.quantity] =
+              deliveryChargeData?.quantity.toString() ?? "0";
+          params[ApiAndParams.total] =
+              (deliveryChargeData?.subTotal.toString() ?? "0")
+                  .toDouble
+                  .toPrecision(2)
+                  .toString();
+          params[ApiAndParams.deliveryCharge] =
+              (deliveryChargeData?.deliveryCharge?.totalDeliveryCharge ?? "0")
+                  .toDouble
+                  .toPrecision(2)
+                  .toString();
+          params[ApiAndParams.finalTotal] =
+              totalAmount.toString().toDouble.toPrecision(2).toString();
+          params[ApiAndParams.paymentMethod] = selectedPaymentMethod.toString();
+          params[ApiAndParams.addressId] = selectedAddress!.id.toString();
+          if (isTimeSlotsEnabled) {
+            params[ApiAndParams.deliveryTime] =
+                "$selectedDate ${timeSlotsData?.timeSlots[selectedTime].title}";
+          } else {
+            params[ApiAndParams.deliveryTime] = "N/A";
+          }
+          params[ApiAndParams.status] = orderStatus;
+          if (Constant.isPromoCodeApplied) {
+            params[ApiAndParams.promoCodeId] = Constant.selectedPromoCodeId;
           }
 
-          checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderLoaded;
-          notifyListeners();
-          return true;
-        } else {
+          Map<String, dynamic> getPlaceOrderResponse =
+              (await getPlaceOrderApi(context: context, params: params));
+
+          if (getPlaceOrderResponse[ApiAndParams.status].toString() == "1") {
+            Map<String, dynamic> chatDetail =
+                getPlaceOrderResponse[ApiAndParams.data];
+
+            sellerId = chatDetail["id"].toString();
+            storeName = chatDetail["name"].toString();
+            storeLogo = chatDetail["logo_url"].toString();
+
+            if (selectedPaymentMethod != "COD") {
+              PlacedPrePaidOrder placedPrePaidOrder =
+                  PlacedPrePaidOrder.fromJson(getPlaceOrderResponse);
+              placedOrderId = placedPrePaidOrder.data.orderId.toString();
+            }
+
+            if (selectedPaymentMethod == "Razorpay" ||
+                selectedPaymentMethod == "Stripe") {
+            } else if (selectedPaymentMethod == "Paystack") {
+              payStackReference =
+                  "Charged_From_${GeneralMethods.setFirstLetterUppercase(Platform.operatingSystem)}_${DateTime.now().millisecondsSinceEpoch}";
+              transactionId = payStackReference;
+            } else if (selectedPaymentMethod == "COD" ||
+                selectedPaymentMethod == "Wallet") {
+              showOrderPlacedScreen(context);
+            } else if (selectedPaymentMethod == "Paytm") {
+              initiatePaytmTransaction(context: context).then((value) {
+                return value;
+              });
+            } else if (selectedPaymentMethod == "Paypal") {
+              initiatePaypalTransaction(context: context).then((value) {
+                return value;
+              });
+            }
+
+            checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderLoaded;
+            notifyListeners();
+            return true;
+          } else {
+            GeneralMethods.showMessage(
+              context,
+              "${getTranslatedValue(context, "address_missing_alert")}",
+              MessageType.warning,
+            );
+            checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderError;
+            isPaymentUnderProcessing = false;
+            notifyListeners();
+            return false;
+          }
+        } catch (e) {
+          message = e.toString();
           GeneralMethods.showMessage(
             context,
-            "${getTranslatedValue(context, "address_missing_alert")}",
+            message,
             MessageType.warning,
           );
           checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderError;
@@ -472,29 +485,18 @@ class CheckoutProvider extends ChangeNotifier {
           notifyListeners();
           return false;
         }
-      } catch (e) {
-        message = e.toString();
+      } else {
         GeneralMethods.showMessage(
           context,
-          message,
+          context
+                  .read<LanguageProvider>()
+                  .currentLanguage["please_add_timeslot_in_admin_panel"] ??
+              "Please add timeslot in admin panel!",
           MessageType.warning,
         );
         checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderError;
         isPaymentUnderProcessing = false;
-        notifyListeners();
-        return false;
       }
-    } else {
-      GeneralMethods.showMessage(
-        context,
-        context
-                .read<LanguageProvider>()
-                .currentLanguage["please_add_timeslot_in_admin_panel"] ??
-            "Please add timeslot in admin panel!",
-        MessageType.warning,
-      );
-      checkoutPlaceOrderState = CheckoutPlaceOrderState.placeOrderError;
-      isPaymentUnderProcessing = false;
     }
     notifyListeners();
     return false;

@@ -1,10 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:lokale_mand/customer/models/productRating.dart';
 import 'package:lokale_mand/customer/models/sellerRating.dart';
-import 'package:lokale_mand/customer/provider/productRatingListProvider.dart';
 import 'package:lokale_mand/customer/screen/productDetailScreen/widget/sliderImageWidget.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
-import 'package:lokale_mand/seller/screen/sellerAddProductScreen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String? title;
@@ -799,48 +797,54 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 context,
                                 10,
                                 callback: () async {
-                                  if (Constant.session.isUserLoggedIn()) {
-                                    cartListProvider.currentSelectedProduct =
-                                        product.id;
-                                    cartListProvider.currentSelectedVariant =
-                                        product.variants[0].id;
 
-                                    Map<String, String> params = {};
-                                    params[ApiAndParams.productId] = product.id;
-                                    params[ApiAndParams.productVariantId] =
-                                        product.variants[0].id;
-                                    params[ApiAndParams.qty] =
-                                        edtProductStock.text.toString();
-                                    await cartListProvider
-                                        .clearCart(context: context)
-                                        .then((value) async {
+                                  if (Constant.session.isUserLoggedIn()) {
+                                    if (cartListProvider.cartListState !=
+                                        CartListState.loading) {
+                                      cartListProvider.currentSelectedProduct =
+                                          product.id;
+                                      cartListProvider.currentSelectedVariant =
+                                          product.variants[0].id;
+
+                                      Map<String, String> params = {};
+                                      params[ApiAndParams.productId] =
+                                          product.id;
+                                      params[ApiAndParams.productVariantId] =
+                                          product.variants[0].id;
+                                      params[ApiAndParams.qty] =
+                                          edtProductStock.text.toString();
                                       await cartListProvider
-                                          .addRemoveCartItem(
-                                        context: context,
-                                        params: params,
-                                        isUnlimitedStock:
-                                            product.isUnlimitedStock == "1",
-                                        maximumAllowedQuantity: double.tryParse(
-                                            product.totalAllowedQuantity
-                                                .toString())!,
-                                        availableStock: double.tryParse(
-                                            product.variants[0].stock)!,
-                                        actionFor: "add",
-                                      )
-                                          .then(
-                                        (value) {
-                                          if (value == true) {
-                                            Navigator.pushNamed(
-                                                context, checkoutScreen,
-                                                arguments: [
-                                                  product,
-                                                  edtProductStock.text
-                                                      .toString(),
-                                                ]);
-                                          }
-                                        },
-                                      );
-                                    });
+                                          .clearCart(context: context)
+                                          .then((value) async {
+                                        await cartListProvider
+                                            .addRemoveCartItem(
+                                          context: context,
+                                          params: params,
+                                          isUnlimitedStock:
+                                              product.isUnlimitedStock == "1",
+                                          maximumAllowedQuantity:
+                                              double.tryParse(product
+                                                  .totalAllowedQuantity
+                                                  .toString())!,
+                                          availableStock: double.tryParse(
+                                              product.variants[0].stock)!,
+                                          actionFor: "add",
+                                        )
+                                            .then(
+                                          (value) {
+                                            if (value == true) {
+                                              Navigator.pushNamed(
+                                                  context, checkoutScreen,
+                                                  arguments: [
+                                                    product,
+                                                    edtProductStock.text
+                                                        .toString(),
+                                                  ]);
+                                            }
+                                          },
+                                        );
+                                      });
+                                    }
                                   } else {
                                     Widgets.loginUserAccount(context, "cart");
                                   }
