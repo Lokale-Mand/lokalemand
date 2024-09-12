@@ -1,7 +1,6 @@
 import 'package:lokale_mand/helper/generalWidgets/sellerProductGridItemContainer.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
 import 'package:lokale_mand/seller/model/sellerProductListItem.dart';
-import 'package:lokale_mand/seller/provider/sellerProductListProvider.dart';
 
 class SellerProductScreen extends StatefulWidget {
   const SellerProductScreen({
@@ -174,13 +173,16 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        sellerAddOrUpdateProductScreen,
-                        arguments: products[index].id,
-                      ).then((value) {
-                        if (value != null && value == true) {
-                          callApi(isReset: false);
-                        }
-                      });
+                        sellerProductDetailScreen,
+                        arguments: [
+                          products[index].id.toString(),
+                          products[index].name,
+                          products[index],
+                          "",
+                          "",
+                          "",
+                        ],
+                      );
                     },
                     child: SellerProductGridItemContainer(
                         product: products[index]),

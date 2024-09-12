@@ -383,6 +383,8 @@ class CheckoutProvider extends ChangeNotifier {
 
   Future placeOrder({required BuildContext context}) async {
     if(!isPaymentUnderProcessing){
+      isPaymentUnderProcessing = true;
+      notifyListeners();
       if (timeSlotsData!.timeSlots.isNotEmpty && selectedAddress != null) {
         try {
           isPaymentUnderProcessing = true;

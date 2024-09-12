@@ -193,113 +193,108 @@ class _SwipeButtonState extends State<PlaceOrderButtonWidget> {
                         context, "please_add_timeslot_in_admin_panel"),
                     MessageType.warning);
               } else {
-                checkoutProvider.setPaymentProcessState(true).then((value) {
-                  if (checkoutProvider.selectedPaymentMethod == "COD" ||
-                      checkoutProvider.selectedPaymentMethod == "Wallet") {
-                    checkoutProvider.placeOrder(context: context);
-                  } else if (checkoutProvider.selectedPaymentMethod ==
-                      "Razorpay") {
-                    razorpayKey = context
-                            .read<CheckoutProvider>()
-                            .paymentMethodsData
-                            ?.razorpayKey ??
-                        "0";
-                    amount = context.read<CheckoutProvider>().totalAmount;
-                    context
-                        .read<CheckoutProvider>()
-                        .placeOrder(context: context)
-                        .then((value) {
-                      if (value) {
-                        context
-                            .read<CheckoutProvider>()
-                            .initiateRazorpayTransaction(context: context)
-                            .then((value) => openRazorPayGateway());
-                      }
-                    });
-                  } else if (checkoutProvider.selectedPaymentMethod ==
-                      "Paystack") {
-                    amount = context.read<CheckoutProvider>().totalAmount;
-                    context
-                        .read<CheckoutProvider>()
-                        .placeOrder(context: context)
-                        .then((value) {
-                      if (value) {
-                        return openPaystackPaymentGateway();
-                      }
-                    });
-                  } else if (checkoutProvider.selectedPaymentMethod ==
-                      "Stripe") {
-                    amount = context.read<CheckoutProvider>().totalAmount;
+                if (checkoutProvider.selectedPaymentMethod == "COD" ||
+                    checkoutProvider.selectedPaymentMethod == "Wallet") {
+                  checkoutProvider.placeOrder(context: context);
+                } else if (checkoutProvider.selectedPaymentMethod ==
+                    "Razorpay") {
+                  razorpayKey = context
+                          .read<CheckoutProvider>()
+                          .paymentMethodsData
+                          ?.razorpayKey ??
+                      "0";
+                  amount = context.read<CheckoutProvider>().totalAmount;
+                  context
+                      .read<CheckoutProvider>()
+                      .placeOrder(context: context)
+                      .then((value) {
+                    if (value) {
+                      context
+                          .read<CheckoutProvider>()
+                          .initiateRazorpayTransaction(context: context)
+                          .then((value) => openRazorPayGateway());
+                    }
+                  });
+                } else if (checkoutProvider.selectedPaymentMethod ==
+                    "Paystack") {
+                  amount = context.read<CheckoutProvider>().totalAmount;
+                  context
+                      .read<CheckoutProvider>()
+                      .placeOrder(context: context)
+                      .then((value) {
+                    if (value) {
+                      return openPaystackPaymentGateway();
+                    }
+                  });
+                } else if (checkoutProvider.selectedPaymentMethod == "Stripe") {
+                  amount = context.read<CheckoutProvider>().totalAmount;
 
-                    context
-                        .read<CheckoutProvider>()
-                        .placeOrder(context: context)
-                        .then((value) {
-                      if (value) {
-                        StripeService.payWithPaymentSheet(
-                          amount: int.parse((amount * 100).toStringAsFixed(0)),
-                          isTestEnvironment: true,
-                          awaitedOrderId: checkoutProvider.placedOrderId,
-                          context: context,
-                          currency: context
-                                  .read<CheckoutProvider>()
-                                  .paymentMethods
-                                  ?.data
-                                  .stripeCurrencyCode ??
-                              "0",
-                        ).then((value) {
-                          if (!value.success!) {
-                            context
+                  context
+                      .read<CheckoutProvider>()
+                      .placeOrder(context: context)
+                      .then((value) {
+                    if (value) {
+                      StripeService.payWithPaymentSheet(
+                        amount: int.parse((amount * 100).toStringAsFixed(0)),
+                        isTestEnvironment: true,
+                        awaitedOrderId: checkoutProvider.placedOrderId,
+                        context: context,
+                        currency: context
                                 .read<CheckoutProvider>()
-                                .deleteAwaitingOrder(context);
+                                .paymentMethods
+                                ?.data
+                                .stripeCurrencyCode ??
+                            "0",
+                      ).then((value) {
+                        if (!value.success!) {
+                          context
+                              .read<CheckoutProvider>()
+                              .deleteAwaitingOrder(context);
 
-                            context
-                                .read<CheckoutProvider>()
-                                .setPaymentProcessState(false);
-                            GeneralMethods.showMessage(
-                                context,
-                                getTranslatedValue(
-                                    context, "payment_cancelled_by_user"),
-                                MessageType.warning);
-                          }
-                        });
-                      }
-                    });
-                  } else if (checkoutProvider.selectedPaymentMethod ==
-                      "Paytm") {
-                    amount = context.read<CheckoutProvider>().totalAmount;
+                          context
+                              .read<CheckoutProvider>()
+                              .setPaymentProcessState(false);
+                          GeneralMethods.showMessage(
+                              context,
+                              getTranslatedValue(
+                                  context, "payment_cancelled_by_user"),
+                              MessageType.warning);
+                        }
+                      });
+                    }
+                  });
+                } else if (checkoutProvider.selectedPaymentMethod == "Paytm") {
+                  amount = context.read<CheckoutProvider>().totalAmount;
 
-                    context
-                        .read<CheckoutProvider>()
-                        .placeOrder(context: context)
-                        .then((value) {
-                      if (value is bool) {
-                        context
-                            .read<CheckoutProvider>()
-                            .setPaymentProcessState(false);
-                        GeneralMethods.showMessage(
-                            context,
-                            getTranslatedValue(context, "something_went_wrong"),
-                            MessageType.warning);
-                      } else {
-                        openPaytmPaymentGateway();
-                      }
-                    });
-                  } else if (checkoutProvider.selectedPaymentMethod ==
-                      "Paypal") {
-                    amount = context.read<CheckoutProvider>().totalAmount;
-                    context
-                        .read<CheckoutProvider>()
-                        .placeOrder(context: context)
-                        .then((value) {
-                      if (value is bool) {
-                        context
-                            .read<CheckoutProvider>()
-                            .setPaymentProcessState(false);
-                      }
-                    });
-                  }
-                });
+                  context
+                      .read<CheckoutProvider>()
+                      .placeOrder(context: context)
+                      .then((value) {
+                    if (value is bool) {
+                      context
+                          .read<CheckoutProvider>()
+                          .setPaymentProcessState(false);
+                      GeneralMethods.showMessage(
+                          context,
+                          getTranslatedValue(context, "something_went_wrong"),
+                          MessageType.warning);
+                    } else {
+                      openPaytmPaymentGateway();
+                    }
+                  });
+                } else if (checkoutProvider.selectedPaymentMethod == "Paypal") {
+                  amount = context.read<CheckoutProvider>().totalAmount;
+                  context
+                      .read<CheckoutProvider>()
+                      .placeOrder(context: context)
+                      .then((value) {
+                    if (value is bool) {
+                      context
+                          .read<CheckoutProvider>()
+                          .setPaymentProcessState(false);
+                    }
+                  });
+                }
               }
             },
             otherWidgets: (checkoutProvider.checkoutDeliveryChargeState ==

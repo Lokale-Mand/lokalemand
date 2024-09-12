@@ -4,6 +4,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lokale_mand/customer/models/order.dart';
 import 'package:lokale_mand/helper/utils/generalImports.dart';
+import 'package:lokale_mand/seller/screen/sellerProductDetailScreen/productDetailScreen.dart';
 
 const String splashScreen = 'splashScreen';
 const String loginScreen = 'loginScreen';
@@ -55,6 +56,7 @@ const String htmlEditorScreen = 'htmlEditorScreen';
 const String sellerChatDetailScreen = 'sellerChatDetailScreen';
 const String citiesListScreen = 'citiesListScreen';
 const String sellerRatingAndReviewScreen = 'sellerRatingAndReviewScreen';
+const String sellerProductDetailScreen = 'sellerProductDetailScreen';
 
 String currentRoute = splashScreen;
 
@@ -499,6 +501,28 @@ class RouteGenerator {
             ],
             child: SellerAddOrUpdateProductScreen(
               productId: settings.arguments as String,
+            ),
+          ),
+        );
+
+
+
+      case sellerProductDetailScreen:
+        List<dynamic> sellerProductDetailArguments =
+        settings.arguments as List<dynamic>;
+        return CupertinoPageRoute(
+          builder: (_) => MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (context) => ProductDetailProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (context) => ProductRatingListProvider(),
+              )
+            ],
+            child: SellerProductDetailScreen(
+              id: sellerProductDetailArguments[0] as String,
+              title: sellerProductDetailArguments[1] as String,
             ),
           ),
         );
