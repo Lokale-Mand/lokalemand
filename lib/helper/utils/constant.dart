@@ -5,6 +5,7 @@ enum NetworkStatus { online, offline }
 class Constant {
   //Add your admin panel url here with postfix slash eg. https://www.admin.panel/
   static String hostUrl = "https://dashboard.lokalemand.nl/";
+  static String websiteUrl = "https://lokalemand.nl/";
 
   static String baseUrl = "${hostUrl}customer/";
   static String customerBaseSellerUrl = "${hostUrl}customer/sellers/";

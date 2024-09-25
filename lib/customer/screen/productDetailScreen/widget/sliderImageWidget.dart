@@ -48,87 +48,80 @@ class _ProductSliderImagesWidgetsState
     return (widget.sliders.length != 0)
         ? Consumer<SliderImagesProvider>(
             builder: (context, sliderImagesProvider, child) {
-              return Column(
+              return Stack(
                 children: [
-                  Stack(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 40),
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.33,
-                          width: MediaQuery.sizeOf(context).width,
-                          child: PageView.builder(
-                            controller: _pageController,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: widget.sliders.length,
-                            itemBuilder: (context, index) {
-                              return ClipRRect(
-                                borderRadius: Constant.borderRadius10,
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                child: Widgets.setNetworkImg(
-                                  image: widget.sliders[index],
-                                  boxFit: BoxFit.fitHeight,
-                                ),
-                              );
-                            },
-                            onPageChanged: (value) {
-                              sliderImagesProvider
-                                  .setSliderCurrentIndexImage(value);
-                            },
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.34,
+                    width: MediaQuery.sizeOf(context).width,
+                    child: PageView.builder(
+                      controller: _pageController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: widget.sliders.length,
+                      itemBuilder: (context, index) {
+                        return ClipRRect(
+                          borderRadius: Constant.borderRadius10,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Widgets.setNetworkImg(
+                            image: widget.sliders[index],
+                            boxFit: BoxFit.fitHeight,
                           ),
-                        ),
-                      ),
-                      PositionedDirectional(
-                        bottom: 15,
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(
-                                  widget.sliders.length,
-                                  (index) {
-                                    return Padding(
-                                      padding: EdgeInsetsDirectional.symmetric(
-                                        horizontal: 3,
-                                      ),
-                                      child: PhysicalModel(
-                                        color: sliderImagesProvider
-                                                    .currentSliderImageIndex ==
-                                                index
-                                            ? Theme.of(context).cardColor
-                                            : Theme.of(context)
-                                                .scaffoldBackgroundColor,
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        child: CircleAvatar(
-                                          backgroundColor: sliderImagesProvider
-                                                      .currentSliderImageIndex ==
-                                                  index
-                                              ? Theme.of(context).cardColor
-                                              : Theme.of(context)
-                                                  .scaffoldBackgroundColor,
-                                          radius: 5,
-                                        ),
-                                        elevation: sliderImagesProvider
-                                                    .currentSliderImageIndex ==
-                                                index
-                                            ? 5
-                                            : 0,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+                        );
+                      },
+                      onPageChanged: (value) {
+                        sliderImagesProvider
+                            .setSliderCurrentIndexImage(value);
+                      },
+                    ),
+                  ),
+                  PositionedDirectional(
+                    bottom: 15,
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              widget.sliders.length,
+                              (index) {
+                                return Padding(
+                                  padding: EdgeInsetsDirectional.symmetric(
+                                    horizontal: 3,
+                                  ),
+                                  child: PhysicalModel(
+                                    color: sliderImagesProvider
+                                                .currentSliderImageIndex ==
+                                            index
+                                        ? Theme.of(context).cardColor
+                                        : Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                    borderRadius:
+                                        BorderRadius.circular(100),
+                                    child: CircleAvatar(
+                                      backgroundColor: sliderImagesProvider
+                                                  .currentSliderImageIndex ==
+                                              index
+                                          ? Theme.of(context).cardColor
+                                          : Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                      radius: 5,
+                                    ),
+                                    elevation: sliderImagesProvider
+                                                .currentSliderImageIndex ==
+                                            index
+                                        ? 5
+                                        : 0,
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                  )
                 ],
               );
             },

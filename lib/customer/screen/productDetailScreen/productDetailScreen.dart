@@ -183,19 +183,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ProductDetailState.loaded) {
                           ProductData product =
                               productDetailProvider.productData;
-                          await GeneralMethods.createDynamicLink(
-                            context: context,
-                            shareUrl:
-                                "${Constant.hostUrl}product/${product.id}",
-                            imageUrl: product.imageUrl,
-                            title: product.name,
-                            description:
-                                "<h1>${product.name}</h1><br><br><h2>${product.variants[0].measurement} ${product.variants[0].stockUnitName}</h2>",
-                          ).then(
-                            (value) async => await Share.share(
-                                "${product.name}\n\n$value",
-                                subject: "Share app"),
-                          );
+                          await Share.share(
+                              "${product.name}\n${product.variants[0].measurement}-${product.variants[0].stockUnitName}\n\n${Constant.websiteUrl}product/${product.slug}",
+                              subject: "Share app");
                         }
                       },
                       child: Container(
@@ -797,7 +787,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 context,
                                 10,
                                 callback: () async {
-
                                   if (Constant.session.isUserLoggedIn()) {
                                     if (cartListProvider.cartListState !=
                                         CartListState.loading) {

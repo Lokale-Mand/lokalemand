@@ -212,12 +212,7 @@ class _ReferAndEarnState extends State<ReferAndEarn> {
       context,
       "refer_and_earn_share_prefix_message",
     );
-    String shareMessage = await GeneralMethods.createDynamicLink(
-      context: context,
-      shareUrl:
-          "${Constant.hostUrl}refer/${Constant.session.getData(SessionManager.keyReferralCode).toString()}",
-    );
-    await Share.share("$prefixMessage $shareMessage",
+    await Share.share("$prefixMessage ${Constant.hostUrl}refer/${Constant.session.getData(SessionManager.keyReferralCode).toString()}",
         subject: "Refer and earn app");
 
     setState(() {

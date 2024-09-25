@@ -28,7 +28,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC_9cAGZnlvSGLKRUMCxIgteTpaMvE83oY" />
+            android:value="AIzaSyDnowRgwhthi661KyoYqKUqeuBNrb2pTlw" />
 
         <activity
             android:name=".HomeMainScreen"
@@ -70,7 +70,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="lokale_mand.page.link" />
+                <data android:host="lokalemand.nl/" />
                 <data android:scheme="https" />
                 <data android:scheme="http" />
             </intent-filter>

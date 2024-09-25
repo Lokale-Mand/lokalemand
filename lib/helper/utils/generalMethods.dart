@@ -514,41 +514,6 @@ class GeneralMethods {
     }
   }
 
-  static Future<String> createDynamicLink({
-    required String shareUrl,
-    required BuildContext context,
-    String? title,
-    String? imageUrl,
-    String? description,
-  }) async {
-    final DynamicLinkParameters parameters = DynamicLinkParameters(
-      uriPrefix: Constant.deepLinkPrefix,
-      link: Uri.parse(shareUrl),
-      androidParameters: AndroidParameters(
-        packageName: Constant.packageName,
-        minimumVersion: 1,
-      ),
-      iosParameters: IOSParameters(
-        bundleId: Constant.packageName,
-        minimumVersion: '1',
-        appStoreId: Constant.appStoreId,
-      ),
-      socialMetaTagParameters: SocialMetaTagParameters(
-          title: title ??
-              getTranslatedValue(
-                context,
-                "app_name",
-              ),
-          imageUrl: Uri.parse(imageUrl ?? ""),
-          description: description),
-    );
-
-    final ShortDynamicLink shortLink =
-        await FirebaseDynamicLinks.instance.buildShortLink(parameters);
-    Uri uri = shortLink.shortUrl;
-    return uri.toString();
-  }
-
   static getCurrencyFormat(double amount) {
     return NumberFormat.currency(
             symbol: Constant.currency,
